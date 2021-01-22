@@ -1,2 +1,4 @@
 # Kierratysavustin
-# Kierratysavustin
+# Kierratysavustin Ohjelmistotuotanto projekti
+
+
