@@ -17,6 +17,8 @@ jobs:
         run: | 
           cd client
           npm install
+          npm start
+          npm run test:e2e
 
       - name: e2e tests
         uses: cypress-io/github-action@v2
