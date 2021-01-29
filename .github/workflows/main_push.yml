@@ -1,0 +1,27 @@
+name: Pushing to main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Pushing_to_main:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: npm install client
+        run: | 
+          cd client
+          npm install
+
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: client
+          wait-on: http://localhost:3000
+          
+      
