@@ -1,5 +1,18 @@
 import React from 'react'
 
+/** Component for showing product name and button for opening the recycling information. */
+const Product = (props) => {
+  const { product } = props
+  return (
+    <div>
+      {product.name} <button onClick={() =>
+        window.alert(`${product.name} - ${product.instructions}`
+        )}>Näytä kierrätysohje</button>
+    </div>
+  )
+}
+
+
 const App = (props) => {
   const { products } = props
 
@@ -10,9 +23,7 @@ const App = (props) => {
       <ul>
         {products.map(product =>
           <li key={product.id}>
-            {product.name} <button onClick={() =>
-              window.alert(`${product.name} - ${product.instructions}`
-              )}>Näytä kierrätysohje</button>
+            <Product product={product} />
           </li>
         )}
       </ul>
