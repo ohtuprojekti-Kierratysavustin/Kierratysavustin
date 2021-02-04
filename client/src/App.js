@@ -8,11 +8,11 @@ const App = (props) => {
       <h1>Kotitalouden kierrätysavustin</h1>
       <h2>Tuotteet</h2>
       <ul>
-        {products.map(product => 
+        {products.map(product =>
           <li key={product.id}>
-            {product.name} <button onClick={() => 
+            {product.name} <button onClick={() =>
               window.alert(`${product.name} - ${product.instructions}`
-            )}>Näytä kierrätysohje</button>
+              )}>Näytä kierrätysohje</button>
           </li>
         )}
       </ul>
@@ -20,4 +20,4 @@ const App = (props) => {
   )
 }
 
-export default App;
+export default App
