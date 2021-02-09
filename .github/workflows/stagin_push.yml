@@ -24,10 +24,13 @@ jobs:
           command: npm run test:e2e
           start: npm start
           wait-on: http://localhost:3000
-      - name: Push to Docker Hub
-        uses: docker/build-push-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}
-          tags: staging
+          password: ${{ secrets.DOCKER_PASSWORD }} 
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:staging
