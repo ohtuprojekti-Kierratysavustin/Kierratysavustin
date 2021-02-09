@@ -1,0 +1,6 @@
+.github
+client/node_modules
+server/node_modules
+client/build
+documentation
+server/public
