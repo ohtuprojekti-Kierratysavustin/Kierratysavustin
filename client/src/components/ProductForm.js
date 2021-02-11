@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const ProductForm = () => {
   const [productName, setProductName] = useState('')
-  const [recycleInfo, setRecycleInfo] = useState('')
+  const [instruction, setInstruction] = useState('')
   const handleSubmit = (event) => {
     event.preventDefault()
     //const product = { productName,recycleInfo }
@@ -20,11 +20,11 @@ const ProductForm = () => {
         </label>
         <br/>
         <label>
-            Kierrätysohje
+            Tuotteen selitys
           <input
             type='text'
-            value={recycleInfo}
-            onChange={({ target }) => setRecycleInfo(target.value)}
+            value={instruction}
+            onChange={({ target }) => setInstruction(target.value)}
           />
         </label>
         <br/>

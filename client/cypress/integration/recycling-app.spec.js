@@ -22,7 +22,7 @@ describe('Recycling app', function() {
   it('product form contains all input fields', function(){
     cy.visit('http://localhost:3000')
     cy.contains('Tuotteen nimi')
-    cy.contains('Kierrätysohje')
+    cy.contains('Tuotteen selitys')
     cy.contains('lisää')
   })
 })
