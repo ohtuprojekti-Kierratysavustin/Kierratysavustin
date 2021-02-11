@@ -19,4 +19,10 @@ describe('Recycling app', function() {
         expect(stub.getCall(0)).to.be.calledWith('Mustamakkarakastike pullo - Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.')
       })
   })
+  it('product form contains all input fields', function(){
+    cy.visit('http://localhost:3000')
+    cy.contains('Tuotteen nimi')
+    cy.contains('Kierrätysohje')
+    cy.contains('lisää')
+  })
 })
