@@ -1,5 +1,5 @@
 import React from 'react'
-
+import ProductForm from './components/ProductForm'
 /** Component for showing product name and button for opening the recycling information. */
 const Product = (props) => {
   const { product } = props
@@ -27,6 +27,7 @@ const App = (props) => {
           </li>
         )}
       </ul>
+      <ProductForm/>
     </div>
   )
 }
