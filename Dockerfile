@@ -1,5 +1,9 @@
 FROM node:14
 
+# --build-arg
+ARG PUBLIC_URL
+ENV PUBLIC_URL=$PUBLIC_URL
+
 # Install frontend dependencies
 WORKDIR /usr/src/app/client
 COPY client/package.json client/package-lock.json ./
