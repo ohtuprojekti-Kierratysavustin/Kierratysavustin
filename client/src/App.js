@@ -12,7 +12,6 @@ const Product = (props) => {
   )
 }
 
-
 const App = (props) => {
   const { products } = props
 
