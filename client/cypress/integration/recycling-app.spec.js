@@ -9,15 +9,11 @@ describe('Recycling app', function() {
     cy.contains('Maitotölkki')
     cy.contains('Sanomalehti')
   })
-  it('product recycling information can be opened by clicking button', function() {
+  it('product recycling information can be viewed', function() {
     cy.visit('http://localhost:3000')
     cy.contains('Mustamakkarakastike pullo')
-    const stub = cy.stub()
-    cy.on ('window:alert', stub)
-    cy.get('button').contains('Näytä kierrätysohje').click()
-      .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('Mustamakkarakastike pullo - Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.')
-      })
+
+    cy.contains('Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.')
   })
   it('product form contains all input fields', function(){
     cy.visit('http://localhost:3000')

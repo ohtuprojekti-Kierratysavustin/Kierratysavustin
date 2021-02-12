@@ -1,16 +1,6 @@
 import React from 'react'
 import ProductForm from './components/ProductForm'
-/** Component for showing product name and button for opening the recycling information. */
-const Product = (props) => {
-  const { product } = props
-  return (
-    <div>
-      {product.name} <button onClick={() =>
-        window.alert(`${product.name} - ${product.instructions}`
-        )}>Näytä kierrätysohje</button>
-    </div>
-  )
-}
+import Product from './components/Product'
 
 const App = (props) => {
   const { products } = props
