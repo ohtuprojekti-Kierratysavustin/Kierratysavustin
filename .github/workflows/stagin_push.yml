@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - staging
+    paths-ignore:
+      - 'documentation/**'
+      - 'README.md'
 
 jobs:
   test_and_push_to_docker_hub:
@@ -12,12 +15,18 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '14.x'
       - name: npm install client
         run: | 
           cd client
           npm install
-      
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: client
+          command: npm run test:e2e
+          start: npm start
+          wait-on: http://localhost:3000
       - name: Publish to DockerHub
         uses: docker/build-push-action@v1.1.0
         with:
