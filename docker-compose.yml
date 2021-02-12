@@ -10,7 +10,7 @@ services:
     container_name: kierratysavustin_db
 
   kierratysavustin_client:
-    image: kierratysavustin/kierratysavustin:staging
+    image: kierratysavustin-local
     restart: unless-stopped
     container_name: kierratysavustin_client
 
