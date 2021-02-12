@@ -5,4 +5,4 @@ const commentSchema = new mongoose.Schema({
     score: {type:Number, required:true}
 })
 
-module.exports = mongoose.model("User", commentSchema)
+module.exports = mongoose.model("Comment", commentSchema)
