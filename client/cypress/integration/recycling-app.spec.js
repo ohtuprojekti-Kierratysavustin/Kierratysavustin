@@ -1,22 +1,22 @@
 describe('Recycling app', function() {
   it('productlist page can be opened', function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('http://localhost:3000/kierratysavustin')
     cy.contains('Kotitalouden kierrätysavustin')
   })
   it('productlist contains products', function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('http://localhost:3000/kierratysavustin')
     cy.contains('Mustamakkarakastike pullo')
     cy.contains('Maitotölkki')
     cy.contains('Sanomalehti')
   })
   it('product recycling information can be viewed', function() {
-    cy.visit('http://localhost:3000/products/0')
+    cy.visit('http://localhost:3000/kierratysavustin/products/1')
     cy.contains('Mustamakkarakastike pullo')
 
     cy.contains('Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.')
   })
   it('product form contains all input fields', function(){
-    cy.visit('http://localhost:3000/new')
+    cy.visit('http://localhost:3000/kierratysavustin/new')
     cy.contains('Tuotteen nimi')
     cy.contains('Tuotteen selitys')
     cy.contains('lisää')

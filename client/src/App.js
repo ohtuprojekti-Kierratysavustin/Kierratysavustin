@@ -20,20 +20,20 @@ const App = (props) => {
   return (
     <Router>
       <div>
-        <Link style={padding} to="/">tuotteet</Link>
-        <Link style={padding} to="/new">lisää tuote</Link>
+        <Link style={padding} to="/kierratysavustin">tuotteet</Link>
+        <Link style={padding} to="/kierratysavustin/new">lisää tuote</Link>
       </div>
 
       <h1>Kotitalouden kierrätysavustin</h1>
 
       <Switch>
-        <Route path="/products/:id">
+        <Route path="/kierratysavustin/products/:id">
           <Product products={products} />
         </Route>
-        <Route path="/new">
+        <Route path="/kierratysavustin/new">
           <ProductForm />
         </Route>
-        <Route path="/">
+        <Route path="/kierratysavustin">
           <ProductList products={products} />
         </Route>
       </Switch>

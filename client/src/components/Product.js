@@ -7,7 +7,7 @@ import {
 const Product = (props) => {
   const id = useParams().id
   const { products } = props
-  const product = products[id]
+  const product = products[id - 1]
   //console.log(product)
   return (
     <div>
