@@ -1,8 +1,14 @@
 import React from 'react'
+import {
+  useParams
+} from 'react-router-dom'
 
-/** Component for showing product name and button for opening the recycling information. */
+/** Component for showing product name and recycling information. */
 const Product = (props) => {
-  const { product } = props
+  const id = useParams().id
+  const { products } = props
+  const product = products[id]
+  //console.log(product)
   return (
     <div>
 
