@@ -13,7 +13,7 @@ const ProductList = (props) => {
       <ul>
         {products.map(product =>
           <li key={product.id}>
-            <Link to={`/kierratysavustin/products/${product.id}`}>{product.name}</Link>
+            <Link to={`/products/${product.id}`}>{product.name}</Link>
           </li>
         )}
       </ul>

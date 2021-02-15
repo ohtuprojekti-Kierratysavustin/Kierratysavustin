@@ -18,22 +18,22 @@ const App = (props) => {
   }
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <div>
-        <Link style={padding} to="/kierratysavustin">tuotteet</Link>
-        <Link style={padding} to="/kierratysavustin/new">lisää tuote</Link>
+        <Link style={padding} to="/">tuotteet</Link>
+        <Link style={padding} to="/new">lisää tuote</Link>
       </div>
 
       <h1>Kotitalouden kierrätysavustin</h1>
 
       <Switch>
-        <Route path="/kierratysavustin/products/:id">
+        <Route path="/products/:id">
           <Product products={products} />
         </Route>
-        <Route path="/kierratysavustin/new">
+        <Route path="/new">
           <ProductForm />
         </Route>
-        <Route path="/kierratysavustin">
+        <Route path="/">
           <ProductList products={products} />
         </Route>
       </Switch>
