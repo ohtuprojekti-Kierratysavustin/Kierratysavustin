@@ -1,18 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   BrowserRouter as Router,
   Switch, Route, Link
 } from 'react-router-dom'
-
+import productService from './services/products'
 
 import ProductForm from './components/ProductForm'
 import Product from './components/Product'
 import ProductList from './components/ProductList'
+//import { set } from 'mongoose'
 
 
-const App = (props) => {
-  const { products } = props
-
+const App = () => {
+  //const { products } = props
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    productService.getAll().then(p => setProducts(p))
+  }, [])
   const padding = {
     padding: 5
   }
