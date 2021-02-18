@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
-  BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route, Link, useRouteMatch
 } from 'react-router-dom'
 import productService from './services/products'
 
@@ -10,19 +9,24 @@ import Product from './components/Product'
 import ProductList from './components/ProductList'
 //import { set } from 'mongoose'
 
-
 const App = () => {
   //const { products } = props
   const [products, setProducts] = useState([])
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
   }, [])
+
+  const match = useRouteMatch('/products/:id')
+  const product = match
+    ? products.find(p => p.id === Number(match.params.id))
+    : null
+
   const padding = {
     padding: 5
   }
 
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <div>
       <div>
         <Link style={padding} to="/">tuotteet</Link>
         <Link style={padding} to="/new">lisää tuote</Link>
@@ -32,7 +36,7 @@ const App = () => {
 
       <Switch>
         <Route path="/products/:id">
-          <Product products={products} />
+          <Product product={product} />
         </Route>
         <Route path="/new">
           <ProductForm />
@@ -41,7 +45,7 @@ const App = () => {
           <ProductList products={products} />
         </Route>
       </Switch>
-    </Router>
+    </div>
   )
 }
 
