@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = '/api/products'
+const baseUrl = `${process.env.PUBLIC_URL}/api/products`
 
 const create = async newObject => {
   const response = axios.post(baseUrl, newObject)
