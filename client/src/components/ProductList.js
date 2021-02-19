@@ -4,8 +4,7 @@ import {
 } from 'react-router-dom'
 
 /** Component for showing list of products and a link to product page */
-const ProductList = (props) => {
-  const { products } = props
+const ProductList = ({ products }) => {
   console.log(products)
   return (
     <div>
