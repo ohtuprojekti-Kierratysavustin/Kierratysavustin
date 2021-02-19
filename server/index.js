@@ -1,4 +1,4 @@
-const products = [
+/*const products = [
     {
       id: 1,
       name: 'Mustamakkarakastike pullo',
@@ -16,26 +16,20 @@ const products = [
     }
   ]
 
-
-const Product = require('./models/product')
-const Instruction = require('./models/instruction')
-const User = require('./models/user')
-const Comment = require('./models/comment')
-
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const path = require('path')
-
 const cors = require('cors')
 
 app.use(cors())
 app.use(express.json())
 
 app.use(express.static('build'))
-app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
+//app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
 
-const PORT = 3001
-
+//const PORT = 3001
+/*
 app.post('/api/products',(req,res) =>{
     const product = req.body
     console.log(product)
@@ -55,7 +49,13 @@ app.get('/api/products/:id', (req, res) => {
     const product = products.find(product => product.id === id)
     res.json(product)
   })
-
-app.listen(PORT, () => {
-    console.log(`server running on port ${PORT}`)
-})
+  */
+ const http = require('http')
+ const config = require('./utils/config')
+ const app = require('./App') // varsinainen Express-sovellus
+ 
+ const server = http.createServer(app)
+ 
+ server.listen(config.PORT, () => {
+   console.log(`Server running on port ${config.PORT}`)
+ })
