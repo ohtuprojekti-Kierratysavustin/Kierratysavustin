@@ -2,6 +2,7 @@ import React from 'react'
 import {
   useParams
 } from 'react-router-dom'
+import InstructionForm from './InstructionForm'
 
 /** Component for showing product name and recycling information. */
 const Product = (props) => {
@@ -15,7 +16,9 @@ const Product = (props) => {
       <p> <b>({product.id}) {product.name}:</b></p>
 
       {product.instructions}
+      <h2>Lisää tuotteelle kierrätys ohje</h2>
 
+      <InstructionForm />
     </div>
   )
 }
