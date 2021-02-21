@@ -9,7 +9,7 @@ on:
       - 'README.md'
 
 jobs:
-  test_and_push_to_docker_hub:
+  test:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
