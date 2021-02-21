@@ -31,9 +31,6 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 
-app.use(express.static('build'))
-//app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
-
 const PORT = 3001
 
 app.post('/api/products',(req,res) =>{
@@ -55,6 +52,9 @@ app.get('/api/products/:id', (req, res) => {
     const product = products.find(product => product.id === id)
     res.json(product)
   })
+
+app.use(express.static('build'))
+app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
 
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`)
