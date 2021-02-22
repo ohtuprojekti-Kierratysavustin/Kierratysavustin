@@ -1,5 +1,5 @@
 post  http://localhost:3001/api/products
-Content-Type: :application/json
+Content-Type: application/json
 
 {
     "name":"makkara",
