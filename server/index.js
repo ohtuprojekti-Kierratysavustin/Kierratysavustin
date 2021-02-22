@@ -38,7 +38,7 @@ app.post('/api/products',(req,res) =>{
     console.log(product)
     return product
 })  
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('<h1>Hello World!</h1>')
 })
 
