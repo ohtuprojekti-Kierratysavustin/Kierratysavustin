@@ -5,7 +5,6 @@ import {
 
 /** Component for showing list of products and a link to product page */
 const ProductList = ({ products }) => {
-  console.log(products)
   return (
     <div>
       <h2>Tuotteet</h2>

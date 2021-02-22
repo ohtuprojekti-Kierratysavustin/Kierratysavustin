@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-
-const InstructionForm = () => {
-  const [Information, setInformation] = useState('')
+import productService from '../services/products'
+const InstructionForm = ({ id }) => {
+  const [information, setInformation] = useState('')
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(Information)
+    const instruction = { information }
+    productService.createInstruction(id,instruction)
+
   }
   return (
     <div>
@@ -13,7 +15,7 @@ const InstructionForm = () => {
             Kierrätys ohje:
           <input
             type='text'
-            value={Information}
+            value={information}
             onChange={({ target }) => setInformation(target.value)}
           />
         </label>

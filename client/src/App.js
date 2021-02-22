@@ -18,7 +18,7 @@ const App = () => {
 
   const match = useRouteMatch('/products/:id')
   const product = match
-    ? products.find(p => p.id === Number(match.params.id))
+    ? products.find(p => p.id === match.params.id)
     : null
 
   const padding = {
