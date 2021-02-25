@@ -13,6 +13,9 @@ app.use(express.static("build"))
 app.use(bodyParser.json());
 app.use("/api/products", productRouter);
 
+
+app.use(express.static('build'))
+app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
 console.log('connecting to', config.MONGODB_URI)
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
   .then(() => {

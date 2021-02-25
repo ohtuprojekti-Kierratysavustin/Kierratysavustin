@@ -25,8 +25,7 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 
-app.use(express.static('build'))
-//app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
+
 
 //const PORT = 3001
 /*
@@ -52,10 +51,10 @@ app.get('/api/products/:id', (req, res) => {
   */
  const http = require('http')
  const config = require('./utils/config')
- const app = require('./App') // varsinainen Express-sovellus
+ const app = require('./App')
  
  const server = http.createServer(app)
- 
+
  server.listen(config.PORT, () => {
    console.log(`Server running on port ${config.PORT}`)
  })
