@@ -10,7 +10,7 @@ describe('Recycling app', function() {
     cy.contains('Sanomalehti')
   })
   it('product recycling information can be viewed', function() {
-    cy.visit('/products/1')
+    cy.visit('/products/6033af6bc965fd0014e8a4f3')
     cy.contains('Mustamakkarakastike pullo')
 
     cy.contains('Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.')
@@ -22,7 +22,7 @@ describe('Recycling app', function() {
     cy.contains('lisää')
   })
   it('recycling istruction can be viewwed', function() {
-    cy.visit('/products/1')
+    cy.visit('/products/6033af53c965fd0014e8a4f1')
     cy.contains('Lisää tuotteelle kierrätys ohje')
     cy.contains('Kierrätys ohje:')
     cy.get('button').contains('lisää').click()

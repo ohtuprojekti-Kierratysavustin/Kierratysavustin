@@ -3,10 +3,10 @@ import productService from '../services/products'
 
 const ProductForm = () => {
   const [productName, setProductName] = useState('')
-  const [instruction, setInstruction] = useState('')
+  const [description, setDescription] = useState('')
   const handleSubmit = (event) => {
     event.preventDefault()
-    const product = { productName, instruction }
+    const product = { productName, description }
     productService.create(product)
   }
   return (
@@ -25,8 +25,8 @@ const ProductForm = () => {
           Tuotteen selitys
           <input
             type='text'
-            value={instruction}
-            onChange={({ target }) => setInstruction(target.value)}
+            value={description}
+            onChange={({ target }) => setDescription(target.value)}
           />
         </label>
         <br />

@@ -7,6 +7,7 @@ import productService from './services/products'
 import ProductForm from './components/ProductForm'
 import Product from './components/Product'
 import ProductList from './components/ProductList'
+import RegisterForm from './components/RegisterForm'
 //import { set } from 'mongoose'
 
 const App = () => {
@@ -18,7 +19,7 @@ const App = () => {
 
   const match = useRouteMatch('/products/:id')
   const product = match
-    ? products.find(p => p.id === Number(match.params.id))
+    ? products.find(p => p.id === match.params.id)
     : null
 
   const padding = {
@@ -30,6 +31,7 @@ const App = () => {
       <div>
         <Link style={padding} to="/">tuotteet</Link>
         <Link style={padding} to="/new">lisää tuote</Link>
+        <Link style={padding} to="/register">rekisteröidy</Link>
       </div>
 
       <h1>Kotitalouden kierrätysavustin</h1>
@@ -40,6 +42,9 @@ const App = () => {
         </Route>
         <Route path="/new">
           <ProductForm />
+        </Route>
+        <Route path="/register">
+          <RegisterForm />
         </Route>
         <Route path="/">
           <ProductList products={products} />
