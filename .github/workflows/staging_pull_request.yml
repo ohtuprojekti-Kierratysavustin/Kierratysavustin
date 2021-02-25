@@ -29,5 +29,5 @@ jobs:
         with:
           working-directory: e2e_tests
           command: npm run test:e2e
-          start: npm run start:client, npm run start:server
-          wait-on: 'http://localhost:3000, http://localhost:3001'
+          start: npm run start:prod
+          wait-on: http://localhost:3001

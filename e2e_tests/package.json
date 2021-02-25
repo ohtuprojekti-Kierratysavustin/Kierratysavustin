@@ -5,7 +5,8 @@
     "cypress:open": "cypress open",
     "test:e2e": "cypress run",
     "start:server": "cd ../server && npm start",
-    "start:client": "cd ../client && npm start"
+    "start:client": "cd ../client && npm start",
+    "start:prod": "cd ../client && npm run build && cp -r build/ ../server/build && cd ../server && npm start"
   },
   "devDependencies": {
     "cypress": "^6.5.0",
