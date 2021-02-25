@@ -1,0 +1,33 @@
+name: Pull request to staging
+
+on:
+  pull_request:
+    branches:
+      - staging
+    paths-ignore:
+      - 'documentation/**'
+      - 'README.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: npm install client
+        run: | 
+          cd client
+          npm install
+      - name: npm install server
+        run: |
+          cd server
+          npm install
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: e2e_tests
+          command: npm run test:e2e
+          start: npm run start:prod
+          wait-on: http://localhost:3001

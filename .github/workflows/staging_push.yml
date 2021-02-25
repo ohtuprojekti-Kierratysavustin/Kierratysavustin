@@ -1,4 +1,4 @@
-name: Pushing to staging
+name: Push to staging
 
 on:
   push:
@@ -20,18 +20,17 @@ jobs:
         run: | 
           cd client
           npm install
-      - name: npm install and start server
+      - name: npm install server
         run: |
           cd server
           npm install
-          npm start &
       - name: e2e tests
         uses: cypress-io/github-action@v2
         with:
-          working-directory: client
+          working-directory: e2e_tests
           command: npm run test:e2e
-          start: npm start
-          wait-on: 'http://localhost:3000, http://localhost:3001'
+          start: npm run start:prod
+          wait-on: http://localhost:3001
       - name: Publish to DockerHub
         uses: docker/build-push-action@v1.1.0
         with:
