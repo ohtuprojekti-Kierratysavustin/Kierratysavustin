@@ -7,10 +7,10 @@ const Product = ({ product }) => {
   if (!product) return null
   return (
     <div>
-      <p> <b>{product.name}:</b></p>
+      <h2>{product.name}</h2>
       <li>
         {product.instructions.map(info =>
-          <p key={info.id}>{info.information}</p>
+          <p id ="productInstruction" key={info.id}>{info.information}</p>
         )}
       </li>
       <h2>Lisää tuotteelle kierrätys ohje</h2>

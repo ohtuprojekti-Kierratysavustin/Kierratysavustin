@@ -1,7 +1,5 @@
 
 const productRouter = require("express").Router()
-const { json } = require("express")
-const { response } = require("../App")
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 
