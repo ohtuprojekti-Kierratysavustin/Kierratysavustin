@@ -11,6 +11,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-18.04
+    services:
+      mongo:
+        image: healthcheck/mongo:bionic
+        ports:
+          - 27017:27017
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -29,5 +34,5 @@ jobs:
         with:
           working-directory: e2e_tests
           command: npm run test:e2e
-          start: npm run start:prod
-          wait-on: http://localhost:3001
+          start: npm run start:client, npm run start:server
+          wait-on: 'http://localhost:3000, http://localhost:3001'
