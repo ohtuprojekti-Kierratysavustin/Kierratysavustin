@@ -1,14 +1,23 @@
 
 import React, { useState } from 'react'
-//import productService from '../services/products'
-
-const SearchForm = () => {
+import ProductList from './ProductList'
+const SearchForm = (props) => {
   const [searchTerm, setSearchTerm] = useState('')
+  const [productsFound, setProductsFound]= useState(false)
+  const [searchResults, setSearchResults]= useState([])
+  const products = props.products
 
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log(searchTerm)
+    console.log(products)
+    setSearchResults(products.filter(p => p.name === searchTerm))
+    console.log(searchResults)
+    setProductsFound(true)
+    setSearchTerm('')
   }
+
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -22,7 +31,14 @@ const SearchForm = () => {
         </label>
         <button type='submit'>Hae</button>
       </form>
+      {productsFound ? (
+        <ProductList products={searchResults} />
+      ) : (
+        ''
+      )}
     </div>
+
   )
+
 }
 export default SearchForm
