@@ -1,5 +1,6 @@
 import React from 'react'
 import InstructionForm from './InstructionForm'
+import SearchForm from './SearchForm'
 
 
 /** Component for showing product name and recycling information. */
@@ -16,6 +17,7 @@ const Product = ({ product }) => {
       <h2>Lisää tuotteelle kierrätys ohje</h2>
 
       <InstructionForm id = {product.id}/>
+      <SearchForm />
     </div>
   )
 }
