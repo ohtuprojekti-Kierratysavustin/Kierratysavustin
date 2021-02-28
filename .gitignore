@@ -11,7 +11,7 @@ node_modules
 
 # production
 build
-e2e_tests/cypress/videos/
+e2e_tests/cypress/
 
 # misc
 .DS_Store
@@ -25,3 +25,4 @@ yarn-debug.log*
 yarn-error.log*
 
 .eslintcache
+
