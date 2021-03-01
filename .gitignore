@@ -13,6 +13,7 @@ e2e_tests/cypress/
 # production
 build
 data
+e2e_tests/cypress/
 
 # misc
 .DS_Store
@@ -26,3 +27,4 @@ yarn-debug.log*
 yarn-error.log*
 
 .eslintcache
+
