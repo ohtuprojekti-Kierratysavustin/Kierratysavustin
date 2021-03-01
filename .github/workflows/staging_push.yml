@@ -36,7 +36,6 @@ jobs:
           command: npm run test:e2e:prod
           start: npm run start:test
           wait-on: http://localhost:3001
-          
       - name: Publish to DockerHub
         uses: docker/build-push-action@v1.1.0
         with:
