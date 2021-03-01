@@ -30,9 +30,9 @@ const App = () => {
   return (
     <div>
       <div>
-        <Link style={padding} to="/">tuotteet</Link>
+        <Link style={padding} to="/" onClick={() => window.location.reload()}>etusivu</Link>
         <Link style={padding} to="/new">lisää tuote</Link>
-        <Link style={padding} to="/search">hae</Link>
+        <Link style={padding} to="/products">tuotteet</Link>
         <Link style={padding} to="/register">rekisteröidy</Link>
       </div>
 
@@ -48,13 +48,11 @@ const App = () => {
         <Route path="/register">
           <RegisterForm />
         </Route>
-        <Route path="/search">
-          <SearchForm products={products} />
+        <Route path="/products">
+          <ProductList products={products} />
         </Route>
         <Route path="/">
-          <ProductList products={products} />
-          {/* Hakulomake etusivulle: */}
-          {/* <SearchForm products={products} /> */}
+          <SearchForm products={products} />
         </Route>
       </Switch>
     </div>

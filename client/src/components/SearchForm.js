@@ -12,7 +12,6 @@ const SearchForm = ({ products }) => {
     setSearchResults(products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())))
     setProductsFound(true)
     setSearchTerm('')
-    // files.filter(file => filters.some(filter => file.includes(filter)))
   }
 
 
