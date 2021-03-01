@@ -10,7 +10,7 @@ app.use(cors())
 app.use(bodyParser.json());
 app.use('/api/products', productRouter);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'development') {
   app.use(express.static('build'))
   app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
 }

@@ -33,9 +33,9 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: e2e_tests
-          command: npm run test:e2e
-          start: npm run start:client, npm run start:server
-          wait-on: 'http://localhost:3000, http://localhost:3001'
+          command: npm run test:e2e:prod
+          start: npm run start:test
+          wait-on: http://localhost:3001
       - name: Publish to DockerHub
         uses: docker/build-push-action@v1.1.0
         with:
