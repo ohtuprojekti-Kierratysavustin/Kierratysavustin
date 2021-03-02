@@ -12,20 +12,20 @@ const RegisterForm = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <label>
-Username:
-          <input type="text" name="username"
+          Username:
+          <input id="usernameInput" type="text" name="username"
             value={username}
             onChange={({ target }) => setUsername(target.value)}
           />
         </label>
         <label>
-Password:
-          <input type="password" name ="password"
+          Password:
+          <input id="passwordInput" type="password" name ="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
         </label>
-        <button type='submit'>rekisteröidy</button>
+        <button id="registerButton" type='submit'>rekisteröidy</button>
 
       </form>
     </div>

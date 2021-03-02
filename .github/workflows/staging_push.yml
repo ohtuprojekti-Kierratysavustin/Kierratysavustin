@@ -7,10 +7,16 @@ on:
     paths-ignore:
       - 'documentation/**'
       - 'README.md'
-
+  workflow_dispatch:
+    
 jobs:
   test_and_push_to_docker_hub:
     runs-on: ubuntu-18.04
+    services:
+      mongo:
+        image: healthcheck/mongo
+        ports:
+          - 27017:27017
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -28,8 +34,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: e2e_tests
-          command: npm run test:e2e
-          start: npm run start:prod
+          command: npm run test:e2e:prod
+          start: npm run start:test
           wait-on: http://localhost:3001
       - name: Publish to DockerHub
         uses: docker/build-push-action@v1.1.0

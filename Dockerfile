@@ -28,4 +28,4 @@ WORKDIR /usr/src/app/server
 
 EXPOSE 3001
 
-CMD npm start
+CMD npm run start:prod

@@ -1,7 +1,4 @@
-
 const productRouter = require("express").Router()
-const { json } = require("express")
-const { response } = require("../App")
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 
@@ -39,7 +36,7 @@ productRouter.post('/:id/instructions', async(req,res) => {
 
 
 productRouter.get('/',async (req, res) => {
-    const products = await Product.find({}).populate('instructions',{information:1})
+    const products = await Product.find({}).populate('instructions',{ information:1 })
     res.json(products.map(product => product.toJSON()))
 })
 

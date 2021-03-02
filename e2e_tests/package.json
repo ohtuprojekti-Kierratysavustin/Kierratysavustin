@@ -4,9 +4,11 @@
   "scripts": {
     "cypress:open": "cypress open",
     "test:e2e": "cypress run",
+    "test:e2e:prod": "CYPRESS_BASE_URL=http://localhost:3001 cypress run",
+    "test:e2e:local": "CYPRESS_BASE_URL=http://localhost:3001/kierratysavustin cypress run",
     "start:server": "cd ../server && npm start",
     "start:client": "cd ../client && npm start",
-    "start:prod": "cd ../client && npm run build && cp -r build/ ../server/build && cd ../server && npm start"
+    "start:test": "cd ../client && npm run build && cp -r build/ ../server/build && cd ../server && npm run start:test"
   },
   "devDependencies": {
     "cypress": "^6.5.0",

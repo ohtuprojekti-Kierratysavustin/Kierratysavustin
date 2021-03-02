@@ -13,14 +13,14 @@ const InstructionForm = ({ id }) => {
       <form onSubmit={handleSubmit}>
         <label>
             Kierrätys ohje:
-          <input
+          <input id="instructionInput"
             type='text'
             value={information}
             onChange={({ target }) => setInformation(target.value)}
           />
         </label>
         <br/>
-        <button type='submit'>lisää</button>
+        <button id="addInstruction" type='submit'>lisää</button>
       </form>
     </div>
   )

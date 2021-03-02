@@ -8,10 +8,12 @@ node_modules
 
 # testing
 /coverage
+e2e_tests/cypress/screenshots
+e2e_tests/cypress/videos
 
 # production
 build
-e2e_tests/cypress/
+data
 
 # misc
 .DS_Store
