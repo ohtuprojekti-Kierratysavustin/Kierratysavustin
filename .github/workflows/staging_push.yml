@@ -14,13 +14,11 @@ jobs:
     runs-on: ubuntu-18.04
     services:
       mongo:
-        image: healthcheck/mongo:bionic
+        image: healthcheck/mongo
         ports:
           - 27017:27017
     steps:
       - uses: actions/checkout@v2
-        with: 
-          persist-credentials: false
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
