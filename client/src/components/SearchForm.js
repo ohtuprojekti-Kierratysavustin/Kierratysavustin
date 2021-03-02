@@ -1,17 +1,16 @@
 
 import React, { useState } from 'react'
-import ProductList from './ProductList'
+import { useHistory } from 'react-router-dom'
 
-const SearchForm = ({ products }) => {
+const SearchForm = ({ products, setFoundProducts }) => {
+  const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
-  const [productsFound, setProductsFound]= useState(false)
-  const [searchResults, setSearchResults]= useState([])
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    setSearchResults(products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())))
-    setProductsFound(true)
+    setFoundProducts(products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())))
     setSearchTerm('')
+    history.push('/searchResults')
   }
 
 
@@ -28,11 +27,6 @@ const SearchForm = ({ products }) => {
         </label>
         <button type='submit'>Hae</button>
       </form>
-      {productsFound ? (
-        <ProductList products={searchResults} />
-      ) : (
-        ''
-      )}
     </div>
 
   )
