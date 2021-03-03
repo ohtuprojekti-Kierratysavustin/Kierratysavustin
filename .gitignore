@@ -12,6 +12,7 @@ node_modules
 # production
 build
 e2e_tests/cypress/
+data
 
 # misc
 .DS_Store
