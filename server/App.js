@@ -6,14 +6,14 @@ const mongoose = require("mongoose");
 const cors = require('cors')
 const path = require('path')
 const productRouter = require("./controllers/products");
-
+const userRouter = require("./controllers/users")
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
 
 app.use(cors())
 app.use(express.static("build"))
 app.use(bodyParser.json());
 app.use("/api/products", productRouter);
-
+app.use('/api/users', userRouter)
 
 app.use(express.static('build'))
 app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
