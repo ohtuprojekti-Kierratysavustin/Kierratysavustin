@@ -3,28 +3,25 @@ describe('Recycling app', function() {
     cy.visit('/')
     cy.contains('Kotitalouden kierrätysavustin')
   })
+  it('Product can be added to application', function() {
+    cy.visit('/')
+    cy.get('#productForm').click()
+    cy.get('#nameInput').type('Muovipussi')
+    cy.get('#descriptionInput').type('Muovia')
+    cy.get('#addproductBtn').click()
+  })
   it('productlist contains products', function() {
     cy.visit('/')
-    cy.contains('Mustamakkarakastike pullo')
-    cy.contains('Maitotölkki')
-    cy.contains('Sanomalehti')
+    cy.reload()
+    cy.contains('Muovipussi')
   })
-  it('product recycling information can be viewed', function() {
-    cy.visit('/products/6033af6bc965fd0014e8a4f3')
-    cy.contains('Mustamakkarakastike pullo')
-
-    cy.contains('Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.')
-  })
-  it('product form contains all input fields', function(){
-    cy.visit('/new')
-    cy.contains('Tuotteen nimi')
-    cy.contains('Tuotteen selitys')
-    cy.contains('lisää')
-  })
-  it('recycling istruction can be viewwed', function() {
-    cy.visit('/products/6033af53c965fd0014e8a4f1')
-    cy.contains('Lisää tuotteelle kierrätys ohje')
-    cy.contains('Kierrätys ohje:')
-    cy.get('button').contains('lisää').click()
+  it('product can be clicked and instruction can be added', function(){
+    cy.visit('/')
+    cy.contains('Muovipussi').click()
+    cy.get('#instructionInput').type('Tuotteen voi uudelleen käyttää roskapussina')
+    cy.get('#addInstruction').click()
+    cy.reload() // Reloadin voi poistaa kun otetaan taulukko käyttöön tietojen tallentamiseen
+ 
+    cy.contains('Tuotteen voi uudelleen käyttää roskapussina')
   })
 })

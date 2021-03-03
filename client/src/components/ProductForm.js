@@ -8,13 +8,15 @@ const ProductForm = () => {
     event.preventDefault()
     const product = { productName, description }
     productService.create(product)
+    setProductName('')
+    setDescription('')
   }
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <label>
           Tuotteen nimi
-          <input
+          <input id="nameInput"
             type='text'
             value={productName}
             onChange={({ target }) => setProductName(target.value)}
@@ -23,14 +25,14 @@ const ProductForm = () => {
         <br />
         <label>
           Tuotteen selitys
-          <input
+          <input id="descriptionInput"
             type='text'
             value={description}
             onChange={({ target }) => setDescription(target.value)}
           />
         </label>
         <br />
-        <button type='submit'>lisää</button>
+        <button id="addproductBtn" type='submit'>lisää</button>
       </form>
     </div>
   )
