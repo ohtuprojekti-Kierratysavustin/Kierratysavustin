@@ -19,12 +19,12 @@ describe('Recycling app', function() {
   })
   it('product can be clicked and instruction can be added', function(){
     //cy.visit('/')
-    cy.contains('Haulla ei löytynyt yhtään tuotetta!')
-    //cy.contains('Muovipussi').click()
-    //cy.get('#instructionInput').type('Tuotteen voi uudelleen käyttää roskapussina')
-    //cy.get('#addInstruction').click()
+    //cy.contains('Haulla ei löytynyt yhtään tuotetta!')
+    cy.contains('Muovipussi').click()
+    cy.get('#instructionInput').type('Tuotteen voi uudelleen käyttää roskapussina')
+    cy.get('#addInstruction').click()
     cy.reload() // Reloadin voi poistaa kun otetaan taulukko käyttöön tietojen tallentamiseen
  
-    //cy.contains('Tuotteen voi uudelleen käyttää roskapussina')
+    cy.contains('Tuotteen voi uudelleen käyttää roskapussina')
   })
 })
