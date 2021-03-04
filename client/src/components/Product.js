@@ -8,11 +8,9 @@ const Product = ({ product }) => {
   return (
     <div>
       <h2>{product.name}</h2>
-      <li>
-        {product.instructions.map(info =>
-          <p id ="productInstruction" key={info.id}>{info.information}</p>
-        )}
-      </li>
+      {product.instructions.map(info =>
+        <li id ="productInstruction" key={info.id}>{info.information}</li>
+      )}
       <h2>Lisää tuotteelle kierrätys ohje</h2>
 
       <InstructionForm id = {product.id}/>
