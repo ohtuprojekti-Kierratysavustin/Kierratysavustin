@@ -20,12 +20,13 @@ const SearchForm = ({ products, setFoundProducts }) => {
         <label>
           Hakusana:
           <input
+            id="searchInput"
             type='text'
             value={searchTerm}
             onChange={({ target }) => setSearchTerm(target.value)}
           />
         </label>
-        <button type='submit'>Hae</button>
+        <button id="searchBtn" type='submit'>Hae</button>
       </form>
     </div>
 
