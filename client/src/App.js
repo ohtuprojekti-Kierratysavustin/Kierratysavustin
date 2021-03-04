@@ -18,7 +18,6 @@ const App = () => {
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
   }, [])
-
   const match = useRouteMatch('/products/:id')
   const product = match
     ? products.find(p => p.id === match.params.id)
@@ -44,7 +43,7 @@ const App = () => {
           <Product product={product} />
         </Route>
         <Route path="/new">
-          <ProductForm />
+          <ProductForm products = {products} setProducts={setProducts}/>
         </Route>
         <Route path="/register">
           <RegisterForm />

@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
 
-const ProductForm = () => {
+const ProductForm = ({ products, setProducts }) => {
   const [productName, setProductName] = useState('')
   const [description, setDescription] = useState('')
+  //const [products, setProducts] = useState([])
   const handleSubmit = (event) => {
     event.preventDefault()
     const product = { productName, description }
-    productService.create(product)
+    productService.create(product).then(returnedProduct => {
+      setProducts(products.concat(returnedProduct))
+    })
+    //setProducts(p => p.concat(products))
+    console.log(setProducts)
     setProductName('')
     setDescription('')
   }
