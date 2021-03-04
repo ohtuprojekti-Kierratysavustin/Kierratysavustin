@@ -1,18 +1,16 @@
 
 import React, { useState } from 'react'
-import ProductList from './ProductList'
+import { useHistory } from 'react-router-dom'
 
-const SearchForm = ({ products }) => {
+const SearchForm = ({ products, setFoundProducts }) => {
+  const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
-  const [productsFound, setProductsFound]= useState(false)
-  const [searchResults, setSearchResults]= useState([])
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    setSearchResults(products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())))
-    setProductsFound(true)
+    setFoundProducts(products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())))
     setSearchTerm('')
-    // files.filter(file => filters.some(filter => file.includes(filter)))
+    history.push('/searchResults')
   }
 
 
@@ -22,18 +20,14 @@ const SearchForm = ({ products }) => {
         <label>
           Hakusana:
           <input
+            id="searchInput"
             type='text'
             value={searchTerm}
             onChange={({ target }) => setSearchTerm(target.value)}
           />
         </label>
-        <button type='submit'>Hae</button>
+        <button id="searchBtn" type='submit'>Hae</button>
       </form>
-      {productsFound ? (
-        <ProductList products={searchResults} />
-      ) : (
-        ''
-      )}
     </div>
 
   )

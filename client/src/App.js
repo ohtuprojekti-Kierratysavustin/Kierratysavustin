@@ -14,6 +14,7 @@ import SearchForm from './components/SearchForm'
 const App = () => {
   //const { products } = props
   const [products, setProducts] = useState([])
+  const [foundProducts, setFoundProducts] = useState([])
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
   }, [])
@@ -30,9 +31,9 @@ const App = () => {
   return (
     <div>
       <div>
-        <Link style={padding} to="/">tuotteet</Link>
-        <Link id="productForm" style={padding} to="/new">lisää tuote</Link>
-        <Link style={padding} to="/search">hae</Link>
+        <Link style={padding} to="/">etusivu</Link>
+        <Link id='productForm' style={padding} to="/new">lisää tuote</Link>
+        <Link style={padding} to="/products">tuotteet</Link>
         <Link style={padding} to="/register">rekisteröidy</Link>
       </div>
 
@@ -48,13 +49,14 @@ const App = () => {
         <Route path="/register">
           <RegisterForm />
         </Route>
-        <Route path="/search">
-          <SearchForm products={products} />
+        <Route path="/products">
+          <ProductList products={products} />
+        </Route>
+        <Route path="/searchResults">
+          <ProductList products={foundProducts} />
         </Route>
         <Route path="/">
-          <ProductList products={products} />
-          {/* Hakulomake etusivulle: */}
-          {/* <SearchForm products={products} /> */}
+          <SearchForm products={products} setFoundProducts={setFoundProducts} />
         </Route>
       </Switch>
     </div>

@@ -10,13 +10,16 @@ describe('Recycling app', function() {
     cy.get('#descriptionInput').type('Muovia')
     cy.get('#addproductBtn').click()
   })
-  it('productlist contains products', function() {
+  it('search returns products', function() {
     cy.visit('/')
     cy.reload()
+    cy.get('#searchInput').type('pussi')
+    cy.get('#searchBtn').click()
     cy.contains('Muovipussi')
   })
   it('product can be clicked and instruction can be added', function(){
-    cy.visit('/')
+    //cy.visit('/')
+    //cy.contains('Haulla ei löytynyt yhtään tuotetta!')
     cy.contains('Muovipussi').click()
     cy.get('#instructionInput').type('Tuotteen voi uudelleen käyttää roskapussina')
     cy.get('#addInstruction').click()
