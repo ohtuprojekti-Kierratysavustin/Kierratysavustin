@@ -13,7 +13,7 @@ productRouter.post('/', async(req,res) => {
     })
     const result = await product.save()
 
-    res.status(201).json(result.toJSON())
+    res.status(201).json(result)
 
 })
 
