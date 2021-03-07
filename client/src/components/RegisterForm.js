@@ -15,8 +15,7 @@ const RegisterForm = () => {
     username: '',
     password: ''
   }
-  const handleSubmit = (event,values) => {
-    event.preventDefault()
+  const onSubmit = (values) => {
     registerService.createUser(values)
   }
 
@@ -25,9 +24,7 @@ const RegisterForm = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={SignupSchema}
-      onSubmit={(values) => {
-        handleSubmit(values)
-      }}
+      onSubmit={onSubmit}
     >
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik
