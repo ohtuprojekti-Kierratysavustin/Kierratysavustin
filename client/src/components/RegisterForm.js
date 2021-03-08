@@ -30,7 +30,7 @@ const RegisterForm = () => {
         const { errors, touched, isValid, dirty } = formik
         return (
           <div className="container">
-            <h1>Sign in to continue</h1>
+            <h1>Rekisteröidy</h1>
             <Form  >
               <div className="form-row">
                 <label htmlFor="username">Käyttäjänimi: </label>
