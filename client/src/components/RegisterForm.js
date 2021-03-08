@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import registerService from '../services/register'
+import Notification from './Notification'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
 import * as yup from 'yup'
 
 const RegisterForm = () => {
-
+  const [notificationMessage, setNotifcationMessage] = useState(null)
 
   const SignupSchema = yup.object().shape({
     username: yup.string().min(2, 'Nimen tulee olla vähintään 2 kirjainta pitkä').required('Käyttäjänimi vaaditaan'),
@@ -17,6 +18,13 @@ const RegisterForm = () => {
   }
   const onSubmit = (values) => {
     registerService.createUser(values)
+
+    setNotifcationMessage(
+      `Käyttäjä '${values.username}' lisättiin serverille`
+    )
+    setTimeout(() => {
+      setNotifcationMessage(null)
+    }, 5000)
   }
 
 
@@ -71,6 +79,9 @@ const RegisterForm = () => {
               Sign In
               </button>
             </Form>
+
+            <Notification message={notificationMessage} />
+
           </div>
         )
       }}
