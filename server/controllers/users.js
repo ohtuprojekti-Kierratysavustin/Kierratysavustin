@@ -4,6 +4,7 @@ const User = require("../models/user");
 
 userRouter.post("/", async (req, res) => {
   try {
+    
     const body = req.body;
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(body.password, saltRounds);
@@ -15,7 +16,8 @@ userRouter.post("/", async (req, res) => {
     console.log(savedUser);
     res.json(savedUser);
   } catch (error) {
-    console.log("error username in use");
+    
+    return res.status(400).send('already in use')
   }
 });
 

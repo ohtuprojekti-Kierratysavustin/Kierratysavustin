@@ -6,7 +6,6 @@ import * as yup from 'yup'
 
 const RegisterForm = () => {
   const [notificationMessage, setNotifcationMessage] = useState(null)
-
   const SignupSchema = yup.object().shape({
     username: yup.string().min(2, 'Nimen tulee olla vähintään 2 kirjainta pitkä').required('Käyttäjänimi vaaditaan'),
     password: yup.string().min(6, 'Salasanan tulee olla vähintään 6 kirjainta pitkä').required('Salasana vaaditaa')
@@ -16,15 +15,20 @@ const RegisterForm = () => {
     username: '',
     password: ''
   }
-  const onSubmit = (values) => {
-    registerService.createUser(values)
+  const onSubmit =  async (values) => {
+    try {
+      await registerService.createUser(values)
+      setNotifcationMessage('Rekisteröityminen onnistui')
+      setTimeout(() => {
+        setNotifcationMessage(null)
+      }, 5000)
+    } catch (error) {
+      setNotifcationMessage('Käyttäjätunnus on jo käytössä')
+      setTimeout(() => {
+        setNotifcationMessage(null)
+      }, 5000)
+    }
 
-    setNotifcationMessage(
-      `Käyttäjä '${values.username}' lisättiin serverille`
-    )
-    setTimeout(() => {
-      setNotifcationMessage(null)
-    }, 5000)
   }
 
 
@@ -38,7 +42,7 @@ const RegisterForm = () => {
         const { errors, touched, isValid, dirty } = formik
         return (
           <div className="container">
-            <h1>Sign in to continue</h1>
+            <h1>Rekisteröidy Kierratysavustin palveluun</h1>
             <Form  >
               <div className="form-row">
                 <label htmlFor="username">Käyttäjänimi: </label>
