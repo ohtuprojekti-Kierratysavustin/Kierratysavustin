@@ -1,14 +1,13 @@
 const config = require("./utils/config");
 const express = require("express");
 const app = express();
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require('cors')
 const productRouter = require("./controllers/products");
 const userRouter = require("./controllers/users")
 const path = require('path')
 app.use(cors())
-app.use(bodyParser.json());
+app.use(express.json());
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter)
 

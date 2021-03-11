@@ -42,6 +42,7 @@ const RegisterForm = () => {
         const { errors, touched, isValid, dirty } = formik
         return (
           <div className="container">
+
             <h1>Rekisteröidy Kierratysavustin palveluun</h1>
             <Form  >
               <div className="form-row">
