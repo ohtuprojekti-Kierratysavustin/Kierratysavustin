@@ -9,6 +9,7 @@ import Product from './components/Product'
 import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
 import SearchForm from './components/SearchForm'
+import LoginForm from './components/LoginForm'
 //import { set } from 'mongoose'
 
 const App = () => {
@@ -34,6 +35,7 @@ const App = () => {
         <Link id='productForm' style={padding} to="/new">lisää tuote</Link>
         <Link style={padding} to="/products">tuotteet</Link>
         <Link style={padding} to="/register">rekisteröidy</Link>
+        <Link style={padding} to="/login">kirjaudu</Link>
       </div>
 
       <h1>Kotitalouden kierrätysavustin</h1>
@@ -47,6 +49,9 @@ const App = () => {
         </Route>
         <Route path="/register">
           <RegisterForm />
+        </Route>
+        <Route path="/login">
+          <LoginForm />
         </Route>
         <Route path="/products">
           <ProductList products={products} />
