@@ -1,9 +1,9 @@
 const config = require("./utils/config");
 const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
+const app = express()
+const mongoose = require("mongoose")
 const cors = require('cors')
-const productRouter = require("./controllers/products");
+const productRouter = require("./controllers/products")
 const userRouter = require("./controllers/users")
 const path = require('path')
 app.use(cors())
@@ -19,8 +19,7 @@ if (process.env.NODE_ENV === 'test') {
 app.use(express.static('build'))
 app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
 
-const http = require('http');
-const { EPIPE } = require("constants");
+const http = require('http')
 const server = http.createServer(app)
 
 console.log('>>>>> connecting to <<<<<', config.MONGODB_URI)
