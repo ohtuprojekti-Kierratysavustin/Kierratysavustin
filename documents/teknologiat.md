@@ -2,6 +2,7 @@
 
 ## Server
 |Nimi|Mitä tekee|
+| ----------- | ----------- |
 |bcrypt|Salasana hash arvoksi|
 |cors|Mahdollistaa clientin HTTP pyynnöt serverille|
 |dotenv|Mahdollistaa .env tiedoston käytön|
@@ -11,6 +12,7 @@
 
 ## Client
 |Nimi|Mitä tekee|
+| ----------- | ----------- |
 |axios|Mahdollistaa tiedon hakemisen serveriltä|
 |formik/yup |Käyttäjän syötteen validointi|
 |react|Javascipt kirjasto käyttöliittymän tekoon|
