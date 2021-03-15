@@ -7,7 +7,8 @@
 
 # Dokumentit
 
-[Teknologiat](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/tree/main/documents/teknologiat.md)
+[Teknologiat](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/Teknologia-lista/documents/teknologiat.md)
+
 
 # Definition of Done
 
