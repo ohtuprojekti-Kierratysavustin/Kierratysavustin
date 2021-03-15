@@ -5,6 +5,10 @@
 
 # Kierratysavustin Ohjelmistotuotanto projekti
 
+# Dokumentit
+
+[Teknologiat](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/tree/main/documents/teknologiat.md)
+
 # Definition of Done
 
 - Backlogiin kirjattu ominaisuus on toteutettuna ja toimii 
