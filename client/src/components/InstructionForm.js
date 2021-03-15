@@ -12,7 +12,7 @@ const InstructionForm = ({ id }) => {
     <div>
       <form onSubmit={handleSubmit}>
         <label>
-            Kierrätys ohje:
+            Kierrätysohje:
           <input id="instructionInput"
             type='text'
             value={information}

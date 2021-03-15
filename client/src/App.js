@@ -32,7 +32,7 @@ const App = () => {
       <div>
         <Link style={padding} to="/">etusivu</Link>
         <Link id='productForm' style={padding} to="/new">lisää tuote</Link>
-        <Link style={padding} to="/products">tuotteet</Link>
+        <Link id='productList' style={padding} to="/products">tuotteet</Link>
         <Link style={padding} to="/register">rekisteröidy</Link>
       </div>
 

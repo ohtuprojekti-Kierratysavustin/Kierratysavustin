@@ -9,17 +9,32 @@ describe('Recycling app', function() {
     cy.get('#nameInput').type('Muovipussi')
     cy.get('#descriptionInput').type('Muovia')
     cy.get('#addproductBtn').click()
+    cy.get('#productList').click()
+    cy.contains('Muovipussi')
   })
-  it('search returns products', function() {
+  it('search returns products with existing search term', function() {
     cy.visit('/')
-    cy.reload()
     cy.get('#searchInput').type('pussi')
     cy.get('#searchBtn').click()
     cy.contains('Muovipussi')
   })
-  it('product can be clicked and instruction can be added', function(){
-    //cy.visit('/')
-    //cy.contains('Haulla ei löytynyt yhtään tuotetta!')
+  it('search informs user if nothing was found', function() {
+    cy.visit('/')
+    cy.get('#searchInput').type('zqxwce')
+    cy.get('#searchBtn').click()
+    cy.contains('Haulla ei löytynyt yhtään tuotetta!')
+  })
+  it('existing product information can be opened and seen', function(){
+    cy.visit('/')
+    cy.get('#searchInput').type('pussi')
+    cy.get('#searchBtn').click()
+    cy.contains('Muovipussi').click()
+    cy.contains('Lisää tuotteelle kierrätysohje')
+  })
+  it('recycling information can be added to a product', function(){
+    cy.visit('/')
+    cy.get('#searchInput').type('pussi')
+    cy.get('#searchBtn').click()
     cy.contains('Muovipussi').click()
     cy.get('#instructionInput').type('Tuotteen voi uudelleen käyttää roskapussina')
     cy.get('#addInstruction').click()
