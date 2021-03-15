@@ -2,14 +2,10 @@ const productRouter = require("express").Router()
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 
-productRouter.post('/', async(req,res) => {
-    
+productRouter.post('/', async(req,res) => {  
     const body = req.body
-    console.log("body",body)
-   
         const product = new Product({
         name: body.productName,
-        description: body.description
     })
     const result = await product.save()
 
@@ -22,7 +18,6 @@ productRouter.post('/:id/instructions', async(req,res) => {
     if(!product){
         return res.status(401).json({ error: "No product" });
     }
-    
     const instruction = new Instruction(req.body)
     instruction.product = product.id
     const result = await instruction.save()

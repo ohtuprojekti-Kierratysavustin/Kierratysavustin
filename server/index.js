@@ -11,16 +11,20 @@ app.use(express.json());
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter)
 
-if (process.env.NODE_ENV !== 'development') {
-  app.use(express.static('build'))
-  app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
+if (process.env.NODE_ENV === 'test') {
+  const testRouter = require('./controllers/tests')
+  app.use('/api/tests', testRouter)
 }
 
-const http = require('http')
+app.use(express.static('build'))
+app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
+
+const http = require('http');
+const { EPIPE } = require("constants");
 const server = http.createServer(app)
 
 console.log('>>>>> connecting to <<<<<', config.MONGODB_URI)
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true } )
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('>>>>> connected to MongoDB <<<<<')
   })
@@ -28,6 +32,6 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
     console.log('>>>>> error connection to MongoDB: <<<<<', error.message)
   })
 
- server.listen(config.PORT, () => {
-   console.log(`Server running on port ${config.PORT}`)
- })
+server.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`)
+})
