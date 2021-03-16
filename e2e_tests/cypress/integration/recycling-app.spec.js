@@ -12,6 +12,8 @@ describe('Recycling app', () => {
     cy.get('#productForm').click()
     cy.get('#nameInput').type('Muovipussi')
     cy.get('#addproductBtn').click()
+    cy.get('#productList').click()
+    cy.contains('Muovipussi')
   })
 
   describe('when a product is added', () => {
@@ -44,7 +46,7 @@ describe('Recycling app', () => {
 
       it('its product information can be opened and seen', () => {
         cy.contains('Muovipussi').click()
-        cy.contains('Lisää tuotteelle kierrätys ohje')
+        cy.contains('Lisää tuotteelle kierrätysohje')
       })
 
       describe('and the product information is opened', () => {
