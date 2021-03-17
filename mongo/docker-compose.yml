@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  mongo:
+    image: mongo:bionic
+    restart: unless-stopped
+    volumes:
+      - ./data:/data/db
+    ports:
+      - 27017:27017
+    container_name: mongo
+
+  mongo-express:
+    image: mongo-express:latest
+    restart: unless-stopped
+    depends_on: 
+      - mongo
+    ports:
+      - 8081:8081
+    container_name: mongo-express

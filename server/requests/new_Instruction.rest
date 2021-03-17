@@ -1,0 +1,6 @@
+post  http://localhost:3001/api/products/60338ad195f657413a2b41b0/instructions
+Content-Type: application/json
+
+{
+    "information":"hohoh"
+}

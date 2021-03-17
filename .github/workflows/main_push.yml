@@ -1,4 +1,4 @@
-name: Pushing to main
+name: Push to main
 
 on:
   push:

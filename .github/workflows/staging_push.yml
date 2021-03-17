@@ -1,0 +1,46 @@
+name: Push to staging
+
+on:
+  push:
+    branches:
+      - staging
+    paths-ignore:
+      - 'documents/**'
+      - 'README.md'
+      
+jobs:
+  test_and_push_to_docker_hub:
+    runs-on: ubuntu-18.04
+    services:
+      mongo:
+        image: healthcheck/mongo
+        ports:
+          - 27017:27017
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: npm install client
+        run: | 
+          cd client
+          npm install
+      - name: npm install server
+        run: |
+          cd server
+          npm install
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: e2e_tests
+          command: npm run test:e2e:prod
+          start: npm run start:test
+          wait-on: http://localhost:3001
+      - name: Publish to DockerHub
+        uses: docker/build-push-action@v1.1.0
+        with:
+          repository: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }} 
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tags: staging
+          build_args: PUBLIC_URL=/kierratysavustin

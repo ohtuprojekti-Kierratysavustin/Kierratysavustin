@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  kierratysavustin_db:
+    image: mongo:bionic
+    volumes:
+      - ./server/data:/data/db
+    restart: unless-stopped
+    container_name: kierratysavustin_db
+
+  kierratysavustin_client:
+    image: kierratysavustin-local
+    restart: unless-stopped
+    depends_on:
+      - kierratysavustin_db
+    container_name: kierratysavustin_client
+
+  proxy:
+    depends_on:
+      - kierratysavustin_client
+      - kierratysavustin_db
+    image: jwilder/nginx-proxy
+    volumes: 
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 3001:80
+    container_name: nginx
