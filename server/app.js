@@ -11,10 +11,13 @@ app.use(express.json());
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter)
 
-if (process.env.NODE_ENV !== 'development') {
-  app.use(express.static('build'))
-  app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
+
+if (process.env.NODE_ENV === 'test') {
+  const testRouter = require('./controllers/tests')
+  app.use('/api/tests', testRouter)
 }
+app.use(express.static('build'))
+app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
 
 console.log('>>>>> connecting to <<<<<', config.MONGODB_URI)
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true } )
