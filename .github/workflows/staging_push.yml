@@ -5,10 +5,9 @@ on:
     branches:
       - staging
     paths-ignore:
-      - 'documentation/**'
+      - 'documents/**'
       - 'README.md'
-  workflow_dispatch:
-    
+      
 jobs:
   test_and_push_to_docker_hub:
     runs-on: ubuntu-18.04
