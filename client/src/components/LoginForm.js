@@ -1,17 +1,32 @@
-import React from 'react'
-// import loginService from '../services/login'
+import React , { useState } from 'react'
+import loginService from '../services/login'
+import productService from '../services/products'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
-
+import Notification from './Notification'
 const LoginForm = () => {
-
+  const [notificationMessage, setNotifcationMessage] = useState(null)
+  const [conditionValue, setCodnitionValue] = useState('error')
+  const notify = (message, condition) => {
+    setNotifcationMessage(message),
+    setCodnitionValue(condition)
+    setTimeout(() => {
+      setNotifcationMessage(null)
+    }, 5000)
+  }
 
   const initialValues = {
     username: '',
     password: ''
   }
-  const onSubmit = (values) => {
-    console.log(values)
-    // loginService (tekee jotain)
+  const onSubmit = async(values) => {
+    event.preventDefault()
+    try {
+      const user = await loginService.loginUser(values)
+      productService.setToken(user.data.token)
+      notify('Kirjautuminen onnistui', 'succes')
+    } catch (e) {
+      notify('Väärä nimi tai salasana', 'error')
+    }
   }
 
   return (
@@ -64,6 +79,7 @@ const LoginForm = () => {
               Log In
               </button>
             </Form>
+            <Notification message={notificationMessage} condition={conditionValue} />
           </div>
         )
       }}

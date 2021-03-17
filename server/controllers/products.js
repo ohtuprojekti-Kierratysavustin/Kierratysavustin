@@ -1,15 +1,39 @@
 const productRouter = require("express").Router()
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
+const jwt = require('jsonwebtoken')
+
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        
+        return authorization.substring(7)
+    }
+    return null
+}
 
 productRouter.post('/', async(req,res) => {
+    require('dotenv').config(); 
     
     const body = req.body
-    console.log("body",body)
-   
-        const product = new Product({
-        name: body.productName,
-        description: body.description
+
+    const token = getTokenFrom(req)
+
+    try{
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+        if (!token || !decodedToken) {
+          return res.status(401).json({ error: 'token missing or invalid' })
+        }
+    }catch{
+        return res.status(401).json({ error: 'not logged in' })
+    }
+    
+    
+
+    const product = new Product({
+    name: body.productName,
+    description: body.description
     })
     const result = await product.save()
 
@@ -18,6 +42,18 @@ productRouter.post('/', async(req,res) => {
 })
 
 productRouter.post('/:id/instructions', async(req,res) => {
+    require('dotenv').config(); 
+    const token = getTokenFrom(req)
+    try{
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+        if (!token || !decodedToken) {
+            console.log('virhe tokenissa')
+            return res.status(401).json({ error: 'token missing or invalid' })
+          }
+    }catch{
+        console.log('f')
+        return res.status(401).json({ error: 'not logged in' })
+    }
     const product = await Product.findById(req.params.id)
     if(!product){
         return res.status(401).json({ error: "No product" });

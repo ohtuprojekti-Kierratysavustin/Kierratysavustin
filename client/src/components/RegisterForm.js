@@ -84,7 +84,7 @@ const RegisterForm = () => {
                 className={!(dirty && isValid) ? 'disabled-btn' : ''}
                 disabled={!(dirty && isValid)}
               >
-              Sign In
+              Luo käyttäja
               </button>
             </Form>
 
