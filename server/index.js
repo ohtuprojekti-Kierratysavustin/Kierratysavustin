@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json());
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter)
-
+app.use('/api/login', loginRouter)
 if (process.env.NODE_ENV !== 'development') {
   app.use(express.static('build'))
   app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
