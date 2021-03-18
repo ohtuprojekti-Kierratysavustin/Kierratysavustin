@@ -11,7 +11,7 @@ const Product = ({ product }) => {
       {product.instructions.map(info =>
         <li id ="productInstruction" key={info.id}>{info.information}</li>
       )}
-      <h2>Lisää tuotteelle kierrätys ohje</h2>
+      <h2>Lisää tuotteelle kierrätysohje</h2>
 
       <InstructionForm id = {product.id}/>
     </div>

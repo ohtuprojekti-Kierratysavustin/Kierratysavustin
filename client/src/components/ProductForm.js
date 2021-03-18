@@ -3,7 +3,6 @@ import productService from '../services/products'
 import Notification from './Notification'
 const ProductForm = ({ products, setProducts }) => {
   const [productName, setProductName] = useState('')
-  const [description, setDescription] = useState('')
   const [notificationMessage, setNotifcationMessage] = useState(null)
   const [conditionValue, setCodnitionValue] = useState('error')
   const notify = (message, condition) => {
@@ -16,7 +15,7 @@ const ProductForm = ({ products, setProducts }) => {
   //const [products, setProducts] = useState([])
   const handleSubmit = (event) => {
     event.preventDefault()
-    const product = { productName, description }
+    const product = { productName }
     productService.create(product)
       .catch(e => {
         console.log(e)
@@ -28,7 +27,6 @@ const ProductForm = ({ products, setProducts }) => {
     //setProducts(p => p.concat(products))
     console.log(setProducts)
     setProductName('')
-    setDescription('')
   }
   return (
     <div>
@@ -40,15 +38,6 @@ const ProductForm = ({ products, setProducts }) => {
             type='text'
             value={productName}
             onChange={({ target }) => setProductName(target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Tuotteen selitys
-          <input id="descriptionInput"
-            type='text'
-            value={description}
-            onChange={({ target }) => setDescription(target.value)}
           />
         </label>
         <br />

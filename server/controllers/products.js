@@ -32,8 +32,7 @@ productRouter.post('/', async(req,res) => {
     
 
     const product = new Product({
-    name: body.productName,
-    description: body.description
+    name: body.productName
     })
     const result = await product.save()
 
@@ -58,7 +57,6 @@ productRouter.post('/:id/instructions', async(req,res) => {
     if(!product){
         return res.status(401).json({ error: "No product" });
     }
-    
     const instruction = new Instruction(req.body)
     instruction.product = product.id
     const result = await instruction.save()

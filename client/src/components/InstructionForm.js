@@ -29,7 +29,7 @@ const InstructionForm = ({ id }) => {
       <Notification message={notificationMessage} condition={conditionValue} />
       <form onSubmit={handleSubmit}>
         <label>
-          Kierrätys ohje:
+            Kierrätysohje:
           <input id="instructionInput"
             type='text'
             value={information}
