@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import RegisterForm from '../components/RegisterForm'
 test('<RegisterForm /> register form makes new user onSubmit', () => {
-  const registerUser = jest.fn()
+  //const registerUser = jest.fn()
   const component = render(
     <RegisterForm />
   )

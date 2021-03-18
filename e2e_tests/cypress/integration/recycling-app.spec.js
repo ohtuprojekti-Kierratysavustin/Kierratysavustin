@@ -57,8 +57,6 @@ describe('Recycling app', () => {
         it('recycling information can be added to it', () => {
           cy.get('#instructionInput').type('Tuotteen voi uudelleen käyttää roskapussina')
           cy.get('#addInstruction').click()
-          cy.reload() // Reloadin voi poistaa kun otetaan taulukko käyttöön tietojen tallentamiseen
-
           cy.contains('Tuotteen voi uudelleen käyttää roskapussina')
         })
       })

@@ -1,13 +1,21 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
-const InstructionForm = ({ id }) => {
+import { useStore } from '../App'
+
+const InstructionForm = ({ product }) => {
   const [information, setInformation] = useState('')
+  const updateProduct = useStore().updateProduct
   const handleSubmit = (event) => {
     event.preventDefault()
     const instruction = { information }
-    productService.createInstruction(id,instruction)
-
+    productService.createInstruction(product.id, instruction)
+      .then(i => {
+        product.instructions.push(i)
+        updateProduct(product)
+      })
+    setInformation('')
   }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
