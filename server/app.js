@@ -20,7 +20,6 @@ if (process.env.NODE_ENV === 'test') {
 }
 app.use(express.static('build'))
 app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")))
-
 console.log('>>>>> connecting to <<<<<', config.MONGODB_URI)
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true } )
   .then(() => {

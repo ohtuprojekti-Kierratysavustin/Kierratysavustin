@@ -2,6 +2,7 @@ const productRouter = require("express").Router()
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 const jwt = require('jsonwebtoken')
+const config = require('../utils/config')
 
 const getTokenFrom = request => {
     const authorization = request.get('authorization')
@@ -14,14 +15,13 @@ const getTokenFrom = request => {
 }
 
 productRouter.post('/', async(req,res) => {
-    require('dotenv').config(); 
     
     const body = req.body
 
     const token = getTokenFrom(req)
 
     try{
-        const decodedToken = jwt.verify(token, process.env.SECRET)
+        const decodedToken = jwt.verify(token, config.SECRET)
         if (!token || !decodedToken) {
           return res.status(401).json({ error: 'token missing or invalid' })
         }
@@ -41,16 +41,14 @@ productRouter.post('/', async(req,res) => {
 })
 
 productRouter.post('/:id/instructions', async(req,res) => {
-    require('dotenv').config(); 
     const token = getTokenFrom(req)
     try{
-        const decodedToken = jwt.verify(token, process.env.SECRET)
+        const decodedToken = jwt.verify(token, config.SECRET)
         if (!token || !decodedToken) {
             console.log('virhe tokenissa')
             return res.status(401).json({ error: 'token missing or invalid' })
           }
     }catch{
-        console.log('f')
         return res.status(401).json({ error: 'not logged in' })
     }
     const product = await Product.findById(req.params.id)
