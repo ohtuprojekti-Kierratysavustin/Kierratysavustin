@@ -53,8 +53,8 @@ const App = () => {
           <Link style={padding} to="/">etusivu</Link>
           <Link id='productForm' style={padding} to="/new">lisää tuote</Link>
           <Link id='productList' style={padding} to="/products">tuotteet</Link>
-          <Link style={padding} to="/register">rekisteröidy</Link>
-          <Link style={padding} to="/login">kirjaudu</Link>
+          <Link id='registerButton'style={padding} to="/register">rekisteröidy</Link>
+          <Link id='loginButton'style={padding} to="/login">kirjaudu</Link>
         </div>
 
         <h1>Kotitalouden kierrätysavustin</h1>
@@ -94,7 +94,7 @@ const App = () => {
           window.localStorage.clear()
           setUser(null)
           productService.removeToken()
-        }} to="/">logout</Link>
+        }} to="/">kirjaudu ulos</Link>
       </div>
       <h1>Kotitalouden kierrätysavustin</h1>
       <Switch>

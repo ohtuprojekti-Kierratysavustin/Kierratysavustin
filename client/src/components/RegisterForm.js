@@ -80,6 +80,7 @@ const RegisterForm = () => {
               </div>
 
               <button
+                id='registerSubmit'
                 type="submit"
                 className={!(dirty && isValid) ? 'disabled-btn' : ''}
                 disabled={!(dirty && isValid)}
