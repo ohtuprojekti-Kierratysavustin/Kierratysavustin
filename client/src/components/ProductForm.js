@@ -20,11 +20,11 @@ const ProductForm = () => {
     event.preventDefault()
     const product = { productName }
     productService.create(product)
-      .catch(e => {
+      .then(returnedProduct => {
+        setProducts(products.concat(returnedProduct))
+      }).catch(e => {
         console.log(e)
         notify('Kirjaudu sisään lisätäksesi tuotteita', 'error')
-      }).then(returnedProduct => {
-        setProducts(products.concat(returnedProduct))
       })
 
     //setProducts(p => p.concat(products))

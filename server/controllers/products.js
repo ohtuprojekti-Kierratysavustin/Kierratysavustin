@@ -1,61 +1,51 @@
 const productRouter = require("express").Router()
-const Product = require('../models/product')
-const Instruction = require('../models/instruction')
-const jwt = require('jsonwebtoken')
+const Product = require("../models/product")
+const Instruction = require("../models/instruction")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
+const getTokenFrom = (request) => {
+  const authorization = request.get("authorization")
 
-const getTokenFrom = request => {
-    const authorization = request.get('authorization')
-    
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        
-        return authorization.substring(7)
-    }
-    return null
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    return authorization.substring(7)
+  }
+  return null
 }
 
-productRouter.post('/', async(req,res) => {
-    require('dotenv').config(); 
-    
-    const body = req.body
+productRouter.post("/", async (req, res) => {
+  const body = req.body
 
-    const token = getTokenFrom(req)
+  const token = getTokenFrom(req)
 
-    try{
-        const decodedToken = jwt.verify(token, process.env.SECRET)
-        if (!token || !decodedToken) {
-          return res.status(401).json({ error: 'token missing or invalid' })
-        }
-    }catch{
-        return res.status(401).json({ error: 'not logged in' })
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    if (!token || !decodedToken) {
+      res.status(401).json({ error: "token missing or invalid" })
     }
-    
-    
 
     const product = new Product({
-    name: body.productName
+      name: body.productName,
     })
     const result = await product.save()
 
     res.status(201).json(result)
-
+  } catch {
+    res.status(401).json({ error: "not logged in" })
+  }
 })
 
-productRouter.post('/:id/instructions', async(req,res) => {
-    require('dotenv').config(); 
-    const token = getTokenFrom(req)
-    try{
-        const decodedToken = jwt.verify(token, process.env.SECRET)
-        if (!token || !decodedToken) {
-            console.log('virhe tokenissa')
-            return res.status(401).json({ error: 'token missing or invalid' })
-          }
-    }catch{
-        console.log('f')
-        return res.status(401).json({ error: 'not logged in' })
+productRouter.post("/:id/instructions", async (req, res) => {
+  const token = getTokenFrom(req)
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: "token missing or invalid" })
     }
+
     const product = await Product.findById(req.params.id)
-    if(!product){
-        return res.status(401).json({ error: "No product" });
+    if (!product) {
+      res.status(401).json({ error: "No product" })
     }
     const instruction = new Instruction(req.body)
     instruction.product = product.id
@@ -66,20 +56,24 @@ productRouter.post('/:id/instructions', async(req,res) => {
     await product.save()
 
     res.status(201).json(result)
+  } catch {
+    res.status(401).json({ error: "not logged in" })
+  }
 })
 
-
-productRouter.get('/',async (req, res) => {
-    const products = await Product.find({}).populate('instructions',{ information:1 })
-    res.json(products.map(product => product.toJSON()))
+productRouter.get("/", async (req, res) => {
+  const products = await Product.find({}).populate("instructions", {
+    information: 1,
+  })
+  res.json(products.map((product) => product.toJSON()))
 })
 
-productRouter.get('/:id', (req, res) => {
-    console.log(req)
-    Product.findById(req.params.id).then(product => {
-        console.log(product)
-        res.json(product)
-    })
+productRouter.get("/:id", (req, res) => {
+  console.log(req)
+  Product.findById(req.params.id).then((product) => {
+    console.log(product)
+    res.json(product)
+  })
 })
 
-module.exports = productRouter;
+module.exports = productRouter

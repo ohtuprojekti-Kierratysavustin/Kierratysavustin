@@ -3,9 +3,12 @@ import loginService from '../services/login'
 import productService from '../services/products'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
 import Notification from './Notification'
+import { useStore } from '../App'
 const LoginForm = () => {
   const [notificationMessage, setNotifcationMessage] = useState(null)
   const [conditionValue, setCodnitionValue] = useState('error')
+  const { setUser } = useStore()
+  //const { user, setUser } = useStore()
   const notify = (message, condition) => {
     setNotifcationMessage(message),
     setCodnitionValue(condition)
@@ -22,13 +25,17 @@ const LoginForm = () => {
     event.preventDefault()
     try {
       const user = await loginService.loginUser(values)
-      productService.setToken(user.data.token)
+      setUser(user)
+      productService.setToken(user.token)
+      console.log(user.token)
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(user)
+      )
       notify('Kirjautuminen onnistui', 'succes')
     } catch (e) {
       notify('Väärä nimi tai salasana', 'error')
     }
   }
-
   return (
     <Formik
       initialValues={initialValues}
