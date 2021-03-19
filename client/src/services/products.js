@@ -8,7 +8,7 @@ const create = async newObject => {
 }
 const createInstruction = async (id, newObject) => {
   const response = axios.post(`${baseUrl}/${id}/instructions`, newObject)
-  return response.data
+  return response.then(response => response.data)
 }
 const getAll = () => {
   const request = axios.get(baseUrl)

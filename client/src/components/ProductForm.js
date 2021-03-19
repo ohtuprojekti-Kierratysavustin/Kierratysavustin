@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
+import { useStore } from '../App'
 
-const ProductForm = ({ products, setProducts }) => {
+const ProductForm = () => {
+  const { products, setProducts } = useStore()
   const [productName, setProductName] = useState('')
   const handleSubmit = (event) => {
     event.preventDefault()
