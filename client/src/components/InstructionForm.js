@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
 import { useStore } from '../App'
-
 const InstructionForm = ({ product }) => {
   const [information, setInformation] = useState('')
   const updateProduct = useStore().updateProduct
