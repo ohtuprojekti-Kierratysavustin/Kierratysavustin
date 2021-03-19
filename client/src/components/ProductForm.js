@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
 import Notification from './Notification'
-const ProductForm = ({ products, setProducts }) => {
+import { useStore } from '../App'
+
+const ProductForm = () => {
+  const { products, setProducts } = useStore()
   const [productName, setProductName] = useState('')
   const [notificationMessage, setNotifcationMessage] = useState(null)
   const [conditionValue, setCodnitionValue] = useState('error')

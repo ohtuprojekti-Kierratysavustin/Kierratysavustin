@@ -1,32 +1,23 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
-import Notification from './Notification'
-const InstructionForm = ({ id }) => {
+import { useStore } from '../App'
+
+const InstructionForm = ({ product }) => {
   const [information, setInformation] = useState('')
-  const [notificationMessage, setNotifcationMessage] = useState(null)
-  const [conditionValue, setCodnitionValue] = useState('error')
+  const updateProduct = useStore().updateProduct
   const handleSubmit = (event) => {
     event.preventDefault()
     const instruction = { information }
-    const notify = (message, condition) => {
-      setNotifcationMessage(message),
-      setCodnitionValue(condition)
-      setTimeout(() => {
-        setNotifcationMessage(null)
-      }, 5000)
-    }
-    try {
-      productService.createInstruction(id, instruction)
-    } catch (e) {
-      console.log(e)
-      notify('Kirjaudu sisään lisätäksesi ohjeen', 'error')
-    }
-
-
+    productService.createInstruction(product.id, instruction)
+      .then(i => {
+        product.instructions.push(i)
+        updateProduct(product)
+      })
+    setInformation('')
   }
+
   return (
     <div>
-      <Notification message={notificationMessage} condition={conditionValue} />
       <form onSubmit={handleSubmit}>
         <label>
             Kierrätysohje:

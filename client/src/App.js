@@ -1,24 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
   Switch, Route, Link, useRouteMatch
 } from 'react-router-dom'
 import productService from './services/products'
-
+import create from 'zustand'
 import ProductForm from './components/ProductForm'
 import Product from './components/Product'
 import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
 import SearchForm from './components/SearchForm'
 import LoginForm from './components/LoginForm'
-//import { set } from 'mongoose'
+export const useStore = create(set => ({
+  products: [],
+  filteredProducts: [],
+  setProducts: (param) => set(() => ({ products: param })),
+  setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
+  updateProduct: (param) => set(state => ({
+    ...state,
+    products: state.products.map(p => p.id !== param.id ? p : param)
+  }))
+}))
 
 const App = () => {
-  //const { products } = props
-  const [products, setProducts] = useState([])
-  const [foundProducts, setFoundProducts] = useState([])
+  const { products, setProducts, filteredProducts } = useStore()
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
   }, [])
+
   const match = useRouteMatch('/products/:id')
   const product = match
     ? products.find(p => p.id === match.params.id)
@@ -27,7 +35,6 @@ const App = () => {
   const padding = {
     padding: 5
   }
-
   return (
     <div>
       <div>
@@ -39,13 +46,12 @@ const App = () => {
       </div>
 
       <h1>Kotitalouden kierrätysavustin</h1>
-
       <Switch>
         <Route path="/products/:id">
           <Product product={product} />
         </Route>
         <Route path="/new">
-          <ProductForm products = {products} setProducts={setProducts}/>
+          <ProductForm />
         </Route>
         <Route path="/register">
           <RegisterForm />
@@ -54,13 +60,13 @@ const App = () => {
           <LoginForm />
         </Route>
         <Route path="/products">
-          <ProductList products={products} />
+          <ProductList products={products}/>
         </Route>
         <Route path="/searchResults">
-          <ProductList products={foundProducts} />
+          <ProductList products={filteredProducts} />
         </Route>
         <Route path="/">
-          <SearchForm products={products} setFoundProducts={setFoundProducts} />
+          <SearchForm />
         </Route>
       </Switch>
     </div>

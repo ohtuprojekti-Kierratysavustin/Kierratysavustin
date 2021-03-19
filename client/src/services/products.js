@@ -17,11 +17,8 @@ const create = async newObject => {
   return response.then(response => response.data)
 }
 const createInstruction = async (id, newObject) => {
-  const config = {
-    headers: { Authorization: token },
-  }
-  const response = axios.post(`${baseUrl}/${id}/instructions`, newObject, config)
-  return response.data
+  const response = axios.post(`${baseUrl}/${id}/instructions`, newObject)
+  return response.then(response => response.data)
 }
 const getAll = () => {
   const request = axios.get(baseUrl)
