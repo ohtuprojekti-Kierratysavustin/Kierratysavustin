@@ -54,7 +54,7 @@ test('Search form renders and returns correct results', () => {
           <ProductList products={[]} />
         </Route>
         <Route path="/">
-          <SearchForm products={productsData} setFoundProducts={changeFoundProducts} />
+          <SearchForm products={productsData} setFilteredProducts={changeFoundProducts} />
         </Route>
       </Switch>
     </Router>

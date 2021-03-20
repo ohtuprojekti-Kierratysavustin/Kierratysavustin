@@ -22,7 +22,7 @@ export const useStore = create(set => ({
 }))
 
 const App = () => {
-  const { products, setProducts, filteredProducts } = useStore()
+  const { products, setProducts, filteredProducts, setFilteredProducts } = useStore()
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
   }, [])
@@ -62,7 +62,7 @@ const App = () => {
           <ProductList products={filteredProducts} />
         </Route>
         <Route path="/">
-          <SearchForm />
+          <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
         </Route>
       </Switch>
     </div>
