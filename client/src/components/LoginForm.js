@@ -4,11 +4,11 @@ import productService from '../services/products'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
 import Notification from './Notification'
 import { useStore } from '../App'
+
 const LoginForm = () => {
   const [notificationMessage, setNotifcationMessage] = useState(null)
   const [conditionValue, setCodnitionValue] = useState('error')
   const { setUser } = useStore()
-  //const { user, setUser } = useStore()
   const notify = (message, condition) => {
     setNotifcationMessage(message),
     setCodnitionValue(condition)
@@ -22,12 +22,10 @@ const LoginForm = () => {
     password: ''
   }
   const onSubmit = async(values) => {
-    event.preventDefault()
     try {
       const user = await loginService.loginUser(values)
       setUser(user)
       productService.setToken(user.token)
-      console.log(user.token)
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
@@ -55,8 +53,6 @@ const LoginForm = () => {
                   id="usernameInput"
                   className={errors.username && touched.username ?
                     'input-error' : null}
-
-
                 />
                 <ErrorMessage name="username" component="span" className="error" />
               </div>
@@ -69,7 +65,6 @@ const LoginForm = () => {
                   id="passwordInput"
                   className={errors.password && touched.password ?
                     'input-error' : null}
-
                 />
                 <ErrorMessage
                   name="password"
@@ -77,14 +72,13 @@ const LoginForm = () => {
                   className="error"
                 />
               </div>
-
               <button
                 id='loginSubmit'
                 type="submit"
                 className={!(dirty && isValid) ? 'disabled-btn' : ''}
                 disabled={!(dirty && isValid)}
               >
-              Log In
+              Kirjaudu
               </button>
             </Form>
             <Notification message={notificationMessage} condition={conditionValue} />

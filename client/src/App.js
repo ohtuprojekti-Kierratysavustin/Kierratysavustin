@@ -10,6 +10,7 @@ import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
 import SearchForm from './components/SearchForm'
 import LoginForm from './components/LoginForm'
+
 export const useStore = create(set => ({
   products: [],
   filteredProducts: [],
@@ -25,6 +26,7 @@ export const useStore = create(set => ({
 
 const App = () => {
   const { products, setProducts, filteredProducts,user,setUser } = useStore()
+
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
   }, [])
@@ -35,9 +37,8 @@ const App = () => {
       const userlogin = JSON.parse(loggedUserJSON)
       setUser(userlogin)
       productService.setToken(userlogin.token)}
-  },
-  [])
-  console.log('userriii', user)
+  }, [])
+
   const match = useRouteMatch('/products/:id')
   const product = match
     ? products.find(p => p.id === match.params.id)

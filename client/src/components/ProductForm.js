@@ -8,6 +8,7 @@ const ProductForm = () => {
   const [productName, setProductName] = useState('')
   const [notificationMessage, setNotifcationMessage] = useState(null)
   const [conditionValue, setCodnitionValue] = useState('error')
+
   const notify = (message, condition) => {
     setNotifcationMessage(message),
     setCodnitionValue(condition)
@@ -15,7 +16,7 @@ const ProductForm = () => {
       setNotifcationMessage(null)
     }, 5000)
   }
-  //const [products, setProducts] = useState([])
+
   const handleSubmit = (event) => {
     event.preventDefault()
     const product = { productName }
@@ -26,11 +27,9 @@ const ProductForm = () => {
         console.log(e)
         notify('Kirjaudu sisään lisätäksesi tuotteita', 'error')
       })
-
-    //setProducts(p => p.concat(products))
-    console.log(setProducts)
     setProductName('')
   }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>

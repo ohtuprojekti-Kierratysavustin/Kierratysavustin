@@ -7,6 +7,7 @@ describe("Recycling app", () => {
   it("productlist page can be opened", () => {
     cy.contains("Kotitalouden kierrätysavustin")
   })
+
   it("user can register to the application", () => {
     cy.get("#registerButton").click()
     cy.get("#usernameInput").type("Kayttaja")
@@ -14,6 +15,7 @@ describe("Recycling app", () => {
     cy.get("#registerSubmit").click()
     cy.contains("Rekisteröityminen onnistui")
   })
+
   describe("when user has registered", () => {
     beforeEach(() => {
       cy.get("#registerButton").click()
@@ -21,13 +23,16 @@ describe("Recycling app", () => {
       cy.get("#passwordInput").type("kayttaja")
       cy.get("#registerSubmit").click()
     })
+
     it("user can log in to the application", () => {
       cy.get("#loginButton").click()
       cy.get("#usernameInput").type("Kayttaja")
       cy.get("#passwordInput").type("kayttaja")
       cy.get("#loginSubmit").click()
+      cy.wait(10)
       cy.contains("kirjaudu ulos")
     })
+
     describe("and logged in", () => {
       beforeEach(() => {
         cy.get("#loginButton").click()
@@ -35,6 +40,7 @@ describe("Recycling app", () => {
         cy.get("#passwordInput").type("kayttaja")
         cy.get("#loginSubmit").click()
       })
+
       it("Product can be added to application", () => {
         cy.get("#productForm").click()
         cy.get("#nameInput").type("Muovipussi")

@@ -31,7 +31,6 @@ const RegisterForm = () => {
     } catch (error) {
       notify('Käyttäjätunnus on jo käytössä', 'error')
     }
-
   }
 
 
@@ -45,7 +44,6 @@ const RegisterForm = () => {
         const { errors, touched, isValid, dirty } = formik
         return (
           <div className="container">
-
             <h1>Rekisteröidy Kierratysavustin palveluun</h1>
             <Form  >
               <div className="form-row">
@@ -56,8 +54,6 @@ const RegisterForm = () => {
                   id="usernameInput"
                   className={errors.username && touched.username ?
                     'input-error' : null}
-
-
                 />
                 <ErrorMessage name="username" component="span" className="error" />
               </div>
@@ -70,7 +66,6 @@ const RegisterForm = () => {
                   id="passwordInput"
                   className={errors.password && touched.password ?
                     'input-error' : null}
-
                 />
                 <ErrorMessage
                   name="password"
@@ -78,7 +73,6 @@ const RegisterForm = () => {
                   className="error"
                 />
               </div>
-
               <button
                 id='registerSubmit'
                 type="submit"
@@ -88,9 +82,7 @@ const RegisterForm = () => {
               Luo käyttäjä
               </button>
             </Form>
-
             <Notification message={notificationMessage} condition={conditionValue} />
-
           </div>
         )
       }}
