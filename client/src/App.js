@@ -52,7 +52,6 @@ const App = () => {
       <div>
         <div>
           <Link style={padding} to="/">etusivu</Link>
-          <Link id='productForm' style={padding} to="/new">lisää tuote</Link>
           <Link id='productList' style={padding} to="/products">tuotteet</Link>
           <Link id='registerButton'style={padding} to="/register">rekisteröidy</Link>
           <Link id='loginButton'style={padding} to="/login">kirjaudu</Link>
@@ -62,9 +61,6 @@ const App = () => {
         <Switch>
           <Route path="/products/:id">
             <Product product={product} />
-          </Route>
-          <Route path="/new">
-            <ProductForm />
           </Route>
           <Route path="/register">
             <RegisterForm />

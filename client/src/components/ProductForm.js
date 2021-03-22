@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import productService from '../services/products'
 import Notification from './Notification'
 import { useStore } from '../App'
+import { useHistory } from 'react-router-dom'
 
 const ProductForm = () => {
   const { products, setProducts } = useStore()
   const [productName, setProductName] = useState('')
   const [notificationMessage, setNotifcationMessage] = useState(null)
   const [conditionValue, setCodnitionValue] = useState('error')
+  const history = useHistory()
 
   const notify = (message, condition) => {
     setNotifcationMessage(message),
@@ -23,6 +25,11 @@ const ProductForm = () => {
     productService.create(product)
       .then(returnedProduct => {
         setProducts(products.concat(returnedProduct))
+        // Ilmoitus:
+        //notify('Tuotteen lisäys onnistui', 'succes')
+        //
+        // tai uudelleenohjaus
+        history.push('/products')
       }).catch(e => {
         console.log(e)
         notify('Kirjaudu sisään lisätäksesi tuotteita', 'error')
