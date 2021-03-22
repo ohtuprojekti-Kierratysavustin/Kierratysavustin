@@ -1,8 +1,9 @@
 import React from 'react'
 import './notification.css'
+import { useStore } from '../App'
 
-const Notification = ({ message, condition }) => {
-
+const Notification = () => {
+  const { message, condition } = useStore().notification
   if (message === null) {
     return null
   }

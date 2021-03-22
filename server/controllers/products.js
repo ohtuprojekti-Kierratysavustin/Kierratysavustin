@@ -4,46 +4,6 @@ const Instruction = require("../models/instruction")
 const jwt = require("jsonwebtoken")
 const config = require("../utils/config")
 
-const getTokenFrom = (req) => {
-  const authorization = req.get("authorization")
-  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
-productRouter.post("/", async (req, res) => {
-  const body = req.body
-  const token = getTokenFrom(req)
-  const decodedToken = jwt.verify(token, config.SECRET)
-  if (!token || !decodedToken) {
-    return res.status(401).json({ error: "token missing or invalid" })
-  }
-  const product = new Product({
-    name: body.productName,
-  })
-  const result = await product.save()
-  res.status(201).json(result)
-})
-
-productRouter.post("/:id/instructions", async (req, res) => {
-  const token = getTokenFrom(req)
-  const decodedToken = jwt.verify(token, config.SECRET)
-  if (!token || !decodedToken) {
-    return res.status(401).json({ error: "token missing or invalid" })
-  }
-  const product = await Product.findById(req.params.id)
-  if (!product) {
-    res.status(401).json({ error: "No product" })
-  }
-  const instruction = new Instruction(req.body)
-  instruction.product = product.id
-  const result = await instruction.save()
-  product.instructions = product.instructions.concat(result)
-  await product.save()
-  res.status(201).json(result)
-})
-
 productRouter.get("/", async (req, res) => {
   const products = await Product.find({}).populate("instructions", {
     information: 1,
@@ -57,6 +17,56 @@ productRouter.get("/:id", (req, res) => {
     console.log(product)
     res.json(product)
   })
+})
+
+const getTokenFrom = (req) => {
+  const authorization = req.get("authorization")
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    return authorization.substring(7)
+  }
+  return null
+}
+
+productRouter.post("/", async (req, res) => {
+  const body = req.body
+
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: "token missing" })
+  }
+  
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: "invalid token" })
+  }
+  const product = new Product({
+    name: body.productName,
+  })
+  const result = await product.save()
+  res.status(201).json(result)
+})
+
+productRouter.post("/:id/instructions", async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: "token missing" })
+  }
+  
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: "invalid token" })
+  }
+
+  const product = await Product.findById(req.params.id)
+  if (!product) {
+    return res.status(401).json({ error: "No product" })
+  }
+  const instruction = new Instruction(req.body)
+  instruction.product = product.id
+  const result = await instruction.save()
+  product.instructions = product.instructions.concat(result)
+  await product.save()
+  res.status(201).json(result)
 })
 
 module.exports = productRouter

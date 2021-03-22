@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 //import { useStore } from '../App'
 const SearchForm = ({ products, setFilteredProducts }) => {
+  if (!products) {
+    return null
+  }
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
   //const { products,setFilteredProducts } = useStore()

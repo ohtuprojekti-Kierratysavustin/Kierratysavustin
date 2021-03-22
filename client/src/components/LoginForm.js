@@ -1,4 +1,4 @@
-import React , { useState } from 'react'
+import React from 'react'
 import loginService from '../services/login'
 import productService from '../services/products'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
@@ -6,16 +6,7 @@ import Notification from './Notification'
 import { useStore } from '../App'
 
 const LoginForm = () => {
-  const [notificationMessage, setNotifcationMessage] = useState(null)
-  const [conditionValue, setCodnitionValue] = useState('error')
-  const { setUser } = useStore()
-  const notify = (message, condition) => {
-    setNotifcationMessage(message),
-    setCodnitionValue(condition)
-    setTimeout(() => {
-      setNotifcationMessage(null)
-    }, 5000)
-  }
+  const { setUser, setNotification } = useStore()
 
   const initialValues = {
     username: '',
@@ -29,9 +20,9 @@ const LoginForm = () => {
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
-      notify('Kirjautuminen onnistui', 'succes')
+      setNotification('Kirjautuminen onnistui', 'succes')
     } catch (e) {
-      notify('Väärä nimi tai salasana', 'error')
+      setNotification('Väärä nimi tai salasana', 'error')
     }
   }
   return (
@@ -81,7 +72,7 @@ const LoginForm = () => {
               Kirjaudu
               </button>
             </Form>
-            <Notification message={notificationMessage} condition={conditionValue} />
+            <Notification />
           </div>
         )
       }}

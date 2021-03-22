@@ -5,17 +5,7 @@ import { useStore } from '../App'
 
 const InstructionForm = ({ product }) => {
   const [information, setInformation] = useState('')
-  const updateProduct = useStore().updateProduct
-  const [notificationMessage, setNotifcationMessage] = useState(null)
-  const [conditionValue, setCodnitionValue] = useState('error')
-
-  const notify = (message, condition) => {
-    setNotifcationMessage(message),
-    setCodnitionValue(condition)
-    setTimeout(() => {
-      setNotifcationMessage(null)
-    }, 5000)
-  }
+  const { updateProduct, setNotification } = useStore()
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -26,7 +16,7 @@ const InstructionForm = ({ product }) => {
         updateProduct(product)
       }).catch(e => {
         console.log(e)
-        notify('Kirjaudu sisään lisätäksesi kierrätysohje', 'error')
+        setNotification('Kirjaudu sisään lisätäksesi kierrätysohje', 'error')
       })
     setInformation('')
   }
@@ -34,7 +24,7 @@ const InstructionForm = ({ product }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <Notification message={notificationMessage} condition={conditionValue} />
+        <Notification />
         <label>
             Kierrätysohje:
           <input id="instructionInput"
