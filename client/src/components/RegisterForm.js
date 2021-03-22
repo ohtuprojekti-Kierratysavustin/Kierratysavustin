@@ -1,19 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import registerService from '../services/register'
 import Notification from './Notification'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
 import * as yup from 'yup'
+import { useStore } from '../App'
 
 const RegisterForm = () => {
-  const [notificationMessage, setNotifcationMessage] = useState(null)
-  const [conditionValue, setCodnitionValue] = useState('error')
-  const notify = (message, condition) => {
-    setNotifcationMessage(message),
-    setCodnitionValue(condition)
-    setTimeout(() => {
-      setNotifcationMessage(null)
-    }, 5000)
-  }
+  const { setNotification, clearNotification } = useStore()
+
+  useEffect(() => {
+    clearNotification()
+  }, [])
+
   const SignupSchema = yup.object().shape({
     username: yup.string().min(2, 'Nimen tulee olla vähintään 2 kirjainta pitkä').required('Käyttäjänimi vaaditaan'),
     password: yup.string().min(6, 'Salasanan tulee olla vähintään 6 kirjainta pitkä').required('Salasana vaaditaa')
@@ -27,9 +25,9 @@ const RegisterForm = () => {
   const onSubmit =  async (values) => {
     try {
       await registerService.createUser(values)
-      notify('Rekisteröityminen onnistui', 'succes')
+      setNotification('Rekisteröityminen onnistui', 'success')
     } catch (error) {
-      notify('Käyttäjätunnus on jo käytössä', 'error')
+      setNotification('Käyttäjätunnus on jo käytössä', 'error')
     }
   }
 
@@ -82,7 +80,7 @@ const RegisterForm = () => {
               Luo käyttäjä
               </button>
             </Form>
-            <Notification message={notificationMessage} condition={conditionValue} />
+            <Notification />
           </div>
         )
       }}

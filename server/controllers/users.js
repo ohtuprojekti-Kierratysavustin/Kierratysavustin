@@ -12,7 +12,6 @@ userRouter.post("/", async (req, res) => {
       passwordHash,
     })
     const savedUser = await user.save()
-    console.log(savedUser)
     res.json(savedUser)
   } catch (error) {
     return res.status(400).send("already in use")
