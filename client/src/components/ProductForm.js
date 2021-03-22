@@ -5,19 +5,10 @@ import { useStore } from '../App'
 import { useHistory } from 'react-router-dom'
 
 const ProductForm = () => {
-  const { products, setProducts } = useStore()
+  const { products, setProducts, setNotification } = useStore()
   const [productName, setProductName] = useState('')
-  const [notificationMessage, setNotifcationMessage] = useState(null)
-  const [conditionValue, setCodnitionValue] = useState('error')
   const history = useHistory()
 
-  const notify = (message, condition) => {
-    setNotifcationMessage(message),
-    setCodnitionValue(condition)
-    setTimeout(() => {
-      setNotifcationMessage(null)
-    }, 5000)
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -32,7 +23,7 @@ const ProductForm = () => {
         history.push('/products')
       }).catch(e => {
         console.log(e)
-        notify('Kirjaudu sisään lisätäksesi tuotteita', 'error')
+        setNotification('Kirjaudu sisään lisätäksesi tuotteita', 'error')
       })
     setProductName('')
   }
@@ -40,7 +31,7 @@ const ProductForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <Notification message={notificationMessage} condition={conditionValue} />
+        <Notification />
         <label>
           Tuotteen nimi
           <input id="nameInput"

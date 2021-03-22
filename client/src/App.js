@@ -15,9 +15,17 @@ export const useStore = create(set => ({
   products: [],
   filteredProducts: [],
   user: null,
+  notification: { message: null, condition: null },
   setUser: (param) => set(() => ({ user: param })),
   setProducts: (param) => set(() => ({ products: param })),
   setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
+  clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
+  setNotification: (message, condition) => set(state => ({
+    notification: { message, condition },
+    timer: setTimeout(() => {
+      state.clearNotification() }, 5000)
+  })
+  ),
   updateProduct: (param) => set(state => ({
     ...state,
     products: state.products.map(p => p.id !== param.id ? p : param)
