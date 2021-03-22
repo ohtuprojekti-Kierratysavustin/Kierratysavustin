@@ -7,9 +7,9 @@ const Notification = () => {
   if (message === null) {
     return null
   }
-  if (condition === 'succes') {
+  if (condition === 'success') {
     return (
-      <div className="succes">
+      <div className="success">
         {message}
       </div>
     )

@@ -20,7 +20,6 @@ const LoginForm = () => {
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
-      setNotification('Kirjautuminen onnistui', 'succes')
     } catch (e) {
       setNotification('Väärä nimi tai salasana', 'error')
     }
