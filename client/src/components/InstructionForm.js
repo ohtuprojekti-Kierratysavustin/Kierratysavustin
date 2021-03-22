@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
+import Notification from './Notification'
 import { useStore } from '../App'
 
 const InstructionForm = ({ product }) => {
   const [information, setInformation] = useState('')
-  const updateProduct = useStore().updateProduct
+  const { updateProduct, setNotification } = useStore()
+
   const handleSubmit = (event) => {
     event.preventDefault()
     const instruction = { information }
@@ -12,6 +14,10 @@ const InstructionForm = ({ product }) => {
       .then(i => {
         product.instructions.push(i)
         updateProduct(product)
+        setNotification('Ohje lisätty!', 'success')
+      }).catch(e => {
+        console.log(e)
+        setNotification('Kirjaudu sisään lisätäksesi kierrätysohje', 'error')
       })
     setInformation('')
   }
@@ -19,6 +25,7 @@ const InstructionForm = ({ product }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <Notification />
         <label>
             Kierrätysohje:
           <input id="instructionInput"
@@ -27,7 +34,7 @@ const InstructionForm = ({ product }) => {
             onChange={({ target }) => setInformation(target.value)}
           />
         </label>
-        <br/>
+        <br />
         <button id="addInstruction" type='submit'>lisää</button>
       </form>
     </div>

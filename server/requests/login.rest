@@ -1,0 +1,8 @@
+post  http://localhost:3001/api/products
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5c2VybmFtZSI6Im1sdXVra2FpIiwiaW
+
+{
+    "name": "test",
+    "description": "desc"
+}

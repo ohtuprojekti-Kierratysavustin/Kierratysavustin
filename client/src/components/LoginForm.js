@@ -1,48 +1,44 @@
 import React, { useEffect } from 'react'
-import registerService from '../services/register'
-import Notification from './Notification'
+import loginService from '../services/login'
+import productService from '../services/products'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
-import * as yup from 'yup'
+import Notification from './Notification'
 import { useStore } from '../App'
 
-const RegisterForm = () => {
-  const { setNotification, clearNotification } = useStore()
+const LoginForm = () => {
+  const { setUser, setNotification, clearNotification } = useStore()
 
   useEffect(() => {
     clearNotification()
   }, [])
 
-  const SignupSchema = yup.object().shape({
-    username: yup.string().min(2, 'Nimen tulee olla vähintään 2 kirjainta pitkä').required('Käyttäjänimi vaaditaan'),
-    password: yup.string().min(6, 'Salasanan tulee olla vähintään 6 kirjainta pitkä').required('Salasana vaaditaa')
-  })
-
   const initialValues = {
     username: '',
     password: ''
   }
-
-  const onSubmit =  async (values) => {
+  const onSubmit = async(values) => {
     try {
-      await registerService.createUser(values)
-      setNotification('Rekisteröityminen onnistui', 'success')
-    } catch (error) {
-      setNotification('Käyttäjätunnus on jo käytössä', 'error')
+      const user = await loginService.loginUser(values)
+      setUser(user)
+      productService.setToken(user.token)
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(user)
+      )
+      setNotification('Kirjautuminen onnistui', 'success')
+    } catch (e) {
+      setNotification('Väärä nimi tai salasana', 'error')
     }
   }
-
-
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={SignupSchema}
       onSubmit={onSubmit}
     >
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik
         return (
           <div className="container">
-            <h1>Rekisteröidy Kierratysavustin palveluun</h1>
+            <h1>Kirjaudu sisään</h1>
             <Form  >
               <div className="form-row">
                 <label htmlFor="username">Käyttäjänimi: </label>
@@ -72,12 +68,12 @@ const RegisterForm = () => {
                 />
               </div>
               <button
-                id='registerSubmit'
+                id='loginSubmit'
                 type="submit"
                 className={!(dirty && isValid) ? 'disabled-btn' : ''}
                 disabled={!(dirty && isValid)}
               >
-              Luo käyttäjä
+              Kirjaudu
               </button>
             </Form>
             <Notification />
@@ -87,4 +83,4 @@ const RegisterForm = () => {
     </Formik>
   )
 }
-export default RegisterForm
+export default LoginForm
