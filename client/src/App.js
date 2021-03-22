@@ -75,7 +75,7 @@ const App = () => {
             <ProductList products={filteredProducts} />
           </Route>
           <Route path="/">
-            <SearchForm />
+            <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
           </Route>
         </Switch>
       </div>
