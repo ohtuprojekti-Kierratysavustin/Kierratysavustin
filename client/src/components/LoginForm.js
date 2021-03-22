@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import loginService from '../services/login'
 import productService from '../services/products'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
@@ -6,7 +6,11 @@ import Notification from './Notification'
 import { useStore } from '../App'
 
 const LoginForm = () => {
-  const { setUser, setNotification } = useStore()
+  const { setUser, setNotification, clearNotification } = useStore()
+
+  useEffect(() => {
+    clearNotification()
+  }, [])
 
   const initialValues = {
     username: '',

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import registerService from '../services/register'
 import Notification from './Notification'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
@@ -6,7 +6,12 @@ import * as yup from 'yup'
 import { useStore } from '../App'
 
 const RegisterForm = () => {
-  const setNotification = useStore().setNotification
+  const { setNotification, clearNotification } = useStore()
+
+  useEffect(() => {
+    clearNotification()
+  }, [])
+
   const SignupSchema = yup.object().shape({
     username: yup.string().min(2, 'Nimen tulee olla vähintään 2 kirjainta pitkä').required('Käyttäjänimi vaaditaan'),
     password: yup.string().min(6, 'Salasanan tulee olla vähintään 6 kirjainta pitkä').required('Salasana vaaditaa')

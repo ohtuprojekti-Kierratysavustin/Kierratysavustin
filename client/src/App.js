@@ -16,11 +16,14 @@ export const useStore = create(set => ({
   filteredProducts: [],
   user: null,
   notification: { message: null, condition: null },
+  timer: null,
   setUser: (param) => set(() => ({ user: param })),
   setProducts: (param) => set(() => ({ products: param })),
   setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
   clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
   setNotification: (message, condition) => set(state => ({
+    ...state,
+    clearTimer: clearTimeout(state.timer),
     notification: { message, condition },
     timer: setTimeout(() => {
       state.clearNotification() }, 5000)
@@ -59,7 +62,6 @@ const App = () => {
       <div>
         <div>
           <Link style={padding} to="/">etusivu</Link>
-          <Link id='productForm' style={padding} to="/new">lisää tuote</Link>
           <Link id='productList' style={padding} to="/products">tuotteet</Link>
           <Link id='registerButton'style={padding} to="/register">rekisteröidy</Link>
           <Link id='loginButton'style={padding} to="/login">kirjaudu</Link>
@@ -69,9 +71,6 @@ const App = () => {
         <Switch>
           <Route path="/products/:id">
             <Product product={product} />
-          </Route>
-          <Route path="/new">
-            <ProductForm />
           </Route>
           <Route path="/register">
             <RegisterForm />
@@ -86,7 +85,7 @@ const App = () => {
             <ProductList products={filteredProducts} />
           </Route>
           <Route path="/">
-            <SearchForm products={products} setFilteredProducts={setFilteredProducts}/>
+            <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
           </Route>
         </Switch>
       </div>

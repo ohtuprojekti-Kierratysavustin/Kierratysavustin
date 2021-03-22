@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import productService from '../services/products'
 import Notification from './Notification'
 import { useStore } from '../App'
 
 const ProductForm = () => {
-  const { products, setProducts, setNotification } = useStore()
+  const { products, setProducts, setNotification , clearNotification } = useStore()
+  useEffect(() => {
+    clearNotification()
+  }, [])
   const [productName, setProductName] = useState('')
-
   const handleSubmit = (event) => {
     event.preventDefault()
     const product = { productName }
