@@ -29,15 +29,23 @@ const getTokenFrom = (req) => {
 
 productRouter.post("/", async (req, res) => {
   const body = req.body
+  try {
+    const token = getTokenFrom(req)
+    if (!token) {
+      return res.status(401).json({ error: "token missing" })
+    }
 
-  const token = getTokenFrom(req)
-  if (!token) {
-    return res.status(401).json({ error: "token missing" })
-  }
-  
-  const decodedToken = jwt.verify(token, config.SECRET)
-  if (!decodedToken) {
-    return res.status(401).json({ error: "invalid token" })
+    const decodedToken = jwt.verify(token, config.SECRET)
+    if (!decodedToken) {
+      return res.status(401).json({ error: "invalid token" })
+    }
+    const product = new Product({
+      name: body.productName,
+    })
+    const result = await product.save()
+    res.status(201).json(result)
+  } catch (error) {
+    return res.status(401).json({ error: "error" })
   }
   const product = new Product({
     name: body.productName,
@@ -55,7 +63,7 @@ productRouter.post("/:id/instructions", async (req, res) => {
   if (!token) {
     return res.status(401).json({ error: "token missing" })
   }
-  
+
   const decodedToken = jwt.verify(token, config.SECRET)
   if (!decodedToken) {
     return res.status(401).json({ error: "invalid token" })
