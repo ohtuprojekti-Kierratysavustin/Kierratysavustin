@@ -12,11 +12,9 @@ productRouter.get("/", async (req, res) => {
 })
 
 productRouter.get("/:id", (req, res) => {
-  console.log(req)
   Product.findById(req.params.id).then((product) => {
-    console.log(product)
     res.json(product)
-  })
+  }).catch(res.status(401).json({ error: "No product" }))
 })
 
 const getTokenFrom = (req) => {
@@ -29,32 +27,24 @@ const getTokenFrom = (req) => {
 
 productRouter.post("/", async (req, res) => {
   const body = req.body
-  try {
-    const token = getTokenFrom(req)
-    if (!token) {
-      return res.status(401).json({ error: "token missing" })
-    }
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: "token missing" })
+  }
 
-    const decodedToken = jwt.verify(token, config.SECRET)
-    if (!decodedToken) {
-      return res.status(401).json({ error: "invalid token" })
-    }
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: "invalid token" })
+  }
+  try {
     const product = new Product({
       name: body.productName,
     })
     const result = await product.save()
-    res.status(201).json(result)
+    return res.status(201).json(result)
   } catch (error) {
-    return res.status(401).json({ error: "error" })
-  }
-  const product = new Product({
-    name: body.productName,
-  })
-  try {
-    const result = await product.save()
-    res.status(201).json(result)
-  } catch(error) {
-    res.status(400).json({ error: "product name required" })
+    return res.status(400).
+      json({ error: "product name required" })
   }
 })
 
