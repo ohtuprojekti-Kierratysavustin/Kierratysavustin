@@ -14,6 +14,7 @@ const InstructionForm = ({ product }) => {
       .then(i => {
         product.instructions.push(i)
         updateProduct(product)
+        setNotification('Ohje lisätty!', 'success')
       }).catch(e => {
         console.log(e)
         setNotification('Kirjaudu sisään lisätäksesi kierrätysohje', 'error')

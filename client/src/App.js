@@ -24,8 +24,7 @@ export const useStore = create(set => ({
     notification: { message, condition },
     timer: setTimeout(() => {
       state.clearNotification() }, 5000)
-  })
-  ),
+  })),
   updateProduct: (param) => set(state => ({
     ...state,
     products: state.products.map(p => p.id !== param.id ? p : param)

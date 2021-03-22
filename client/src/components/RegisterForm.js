@@ -20,7 +20,7 @@ const RegisterForm = () => {
   const onSubmit =  async (values) => {
     try {
       await registerService.createUser(values)
-      setNotification('Rekisteröityminen onnistui', 'succes')
+      setNotification('Rekisteröityminen onnistui', 'success')
     } catch (error) {
       setNotification('Käyttäjätunnus on jo käytössä', 'error')
     }

@@ -13,6 +13,7 @@ const ProductForm = () => {
     productService.create(product)
       .then(returnedProduct => {
         setProducts(products.concat(returnedProduct))
+        setNotification(`Tuote ${productName} lisätty!`, 'success')
       }).catch(e => {
         console.log(e)
         setNotification('Kirjaudu sisään lisätäksesi tuotteita', 'error')

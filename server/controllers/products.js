@@ -42,8 +42,12 @@ productRouter.post("/", async (req, res) => {
   const product = new Product({
     name: body.productName,
   })
-  const result = await product.save()
-  res.status(201).json(result)
+  try {
+    const result = await product.save()
+    res.status(201).json(result)
+  } catch(error) {
+    res.status(400).json({ error: "product name required" })
+  }
 })
 
 productRouter.post("/:id/instructions", async (req, res) => {
