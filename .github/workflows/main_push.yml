@@ -4,25 +4,35 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'documents/**'
+      - 'README.md'
 
 jobs:
-  Pushing_to_main:
+  test:
     runs-on: ubuntu-18.04
+    services:
+      mongo:
+        image: healthcheck/mongo
+        ports:
+          - 27017:27017
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '14.x'
       - name: npm install client
         run: | 
           cd client
           npm install
+      - name: npm install server
+        run: |
+          cd server
+          npm install
       - name: e2e tests
         uses: cypress-io/github-action@v2
         with:
-          working-directory: client
-          command: npm run test:e2e
-          start: npm start
-          wait-on: http://localhost:3000
-          
-      
+          working-directory: e2e_tests
+          command: npm run test:e2e:prod
+          start: npm run start:test
+          wait-on: http://localhost:3001
