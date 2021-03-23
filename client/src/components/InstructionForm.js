@@ -1,25 +1,40 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
-const InstructionForm = ({ id }) => {
+import Notification from './Notification'
+import { useStore } from '../App'
+
+const InstructionForm = ({ product }) => {
   const [information, setInformation] = useState('')
+  const { updateProduct, setNotification } = useStore()
+
   const handleSubmit = (event) => {
     event.preventDefault()
     const instruction = { information }
-    productService.createInstruction(id,instruction)
-
+    productService.createInstruction(product.id, instruction)
+      .then(i => {
+        product.instructions.push(i)
+        updateProduct(product)
+        setNotification('Ohje lisätty!', 'success')
+      }).catch(e => {
+        console.log(e)
+        setNotification('Kirjaudu sisään lisätäksesi kierrätysohje', 'error')
+      })
+    setInformation('')
   }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <Notification />
         <label>
-            Kierrätys ohje:
+            Kierrätysohje:
           <input id="instructionInput"
             type='text'
             value={information}
             onChange={({ target }) => setInformation(target.value)}
           />
         </label>
-        <br/>
+        <br />
         <button id="addInstruction" type='submit'>lisää</button>
       </form>
     </div>

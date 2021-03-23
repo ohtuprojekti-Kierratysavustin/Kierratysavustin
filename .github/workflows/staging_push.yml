@@ -21,14 +21,16 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - name: npm install client
+      - name: npm install and test client
         run: | 
           cd client
           npm install
-      - name: npm install server
+          CI=true npm test
+      - name: npm install and test server
         run: |
           cd server
           npm install
+          npm test
       - name: e2e tests
         uses: cypress-io/github-action@v2
         with:

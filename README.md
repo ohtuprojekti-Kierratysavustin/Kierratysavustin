@@ -5,6 +5,11 @@
 
 # Kierratysavustin Ohjelmistotuotanto projekti
 
+# Dokumentit
+
+[Teknologiat](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/Teknologia-lista/documents/teknologiat.md)
+
+
 Ohjelmistotuotanto projekti kevät 2021. Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-sovellus, josta voi hakea kierrätettäviä tuotteita kierrätysohjeineen. Rekisteröityneet käyttäjät voivat kirjautuneina lisätä tietokantaan tuotteita sekä niille kierrätysohjeita. Kirjautuneena käyttäjät voivat myös pisteyttää tuotteille annettuja kierrätysohjeita. Pisteytykset näkyvät kaikille sovelluksen käyttäjille. 
 
 # Definition of Done

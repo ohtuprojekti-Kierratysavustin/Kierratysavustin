@@ -1,14 +1,15 @@
 import React from 'react'
 import './notification.css'
+import { useStore } from '../App'
 
-const Notification = ({ message, condition }) => {
-
+const Notification = () => {
+  const { message, condition } = useStore().notification
   if (message === null) {
     return null
   }
-  if (condition === 'succes') {
+  if (condition === 'success') {
     return (
-      <div className="succes">
+      <div className="success">
         {message}
       </div>
     )

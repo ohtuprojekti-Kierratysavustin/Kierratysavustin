@@ -11,6 +11,8 @@ services:
   kierratysavustin_client:
     image: kierratysavustin-local
     restart: unless-stopped
+    env_file:
+      - server/.env
     depends_on:
       - kierratysavustin_db
     container_name: kierratysavustin_client

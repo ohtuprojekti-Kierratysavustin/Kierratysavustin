@@ -1,17 +1,13 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import {
-  Switch, Route
-} from 'react-router-dom'
-import { render, fireEvent } from '@testing-library/react'
-import SearchForm from '../components/SearchForm'
+import { render } from '@testing-library/react'
 import ProductList from '../components/ProductList'
 import {
   BrowserRouter as Router
 } from 'react-router-dom'
 
 
-test('Search form renders and returns correct results', () => {
+test('ProductList list products', () => {
   const productA = {
     id: '1',
     name: 'Mustamakkarakastike pullo',
@@ -45,36 +41,40 @@ test('Search form renders and returns correct results', () => {
     productC
   ]
 
-  const changeFoundProducts = jest.fn()
 
   const component = render(
     <Router>
-      <Switch>
-        <Route path="/searchResults">
-          <ProductList products={[]} />
-        </Route>
-        <Route path="/">
-          <SearchForm products={productsData} setFilteredProducts={changeFoundProducts} />
-        </Route>
-      </Switch>
+      <ProductList products={productsData} />
     </Router>
-
   )
 
   expect(component.container).toHaveTextContent(
-    'Hakusana'
+    'Mustamakkarakastike pullo'
   )
 
-  const input = component.container.querySelector('input')
-  const form = component.container.querySelector('form')
+  expect(component.container).toHaveTextContent(
+    'Sanomalehti'
+  )
 
-  fireEvent.change(input, {
-    target: { value: 'lehti' }
-  })
-  fireEvent.submit(form)
+  expect(component.container).toHaveTextContent(
+    'Aikakauslehti'
+  )
 
-  expect(changeFoundProducts.mock.calls).toHaveLength(1)
-  expect(changeFoundProducts.mock.calls[0][0][0]).toBe(productB)
+})
 
+test('ProductList shows message when list is empty', () => {
+
+  const productsData = []
+
+
+  const component = render(
+    <Router>
+      <ProductList products={productsData} />
+    </Router>
+  )
+
+  expect(component.container).toHaveTextContent(
+    'Haulla ei löytynyt yhtään tuotetta!'
+  )
 
 })

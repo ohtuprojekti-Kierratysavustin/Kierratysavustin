@@ -1,39 +1,38 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import productService from '../services/products'
+import Notification from './Notification'
+import { useStore } from '../App'
 
-const ProductForm = ({ products, setProducts }) => {
+const ProductForm = () => {
+  const { products, setProducts, setNotification , clearNotification } = useStore()
+  useEffect(() => {
+    clearNotification()
+  }, [])
   const [productName, setProductName] = useState('')
-  const [description, setDescription] = useState('')
-  //const [products, setProducts] = useState([])
   const handleSubmit = (event) => {
     event.preventDefault()
-    const product = { productName, description }
-    productService.create(product).then(returnedProduct => {
-      setProducts(products.concat(returnedProduct))
-    })
-    //setProducts(p => p.concat(products))
-    console.log(setProducts)
+    const product = { productName }
+    productService.create(product)
+      .then(returnedProduct => {
+        setProducts(products.concat(returnedProduct))
+        setNotification(`Tuote ${productName} lisätty!`, 'success')
+      }).catch(e => {
+        console.log(e)
+        setNotification('Kirjaudu sisään lisätäksesi tuotteita', 'error')
+      })
     setProductName('')
-    setDescription('')
   }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <Notification />
         <label>
           Tuotteen nimi
           <input id="nameInput"
             type='text'
             value={productName}
             onChange={({ target }) => setProductName(target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Tuotteen selitys
-          <input id="descriptionInput"
-            type='text'
-            value={description}
-            onChange={({ target }) => setDescription(target.value)}
           />
         </label>
         <br />
