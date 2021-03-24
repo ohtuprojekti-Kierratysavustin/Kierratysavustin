@@ -1,8 +1,8 @@
-const bcrypt = require("bcrypt")
-const userRouter = require("express").Router()
-const User = require("../models/user")
+const bcrypt = require('bcrypt')
+const userRouter = require('express').Router()
+const User = require('../models/user')
 
-userRouter.post("/", async (req, res) => {
+userRouter.post('/', async (req, res) => {
   try {
     const body = req.body
     const saltRounds = 10
@@ -14,7 +14,7 @@ userRouter.post("/", async (req, res) => {
     const savedUser = await user.save()
     res.json(savedUser)
   } catch (error) {
-    return res.status(400).send("already in use")
+    return res.status(400).send('already in use')
   }
 })
 

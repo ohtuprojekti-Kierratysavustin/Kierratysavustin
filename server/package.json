@@ -8,7 +8,8 @@
     "test": "jest --verbose",
     "start:prod": "NODE_ENV=production node index.js",
     "start:test": "NODE_ENV=test node index.js",
-    "start:mongo": "cd .. && ./start-mongo-docker.sh"
+    "start:mongo": "cd .. && ./start-mongo-docker.sh",
+    "lint": "eslint ."
   },
   "author": "KA",
   "license": "MIT",
@@ -22,6 +23,7 @@
     "mongoose-unique-validator": "^2.0.3"
   },
   "devDependencies": {
+    "eslint": "^7.22.0",
     "jest": "^26.6.3",
     "supertest": "^6.1.3"
   }
