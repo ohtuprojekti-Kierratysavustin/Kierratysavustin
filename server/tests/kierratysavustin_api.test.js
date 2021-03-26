@@ -32,6 +32,28 @@ const usersInDb = async () => {
   return users.map((u) => u.toJSON())
 }
 
+const getToken = async (props) => {
+/*   post  http://localhost:3001/api/login
+  Content-Type: application/json
+
+  {
+      "username":"admin",
+      "password":"admin"
+  } */
+  /* const userCredentials = {
+    'username':'root',
+    'password':'salasana'
+  } */
+
+  const login = await api
+    .post('/api/login')
+    .send(props)
+  
+  //console.log('tokenidebugaus')
+  //console.log(login.body.token)
+  return login.body.token
+}
+
 test('products are returned as json', async () => {
   await api
     .get('/api/products')
@@ -85,6 +107,19 @@ describe('One account already in database', () => {
       .expect('Content-Type', /application\/json/)
     const usersAtEnd = await usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+  })
+
+  test('user can login', async () => {
+    const user = {
+      username: 'root',
+      password: 'salasana',
+    }
+
+    const token = await getToken(user)
+    //console.log(token)
+    expect(token).not.toBe(undefined)
+    
+
   })
 })
 
