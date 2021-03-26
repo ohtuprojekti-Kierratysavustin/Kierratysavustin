@@ -29,7 +29,6 @@ const getTokenFrom = (req) => {
   return null
 }
 
-// api/users/products/605d8c35aff7ab0e1b3fd055
 userRouter.post('/products/:id/', async (req, res) => {
   const token = getTokenFrom(req)
   if (!token) {
@@ -47,7 +46,6 @@ userRouter.post('/products/:id/', async (req, res) => {
   }
 
   const user = await User.findById(decodedToken.id)
-  //const user = await User.findById(req.params.userid)
   if (!product) {
     return res.status(401).json({ error: 'No user' })
   }

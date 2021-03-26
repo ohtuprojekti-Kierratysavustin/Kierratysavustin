@@ -35,24 +35,10 @@ const usersInDb = async () => {
 }
 
 const getToken = async (props) => {
-/*   post  http://localhost:3001/api/login
-  Content-Type: application/json
-
-  {
-      "username":"admin",
-      "password":"admin"
-  } */
-  /* const userCredentials = {
-    'username':'root',
-    'password':'salasana'
-  } */
-
   const login = await api
     .post('/api/login')
     .send(props)
   
-  //console.log('tokenidebugaus')
-  //console.log(login.body.token)
   return login.body.token
 }
 
@@ -133,7 +119,6 @@ describe('One account already in database', () => {
     const token = await getToken(user)
 
     const allProducts = await api.get('/api/products')
-    //console.log(allProducts)
     const product = allProducts.body[0]
 
     const result = await api
@@ -143,7 +128,6 @@ describe('One account already in database', () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-    //console.log(result.body)
     const decodedToken = jwt.verify(token, config.SECRET)
     expect(result.body.users[0]).toBe(decodedToken.id)
   })
