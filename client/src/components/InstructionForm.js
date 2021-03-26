@@ -28,7 +28,8 @@ const InstructionForm = ({ product }) => {
         <Notification />
         <label>
             Kierrätysohje:
-          <input id="instructionInput"
+          <input
+            id="instructionInput"
             type='text'
             value={information}
             onChange={({ target }) => setInformation(target.value)}
