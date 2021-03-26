@@ -3,6 +3,8 @@ const supertest = require('supertest')
 const bcrypt = require('bcrypt')
 const app = require('../app')
 const api = supertest(app)
+const jwt = require('jsonwebtoken')
+const config = require('../utils/config')
 
 const Product = require('../models/product')
 const User = require('../models/user')
@@ -120,6 +122,30 @@ describe('One account already in database', () => {
     expect(token).not.toBe(undefined)
     
 
+  })
+
+  test('user can add products to favourites', async () => {
+    const user = {
+      username: 'root',
+      password: 'salasana',
+    }
+
+    const token = await getToken(user)
+
+    const allProducts = await api.get('/api/products')
+    //console.log(allProducts)
+    const product = allProducts.body[0]
+
+    const result = await api
+      .post('/api/users/products/' + product.id)
+      .set('Authorization', 'bearer ' + token)
+      .set('Content-Type',  'application/json')
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    //console.log(result.body)
+    const decodedToken = jwt.verify(token, config.SECRET)
+    expect(result.body.users[0]).toBe(decodedToken.id)
   })
 })
 
