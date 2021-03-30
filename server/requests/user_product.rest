@@ -1,0 +1,3 @@
+post  http://localhost:3001/api/users/products/lisää-olemassa-oleva-tuotteen-id-tähän
+Content-Type: application/json
+Authorization: bearer lisää-jokin-olemassa-oleva-bearer-token-tähän

@@ -8,6 +8,12 @@ const productSchema = new mongoose.Schema({
       ref: 'Instruction',
     },
   ],
+  users: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
 })
 
 productSchema.set('toJSON', {
