@@ -1,27 +1,24 @@
-import React, { useState } from 'react'
-import favoriteService from '../services/favorites'
-// const pro = [
-//   { id: 1,
-//     name: 'test'
-//   }
-// ]
-const FavoritesForm = ( user,product) => {
-  const favorite = useState(favoriteService.getFavorites(user).some(p => p === product))
+import React from 'react'
+import productService from '../services/products'
 
-  // useState(pro.some(p => p.name === 'test'))
-  const label = favorite
-    ? 'Poista suosikeista' : 'Lisää suosikkeihin'
+const FavoritesForm = ( { product }) => {
+  // const [favorite,setFavorite] = useState(false)
+
+  // const label = favorite
+  //   ? 'Poista suosikeista' : 'Lisää suosikkeihin'
 
   const handleClick = (event) => {
     event.preventDefault()
-    favorite ? favoriteService.removeFavorite(user,product): favoriteService.addFavorite(user,product)
+
+    productService.addFavorite(product)
     // favorite ? setFavorite(false) : setFavorite(true)
   }
 
   return (
     <div>
       <button id="addToFavorites" onClick={handleClick}>
-        {label}
+        {/* {label} */}
+        Lisää suosikkeihin
       </button>
     </div>
   )

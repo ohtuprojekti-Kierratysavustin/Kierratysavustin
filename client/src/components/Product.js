@@ -22,7 +22,7 @@ const Product = ({ product }) => {
 
       {user !== null ? (
         <div>
-          <FavoritesForm user = {user} product = {product}/>
+          <FavoritesForm  product = {product}/>
           <h2>Lisää tuotteelle kierrätysohje</h2>
           <InstructionForm product = {product}/>
         </div>

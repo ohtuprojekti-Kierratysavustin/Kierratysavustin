@@ -1,5 +1,6 @@
 import axios from 'axios'
 const baseUrl = `${process.env.PUBLIC_URL}/api/products`
+const userUrl =  `${process.env.PUBLIC_URL}/api/users/products`
 let token = null
 
 const getConfig = () => ({
@@ -28,4 +29,9 @@ const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
-export default { create, getAll, createInstruction, setToken, removeToken }
+const addFavorite = async (newObject) => {
+  console.log(newObject)
+  const response = await axios.post(`${userUrl}/${newObject.id}`, newObject,getConfig())
+  return response
+}
+export default { create, getAll, createInstruction, setToken, removeToken ,addFavorite }
