@@ -3,6 +3,8 @@ const supertest = require('supertest')
 const bcrypt = require('bcrypt')
 const app = require('../app')
 const api = supertest(app)
+const jwt = require('jsonwebtoken')
+const config = require('../utils/config')
 
 const Product = require('../models/product')
 const User = require('../models/user')
@@ -30,6 +32,14 @@ beforeEach(async () => {
 const usersInDb = async () => {
   const users = await User.find({})
   return users.map((u) => u.toJSON())
+}
+
+const getToken = async (props) => {
+  const login = await api
+    .post('/api/login')
+    .send(props)
+  
+  return login.body.token
 }
 
 test('products are returned as json', async () => {
@@ -85,6 +95,41 @@ describe('One account already in database', () => {
       .expect('Content-Type', /application\/json/)
     const usersAtEnd = await usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+  })
+
+  test('user can login', async () => {
+    const user = {
+      username: 'root',
+      password: 'salasana',
+    }
+
+    const token = await getToken(user)
+    //console.log(token)
+    expect(token).not.toBe(undefined)
+    
+
+  })
+
+  test('user can add products to favourites', async () => {
+    const user = {
+      username: 'root',
+      password: 'salasana',
+    }
+
+    const token = await getToken(user)
+
+    const allProducts = await api.get('/api/products')
+    const product = allProducts.body[0]
+
+    const result = await api
+      .post('/api/users/products/' + product.id)
+      .set('Authorization', 'bearer ' + token)
+      .set('Content-Type',  'application/json')
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const decodedToken = jwt.verify(token, config.SECRET)
+    expect(result.body.users[0]).toBe(decodedToken.id)
   })
 })
 
