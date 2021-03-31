@@ -9,6 +9,8 @@ Ohjelmistotuotanto projekti kevät 2021. Projektissa toteutetaan Kotitalouden ki
 
 [Asennusohjeet](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/asennusohje.md)
 
+[Käyttöohjeet](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/kayttoohje.md)
+
 [Teknologiat](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/teknologiat.md)
 
 ## Definition of Done
