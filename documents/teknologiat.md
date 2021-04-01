@@ -7,6 +7,7 @@
 |formik/yup |Käyttäjän syötteen validointi|
 |react|Javascipt kirjasto käyttöliittymän tekoon|
 |@testing-library/user-event|Simuloi vuorovaikutusta selaimen kanssa testeissä|
+|Zustand|React sovelluksen Tilan hallintaan helpottamaan valittu kirjasto|
 |Eslint|Avulla noudatetaan tiettyä koodityylin standardeja|
 
 ## Server
