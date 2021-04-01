@@ -131,6 +131,45 @@ describe('One account already in database', () => {
     const decodedToken = jwt.verify(token, config.SECRET)
     expect(result.body.users[0]).toBe(decodedToken.id)
   })
+
+  test('user can remove products from favourites', async () => {
+    const user = {
+      username: 'root',
+      password: 'salasana',
+    }
+
+    const token = await getToken(user)
+    //console.log(token)
+
+    const allProducts = await api.get('/api/products')
+    const product = allProducts.body[0]
+
+    // Lisätään
+    
+    const result = await api
+      .post('/api/users/products/' + product.id)
+      .set('Authorization', 'bearer ' + token)
+      .set('Content-Type',  'application/json')
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const decodedToken = jwt.verify(token, config.SECRET)
+    expect(result.body.users[0]).toBe(decodedToken.id)
+
+    // Lisätään poistetaan
+
+    const resultB = await api
+      .post('/api/users/products/remove/' + product.id)
+      .set('Authorization', 'bearer ' + token)
+      .set('Content-Type',  'application/json')
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    expect(resultB.body.users[0]).not.toBe(decodedToken.id)
+  })
+
+
+
 })
 
 afterAll(() => {
