@@ -74,6 +74,7 @@ const InstructionForm = ({ id }) => {
               </div>
 
               <button
+                id="addInstruction"
                 type="submit"
                 className={!(dirty && isValid) ? 'disabled-btn' : ''}
                 disabled={!(dirty && isValid)}
