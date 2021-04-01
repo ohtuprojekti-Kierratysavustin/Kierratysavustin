@@ -26,5 +26,6 @@
 mongoDB dockerissa
 
 ## Testit 
-Jest - Yksikkötestausta, jonka avulla voidaan testata toiminnallisuuksia, ilman että ne ovat riippuvaisia toisistaan
-Cypress - End 2 End testaus, jonka avulla voidaan simuloida oikean käyttäjän toimintaa sivustolla
+**Jest** - Yksikkötestausta, jonka avulla voidaan testata toiminnallisuuksia, ilman että ne ovat riippuvaisia toisistaan
+
+**Cypress** - End 2 End testaus, jonka avulla voidaan simuloida oikean käyttäjän toimintaa sivustolla
