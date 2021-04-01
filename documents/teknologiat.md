@@ -1,5 +1,14 @@
 # Teknologiat
 
+## Client
+|Nimi|Mitä tekee|
+| ----------- | ----------- |
+|axios|Mahdollistaa tiedon hakemisen serveriltä|
+|formik/yup |Käyttäjän syötteen validointi|
+|react|Javascipt kirjasto käyttöliittymän tekoon|
+|@testing-library/user-event|Simuloi vuorovaikutusta selaimen kanssa testeissä|
+|Eslint|Avulla noudatetaan tiettyä koodityylin standardeja|
+
 ## Server
 |Nimi|Mitä tekee|
 | ----------- | ----------- |
@@ -10,16 +19,7 @@
 |mongoose|Kirjasto mongoDB käytön helpottamiseksi |
 |mongoose-unique-validator|Mahdollistaa validoinnin ennen tallennusta|
 |Eslint|Avulla noudatetaan tiettyä koodityylin standardeja|
-
-## Client
-|Nimi|Mitä tekee|
-| ----------- | ----------- |
-|axios|Mahdollistaa tiedon hakemisen serveriltä|
-|formik/yup |Käyttäjän syötteen validointi|
-|react|Javascipt kirjasto käyttöliittymän tekoon|
-|@testing-library/user-event|Simuloi vuorovaikutusta selaimen kanssa testeissä|
-|jsonwebtoken|| Pystytään säilyttämään käyttäjän tokeni, jolla voidaan varmistaa kirjautuneisuuden pysyvyys|
-|Eslint|Avulla noudatetaan tiettyä koodityylin standardeja|
+|jsonwebtoken|Pystytään säilyttämään käyttäjän tokeni, jolla voidaan varmistaa kirjautuneisuuden pysyvyys|
 
 ## Tietokanta
 mongoDB dockerissa
