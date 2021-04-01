@@ -18,6 +18,7 @@
 |formik/yup |Käyttäjän syötteen validointi|
 |react|Javascipt kirjasto käyttöliittymän tekoon|
 |@testing-library/user-event|Simuloi vuorovaikutusta selaimen kanssa testeissä|
+|jsonwebtoken|| Pystytään säilyttämään käyttäjän tokeni, jolla voidaan varmistaa kirjautuneisuuden pysyvyys|
 |Eslint|Avulla noudatetaan tiettyä koodityylin standardeja|
 
 ## Tietokanta
