@@ -1,1 +1,1 @@
-get  http://localhost:3001/api/products/60585e6f04fd6054af27020c
+get  http://localhost:3001/api/products/lisää-olemassa-oleva-tuotteen-id-tähän

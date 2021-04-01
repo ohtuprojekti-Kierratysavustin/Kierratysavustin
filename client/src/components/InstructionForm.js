@@ -4,7 +4,6 @@ import Notification from './Notification'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
 import * as yup from 'yup'
 
-
 const InstructionForm = ({ id }) => {
   const [notificationMessage, setNotifcationMessage] = useState(null)
   const [conditionValue, setCodnitionValue] = useState('error')
@@ -31,7 +30,6 @@ const InstructionForm = ({ id }) => {
     } catch (error) {
       notify('Ohjeen lisääminen ei onnistunut', 'error')
     }
-
   }
 
   return (

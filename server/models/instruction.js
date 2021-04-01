@@ -1,15 +1,15 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
 const instructionSchema = new mongoose.Schema({
   //score: {type: Number, required: true},
   information: { type: String, required: true },
   product: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
+    ref: 'Product',
   },
 })
 
-instructionSchema.set("toJSON", {
+instructionSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -17,4 +17,4 @@ instructionSchema.set("toJSON", {
   },
 })
 
-module.exports = mongoose.model("Instruction", instructionSchema)
+module.exports = mongoose.model('Instruction', instructionSchema)
