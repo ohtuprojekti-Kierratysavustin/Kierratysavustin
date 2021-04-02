@@ -30,8 +30,12 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 const addFavorite = async (newObject) => {
-  console.log(newObject)
-  const response = await axios.post(`${userUrl}/${newObject.id}`, newObject,getConfig())
+  const response =  axios.post(`${userUrl}/${newObject.id}`, newObject,getConfig())
   return response
 }
-export default { create, getAll, createInstruction, setToken, removeToken ,addFavorite }
+
+const removeFavorite = async (newObject) => {
+  const response =  axios.post(`${userUrl}/remove/${newObject.id}`, newObject,getConfig())
+  return response
+}
+export default { create, getAll, createInstruction, setToken, removeToken ,addFavorite,removeFavorite }
