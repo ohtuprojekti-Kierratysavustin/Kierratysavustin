@@ -15,6 +15,10 @@ Ohjelmistotuotanto projekti kevät 2021. Projektissa toteutetaan Kotitalouden ki
 
 [Käyttöohjeet](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/kayttoohje.md)
 
+[Frontend-dokumentaatio](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/Frontend-dokumentaatio.md)
+
+[Backend-dokumentaatio](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/Backend-dokumentaatio.md)
+
 [Teknologiat](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/teknologiat.md)
 
 ## Backlogit

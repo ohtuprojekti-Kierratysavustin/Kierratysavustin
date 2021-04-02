@@ -1,6 +1,6 @@
 post  http://localhost:3001/api/products
 Content-Type: application/json
-Authorization: bearer lisää-jokin-olemassa-oleva-bearer-token-tähän
+Authorization: bearer bearer-token-tähän
 
 {
     "productName":"makkara"

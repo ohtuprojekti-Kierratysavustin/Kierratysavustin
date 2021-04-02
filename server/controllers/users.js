@@ -42,16 +42,16 @@ userRouter.post('/products/:id/', async (req, res) => {
 
   const product = await Product.findById(req.params.id)
   if (!product) {
-    return res.status(401).json({ error: 'No product' })
+    return res.status(400).json({ error: 'No product' })
   }
 
   const user = await User.findById(decodedToken.id)
   if (!product) {
-    return res.status(401).json({ error: 'No user' })
+    return res.status(400).json({ error: 'No user' })
   }
 
   if (product.users.indexOf(user.id) > -1) {
-    return res.status(401).json({ error: 'User already added' })
+    return res.status(400).json({ error: 'Product already in users favourites' })
   }
 
   product.users = product.users.concat(user.id)
@@ -60,5 +60,39 @@ userRouter.post('/products/:id/', async (req, res) => {
   await user.save()
   res.status(201).json(product)
 })
+
+userRouter.post('/products/remove/:id', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const product = await Product.findByIdAndUpdate(req.params.id)
+  if (!product) {
+    return res.status(400).json({ error: 'No product' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!product) {
+    return res.status(400).json({ error: 'No user' })
+  }
+
+  if (product.users.indexOf(user.id) === -1) {
+    return res.status(400).json({ error: 'Product not in users favourites' })
+  }
+
+  product.users = product.users.pull({ _id: user.id })
+  user.products = user.products.pull({ _id: product.id })
+  await product.save()
+  await user.save()
+  res.status(201).json(product)
+  
+})
+
 
 module.exports = userRouter
