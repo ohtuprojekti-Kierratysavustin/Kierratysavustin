@@ -14,11 +14,13 @@ import LoginForm from './components/LoginForm'
 export const useStore = create(set => ({
   products: [],
   filteredProducts: [],
+  favorites: [],
   user: null,
   notification: { message: null, condition: null },
   timer: null,
   setUser: (param) => set(() => ({ user: param })),
   setProducts: (param) => set(() => ({ products: param })),
+  setFavorites: (param) => set(() => ({ favorites: param })),
   setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
   clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
   setNotification: (message, condition) => set(state => ({
@@ -35,7 +37,7 @@ export const useStore = create(set => ({
 }))
 
 const App = () => {
-  const { products, setProducts, filteredProducts, setFilteredProducts, user, setUser } = useStore()
+  const { products, setProducts, filteredProducts, setFilteredProducts, user, setUser, setFavorites } = useStore()
 
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
@@ -46,7 +48,9 @@ const App = () => {
     if (loggedUserJSON) {
       const userlogin = JSON.parse(loggedUserJSON)
       setUser(userlogin)
-      productService.setToken(userlogin.token)}
+      productService.setToken(userlogin.token)
+      productService.getFavorites(userlogin.id).then(favorites => setFavorites(favorites))
+    }
   }, [])
 
   const match = useRouteMatch('/products/:id')

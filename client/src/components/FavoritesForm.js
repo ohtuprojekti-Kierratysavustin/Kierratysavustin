@@ -2,26 +2,20 @@ import React,{ useState } from 'react'
 import productService from '../services/products'
 import { useStore } from '../App'
 
-const FavoritesForm = ( { user, product }) => {
-  const { updateProduct } = useStore()
-  const [favorite,setFavorite] = useState(product.users.indexOf(user.id) > -1)
+const FavoritesForm = ( { product }) => {
+  const { favorites, setFavorites } = useStore()
+  const [favorite, setFavorite] = useState(favorites.some(p => p.id === product.id))
   const label = favorite
     ? 'Poista suosikeista' : 'Lisää suosikkeihin'
 
   const handleClick = (event) => {
     event.preventDefault()
     if(favorite === true){
-      productService.removeFavorite(product).then(i => {
-        product.users = i.data.users
-        updateProduct(product)
-      })
+      productService.removeFavorite(product)
+        .then(setFavorites(favorites.filter(p => p.id !== product.id)))
       setFavorite(false)
-
     } else {
-      productService.addFavorite(product).then(i => {
-        product.users = i.data.users
-        updateProduct(product)
-      })
+      productService.addFavorite(product).then(setFavorites(favorites.concat(product)))
       setFavorite(true)
     }
   }
