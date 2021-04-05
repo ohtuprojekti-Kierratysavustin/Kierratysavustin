@@ -94,6 +94,17 @@ describe("Recycling app", () => {
               cy.get("#addInstruction").click()
               cy.contains("Tuotteen voi uudelleen käyttää roskapussina")
             })
+
+            it("it can be added to favorites", () => {
+              cy.get("#addToFavorites").click()
+              cy.get("#addToFavorites").contains('Poista suosikeista')
+            })
+
+            it("and it can be removed from favorites", () => {
+              cy.get("#addToFavorites").click()
+              cy.get("#addToFavorites").click()
+              cy.get("#addToFavorites").contains('Lisää suosikkeihin')
+            })
           })
         })
       })
