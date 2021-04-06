@@ -4,6 +4,9 @@ import { useHistory } from 'react-router-dom'
 import FavouriteProducts from './FavouriteProducts'
 import { useStore } from '../App'
 //import { useStore } from '../App'
+
+import { Form, Button, InputGroup } from 'react-bootstrap'
+
 const SearchForm = ({ products, setFilteredProducts }) => {
   if (!products) {
     return null
@@ -21,25 +24,32 @@ const SearchForm = ({ products, setFilteredProducts }) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Hakusana:
-          <input
+      <Form inline onSubmit={handleSubmit}>
+        <InputGroup className="mb-1">
+          <InputGroup.Prepend>
+            <Button id="searchBtn" type='submit' size='lg' variant='outline-dark'>Etsi</Button>
+          </InputGroup.Prepend>
+          <Form.Control
+            placeholder='Hae'
+            size='lg'
             id="searchInput"
             type='text'
             value={searchTerm}
             onChange={({ target }) => setSearchTerm(target.value)}
           />
-        </label>
-        <button id="searchBtn" type='submit'>Hae</button>
-        {user !== null ? (
-          <FavouriteProducts userProducts={favorites}/>
-        /* vaihda products */
-        ) : (
-          ''
-        )}
+        </InputGroup>
+      </Form>
 
-      </form>
+
+
+
+
+      {user !== null ? (
+        <FavouriteProducts userProducts={favorites}/>
+        /* vaihda products */
+      ) : (
+        ''
+      )}
     </div>
   )
 }

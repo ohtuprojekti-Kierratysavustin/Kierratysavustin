@@ -11,6 +11,10 @@ import RegisterForm from './components/RegisterForm'
 import SearchForm from './components/SearchForm'
 import LoginForm from './components/LoginForm'
 
+import image from './media/logo.png'
+import { Navbar, Nav, Container, Col, Row, Jumbotron, Media, Image } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 export const useStore = create(set => ({
   products: [],
   filteredProducts: [],
@@ -58,73 +62,133 @@ const App = () => {
     ? products.find(p => p.id === match.params.id)
     : null
 
-  const padding = {
-    padding: 5
-  }
   if(user === null){
     return(
       <div>
-        <div>
-          <Link style={padding} to="/">etusivu</Link>
-          <Link id='productList' style={padding} to="/products">tuotteet</Link>
-          <Link id='registerButton'style={padding} to="/register">rekisteröidy</Link>
-          <Link id='loginButton'style={padding} to="/login">kirjaudu</Link>
-        </div>
 
-        <h1>Kotitalouden kierrätysavustin</h1>
-        <Switch>
-          <Route path="/products/:id">
-            <Product product={product} />
-          </Route>
-          <Route path="/register">
-            <RegisterForm />
-          </Route>
-          <Route path="/login">
-            <LoginForm />
-          </Route>
-          <Route path="/products">
-            <ProductList products={products}/>
-          </Route>
-          <Route path="/searchResults">
-            <ProductList products={filteredProducts} />
-          </Route>
-          <Route path="/">
-            <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
-          </Route>
-        </Switch>
+        <Navbar bg='secondary' expand='lg'>
+          <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className='mr-auto'>
+              <Nav.Link id='productList' as={Link} to="/products">tuotteet</Nav.Link>
+            </Nav>
+            <Nav className='justify-content-end'>
+              <Nav.Link id='registerButton' as={Link} to="/register">rekisteröidy</Nav.Link>
+              <Nav.Link id='loginButton' as={Link} to="/login">kirjaudu</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+
+        <Jumbotron>
+          <Media>
+            <Image
+              width={128}
+              height={128}
+              className='mr-3'
+              src={image}
+              alt='Logo'
+            />
+            <Media.Body>
+              <h2>Kotitalouden kierrätysavustin</h2>
+              <p>
+                kierrätysavustimesta lyhyesti
+              </p>
+            </Media.Body>
+          </Media>
+        </Jumbotron>
+
+        <Container>
+          <Row>
+            <Col>
+              <Switch>
+                <Route path="/products/:id">
+                  <Product product={product} />
+                </Route>
+                <Route path="/register">
+                  <RegisterForm />
+                </Route>
+                <Route path="/login">
+                  <LoginForm />
+                </Route>
+                <Route path="/products">
+                  <ProductList products={products}/>
+                </Route>
+                <Route path="/searchResults">
+                  <ProductList products={filteredProducts} />
+                </Route>
+                <Route path="/">
+                  <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
+                </Route>
+              </Switch>
+            </Col>
+          </Row>
+        </Container>
       </div>
     )
   }
   return (
     <div>
-      <div>
-        <Link style={padding} to="/">etusivu</Link>
-        <Link id='productForm' style={padding} to="/new">lisää tuote</Link>
-        <Link id='productList' style={padding} to="/products">tuotteet</Link>
-        <Link id='LogoutButton' style={padding} onClick={() => {
-          window.localStorage.clear()
-          setUser(null)
-          productService.removeToken()
-        }} to="/">kirjaudu ulos</Link>
-      </div>
-      <h1>Kotitalouden kierrätysavustin</h1>
-      <Switch>
-        <Route path="/products/:id">
-          <Product product={product} />
-        </Route>
-        <Route path="/new">
-          <ProductForm />
-        </Route>
-        <Route path="/products">
-          <ProductList products={products}/>
-        </Route>
-        <Route path="/searchResults">
-          <ProductList products={filteredProducts} />
-        </Route>
-        <Route path="/">
-          <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
-        </Route>
-      </Switch>
+      <Navbar bg='secondary' expand='lg'>
+        <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className='mr-auto'>
+            <Nav.Link id='productForm' as={Link} to="/new">lisää tuote</Nav.Link>
+            <Nav.Link id='productList' as={Link} to="/products">tuotteet</Nav.Link>
+          </Nav>
+          <Nav className='justify-content-end'>
+            <Nav.Link id='LogoutButton' as={Link} onClick={() => {
+              window.localStorage.clear()
+              setUser(null)
+              productService.removeToken()
+            }} to="/">kirjaudu ulos
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+
+      <Jumbotron>
+        <Media>
+          <Image
+            width={128}
+            height={128}
+            className='mr-3'
+            src={image}
+            alt='Logo'
+          />
+          <Media.Body>
+            <h2>Kotitalouden kierrätysavustin</h2>
+            <p>
+                kierrätysavustimesta lyhyesti
+            </p>
+          </Media.Body>
+        </Media>
+      </Jumbotron>
+
+      <Container>
+        <Row>
+          <Col>
+            <Switch>
+              <Route path="/products/:id">
+                <Product product={product} />
+              </Route>
+              <Route path="/new">
+                <ProductForm />
+              </Route>
+              <Route path="/products">
+                <ProductList products={products}/>
+              </Route>
+              <Route path="/searchResults">
+                <ProductList products={filteredProducts} />
+              </Route>
+              <Route path="/">
+                <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
+              </Route>
+            </Switch>
+          </Col>
+        </Row>
+      </Container>
     </div>
   )
 }
