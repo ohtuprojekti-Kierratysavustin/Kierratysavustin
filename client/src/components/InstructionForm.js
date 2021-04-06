@@ -6,7 +6,6 @@ import { useStore } from '../App'
 const InstructionForm = ({ product }) => {
   const [information, setInformation] = useState('')
   const { updateProduct, setNotification } = useStore()
-
   const handleSubmit = (event) => {
     event.preventDefault()
     const instruction = { information }

@@ -6,7 +6,7 @@ import Notification from './Notification'
 import { useStore } from '../App'
 
 const LoginForm = () => {
-  const { setUser, setNotification, clearNotification } = useStore()
+  const { setUser, setNotification, clearNotification, setFavorites } = useStore()
 
   useEffect(() => {
     clearNotification()
@@ -24,6 +24,7 @@ const LoginForm = () => {
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
+      productService.getFavorites(user.id).then(favorites => setFavorites(favorites))
       setNotification('Kirjautuminen onnistui', 'success')
     } catch (e) {
       setNotification('Väärä nimi tai salasana', 'error')
