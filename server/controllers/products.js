@@ -11,6 +11,11 @@ productRouter.get('/', async (req, res) => {
   res.json(products.map((product) => product.toJSON()))
 })
 
+productRouter.get('/user', async (req, res) => {
+  const favorites = await Product.find( { users: req.query.id })
+  res.json(favorites.map((product) => product.toJSON()))
+})
+
 productRouter.get('/:id', (req, res) => {
   Product.findById(req.params.id).then((product) => {
     res.json(product)

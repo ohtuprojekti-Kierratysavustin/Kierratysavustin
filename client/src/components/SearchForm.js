@@ -8,7 +8,7 @@ const SearchForm = ({ products, setFilteredProducts }) => {
   if (!products) {
     return null
   }
-  const { user } = useStore()
+  const { user, favorites } = useStore()
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
   //const { products,setFilteredProducts } = useStore()
@@ -33,7 +33,7 @@ const SearchForm = ({ products, setFilteredProducts }) => {
         </label>
         <button id="searchBtn" type='submit'>Hae</button>
         {user !== null ? (
-          <FavouriteProducts userProducts={products}/>
+          <FavouriteProducts userProducts={favorites}/>
         /* vaihda products */
         ) : (
           ''
