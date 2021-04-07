@@ -2,6 +2,8 @@ import React,{ useState } from 'react'
 import productService from '../services/products'
 import { useStore } from '../App'
 
+import { Button } from 'react-bootstrap'
+
 const FavoritesForm = ( { product }) => {
   const { favorites, setFavorites } = useStore()
   const [favorite, setFavorite] = useState(favorites.some(p => p.id === product.id))
@@ -21,9 +23,9 @@ const FavoritesForm = ( { product }) => {
   }
   return (
     <div>
-      <button id="addToFavorites" onClick={handleClick}>
+      <Button id="addToFavorites" onClick={handleClick}>
         {label}
-      </button>
+      </Button>
     </div>
   )
 }

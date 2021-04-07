@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import registerService from '../services/register'
 import Notification from './Notification'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
+import { Row, Col,Container,Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
 import { useStore } from '../App'
-
 const RegisterForm = () => {
   const { setNotification, clearNotification } = useStore()
 
@@ -31,7 +31,6 @@ const RegisterForm = () => {
     }
   }
 
-
   return (
     <Formik
       initialValues={initialValues}
@@ -42,49 +41,68 @@ const RegisterForm = () => {
         const { errors, touched, isValid, dirty } = formik
         return (
           <div className="container">
-            <h1>Rekisteröidy Kierratysavustin palveluun</h1>
             <Form  >
-              <Form.Group controlId="formBasicUsername">
-                <Form.Label htmlFor="username">Käyttäjänimi: </Form.Label>
-                <Field
-                  type="username"
-                  name="username"
-                  id="usernameInput"
-                  className={errors.username && touched.username ?
-                    'input-error' : null}
-                />
-                <ErrorMessage name="username" component="span" className="error" />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicPassword">
-                <label htmlFor="password">Salasana: </label>
-                <Field
-                  type="password"
-                  name="password"
-                  id="passwordInput"
-                  className={errors.password && touched.password ?
-                    'input-error' : null}
-                />
-                <ErrorMessage
-                  name="password"
-                  component="span"
-                  className="error"
-                />
-              </Form.Group>
-              <button
-                id='registerSubmit'
-                type="submit"
-                className={!(dirty && isValid) ? 'disabled-btn' : ''}
-                disabled={!(dirty && isValid)}
-              >
-              Luo käyttäjä
-              </button>
+              <Container>
+                <Row>
+                  <Col>
+                    <h1>Kirjaudu sisään</h1>
+                  </Col>
+                </Row>
+                <Notification />
+                <Row>
+                  <Col>
+                    <label htmlFor="username">Käyttäjänimi: </label>
+                    <Formo.Control as={Field}
+                      type="username"
+                      name="username"
+                      id="usernameInput"
+                      className={'form-control' + (errors.username && touched.username ?
+                        'input-error' : null)}
+                    />
+                    <ErrorMessage name="username" component="span" className="error" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <label htmlFor="password">Salasana: </label>
+                    <Formo.Control as={Field}
+                      type="password"
+                      name="password"
+                      id="passwordInput"
+                      className={'form-control' + (errors.password && touched.password ?
+                        'input-error' : null)}
+                    />
+                    <ErrorMessage
+                      name="password"
+                      component="span"
+                      className="error"
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Button
+                      id='loginSubmit'
+                      type="submit"
+                      className={!(dirty && isValid) ? 'disabled-btn' : ''}
+                      disabled={!(dirty && isValid)}
+                    >
+                    Kirjaudu
+                    </Button>
+                  </Col>
+                </Row>
+              </Container>
             </Form>
-            <Notification />
           </div>
         )
       }}
     </Formik>
   )
+
 }
+
+
+
+
+
 export default RegisterForm

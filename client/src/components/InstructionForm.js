@@ -3,6 +3,8 @@ import productService from '../services/products'
 import Notification from './Notification'
 import { useStore } from '../App'
 
+import { InputGroup, FormControl, Form, Button, Container, Row, Col } from 'react-bootstrap'
+
 const InstructionForm = ({ product }) => {
   const [information, setInformation] = useState('')
   const { updateProduct, setNotification } = useStore()
@@ -23,19 +25,32 @@ const InstructionForm = ({ product }) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <Form inline onSubmit={handleSubmit}>
         <Notification />
-        <label>
-            Kierrätysohje:
-          <input id="instructionInput"
-            type='text'
-            value={information}
-            onChange={({ target }) => setInformation(target.value)}
-          />
-        </label>
-        <br />
-        <button id="addInstruction" type='submit'>lisää</button>
-      </form>
+        <Container>
+          <Row>
+            <Col >
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Kierrätysohje</InputGroup.Text>
+                </InputGroup.Prepend>
+                <FormControl as="textarea"
+                  id="instructionInput"
+                  type='text'
+                  value={information}
+                  onChange={({ target }) => setInformation(target.value)}
+                />
+              </InputGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Button id="addInstruction" type='submit'>lisää</Button>
+            </Col>
+          </Row>
+        </Container>
+
+      </Form>
     </div>
   )
 }

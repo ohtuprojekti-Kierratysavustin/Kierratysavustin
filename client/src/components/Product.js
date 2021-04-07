@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
-import { useStore } from '../App'
+import { useStore  } from '../App'
 
-import { Container, Row, Modal, Button } from 'react-bootstrap'
+import { Container, Row, Col, Jumbotron, ListGroup, Media, Modal, Button } from 'react-bootstrap'
 
 /** Component for showing product name and recycling information. */
 const Product = ({ product }) => {
   const { user, clearNotification } = useStore()
-  const [modalShow, setModalShow] = React.useState(false)
+  const [modalShow, setModalShow] = useState(false)
 
   useEffect(() => {
     clearNotification()
@@ -16,8 +16,7 @@ const Product = ({ product }) => {
 
   if (!product) return null
 
-
-  function MyVerticallyCenteredModal(props) {
+  function InstructionPopup(props) {
     return (
       <Modal
         {...props}
@@ -27,68 +26,98 @@ const Product = ({ product }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Modal heading
+            Uusi ohje tuotteelle
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <InstructionForm product = {product}/>
-
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
-        </Modal.Footer>
       </Modal>
     )
   }
 
   return (
     <div>
-
-      {user !== null ? (
-
-        <Container>
+      <Container>
+        <Jumbotron>
           <Row>
-            <FavoritesForm product = {product}/>
-            <h2>{product.name}</h2>
+            <Col>
+              {user !== null ? (
+                <FavoritesForm product = {product}/>
+              ) : (
+                ''
+              )}
+            </Col>
+            <Col>
+              <h2>{product.name}</h2>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <h4>
+                Ohjeet kierrätykseen
+              </h4>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              {product.instructions.length !== 0 ? (
+                <p>
+                  {product.instructions[0].information}
+                </p>
+              ) : (
+                <span>ei ohjeita</span>
+              )}
 
-
-
-
-            <Button variant="primary" onClick={() => setModalShow(true)}>
-                Lisää uusi ohje
-            </Button>
-
-            <MyVerticallyCenteredModal
+            </Col>
+          </Row>
+        </Jumbotron>
+        <Row>
+          <Col>
+            {user !== null ? (
+              <Button variant="primary" onClick={() => setModalShow(true)}>
+                    Lisää uusi ohje
+              </Button>
+            ) : (
+              ''
+            )}
+            <InstructionPopup
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
-
-          </Row>
+          </Col>
           <Row>
+            <ListGroup as='ul'>
+              {product.instructions.map(instruct =>
+                <ListGroup.Item as='li' key={instruct.id}>
+                  <Media>
+                    <img
+                      width={64}
+                      height={64}
+                      className="mr-3"
+                      src="holder.js/64x64"
+                      alt=""
+                    />
+                    <Media.Body>
+                      <h5>{instruct.name}</h5>
 
+                      {instruct.information !== null ? (
+                        <p>
+                          {instruct.information}
+                        </p>
+                      ) : (
+                        ''
+                      )}
 
+                    </Media.Body>
+                  </Media>
 
-
-            {product.instructions[0].information}
-
-            {product.instructions.map(info =>
-              <li id ="productInstruction" key={info.id}>{info.information}</li>
-            )}
+                </ListGroup.Item>
+              )}
+            </ListGroup>
           </Row>
-        </Container>
-
-      ) : (
-        <Container>
-          <Row>
-            <h2>{product.name}</h2>
-
-            {product.instructions.map(info =>
-              <li id ="productInstruction" key={info.id}>{info.information}</li>
-
-            )}
-          </Row>
-        </Container>
-      )}
+        </Row>
+      </Container>
 
 
     </div>

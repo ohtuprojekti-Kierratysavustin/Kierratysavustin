@@ -5,6 +5,8 @@ import { Formik, Form, Field, ErrorMessage  } from 'formik'
 import Notification from './Notification'
 import { useStore } from '../App'
 
+import { Container , Row, Button, Col, Form as Formo } from 'react-bootstrap'
+
 const LoginForm = () => {
   const { setUser, setNotification, clearNotification, setFavorites } = useStore()
 
@@ -38,46 +40,62 @@ const LoginForm = () => {
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik
         return (
-          <div className="container">
-            <h1>Kirjaudu sisään</h1>
-            <Form  >
-              <div className="form-row">
-                <label htmlFor="username">Käyttäjänimi: </label>
-                <Field
-                  type="username"
-                  name="username"
-                  id="usernameInput"
-                  className={errors.username && touched.username ?
-                    'input-error' : null}
-                />
-                <ErrorMessage name="username" component="span" className="error" />
-              </div>
 
-              <div className="form-row">
-                <label htmlFor="password">Salasana: </label>
-                <Field
-                  type="password"
-                  name="password"
-                  id="passwordInput"
-                  className={errors.password && touched.password ?
-                    'input-error' : null}
-                />
-                <ErrorMessage
-                  name="password"
-                  component="span"
-                  className="error"
-                />
-              </div>
-              <button
-                id='loginSubmit'
-                type="submit"
-                className={!(dirty && isValid) ? 'disabled-btn' : ''}
-                disabled={!(dirty && isValid)}
-              >
-              Kirjaudu
-              </button>
+          <div>
+            <Form  >
+              <Container>
+                <Row>
+                  <Col>
+                    <h1>Kirjaudu sisään</h1>
+                  </Col>
+                </Row>
+                <Notification />
+                <Row>
+                  <Col>
+                    <Formo.Label htmlFor="username">Käyttäjänimi: </Formo.Label>
+                    <Formo.Control as={Field}
+                      type="username"
+                      name="username"
+                      id="usernameInput"
+                      className={'form-control' + (errors.username && touched.username ?
+                        'input-error' : null)}
+                    />
+                    <ErrorMessage name="username" component="span" className="error" />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Formo.Label htmlFor="password">Salasana: </Formo.Label>
+                    <Formo.Control as={Field}
+                      type="password"
+                      name="password"
+                      id="passwordInput"
+                      className={'form-control' + (errors.password && touched.password ?
+                        'input-error' : null)}
+                    />
+                    <ErrorMessage
+                      name="password"
+                      component="span"
+                      className="error"
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Button
+                      id='loginSubmit'
+                      type="submit"
+                      className={!(dirty && isValid) ? 'disabled-btn' : ''}
+                      disabled={!(dirty && isValid)}
+                    >
+                    Kirjaudu
+                    </Button>
+
+
+                  </Col>
+                </Row>
+              </Container>
             </Form>
-            <Notification />
           </div>
         )
       }}
