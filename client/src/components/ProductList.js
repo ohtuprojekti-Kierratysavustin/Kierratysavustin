@@ -3,6 +3,10 @@ import {
   Link
 } from 'react-router-dom'
 
+import { Media, ListGroup } from 'react-bootstrap'
+
+import InfoBar from './InfoBar'
+
 /** Component for showing list of products and a link to product page */
 const ProductList = ({ products }) => {
   if (products.length === 0) {
@@ -14,14 +18,41 @@ const ProductList = ({ products }) => {
   } else {
     return (
       <div>
+
+        <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Miten kierrätysavustin toimii'} />
+
         <h2>Tuotteet</h2>
-        <ul>
+        <ListGroup as='ul'>
           {products.map(product =>
-            <li key={product.id}>
-              <Link to={`/products/${product.id}`}>{product.name}</Link>
-            </li>
+            <ListGroup.Item as='li' key={product.id}>
+              <Link to={`/products/${product.id}`}>
+                {console.log(product)}
+                <Media>
+                  <img
+                    width={64}
+                    height={64}
+                    className="mr-3"
+                    src="holder.js/64x64"
+                    alt=""
+                  />
+                  <Media.Body>
+                    <h5>{product.name}</h5>
+
+                    {product.instructions.length !== 0 ? (
+                      <p>
+                        {product.instructions[0].information}
+                      </p>
+                    ) : (
+                      ''
+                    )}
+
+                  </Media.Body>
+                </Media>
+              </Link>
+
+            </ListGroup.Item>
           )}
-        </ul>
+        </ListGroup>
       </div>
     )
 

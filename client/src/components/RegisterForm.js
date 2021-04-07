@@ -44,8 +44,8 @@ const RegisterForm = () => {
           <div className="container">
             <h1>Rekisteröidy Kierratysavustin palveluun</h1>
             <Form  >
-              <div className="form-row">
-                <label htmlFor="username">Käyttäjänimi: </label>
+              <Form.Group controlId="formBasicUsername">
+                <Form.Label htmlFor="username">Käyttäjänimi: </Form.Label>
                 <Field
                   type="username"
                   name="username"
@@ -54,9 +54,9 @@ const RegisterForm = () => {
                     'input-error' : null}
                 />
                 <ErrorMessage name="username" component="span" className="error" />
-              </div>
+              </Form.Group>
 
-              <div className="form-row">
+              <Form.Group controlId="formBasicPassword">
                 <label htmlFor="password">Salasana: </label>
                 <Field
                   type="password"
@@ -70,7 +70,7 @@ const RegisterForm = () => {
                   component="span"
                   className="error"
                 />
-              </div>
+              </Form.Group>
               <button
                 id='registerSubmit'
                 type="submit"

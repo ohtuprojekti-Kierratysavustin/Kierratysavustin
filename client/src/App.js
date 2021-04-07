@@ -11,8 +11,7 @@ import RegisterForm from './components/RegisterForm'
 import SearchForm from './components/SearchForm'
 import LoginForm from './components/LoginForm'
 
-import image from './media/logo.png'
-import { Navbar, Nav, Container, Col, Row, Jumbotron, Media, Image } from 'react-bootstrap'
+import { Navbar, Nav } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export const useStore = create(set => ({
@@ -66,7 +65,7 @@ const App = () => {
     return(
       <div>
 
-        <Navbar bg='secondary' expand='lg'>
+        <Navbar bg='secondary' expand='sm'>
           <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -80,56 +79,34 @@ const App = () => {
           </Navbar.Collapse>
         </Navbar>
 
-        <Jumbotron>
-          <Media>
-            <Image
-              width={128}
-              height={128}
-              className='mr-3'
-              src={image}
-              alt='Logo'
-            />
-            <Media.Body>
-              <h2>Kotitalouden kierrätysavustin</h2>
-              <p>
-                kierrätysavustimesta lyhyesti
-              </p>
-            </Media.Body>
-          </Media>
-        </Jumbotron>
 
-        <Container>
-          <Row>
-            <Col>
-              <Switch>
-                <Route path="/products/:id">
-                  <Product product={product} />
-                </Route>
-                <Route path="/register">
-                  <RegisterForm />
-                </Route>
-                <Route path="/login">
-                  <LoginForm />
-                </Route>
-                <Route path="/products">
-                  <ProductList products={products}/>
-                </Route>
-                <Route path="/searchResults">
-                  <ProductList products={filteredProducts} />
-                </Route>
-                <Route path="/">
-                  <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
-                </Route>
-              </Switch>
-            </Col>
-          </Row>
-        </Container>
+        <Switch>
+          <Route path="/products/:id">
+            <Product product={product} />
+          </Route>
+          <Route path="/register">
+            <RegisterForm />
+          </Route>
+          <Route path="/login">
+            <LoginForm />
+          </Route>
+          <Route path="/products">
+            <ProductList products={products}/>
+          </Route>
+          <Route path="/searchResults">
+            <ProductList products={filteredProducts} />
+          </Route>
+          <Route path="/">
+            <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
+          </Route>
+        </Switch>
+
       </div>
     )
   }
   return (
     <div>
-      <Navbar bg='secondary' expand='lg'>
+      <Navbar bg='secondary' expand='sm' >
         <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -148,47 +125,25 @@ const App = () => {
         </Navbar.Collapse>
       </Navbar>
 
-      <Jumbotron>
-        <Media>
-          <Image
-            width={128}
-            height={128}
-            className='mr-3'
-            src={image}
-            alt='Logo'
-          />
-          <Media.Body>
-            <h2>Kotitalouden kierrätysavustin</h2>
-            <p>
-                kierrätysavustimesta lyhyesti
-            </p>
-          </Media.Body>
-        </Media>
-      </Jumbotron>
 
-      <Container>
-        <Row>
-          <Col>
-            <Switch>
-              <Route path="/products/:id">
-                <Product product={product} />
-              </Route>
-              <Route path="/new">
-                <ProductForm />
-              </Route>
-              <Route path="/products">
-                <ProductList products={products}/>
-              </Route>
-              <Route path="/searchResults">
-                <ProductList products={filteredProducts} />
-              </Route>
-              <Route path="/">
-                <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
-              </Route>
-            </Switch>
-          </Col>
-        </Row>
-      </Container>
+      <Switch>
+        <Route path="/products/:id">
+          <Product product={product} />
+        </Route>
+        <Route path="/new">
+          <ProductForm />
+        </Route>
+        <Route path="/products">
+          <ProductList products={products}/>
+        </Route>
+        <Route path="/searchResults">
+          <ProductList products={filteredProducts} />
+        </Route>
+        <Route path="/">
+          <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
+        </Route>
+      </Switch>
+
     </div>
   )
 }
