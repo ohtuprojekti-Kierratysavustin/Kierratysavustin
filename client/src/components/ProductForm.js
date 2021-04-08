@@ -28,6 +28,7 @@ const ProductForm = () => {
     <div>
       <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Täällä voit lisätä tuotteen palveluun'} />
       <Container>
+
         <Form onSubmit={handleSubmit}>
           <h1>Lisää tuote palveluun</h1>
           <Notification />
