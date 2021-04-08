@@ -3,13 +3,20 @@ import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
 import { useStore  } from '../App'
 
-import { Container, Row, Col, Jumbotron, ListGroup, Media, Modal, Button } from 'react-bootstrap'
 
+import { Container, Row, Col, Jumbotron, ListGroup, Media, Modal, Button, Form } from 'react-bootstrap'
+
+const ulStyle = {
+  maxHeight:'300px',
+  overflowY:'scroll',
+  webkitOverflowScrolling:'touch',
+  border:'solid 1px'
+}
 /** Component for showing product name and recycling information. */
 const Product = ({ product }) => {
   const { user, clearNotification } = useStore()
   const [modalShow, setModalShow] = useState(false)
-
+  // const [showInstruction, setShowInstruction] = (product.instructions[0])
   useEffect(() => {
     clearNotification()
   }, [])
@@ -38,18 +45,18 @@ const Product = ({ product }) => {
 
   return (
     <div>
-      <Container>
-        <Jumbotron>
+      <Jumbotron>
+        <Container>
           <Row>
-            <Col>
+            <Col sm={10}>
+              <h2>{product.name}</h2>
+            </Col>
+            <Col sm={2}>
               {user !== null ? (
                 <FavoritesForm product = {product}/>
               ) : (
                 ''
               )}
-            </Col>
-            <Col>
-              <h2>{product.name}</h2>
             </Col>
           </Row>
           <Row>
@@ -71,52 +78,48 @@ const Product = ({ product }) => {
 
             </Col>
           </Row>
-        </Jumbotron>
-        <Row>
-          <Col>
-            {user !== null ? (
-              <Button variant="primary" onClick={() => setModalShow(true)}>
+        </Container>
+      </Jumbotron>
+      <Container>
+        <Form.Group>
+          {user !== null ? (
+            <Button
+              id='instructionButton'
+              variant="primary"
+              onClick={() => setModalShow(true)}
+            >
                     Lisää uusi ohje
-              </Button>
-            ) : (
-              ''
-            )}
-            <InstructionPopup
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-            />
-          </Col>
-          <Row>
-            <ListGroup as='ul'>
-              {product.instructions.map(instruct =>
-                <ListGroup.Item as='li' key={instruct.id}>
-                  <Media>
-                    <img
-                      width={64}
-                      height={64}
-                      className="mr-3"
-                      src="holder.js/64x64"
-                      alt=""
-                    />
-                    <Media.Body>
-                      <h5>{instruct.name}</h5>
+            </Button>
+          ) : (
+            ''
+          )}
+          <InstructionPopup
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+          />
 
-                      {instruct.information !== null ? (
-                        <p>
-                          {instruct.information}
-                        </p>
-                      ) : (
-                        ''
-                      )}
+        </Form.Group>
+        <ListGroup as='ul' style={ulStyle}>
+          {product.instructions.map(instruct =>
+            <ListGroup.Item as='li' key={instruct.id}>
+              <Media>
+                <Media.Body>
+                  <h5>{instruct.name}</h5>
 
-                    </Media.Body>
-                  </Media>
+                  {instruct.information !== null ? (
+                    <p>
+                      {instruct.information}
+                    </p>
+                  ) : (
+                    ''
+                  )}
 
-                </ListGroup.Item>
-              )}
-            </ListGroup>
-          </Row>
-        </Row>
+                </Media.Body>
+              </Media>
+
+            </ListGroup.Item>
+          )}
+        </ListGroup>
       </Container>
 
 

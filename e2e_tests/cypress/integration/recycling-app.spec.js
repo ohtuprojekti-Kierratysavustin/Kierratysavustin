@@ -79,7 +79,7 @@ describe("Recycling app", () => {
 
           it("its product information can be opened and seen", () => {
             cy.contains("Muovipussi").click()
-            cy.contains("Lisää tuotteelle kierrätysohje")
+            cy.contains("Lisää uusi ohje")
           })
 
           describe("and the product information is opened", () => {
@@ -88,6 +88,7 @@ describe("Recycling app", () => {
             })
 
             it("recycling information can be added to it", () => {
+              cy.get("#instructionButton").click()
               cy.get("#instructionInput").type(
                 "Tuotteen voi uudelleen käyttää roskapussina"
               )

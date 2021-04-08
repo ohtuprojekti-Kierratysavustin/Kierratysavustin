@@ -62,7 +62,7 @@ test('Search form renders and returns correct results', () => {
   )
 
   expect(component.container).toHaveTextContent(
-    'Hakusana'
+    'Etsi'
   )
 
   const input = component.container.querySelector('input')

@@ -1,26 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import loginService from '../services/login'
 import productService from '../services/products'
-import { Formik, Form, Field, ErrorMessage  } from 'formik'
 import Notification from './Notification'
 import { useStore } from '../App'
 
-import { Container , Row, Button, Col, Form as Formo } from 'react-bootstrap'
+import { Container, Button, Form } from 'react-bootstrap'
 
 const LoginForm = () => {
   const { setUser, setNotification, clearNotification, setFavorites } = useStore()
-
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   useEffect(() => {
     clearNotification()
   }, [])
 
-  const initialValues = {
-    username: '',
-    password: ''
-  }
   const onSubmit = async(values) => {
+    values.preventDefault()
     try {
-      const user = await loginService.loginUser(values)
+      const user = await loginService.loginUser({ username:username, password:password })
       setUser(user)
       productService.setToken(user.token)
       window.localStorage.setItem(
@@ -33,73 +30,39 @@ const LoginForm = () => {
     }
   }
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-    >
-      {(formik) => {
-        const { errors, touched, isValid, dirty } = formik
-        return (
 
-          <div>
-            <Form  >
-              <Container>
-                <Row>
-                  <Col>
-                    <h1>Kirjaudu sisään</h1>
-                  </Col>
-                </Row>
-                <Notification />
-                <Row>
-                  <Col>
-                    <Formo.Label htmlFor="username">Käyttäjänimi: </Formo.Label>
-                    <Formo.Control as={Field}
-                      type="username"
-                      name="username"
-                      id="usernameInput"
-                      className={'form-control' + (errors.username && touched.username ?
-                        'input-error' : null)}
-                    />
-                    <ErrorMessage name="username" component="span" className="error" />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Formo.Label htmlFor="password">Salasana: </Formo.Label>
-                    <Formo.Control as={Field}
-                      type="password"
-                      name="password"
-                      id="passwordInput"
-                      className={'form-control' + (errors.password && touched.password ?
-                        'input-error' : null)}
-                    />
-                    <ErrorMessage
-                      name="password"
-                      component="span"
-                      className="error"
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Button
-                      id='loginSubmit'
-                      type="submit"
-                      className={!(dirty && isValid) ? 'disabled-btn' : ''}
-                      disabled={!(dirty && isValid)}
-                    >
+    <div>
+      <Container>
+        <Form onSubmit={onSubmit}>
+          <h1>Kirjaudu sisään</h1>
+          <Notification />
+          <Form.Group>
+            <Form.Label htmlFor="username">Käyttäjänimi: </Form.Label>
+            <Form.Control
+              type="username"
+              name="username"
+              id="usernameInput"
+              onChange = {({ target }) => setUsername(target.value)}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label htmlFor="password">Salasana: </Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              id="passwordInput"
+              onChange = {({ target }) => setPassword(target.value)}
+            />
+
+          </Form.Group>
+          <Button
+            id='loginSubmit'
+            type="submit"
+          >
                     Kirjaudu
-                    </Button>
-
-
-                  </Col>
-                </Row>
-              </Container>
-            </Form>
-          </div>
-        )
-      }}
-    </Formik>
-  )
-}
+          </Button>
+        </Form>
+      </Container>
+    </div>
+  )}
 export default LoginForm

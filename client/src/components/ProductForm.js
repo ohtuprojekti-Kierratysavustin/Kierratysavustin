@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import productService from '../services/products'
 import Notification from './Notification'
 import { useStore } from '../App'
-
+import { Form,Button,Container } from 'react-bootstrap'
+import InfoBar from './InfoBar'
 const ProductForm = () => {
   const { products, setProducts, setNotification , clearNotification } = useStore()
   useEffect(() => {
@@ -18,26 +19,31 @@ const ProductForm = () => {
         setNotification(`Tuote ${productName} lisätty!`, 'success')
       }).catch(e => {
         console.log(e)
-        setNotification('Kirjaudu sisään lisätäksesi tuotteita', 'error')
+        setNotification('Et voi lisätä tyhjää tuotetta', 'error')
       })
     setProductName('')
   }
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <Notification />
-        <label>
-          Tuotteen nimi
-          <input id="nameInput"
-            type='text'
-            value={productName}
-            onChange={({ target }) => setProductName(target.value)}
-          />
-        </label>
-        <br />
-        <button id="addproductBtn" type='submit'>lisää</button>
-      </form>
+      <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Täällä voit lisätä tuotteen palveluun'} />
+      <Container>
+        <Form onSubmit={handleSubmit}>
+          <h1>Lisää tuote palveluun</h1>
+          <Notification />
+          <Form.Group>
+
+            <Form.Label> Tuotteen nimi</Form.Label>
+            <Form.Control id="nameInput"
+              type='text'
+              value={productName}
+              onChange={({ target }) => setProductName(target.value)}
+            />
+          </Form.Group>
+          <Button id="addproductBtn" type='submit'>lisää</Button>
+        </Form>
+      </Container>
+
     </div>
   )
 }

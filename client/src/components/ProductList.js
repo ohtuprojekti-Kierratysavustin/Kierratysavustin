@@ -3,7 +3,7 @@ import {
   Link
 } from 'react-router-dom'
 
-import { Media, ListGroup } from 'react-bootstrap'
+import { Media, ListGroup, Container } from 'react-bootstrap'
 
 import InfoBar from './InfoBar'
 
@@ -19,40 +19,43 @@ const ProductList = ({ products }) => {
     return (
       <div>
 
+
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Miten kierrätysavustin toimii'} />
 
-        <h2>Tuotteet</h2>
-        <ListGroup as='ul'>
-          {products.map(product =>
-            <ListGroup.Item as='li' key={product.id}>
-              <Link to={`/products/${product.id}`}>
-                {console.log(product)}
-                <Media>
-                  <img
-                    width={64}
-                    height={64}
-                    className="mr-3"
-                    src="holder.js/64x64"
-                    alt=""
-                  />
-                  <Media.Body>
-                    <h5>{product.name}</h5>
+        <Container>
+          <h2>Tuotteet</h2>
+          <ListGroup as='ul'>
+            {products.map(product =>
+              <ListGroup.Item as='li' key={product.id}>
+                <Link to={`/products/${product.id}`}>
+                  {console.log(product)}
+                  <Media>
+                    <img
+                      width={64}
+                      height={64}
+                      className="mr-3"
+                      src="holder.js/64x64"
+                      alt=""
+                    />
+                    <Media.Body>
+                      <h5>{product.name}</h5>
 
-                    {product.instructions.length !== 0 ? (
-                      <p>
-                        {product.instructions[0].information}
-                      </p>
-                    ) : (
-                      ''
-                    )}
+                      {product.instructions.length !== 0 ? (
+                        <p>
+                          {product.instructions[0].information}
+                        </p>
+                      ) : (
+                        ''
+                      )}
 
-                  </Media.Body>
-                </Media>
-              </Link>
+                    </Media.Body>
+                  </Media>
+                </Link>
 
-            </ListGroup.Item>
-          )}
-        </ListGroup>
+              </ListGroup.Item>
+            )}
+          </ListGroup>
+        </Container>
       </div>
     )
 

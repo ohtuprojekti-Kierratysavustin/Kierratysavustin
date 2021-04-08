@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import registerService from '../services/register'
 import Notification from './Notification'
 import { Formik, Form, Field, ErrorMessage  } from 'formik'
-import { Row, Col,Container,Button, Form as Formo } from 'react-bootstrap'
+import { Container,Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
 import { useStore } from '../App'
 const RegisterForm = () => {
@@ -40,59 +40,57 @@ const RegisterForm = () => {
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik
         return (
-          <div className="container">
-            <Form  >
-              <Container>
-                <Row>
-                  <Col>
-                    <h1>Kirjaudu sisään</h1>
-                  </Col>
-                </Row>
+          <div>
+            <Container>
+              <Form  >
+
+
+                <h1>Rekisteröidy</h1>
+
+
                 <Notification />
-                <Row>
-                  <Col>
-                    <label htmlFor="username">Käyttäjänimi: </label>
-                    <Formo.Control as={Field}
-                      type="username"
-                      name="username"
-                      id="usernameInput"
-                      className={'form-control' + (errors.username && touched.username ?
-                        'input-error' : null)}
-                    />
-                    <ErrorMessage name="username" component="span" className="error" />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <label htmlFor="password">Salasana: </label>
-                    <Formo.Control as={Field}
-                      type="password"
-                      name="password"
-                      id="passwordInput"
-                      className={'form-control' + (errors.password && touched.password ?
-                        'input-error' : null)}
-                    />
-                    <ErrorMessage
-                      name="password"
-                      component="span"
-                      className="error"
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Button
-                      id='loginSubmit'
-                      type="submit"
-                      className={!(dirty && isValid) ? 'disabled-btn' : ''}
-                      disabled={!(dirty && isValid)}
-                    >
-                    Kirjaudu
-                    </Button>
-                  </Col>
-                </Row>
-              </Container>
-            </Form>
+                <Formo.Group>
+                  <Formo.Label htmlFor="username">Käyttäjänimi: </Formo.Label>
+                  <Formo.Control as={Field}
+                    type="username"
+                    name="username"
+                    id="usernameInput"
+                    className={'form-control' + (errors.username && touched.username ?
+                      'input-error' : null)}
+                  />
+                  <ErrorMessage
+                    name="username"
+                    component="span"
+                    className="error"
+                  />
+                </Formo.Group>
+
+                <Formo.Group>
+                  <Formo.Label htmlFor="password">Salasana: </Formo.Label>
+                  <Formo.Control as={Field}
+                    type="password"
+                    name="password"
+                    id="passwordInput"
+                    className={'form-control' + (errors.password && touched.password ?
+                      'input-error' : null)}
+                  />
+                  <ErrorMessage
+                    name="password"
+                    component="span"
+                    className="error"
+                  />
+                </Formo.Group>
+                <Button
+                  id='registerSubmit'
+                  type="submit"
+                  className={!(dirty && isValid) ? 'disabled-btn' : ''}
+                  disabled={!(dirty && isValid)}
+                >
+                    Rekisteröidy
+                </Button>
+
+              </Form>
+            </Container>
           </div>
         )
       }}
