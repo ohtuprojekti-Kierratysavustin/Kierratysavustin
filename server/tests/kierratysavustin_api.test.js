@@ -168,8 +168,27 @@ describe('One account already in database', () => {
     expect(resultB.body.users[0]).not.toBe(decodedToken.id)
   })
 
+  test('user can add instruction for product', async () => {
+    const user = {
+      username: 'root',
+      password: 'salasana',
+    }
+    const newInstruction = {
+      information: 'maito',
+    }
+    const token = await getToken(user)
+    const allProducts = await api.get('/api/products')
+    const product = allProducts.body[0]
+    const result = await api.
+      post(`/api/products/${product.id}/instructions`)
+      .set('Authorization', 'bearer ' + token)
+      .set('Content-Type',  'application/json')
+      .send(newInstruction)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    expect(result.body.information).toBe(newInstruction.information)
 
-
+  })
 })
 
 afterAll(() => {
