@@ -28,7 +28,6 @@ const ProductList = ({ products }) => {
             {products.map(product =>
               <ListGroup.Item as='li' key={product.id}>
                 <Link to={`/products/${product.id}`}>
-                  {console.log(product)}
                   <Media>
                     <img
                       width={64}
