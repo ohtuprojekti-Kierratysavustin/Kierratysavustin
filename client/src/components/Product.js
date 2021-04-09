@@ -23,7 +23,7 @@ const Product = ({ product }) => {
 
   if (!product) return null
 
-  function InstructionPopup(props) {
+  const InstructionPopup = (props) =>  {
     return (
       <Modal
         {...props}
