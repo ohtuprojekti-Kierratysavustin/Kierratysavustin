@@ -6,7 +6,8 @@ const config = require('../utils/config')
 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find({}).populate('instructions', {
-    information: 1,
+    score: 1,
+    information: 1
   })
   res.json(products.map((product) => product.toJSON()))
 })
@@ -43,7 +44,7 @@ productRouter.post('/', async (req, res) => {
   }
   try {
     const product = new Product({
-      name: body.productName,
+      name: body.name,
     })
     const result = await product.save()
     return res.status(201).json(result)
