@@ -150,6 +150,23 @@ describe('One account already in database', () => {
       expect(allProducts.body).toHaveLength(productsData.length + 1)
     })
 
+    test('user can add instruction for product', async () => {
+      const newInstruction = {
+        information: 'maito',
+      }
+      const allProducts = await api.get('/api/products')
+      const product = allProducts.body[0]
+      const result = await api.
+        post(`/api/products/${product.id}/instructions`)
+        .set('Authorization', 'bearer ' + token)
+        .set('Content-Type',  'application/json')
+        .send(newInstruction)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+      expect(result.body.information).toBe(newInstruction.information)
+  
+    })
+
     test('user can add products to favourites', async () => {
 
       const allProducts = await api.get('/api/products')
