@@ -1,54 +1,41 @@
-import React, { useState } from 'react'
+import React from 'react'
 import productService from '../services/products'
 import Notification from './Notification'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as yup from 'yup'
+import { useStore } from '../App'
 
-const InstructionForm = ({ id }) => {
-  const [notificationMessage, setNotifcationMessage] = useState(null)
-  const [conditionValue, setCodnitionValue] = useState('error')
-  const notify = (message, condition) => {
-    setNotifcationMessage(message),
-      setCodnitionValue(condition)
+const InstructionForm = ({ product }) => {
+  const { updateProduct, setNotification } = useStore()
+  const notify = (message ) => {
+    setNotification(message),
     setTimeout(() => {
-      setNotifcationMessage(null)
+      setNotification(null)
     }, 5000)
   }
   const InstructionSchema = yup.object().shape({
-    instructionText: yup.string().min(2, 'Ohjeen tulee olla vähintään 3 kirjainta pitkä').max(500, 'Ohje saa olla enintään 500 merkkiä pitkä').required('Ohje vaaditaan'),
+    instructionText: yup.string().min(3, 'Ohjeen tulee olla vähintään 3 kirjainta pitkä').max(500, 'Ohje saa olla enintään 500 merkkiä pitkä').required('Ohje vaaditaan'),
   })
 
   const initialValues = {
-    instructionText: '',
+    instructionText: ''
   }
 
   const handleSubmit = async (values) => {
     const information = values.instructionText
     const info = { information }
-    try {
-      await productService.createInstruction(id, info)
-      notify('Ohjeen lisääminen onnistui', 'succes')
-    } catch (error) {
-      notify('Ohjeen lisääminen ei onnistunut', 'error')
-    }
+    productService.createInstruction(product.id, info)
+      .then(i => {
+        product.instructions.push(i)
+        updateProduct(product)
+        notify('Ohjeen lisääminen onnistui', 'succes')
+      }).catch(e => {
+        console.log(e)
+        notify('Ohjeen lisääminen ei onnistunut', 'error')
+      })
   }
 
   return (
-    // <div>
-    //   <form onSubmit={handleSubmit}>
-    //     <label>
-    //         Kierrätysohje:
-    //       <input id="instructionInput"
-    //         type='text'
-    //         value={information}
-    //         onChange={({ target }) => setInformation(target.value)}
-    //       />
-    //     </label>
-    //     <br/>
-    //     <button id="addInstruction" type='submit'>lisää</button>
-    //   </form>
-    // </div>
-
     <Formik
       initialValues={initialValues}
       validationSchema={InstructionSchema}
@@ -64,27 +51,26 @@ const InstructionForm = ({ id }) => {
                 <label htmlFor="instructionText">Anna kierrätysohje: </label>
                 <Field
                   type="text"
-                  name="instructionInput"
-                  id="instructionInput"
+                  name="instructionText"
+                  id="instructionText"
                   className={errors.instructionText && touched.instructionText ?
                     'input-error' : null}
-
-
                 />
                 <ErrorMessage name="instructionText" component="span" className="error" />
-              </div>
 
+              </div>
               <button
                 id="addInstruction"
                 type="submit"
                 className={!(dirty && isValid) ? 'disabled-btn' : ''}
                 disabled={!(dirty && isValid)}
               >
-                Lisää ohje
+              Lisää ohje
               </button>
+
             </Form>
 
-            <Notification message={notificationMessage} condition={conditionValue} />
+            <Notification />
 
           </div>
         )

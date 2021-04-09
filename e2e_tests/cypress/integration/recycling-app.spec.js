@@ -88,7 +88,7 @@ describe("Recycling app", () => {
             })
 
             it("recycling information can be added to it", () => {
-              cy.get("#instructionInput").type(
+              cy.get("#instructionText").type(
                 "Tuotteen voi uudelleen käyttää roskapussina"
               )
               cy.get("#addInstruction").click()
