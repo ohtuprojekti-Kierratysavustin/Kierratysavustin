@@ -66,9 +66,13 @@ test('all products are returned', async () => {
 })
 
 test('all products instructions are ordered by score', async () => {
-  const user = {
-    username: 'root',
-    password: 'salasana',
+  const passwordHash = await bcrypt.hash('testing', 10)
+  let user = new User({ username: 'testing', passwordHash })
+
+  await user.save()
+  user = {
+    username: 'testing',
+    password: 'testing',
   }
 
   token = await getToken(user)
