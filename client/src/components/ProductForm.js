@@ -11,7 +11,7 @@ const ProductForm = () => {
   const [productName, setProductName] = useState('')
   const handleSubmit = (event) => {
     event.preventDefault()
-    const product = { productName }
+    const product = { name: productName }
     productService.create(product)
       .then(returnedProduct => {
         setProducts(products.concat(returnedProduct))

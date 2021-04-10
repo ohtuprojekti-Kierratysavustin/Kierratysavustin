@@ -41,7 +41,7 @@ const addFavorite = async (newObject) => {
 }
 
 const removeFavorite = async (newObject) => {
-  const response =  axios.post(`${userUrl}/remove/${newObject.id}`, newObject,getConfig())
+  const response =  axios.put(`${userUrl}/${newObject.id}`, newObject, getConfig())
   return response.then(response => response.data)
 }
 export default { create, getAll, createInstruction, setToken, removeToken ,addFavorite, removeFavorite, getFavorites }
