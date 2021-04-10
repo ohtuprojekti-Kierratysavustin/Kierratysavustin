@@ -65,6 +65,74 @@ test('all products are returned', async () => {
   expect(response.body).toHaveLength(productsData.length)
 })
 
+test('all products instructions are ordered by score', async () => {
+  const user = {
+    username: 'root',
+    password: 'salasana',
+  }
+
+  token = await getToken(user)
+  let allProducts = await api.get('/api/products')
+  const newInstruction1 = {
+    information: 'first',
+  }
+  const newInstruction2 = {
+    information: 'second',
+  }
+  const newInstruction3 = {
+    information: 'third',
+  }
+  const product = allProducts.body[1]
+  await api.
+    post(`/api/products/${product.id}/instructions`)
+    .set('Authorization', 'bearer ' + token)
+    .set('Content-Type',  'application/json')
+    .send(newInstruction1)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  await api.
+    post(`/api/products/${product.id}/instructions`)
+    .set('Authorization', 'bearer ' + token)
+    .set('Content-Type',  'application/json')
+    .send(newInstruction2)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  await api.
+    post(`/api/products/${product.id}/instructions`)
+    .set('Authorization', 'bearer ' + token)
+    .set('Content-Type',  'application/json')
+    .send(newInstruction3)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  allProducts = await api.get('/api/products')
+  
+  const firstInstructionAtStart = allProducts.body[1].instructions[0].id
+  const secondInstructionAtStart = allProducts.body[1].instructions[1].id
+  const thirdInstructionAtStart = allProducts.body[1].instructions[2].id
+  
+
+  await api
+    .post('/api/users/likes/' + allProducts.body[1].instructions[2].id)
+    .set('Authorization', `bearer ${token}`)
+    .set('Content-Type',  'application/json')
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  await api
+    .post('/api/users/dislikes/' + allProducts.body[1].instructions[0].id)
+    .set('Authorization', `bearer ${token}`)
+    .set('Content-Type',  'application/json')
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  allProducts = await api.get('/api/products')
+
+  expect(allProducts.body[1].instructions[0].id).toBe(thirdInstructionAtStart)
+  expect(allProducts.body[1].instructions[1].id).toBe(secondInstructionAtStart)
+  expect(allProducts.body[1].instructions[2].id).toBe(firstInstructionAtStart)
+})
+
 test('known existing product is in all products', async () => {
   const response = await api.get('/api/products')
   const contents = response.body.map((r) => r.name)
