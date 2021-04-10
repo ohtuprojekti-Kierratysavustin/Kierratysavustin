@@ -9,7 +9,10 @@ productRouter.get('/', async (req, res) => {
     score: 1,
     information: 1
   })
+
+  products.forEach(p => p.instructions.sort((a,b) => b.score - a.score))
   res.json(products.map((product) => product.toJSON()))
+
 })
 
 productRouter.get('/user', async (req, res) => {
