@@ -22,7 +22,6 @@ const Product = ({ product }) => {
   }, [])
 
   if (!product) return null
-
   const InstructionPopup = (props) =>  {
     return (
       <Modal
@@ -107,13 +106,27 @@ const Product = ({ product }) => {
                   <h5>{instruct.name}</h5>
 
                   {instruct.information !== null ? (
-                    <p>
-                      {instruct.information}
-                    </p>
+                    <Container>
+                      <Row>
+                        <Col>
+                          <p>
+                            {instruct.information}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className="justify-content-md-center">
+                        <Col md lg="1">
+                          <Button>Like</Button>
+                        </Col>
+                        <Col md ="auto"><p>pisteet</p></Col>
+                        <Col xs lg="0">
+                          <Button>Dislike</Button>
+                        </Col>
+                      </Row>
+                    </Container>
                   ) : (
                     ''
                   )}
-
                 </Media.Body>
               </Media>
 
