@@ -11,7 +11,6 @@ const ProductForm = () => {
   useEffect(() => {
     clearNotification()
   }, [])
-  
   const ProductSchema = yup.object().shape({
     productName: yup.string().min(2, 'Nimen tulee olla vähintään 2 kirjainta pitkä').required('Tuotteen nimi vaaditaan'),
   })
