@@ -10,7 +10,7 @@ test('InstructionForm renders', () => {
   )
 
   expect(component.container).toHaveTextContent(
-    'Kierrätysohje:'
+    'Anna kierrätysohje: Lisää ohje'
   )
 
 })
