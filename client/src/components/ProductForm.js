@@ -20,7 +20,7 @@ const ProductForm = () => {
   const handleSubmit = async (values) => {
     console.log(values.productName)
     const productName = values.productName
-    const product =  { productName }
+    const product =  { name: productName }
     productService.create(product)
       .then(returnedProduct => {
         setProducts(products.concat(returnedProduct))
