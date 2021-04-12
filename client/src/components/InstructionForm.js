@@ -36,6 +36,7 @@ const InstructionForm = ({ product }) => {
   }
 
   return (
+
     <Formik
       initialValues={initialValues}
       validationSchema={InstructionSchema}
