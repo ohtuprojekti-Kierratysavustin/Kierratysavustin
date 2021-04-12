@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import InstructionForm from './InstructionForm'
+import FavoritesForm from './FavoritesForm'
 import { useStore } from '../App'
 
 /** Component for showing product name and recycling information. */
@@ -21,6 +22,7 @@ const Product = ({ product }) => {
 
       {user !== null ? (
         <div>
+          <FavoritesForm product = {product}/>
           <h2>Lisää tuotteelle kierrätysohje</h2>
           <InstructionForm product = {product}/>
         </div>

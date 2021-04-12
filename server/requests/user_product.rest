@@ -1,0 +1,3 @@
+post  http://localhost:3001/api/users/products/product-id-tähän
+Content-Type: application/json
+Authorization: bearer bearer-token-tähän
