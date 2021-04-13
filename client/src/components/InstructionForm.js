@@ -27,6 +27,7 @@ const InstructionForm = ({ product }) => {
     productService.createInstruction(product.id, info)
       .then(i => {
         product.instructions.push(i)
+        product.instructions.sort((a,b) => b.score - a.score)
         updateProduct(product)
         notify('Ohjeen lisääminen onnistui', 'succes')
       }).catch(e => {
