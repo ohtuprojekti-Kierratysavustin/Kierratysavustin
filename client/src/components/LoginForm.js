@@ -26,6 +26,7 @@ const LoginForm = () => {
       )
       productService.getFavorites(user.id).then(favorites => setFavorites(favorites))
       setNotification('Kirjautuminen onnistui', 'success')
+      window.location.reload(true)
     } catch (e) {
       setNotification('Väärä nimi tai salasana', 'error')
     }

@@ -15,12 +15,16 @@ export const useStore = create(set => ({
   products: [],
   filteredProducts: [],
   favorites: [],
+  likes:[],
+  dislikes: [],
   user: null,
   notification: { message: null, condition: null },
   timer: null,
   setUser: (param) => set(() => ({ user: param })),
   setProducts: (param) => set(() => ({ products: param })),
   setFavorites: (param) => set(() => ({ favorites: param })),
+  setLikes: (param) => set(() => ({ likes: param })),
+  setDislikes: (param) => set(() => ({ dislikes: param })),
   setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
   clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
   setNotification: (message, condition) => set(state => ({
@@ -37,7 +41,7 @@ export const useStore = create(set => ({
 }))
 
 const App = () => {
-  const { products, setProducts, filteredProducts, setFilteredProducts, user, setUser, setFavorites } = useStore()
+  const { products, setProducts, filteredProducts, setFilteredProducts, user, setUser, setFavorites,setLikes,setDislikes } = useStore()
 
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
@@ -50,6 +54,8 @@ const App = () => {
       setUser(userlogin)
       productService.setToken(userlogin.token)
       productService.getFavorites(userlogin.id).then(favorites => setFavorites(favorites))
+      productService.getLikes().then(likes => setLikes(likes))
+      productService.getDislikes().then(dislikes => setDislikes(dislikes))
     }
   }, [])
 

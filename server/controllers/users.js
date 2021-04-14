@@ -30,6 +30,29 @@ const getTokenFrom = (req) => {
   return null
 }
 
+userRouter.get('/votes/:id/', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const instruction = await Instruction.findById(req.params.id)
+  if (!instruction) {
+    return res.status(400).json({ error: 'No instruction' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+  return res.status(200).json(instruction.score)
+})
+
 userRouter.post('/likes/:id/', async (req, res) => {
   const token = getTokenFrom(req)
   if (!token) {
@@ -99,6 +122,24 @@ userRouter.put('/likes/:id', async (req, res) => {
   res.status(201).json(instruction)
 })
 
+userRouter.get('/likes/', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+  return res.status(201).json(user.likes)
+})
+
 userRouter.post('/dislikes/:id/', async (req, res) => {
   const token = getTokenFrom(req)
   if (!token) {
@@ -166,6 +207,24 @@ userRouter.put('/dislikes/:id', async (req, res) => {
   await instruction.save()
   await user.save()
   res.status(201).json(instruction)
+})
+
+userRouter.get('/dislikes/', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+  return res.status(201).json(user.dislikes)
 })
 
 userRouter.post('/products/:id/', async (req, res) => {
