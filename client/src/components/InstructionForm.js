@@ -5,7 +5,7 @@ import { useStore } from '../App'
 
 import {  Form, Button, Container, } from 'react-bootstrap'
 
-const InstructionForm = ({ product }) => {
+const InstructionForm = ({ product, handleClose }) => {
   const [information, setInformation] = useState('')
   const { updateProduct, setNotification } = useStore()
   const handleSubmit = (event) => {
@@ -15,6 +15,7 @@ const InstructionForm = ({ product }) => {
       .then(i => {
         product.instructions.push(i)
         updateProduct(product)
+        handleClose()
         setNotification('Ohje lisätty!', 'success')
       }).catch(e => {
         console.log(e)

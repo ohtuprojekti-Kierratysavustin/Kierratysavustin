@@ -4,7 +4,9 @@ import Notification from './Notification'
 import { useStore } from '../App'
 import { Form,Button,Container } from 'react-bootstrap'
 import InfoBar from './InfoBar'
+import { useHistory } from 'react-router-dom'
 const ProductForm = () => {
+  const history = useHistory()
   const { products, setProducts, setNotification , clearNotification } = useStore()
   useEffect(() => {
     clearNotification()
@@ -16,6 +18,7 @@ const ProductForm = () => {
     productService.create(product)
       .then(returnedProduct => {
         setProducts(products.concat(returnedProduct))
+        history.push(`products/${returnedProduct.id}`)
         setNotification(`Tuote ${productName} lisätty!`, 'success')
       }).catch(e => {
         console.log(e)

@@ -3,17 +3,17 @@ import {
   Link
 } from 'react-router-dom'
 
+import logo from '../media/logo.png'
 import { Container, Media, ListGroup } from 'react-bootstrap'
 
 const FavouriteProducts = ({ userProducts }) => {
-
   return (
     <div>
       <Container>
         <h2>Suosikki tuotteet</h2>
         <ListGroup as='ul'>
           {userProducts.map(product =>
-            <ListGroup.Item as='li' key={product.id}>
+            <ListGroup.Item action as='li' key={product.id}>
               <Link to={`/products/${product.id}`}>
 
                 <Media>
@@ -21,7 +21,7 @@ const FavouriteProducts = ({ userProducts }) => {
                     width={64}
                     height={64}
                     className="mr-3"
-                    src="holder.js/64x64"
+                    src={logo}
                     alt=""
                   />
                   <Media.Body>

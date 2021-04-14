@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
 import { useStore  } from '../App'
-
-
+import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Media, Modal, Button, Form } from 'react-bootstrap'
 
 const ulStyle = {
@@ -14,8 +13,13 @@ const ulStyle = {
 }
 /** Component for showing product name and recycling information. */
 const Product = ({ product }) => {
+  const history = useHistory()
   const { user, clearNotification } = useStore()
+
   const [modalShow, setModalShow] = useState(false)
+
+  const handleClose = () => setModalShow(false)
+  const handleShow = () => setModalShow(true)
   // const [showInstruction, setShowInstruction] = (product.instructions[0])
   useEffect(() => {
     clearNotification()
@@ -36,7 +40,7 @@ const Product = ({ product }) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <InstructionForm product = {product}/>
+          <InstructionForm product = {product} handleClose={handleClose}/>
         </Modal.Body>
       </Modal>
     )
@@ -46,6 +50,7 @@ const Product = ({ product }) => {
     <div>
       <Jumbotron>
         <Container>
+          <Row><Col><Button onClick={() => history.goBack()}>takaisin</Button></Col></Row>
           <Row>
             <Col sm={10}>
               <h2>{product.name}</h2>
@@ -65,6 +70,7 @@ const Product = ({ product }) => {
               </h4>
             </Col>
           </Row>
+
           <Row>
             <Col>
               {product.instructions.length !== 0 ? (
@@ -85,7 +91,7 @@ const Product = ({ product }) => {
             <Button
               id='instructionButton'
               variant="primary"
-              onClick={() => setModalShow(true)}
+              onClick={() => handleShow(true)}
             >
                     Lisää uusi ohje
             </Button>
@@ -94,33 +100,32 @@ const Product = ({ product }) => {
           )}
           <InstructionPopup
             show={modalShow}
-            onHide={() => setModalShow(false)}
+            onHide={() => handleClose(false)}
           />
 
         </Form.Group>
         <ListGroup as='ul' style={ulStyle}>
           {product.instructions.map(instruct =>
-            <ListGroup.Item as='li' key={instruct.id}>
+            <ListGroup.Item action as='li' key={instruct.id}>
               <Media>
                 <Media.Body>
-                  <h5>{instruct.name}</h5>
 
                   {instruct.information !== null ? (
                     <Container>
                       <Row>
                         <Col>
                           <p>
-                            {instruct.information}
+                            {instruct.information.slice(0, 250)}
                           </p>
                         </Col>
                       </Row>
                       <Row className="justify-content-md-center">
                         <Col md lg="1">
-                          <Button>Like</Button>
+                          <Button variant='success'>Like</Button>
                         </Col>
                         <Col md ="auto"><p>pisteet</p></Col>
                         <Col xs lg="0">
-                          <Button>Dislike</Button>
+                          <Button variant='danger'>Dislike</Button>
                         </Col>
                       </Row>
                     </Container>

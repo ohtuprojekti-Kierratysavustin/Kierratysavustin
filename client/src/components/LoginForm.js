@@ -3,6 +3,7 @@ import loginService from '../services/login'
 import productService from '../services/products'
 import Notification from './Notification'
 import { useStore } from '../App'
+import { useHistory } from 'react-router-dom'
 
 import { Container, Button, Form } from 'react-bootstrap'
 
@@ -10,6 +11,7 @@ const LoginForm = () => {
   const { setUser, setNotification, clearNotification, setFavorites } = useStore()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const history = useHistory()
   useEffect(() => {
     clearNotification()
   }, [])
@@ -25,6 +27,7 @@ const LoginForm = () => {
       )
       productService.getFavorites(user.id).then(favorites => setFavorites(favorites))
       setNotification('Kirjautuminen onnistui', 'success')
+      history.push('/')
     } catch (e) {
       setNotification('Väärä nimi tai salasana', 'error')
     }

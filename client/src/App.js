@@ -10,7 +10,7 @@ import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
 import SearchForm from './components/SearchForm'
 import LoginForm from './components/LoginForm'
-
+//import Notification from './components/Notification'
 import { Navbar, Nav } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -61,80 +61,55 @@ const App = () => {
     ? products.find(p => p.id === match.params.id)
     : null
 
-  if(user === null){
-    return(
-      <div>
-
-        <Navbar bg='secondary' expand='sm'>
-          <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className='mr-auto'>
-              <Nav.Link id='productList' as={Link} to="/products">tuotteet</Nav.Link>
-            </Nav>
-            <Nav className='justify-content-end'>
-              <Nav.Link id='registerButton' as={Link} to="/register">rekisteröidy</Nav.Link>
-              <Nav.Link id='loginButton' as={Link} to="/login">kirjaudu</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-
-
-        <Switch>
-          <Route path="/products/:id">
-            <Product product={product} />
-          </Route>
-          <Route path="/register">
-            <RegisterForm />
-          </Route>
-          <Route path="/login">
-            <LoginForm />
-          </Route>
-          <Route path="/products">
-            <ProductList products={products}/>
-          </Route>
-          <Route path="/searchResults">
-            <ProductList products={filteredProducts} />
-          </Route>
-          <Route path="/">
-            <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
-          </Route>
-        </Switch>
-
-      </div>
-    )
-  }
   return (
     <div>
-      <Navbar bg='secondary' expand='sm' >
+      <Navbar bg='secondary' expand='sm'>
         <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className='mr-auto'>
-            <Nav.Link id='productForm' as={Link} to="/new">lisää tuote</Nav.Link>
+            {user !== null ? (
+              <Nav.Link id='productForm' as={Link} to="/new">lisää tuote</Nav.Link>
+            ) : (
+              ''
+            )}
             <Nav.Link id='productList' as={Link} to="/products">tuotteet</Nav.Link>
           </Nav>
-          <Nav className='justify-content-end'>
-            <Nav.Link id='LogoutButton' as={Link} onClick={() => {
-              window.localStorage.clear()
-              setUser(null)
-              productService.removeToken()
-            }} to="/">kirjaudu ulos
-            </Nav.Link>
-          </Nav>
+
+          {user !== null ? (
+            <Nav className='justify-content-end'>
+              <Nav.Link id='LogoutButton' as={Link} onClick={() => {
+                window.localStorage.clear()
+                setUser(null)
+                productService.removeToken()
+              }} to="/">kirjaudu ulos
+              </Nav.Link>
+            </Nav>
+          ) : (
+            <Nav className='justify-content-end'>
+              <Nav.Link id='registerButton' as={Link} to="/register">rekisteröidy</Nav.Link>
+              <Nav.Link id='loginButton' as={Link} to="/login">kirjaudu</Nav.Link>
+            </Nav>
+          )}
+
         </Navbar.Collapse>
       </Navbar>
-
 
       <Switch>
         <Route path="/products/:id">
           <Product product={product} />
         </Route>
+        <Route path="/register">
+          <RegisterForm />
+        </Route>
+        <Route path="/login">
+          <LoginForm />
+        </Route>
         <Route path="/new">
           <ProductForm />
         </Route>
         <Route path="/products">
-          <ProductList products={products}/>
+          <ProductList products={products} setFilteredProducts={setFilteredProducts}/>
         </Route>
         <Route path="/searchResults">
           <ProductList products={filteredProducts} />
@@ -143,9 +118,9 @@ const App = () => {
           <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
         </Route>
       </Switch>
-
     </div>
   )
+
 }
 
 export default App
