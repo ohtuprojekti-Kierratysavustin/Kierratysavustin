@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import {
+  Link
+} from 'react-router-dom'
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
+//import ProductInstruction from './ProductInstruction'
 import { useStore  } from '../App'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Media, Modal, Button, Form } from 'react-bootstrap'
+//import ProductInstruction from './ProductInstruction'
 
 const ulStyle = {
   maxHeight:'300px',
@@ -15,18 +20,27 @@ const ulStyle = {
 const Product = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
-
+  //const tuote = setProduct(product)
+  //console.log('prod', tuote)
   const [modalShow, setModalShow] = useState(false)
-
+  // eslint-disable-next-line no-unused-vars
+  //const [ohje,setOhje] = useState(product)
+  //console.log('L=L', products)
   const handleClose = () => setModalShow(false)
   const handleShow = () => setModalShow(true)
   // const [showInstruction, setShowInstruction] = (product.instructions[0])
   useEffect(() => {
     clearNotification()
   }, [])
+  console.log('tuote',product)
 
   if (!product) return null
+  // eslint-disable-next-line no-unused-vars
+  //const [productInstruction, setProductInstruction] = useState(product.instructions[0].information)
+  //console.log('mv', productInstruction)
+
   const InstructionPopup = (props) =>  {
+
     return (
       <Modal
         {...props}
@@ -45,7 +59,12 @@ const Product = ({ product }) => {
       </Modal>
     )
   }
+  /*
+  const changeInstruction = value => {
 
+    setProductInstruction(value)
+  }
+*/
   return (
     <div>
       <Jumbotron>
@@ -75,7 +94,7 @@ const Product = ({ product }) => {
             <Col>
               {product.instructions.length !== 0 ? (
                 <p>
-                  {product.instructions[0].information}
+                  p
                 </p>
               ) : (
                 <span>ei ohjeita</span>
@@ -107,34 +126,37 @@ const Product = ({ product }) => {
         <ListGroup as='ul' style={ulStyle}>
           {product.instructions.map(instruct =>
             <ListGroup.Item action as='li' key={instruct.id}>
-              <Media>
-                <Media.Body>
+              <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`} state={{
+                product:product,
+              }}>
+                <Media>
+                  <Media.Body>
 
-                  {instruct.information !== null ? (
-                    <Container>
-                      <Row>
-                        <Col>
-                          <p>
-                            {instruct.information.slice(0, 250)}
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row className="justify-content-md-center">
-                        <Col md lg="1">
-                          <Button variant='success'>Like</Button>
-                        </Col>
-                        <Col md ="auto"><p>pisteet</p></Col>
-                        <Col xs lg="0">
-                          <Button variant='danger'>Dislike</Button>
-                        </Col>
-                      </Row>
-                    </Container>
-                  ) : (
-                    ''
-                  )}
-                </Media.Body>
-              </Media>
-
+                    {instruct.information !== null ? (
+                      <Container>
+                        <Row>
+                          <Col>
+                            <p>
+                              {instruct.information.slice(0, 250)}
+                            </p>
+                          </Col>
+                        </Row>
+                        <Row className="justify-content-md-center">
+                          <Col md lg="1">
+                            <Button variant='success'>Like</Button>
+                          </Col>
+                          <Col md ="auto"><p>pisteet</p></Col>
+                          <Col xs lg="0">
+                            <Button variant='danger'>Dislike</Button>
+                          </Col>
+                        </Row>
+                      </Container>
+                    ) : (
+                      ''
+                    )}
+                  </Media.Body>
+                </Media>
+              </Link>
             </ListGroup.Item>
           )}
         </ListGroup>

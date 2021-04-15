@@ -38,7 +38,9 @@ const ProductList = ({ products, setFilteredProducts }) => {
           <ListGroup as='ul'>
             {products.map(product =>
               <ListGroup.Item action as='li' key={product.id} >
-                <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`} >
+                <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`} state={{
+                  product:product,
+                }}>
                   <Media>
                     <img
                       width={64}

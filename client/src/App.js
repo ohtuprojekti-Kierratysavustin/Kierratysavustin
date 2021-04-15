@@ -16,6 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 export const useStore = create(set => ({
   products: [],
+  prod:null,
   filteredProducts: [],
   favorites: [],
   user: null,
@@ -23,6 +24,7 @@ export const useStore = create(set => ({
   timer: null,
   setUser: (param) => set(() => ({ user: param })),
   setProducts: (param) => set(() => ({ products: param })),
+  setProduct: (param) => set(() => ({ prod: param })),
   setFavorites: (param) => set(() => ({ favorites: param })),
   setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
   clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
