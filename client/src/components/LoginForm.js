@@ -28,6 +28,7 @@ const LoginForm = () => {
       productService.getFavorites(user.id).then(favorites => setFavorites(favorites))
       setNotification('Kirjautuminen onnistui', 'success')
       history.push('/')
+      window.location.reload(true) // Reload koska muuten aikaisemman kirjautuneen käyttäjän Liket näkyvät.
     } catch (e) {
       setNotification('Väärä nimi tai salasana', 'error')
     }

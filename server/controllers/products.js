@@ -6,9 +6,13 @@ const config = require('../utils/config')
 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find({}).populate('instructions', {
-    information: 1,
+    score: 1,
+    information: 1
   })
+
+  products.forEach(p => p.instructions.sort((a,b) => b.score - a.score))
   res.json(products.map((product) => product.toJSON()))
+
 })
 
 productRouter.get('/user', async (req, res) => {
@@ -16,10 +20,20 @@ productRouter.get('/user', async (req, res) => {
   res.json(favorites.map((product) => product.toJSON()))
 })
 
-productRouter.get('/:id', (req, res) => {
-  Product.findById(req.params.id).then((product) => {
+productRouter.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).populate('instructions', {
+      score: 1,
+      information: 1
+    })
+    product.instructions.sort((a,b) => b.score - a.score)
     res.json(product)
-  }).catch(res.status(401).json({ error: 'No product' }))
+    
+  } catch (error) {
+    return res.status(400).json({ error: 'no product found' })  
+  }
+  
+  
 })
 
 const getTokenFrom = (req) => {
@@ -43,7 +57,7 @@ productRouter.post('/', async (req, res) => {
   }
   try {
     const product = new Product({
-      name: body.productName,
+      name: body.name,
     })
     const result = await product.save()
     return res.status(201).json(result)

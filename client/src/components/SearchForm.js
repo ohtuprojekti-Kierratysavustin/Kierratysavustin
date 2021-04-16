@@ -17,7 +17,7 @@ const SearchForm = ({ products, setFilteredProducts }) => {
     <div>
       <InfoBar header={'Kotitalouden kierrätysavustin'} text={'kierrätysavustimesta lyhyesti'} />
 
-      <SearchBarForm products={products} setFilteredProducts={setFilteredProducts}></SearchBarForm>
+      <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
 
       {user !== null ? (
         <FavouriteProducts userProducts={favorites}/>

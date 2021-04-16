@@ -1,6 +1,7 @@
-post  http://localhost:3001/api/products/60338ad195f657413a2b41b0/instructions
+post  http://localhost:3001/api/products/tuotteen-id-tähän/instructions
 Content-Type: application/json
+Authorization: bearer lisää-token-tähän
 
 {
-    "information":"hohoh"
+    "information":"Uusi ohje"
 }

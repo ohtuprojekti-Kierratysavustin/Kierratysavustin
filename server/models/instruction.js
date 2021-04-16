@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const instructionSchema = new mongoose.Schema({
-  //score: {type: Number, required: true},
+  score: {type: Number, default: 0},
   information: { type: String, required: true },
   product: {
     type: mongoose.Schema.Types.ObjectId,

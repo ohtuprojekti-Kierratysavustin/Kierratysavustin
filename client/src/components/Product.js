@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom'
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
+import VoteForm from './VoteForm'
 //import ProductInstruction from './ProductInstruction'
 import { useStore  } from '../App'
 import { useHistory } from 'react-router-dom'
@@ -16,6 +17,7 @@ const ulStyle = {
   webkitOverflowScrolling:'touch',
   border:'solid 1px'
 }
+
 /** Component for showing product name and recycling information. */
 const Product = ({ product }) => {
   const history = useHistory()
@@ -94,7 +96,7 @@ const Product = ({ product }) => {
             <Col>
               {product.instructions.length !== 0 ? (
                 <p>
-                  p
+                  {product.instructions[0].information}
                 </p>
               ) : (
                 <span>ei ohjeita</span>
@@ -126,28 +128,20 @@ const Product = ({ product }) => {
         <ListGroup as='ul' style={ulStyle}>
           {product.instructions.map(instruct =>
             <ListGroup.Item action as='li' key={instruct.id}>
-              <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`} state={{
-                product:product,
-              }}>
+              <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
                 <Media>
                   <Media.Body>
 
                     {instruct.information !== null ? (
-                      <Container>
-                        <Row>
-                          <Col>
+                      <Container >
+                        <Row >
+                          <Col xs lg='10'>
                             <p>
                               {instruct.information.slice(0, 250)}
                             </p>
                           </Col>
-                        </Row>
-                        <Row className="justify-content-md-center">
-                          <Col md lg="1">
-                            <Button variant='success'>Like</Button>
-                          </Col>
-                          <Col md ="auto"><p>pisteet</p></Col>
-                          <Col xs lg="0">
-                            <Button variant='danger'>Dislike</Button>
+                          <Col >
+                            <VoteForm instruction = {instruct}/>
                           </Col>
                         </Row>
                       </Container>

@@ -17,3 +17,7 @@
 
 ### Ympäristömuuttujat
 
+## Tietokantakaavio
+
+![Tietokantakaavio](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/kuvat/db-20210412.png)
+
