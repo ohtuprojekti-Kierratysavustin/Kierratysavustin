@@ -95,6 +95,23 @@ describe("Recycling app", () => {
               cy.contains("Tuotteen voi uudelleen käyttää roskapussina")
             })
 
+            it("recycling information can be liked", () => {
+              cy.get("#instructionText").type(
+                "Tuotteen voi uudelleen käyttää roskapussina"
+              )
+              cy.get("#addInstruction").click()
+              cy.get("#likeButton").click()
+              cy.contains("Poista Like")
+            })
+            it("recycling information can be disliked", () => {
+              cy.get("#instructionText").type(
+                "Tuotteen voi uudelleen käyttää roskapussina"
+              )
+              cy.get("#addInstruction").click()
+              cy.get("#dislikeButton").click()
+              cy.contains("Poista Dislike")
+            })
+
             it("it can be added to favorites", () => {
               cy.get("#addToFavorites").click()
               cy.get("#addToFavorites").contains('Poista suosikeista')
