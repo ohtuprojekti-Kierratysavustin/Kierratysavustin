@@ -14,7 +14,7 @@ import { Container, Row, Col, Jumbotron, ListGroup, Media, Modal, Button, Form }
 const ulStyle = {
   maxHeight:'300px',
   overflowY:'scroll',
-  webkitOverflowScrolling:'touch',
+  WebkitOverflowScrolling:'touch',
   border:'solid 1px'
 }
 
@@ -141,7 +141,7 @@ const Product = ({ product }) => {
                             </p>
                           </Col>
                           <Col >
-                            <VoteForm instruction = {instruct}/>
+                            <VoteForm instruction = {instruct} user = {user} />
                           </Col>
                         </Row>
                       </Container>
