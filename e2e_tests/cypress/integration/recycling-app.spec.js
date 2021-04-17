@@ -97,6 +97,7 @@ describe("Recycling app", () => {
             })
 
             it("recycling information can be liked", () => {
+              cy.get("#instructionButton").click()
               cy.get("#instructionText").type(
                 "Tuotteen voi uudelleen käyttää roskapussina"
               )
@@ -105,6 +106,7 @@ describe("Recycling app", () => {
               cy.contains("Poista Like")
             })
             it("recycling information can be disliked", () => {
+              cy.get("#instructionButton").click()
               cy.get("#instructionText").type(
                 "Tuotteen voi uudelleen käyttää roskapussina"
               )
