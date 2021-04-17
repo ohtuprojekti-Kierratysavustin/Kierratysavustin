@@ -13,7 +13,7 @@ describe("Recycling app", () => {
     cy.get("#usernameInput").type("Kayttaja")
     cy.get("#passwordInput").type("kayttaja")
     cy.get("#registerSubmit").click()
-    cy.contains("Rekisteröityminen onnistui")
+    cy.contains("Kirjaudu sisään")
   })
 
   describe("when user has registered", () => {
