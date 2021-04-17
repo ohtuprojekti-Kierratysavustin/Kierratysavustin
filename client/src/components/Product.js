@@ -141,7 +141,7 @@ const Product = ({ product }) => {
                             </p>
                           </Col>
                           <Col >
-                            <VoteForm instruction = {instruct} user = {user} />
+                            <VoteForm instruction = {instruct} user = {user} product={product} />
                           </Col>
                         </Row>
                       </Container>

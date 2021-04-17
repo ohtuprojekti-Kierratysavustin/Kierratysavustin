@@ -4,7 +4,7 @@ import { useStore } from '../App'
 
 import { Button, Container, Row, Col } from 'react-bootstrap'
 
-const VoteForm = ( { instruction, user }  ) => {
+const VoteForm = ( { instruction, user, product }  ) => {
   //const { user } = useStore()
   const { likes, setLikes } = useStore()
   const { dislikes, setDislikes } = useStore()
@@ -33,6 +33,7 @@ const VoteForm = ( { instruction, user }  ) => {
       instruction.score += -1
       setLikes(newArray)
       productService.removeLike(instruction.id).then(instruction => setVotes(instruction.score))
+      product.instructions.sort((a,b) => b.score - a.score)
     } else {
       setLike(true)
       productService.addLike(instruction.id).then(setLikes(likes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
@@ -47,6 +48,7 @@ const VoteForm = ( { instruction, user }  ) => {
         }
         setDislikes(newArray)
         setDislike(false)
+        product.instructions.sort((a,b) => b.score - a.score)
       }
 
     }
@@ -67,6 +69,7 @@ const VoteForm = ( { instruction, user }  ) => {
 
       setDislikes(newArray)
       productService.removeDislike(instruction.id).then(instruction => setVotes(instruction.score))
+      product.instructions.sort((a,b) => b.score - a.score)
 
     } else {
       setDislike(true)
@@ -85,6 +88,7 @@ const VoteForm = ( { instruction, user }  ) => {
       }
 
       productService.addDislike(instruction.id).then(setDislikes(dislikes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
+      product.instructions.sort((a,b) => b.score - a.score)
     }
   }
   return (
