@@ -94,7 +94,7 @@ const VoteForm = ( { instruction, user, product }  ) => {
   return (
     <div>
       {user !== null ? (
-        <Container>
+        <Container id='vote-element'>
           <Row>
             <Col>
               <Button variant={labelLikeVariant} id = "likeButton" onClick={handleLike}>

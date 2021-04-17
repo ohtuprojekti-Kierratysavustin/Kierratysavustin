@@ -95,7 +95,7 @@ const Product = ({ product }) => {
           <Row>
             <Col>
               {product.instructions.length !== 0 ? (
-                <p>
+                <p id='top-score'>
                   {product.instructions[0].information}
                 </p>
               ) : (
@@ -125,15 +125,15 @@ const Product = ({ product }) => {
           />
 
         </Form.Group>
-        <ListGroup as='ul' style={ulStyle}>
+        <ListGroup id='instruction-list' as='ul' style={ulStyle}>
           {product.instructions.map(instruct =>
-            <ListGroup.Item action as='li' key={instruct.id}>
+            <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id}>
               <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
                 <Media>
                   <Media.Body>
 
                     {instruct.information !== null ? (
-                      <Container >
+                      <Container id='vote-form'>
                         <Row >
                           <Col xs lg='10'>
                             <p>
