@@ -25,7 +25,7 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 - [Backend-dokumentaatio](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/Backend-dokumentaatio.md)
 
 - [Teknologiat](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/teknologiat.md)
-- [Definition of Done](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/definitionOfDone.md) 
+- [Definition of Done](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/main/documents/definitionOfDone.md) 
 
 ## Projektin edistyminen
 
