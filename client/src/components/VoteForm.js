@@ -5,7 +5,6 @@ import { useStore } from '../App'
 import { Button, Container, Row, Col } from 'react-bootstrap'
 
 const VoteForm = ( { instruction, user, product }  ) => {
-  //const { user } = useStore()
   const { likes, setLikes } = useStore()
   const { dislikes, setDislikes } = useStore()
   const [like, setLike] = useState(likes.some(p => p === instruction.id))

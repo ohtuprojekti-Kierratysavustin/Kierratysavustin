@@ -9,7 +9,6 @@ import { useStore } from '../App'
 import {  Form as Formo, Button, Container, } from 'react-bootstrap'
 
 const InstructionForm = ({ product, handleClose }) => {
-  //const [information, setInformation] = useState('')
 
   const { updateProduct, setNotification } = useStore()
   const notify = (message ) => {
@@ -27,7 +26,6 @@ const InstructionForm = ({ product, handleClose }) => {
   }
   const handleSubmit = async (values) => {
     const information = values.instructionText
-    //setInformation(values.instructionInput)
     const info = { information }
     productService.createInstruction(product.id, info)
       .then(i => {

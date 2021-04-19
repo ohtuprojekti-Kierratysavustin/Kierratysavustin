@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-//import { useStore } from '../App'
 
 import { Form, Button, InputGroup, Container, Col, Row } from 'react-bootstrap'
 
 const SearchBarForm = ({ products, setFilteredProducts }) => {
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
-  //const { products, setFilteredProducts } = useStore()
   if (!products) {
     return null
   }

@@ -5,11 +5,10 @@ import {
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
-//import ProductInstruction from './ProductInstruction'
 import { useStore  } from '../App'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Media, Modal, Button, Form } from 'react-bootstrap'
-//import ProductInstruction from './ProductInstruction'
+
 
 const ulStyle = {
   maxHeight:'300px',
@@ -22,24 +21,17 @@ const ulStyle = {
 const Product = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
-  //const tuote = setProduct(product)
-  //console.log('prod', tuote)
   const [modalShow, setModalShow] = useState(false)
-  // eslint-disable-next-line no-unused-vars
-  //const [ohje,setOhje] = useState(product)
-  //console.log('L=L', products)
+
   const handleClose = () => setModalShow(false)
   const handleShow = () => setModalShow(true)
-  // const [showInstruction, setShowInstruction] = (product.instructions[0])
   useEffect(() => {
     clearNotification()
   }, [])
   console.log('tuote',product)
 
   if (!product) return null
-  // eslint-disable-next-line no-unused-vars
-  //const [productInstruction, setProductInstruction] = useState(product.instructions[0].information)
-  //console.log('mv', productInstruction)
+
 
   const InstructionPopup = (props) =>  {
 
@@ -61,12 +53,6 @@ const Product = ({ product }) => {
       </Modal>
     )
   }
-  /*
-  const changeInstruction = value => {
-
-    setProductInstruction(value)
-  }
-*/
   return (
     <div>
       <Jumbotron>
