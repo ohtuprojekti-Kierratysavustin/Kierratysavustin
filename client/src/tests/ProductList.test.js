@@ -13,7 +13,7 @@ test('ProductList list products', () => {
     name: 'Mustamakkarakastike pullo',
     instructions: [{
       id: 'tuote1',
-      instruction: 'Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.'
+      information: 'Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.'
     }]
   }
 
@@ -22,7 +22,7 @@ test('ProductList list products', () => {
     name: 'Sanomalehti',
     instructions: [{
       id: 'tuote2',
-      instruction: 'Laita lehti paperinkeräykseen'
+      information: 'Laita lehti paperinkeräykseen'
     }]
   }
 
@@ -31,7 +31,7 @@ test('ProductList list products', () => {
     name: 'Aikakauslehti',
     instructions: [{
       id: 'tuote3',
-      instruction: 'Laita aikauslehti paperinkeräykseen'
+      information: 'Laita aikauslehti paperinkeräykseen'
     }]
   }
 

@@ -13,7 +13,7 @@ describe("Recycling app", () => {
     cy.get("#usernameInput").type("Kayttaja")
     cy.get("#passwordInput").type("kayttaja")
     cy.get("#registerSubmit").click()
-    cy.contains("Rekisteröityminen onnistui")
+    cy.contains("Kirjaudu sisään")
   })
 
   describe("when user has registered", () => {
@@ -79,7 +79,7 @@ describe("Recycling app", () => {
 
           it("its product information can be opened and seen", () => {
             cy.contains("Muovipussi").click()
-            cy.contains("Lisää tuotteelle kierrätysohje")
+            cy.contains("Lisää uusi ohje")
           })
 
           describe("and the product information is opened", () => {
@@ -88,6 +88,7 @@ describe("Recycling app", () => {
             })
 
             it("recycling information can be added to it", () => {
+              cy.get("#instructionButton").click()
               cy.get("#instructionText").type(
                 "Tuotteen voi uudelleen käyttää roskapussina"
               )
@@ -96,6 +97,7 @@ describe("Recycling app", () => {
             })
 
             it("recycling information can be liked", () => {
+              cy.get("#instructionButton").click()
               cy.get("#instructionText").type(
                 "Tuotteen voi uudelleen käyttää roskapussina"
               )
@@ -104,6 +106,7 @@ describe("Recycling app", () => {
               cy.contains("Poista Like")
             })
             it("recycling information can be disliked", () => {
+              cy.get("#instructionButton").click()
               cy.get("#instructionText").type(
                 "Tuotteen voi uudelleen käyttää roskapussina"
               )

@@ -5,7 +5,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as yup from 'yup'
 import { useStore } from '../App'
 
-const InstructionForm = ({ product }) => {
+
+import {  Form as Formo, Button, Container, } from 'react-bootstrap'
+
+const InstructionForm = ({ product, handleClose }) => {
+  //const [information, setInformation] = useState('')
+
   const { updateProduct, setNotification } = useStore()
   const notify = (message ) => {
     setNotification(message),
@@ -20,16 +25,17 @@ const InstructionForm = ({ product }) => {
   const initialValues = {
     instructionText: ''
   }
-
   const handleSubmit = async (values) => {
     const information = values.instructionText
+    //setInformation(values.instructionInput)
     const info = { information }
     productService.createInstruction(product.id, info)
       .then(i => {
         product.instructions.push(i)
         product.instructions.sort((a,b) => b.score - a.score)
         updateProduct(product)
-        notify('Ohjeen lisääminen onnistui', 'succes')
+        handleClose()
+        setNotification('Ohje lisätty!', 'success')
       }).catch(e => {
         console.log(e)
         notify('Ohjeen lisääminen ei onnistunut', 'error')
@@ -37,7 +43,6 @@ const InstructionForm = ({ product }) => {
   }
 
   return (
-
     <Formik
       initialValues={initialValues}
       validationSchema={InstructionSchema}
@@ -46,38 +51,39 @@ const InstructionForm = ({ product }) => {
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik
         return (
-          <div className="container">
+          <div>
+            <Formo as={Form} >
+              <Container>
+                <Notification />
+                <Formo.Group>
+                  <Formo.Label htmlFor="instructionText">kierrätysohje</Formo.Label>
+                  <Formo.Control as={Field}
+                    type='text'
+                    name='instructionText'
+                    id="instructionText"
+                    rows={5}
+                    cols={100}
+                    className={errors.instructionText && touched.instructionText ?
+                      'input-error' : null}
+                  />
 
-            <Form  >
-              <div className="form-row">
-                <label htmlFor="instructionText">Anna kierrätysohje: </label>
-                <Field
-                  type="text"
-                  name="instructionText"
-                  id="instructionText"
-                  className={errors.instructionText && touched.instructionText ?
-                    'input-error' : null}
-                />
-                <ErrorMessage name="instructionText" component="span" className="error" />
-
-              </div>
-              <button
-                id="addInstruction"
-                type="submit"
-                className={!(dirty && isValid) ? 'disabled-btn' : ''}
-                disabled={!(dirty && isValid)}
-              >
-              Lisää ohje
-              </button>
-
-            </Form>
-
-            <Notification />
-
+                  <ErrorMessage name="instructionText" component="span" className="error" />
+                </Formo.Group>
+                <Button
+                  id="addInstruction"
+                  type='submit'
+                  className={!(dirty && isValid) ? 'disabled-btn' : ''}
+                  disabled={!(dirty && isValid)}
+                >lisää</Button>
+              </Container>
+            </Formo>
           </div>
+
         )
       }}
     </Formik>
   )
 }
+
+
 export default InstructionForm

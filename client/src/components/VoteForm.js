@@ -2,15 +2,20 @@ import React, { useState } from 'react'
 import productService from '../services/products'
 import { useStore } from '../App'
 
-const VoteForm = ( { instruction }  ) => {
+import { Button, Container, Row, Col } from 'react-bootstrap'
+
+const VoteForm = ( { instruction, user }  ) => {
+  //const { user } = useStore()
   const { likes, setLikes } = useStore()
   const { dislikes, setDislikes } = useStore()
   const [like, setLike] = useState(likes.some(p => p === instruction.id))
   const [disLike, setDislike] = useState(dislikes.some(p => p === instruction.id))
   const [votes, setVotes] = useState(instruction.score)
   const labelLike = like ? 'Poista Like' : 'Like'
+  const labelLikeVariant = like ? 'success' : 'outline-success'
 
   const labelDislike = disLike ? 'Poista Dislike' : 'Dislike'
+  const labelDislikeVariant = disLike ? 'danger' : 'outline-danger'
 
   if (!instruction.id) return null
   const handleLike = (event) => {
@@ -84,13 +89,38 @@ const VoteForm = ( { instruction }  ) => {
   }
   return (
     <div>
-      <button id = "likeButton" onClick={handleLike}>
-        {labelLike}
-      </button>
-      Äänet: {votes}
-      <button id = "dislikeButton"  onClick={handleDislike}>
-        {labelDislike}
-      </button>
+      {user !== null ? (
+        <Container>
+          <Row>
+            <Col>
+              <Button variant={labelLikeVariant} id = "likeButton" onClick={handleLike}>
+                {labelLike}
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              Äänet: {votes}
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Button variant={labelDislikeVariant} id = "dislikeButton"  onClick={handleDislike}>
+                {labelDislike}
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+      ) : (
+        <Container>
+          <Row>
+            <Col>
+              Äänet: {votes}
+            </Col>
+          </Row>
+        </Container>
+      )}
+
     </div>
 
   )
