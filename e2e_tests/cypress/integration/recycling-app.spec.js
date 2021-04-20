@@ -114,6 +114,26 @@ describe("Recycling app", () => {
               cy.get("#dislikeButton").click()
               cy.contains("Poista Dislike")
             })
+            it("recycling information list order changes when liked or disliked", () => {
+              cy.get("#instructionButton").click()
+              cy.get("#instructionText").type(
+                "Ohje 1"
+              )
+              cy.get("#addInstruction").click()
+
+              cy.get("#instructionButton").click()
+              cy.get("#instructionText").type(
+                "Ohje 2"
+              )
+              cy.get("#addInstruction").click()
+              cy.get("#top-score").contains("Ohje 1")
+              
+              cy.get('[id^=dislikeButton]').eq(0).click()
+              cy.get("#top-score").contains("Ohje 2")
+
+              cy.get('[id^=likeButton]').eq(1).click()
+              cy.get("#top-score").contains("Ohje 1")
+            })
 
             it("it can be added to favorites", () => {
               cy.get("#addToFavorites").click()
