@@ -2,9 +2,13 @@ import React,{ useState } from 'react'
 import productService from '../services/products'
 import { useStore } from '../App'
 
-const FavoritesForm = ( { product }) => {
+import { Button } from 'react-bootstrap'
+
+const FavoritesForm = ({ product }) => {
   const { favorites, setFavorites } = useStore()
   const [favorite, setFavorite] = useState(favorites.some(p => p.id === product.id))
+  const buttonStyle = favorite
+    ? 'outline-danger' : 'outline-success'
   const label = favorite
     ? 'Poista suosikeista' : 'Lisää suosikkeihin'
 
@@ -21,9 +25,9 @@ const FavoritesForm = ( { product }) => {
   }
   return (
     <div>
-      <button id="addToFavorites" onClick={handleClick}>
+      <Button variant={buttonStyle} id="addToFavorites" onClick={handleClick}>
         {label}
-      </button>
+      </Button>
     </div>
   )
 }

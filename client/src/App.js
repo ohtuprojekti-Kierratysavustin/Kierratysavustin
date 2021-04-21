@@ -10,17 +10,26 @@ import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
 import SearchForm from './components/SearchForm'
 import LoginForm from './components/LoginForm'
+//import Notification from './components/Notification'
+import { Navbar, Nav } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export const useStore = create(set => ({
   products: [],
+  prod:null,
   filteredProducts: [],
   favorites: [],
+  likes:[],
+  dislikes: [],
   user: null,
   notification: { message: null, condition: null },
   timer: null,
   setUser: (param) => set(() => ({ user: param })),
   setProducts: (param) => set(() => ({ products: param })),
+  setProduct: (param) => set(() => ({ prod: param })),
   setFavorites: (param) => set(() => ({ favorites: param })),
+  setLikes: (param) => set(() => ({ likes: param })),
+  setDislikes: (param) => set(() => ({ dislikes: param })),
   setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
   clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
   setNotification: (message, condition) => set(state => ({
@@ -37,7 +46,7 @@ export const useStore = create(set => ({
 }))
 
 const App = () => {
-  const { products, setProducts, filteredProducts, setFilteredProducts, user, setUser, setFavorites } = useStore()
+  const { products, setProducts, filteredProducts, setFilteredProducts, user, setUser, setFavorites,setLikes,setDislikes } = useStore()
 
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
@@ -50,6 +59,8 @@ const App = () => {
       setUser(userlogin)
       productService.setToken(userlogin.token)
       productService.getFavorites(userlogin.id).then(favorites => setFavorites(favorites))
+      productService.getLikes().then(likes => setLikes(likes))
+      productService.getDislikes().then(dislikes => setDislikes(dislikes))
     }
   }, [])
 
@@ -58,65 +69,55 @@ const App = () => {
     ? products.find(p => p.id === match.params.id)
     : null
 
-  const padding = {
-    padding: 5
-  }
-  if(user === null){
-    return(
-      <div>
-        <div>
-          <Link style={padding} to="/">etusivu</Link>
-          <Link id='productList' style={padding} to="/products">tuotteet</Link>
-          <Link id='registerButton'style={padding} to="/register">rekisteröidy</Link>
-          <Link id='loginButton'style={padding} to="/login">kirjaudu</Link>
-        </div>
-
-        <h1>Kotitalouden kierrätysavustin</h1>
-        <Switch>
-          <Route path="/products/:id">
-            <Product product={product} />
-          </Route>
-          <Route path="/register">
-            <RegisterForm />
-          </Route>
-          <Route path="/login">
-            <LoginForm />
-          </Route>
-          <Route path="/products">
-            <ProductList products={products}/>
-          </Route>
-          <Route path="/searchResults">
-            <ProductList products={filteredProducts} />
-          </Route>
-          <Route path="/">
-            <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
-          </Route>
-        </Switch>
-      </div>
-    )
-  }
   return (
     <div>
-      <div>
-        <Link style={padding} to="/">etusivu</Link>
-        <Link id='productForm' style={padding} to="/new">lisää tuote</Link>
-        <Link id='productList' style={padding} to="/products">tuotteet</Link>
-        <Link id='LogoutButton' style={padding} onClick={() => {
-          window.localStorage.clear()
-          setUser(null)
-          productService.removeToken()
-        }} to="/">kirjaudu ulos</Link>
-      </div>
-      <h1>Kotitalouden kierrätysavustin</h1>
+      <Navbar bg='secondary' expand='sm'>
+        <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className='mr-auto'>
+            {user !== null ? (
+              <Nav.Link id='productForm' as={Link} to="/new">lisää tuote</Nav.Link>
+            ) : (
+              ''
+            )}
+            <Nav.Link id='productList' as={Link} to="/products">tuotteet</Nav.Link>
+          </Nav>
+
+          {user !== null ? (
+            <Nav className='justify-content-end'>
+              <Nav.Link id='LogoutButton' as={Link} onClick={() => {
+                window.localStorage.clear()
+                setUser(null)
+                productService.removeToken()
+              }} to="/">kirjaudu ulos
+              </Nav.Link>
+            </Nav>
+          ) : (
+            <Nav className='justify-content-end'>
+              <Nav.Link id='registerButton' as={Link} to="/register">rekisteröidy</Nav.Link>
+              <Nav.Link id='loginButton' as={Link} to="/login">kirjaudu</Nav.Link>
+            </Nav>
+          )}
+
+        </Navbar.Collapse>
+      </Navbar>
+
       <Switch>
         <Route path="/products/:id">
           <Product product={product} />
+        </Route>
+        <Route path="/register">
+          <RegisterForm />
+        </Route>
+        <Route path="/login">
+          <LoginForm />
         </Route>
         <Route path="/new">
           <ProductForm />
         </Route>
         <Route path="/products">
-          <ProductList products={products}/>
+          <ProductList products={products} setFilteredProducts={setFilteredProducts}/>
         </Route>
         <Route path="/searchResults">
           <ProductList products={filteredProducts} />
@@ -127,6 +128,7 @@ const App = () => {
       </Switch>
     </div>
   )
+
 }
 
 export default App

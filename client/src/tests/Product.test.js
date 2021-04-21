@@ -2,10 +2,10 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render } from '@testing-library/react'
 import Product from '../components/Product'
-/* import {
+import {
   BrowserRouter as Router
 } from 'react-router-dom'
- */
+
 
 test('Product information can be seen', () => {
   const productA = {
@@ -18,7 +18,10 @@ test('Product information can be seen', () => {
   }
 
   const component = render(
-    <Product product={productA} />
+    <Router>
+      <Product product={productA} />
+    </Router>
+
   )
 
   expect(component.container).toHaveTextContent(

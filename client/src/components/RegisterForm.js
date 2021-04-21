@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
 import registerService from '../services/register'
 import Notification from './Notification'
-import { Formik, Form, Field, ErrorMessage  } from 'formik'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Container,Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
+import { useHistory } from 'react-router-dom'
 import { useStore } from '../App'
-
 const RegisterForm = () => {
   const { setNotification, clearNotification } = useStore()
-
+  const history = useHistory()
   useEffect(() => {
     clearNotification()
   }, [])
@@ -21,16 +22,19 @@ const RegisterForm = () => {
     username: '',
     password: ''
   }
-
-  const onSubmit =  async (values) => {
+  const onSubmit =  async (values, submitProps) => {
     try {
       await registerService.createUser(values)
       setNotification('Rekisteröityminen onnistui', 'success')
+      submitProps.setSubmitting(false)
+      submitProps.resetForm()
+      history.push('/login')
     } catch (error) {
+      submitProps.setSubmitting(false)
+      submitProps.resetForm()
       setNotification('Käyttäjätunnus on jo käytössä', 'error')
     }
   }
-
 
   return (
     <Formik
@@ -41,50 +45,62 @@ const RegisterForm = () => {
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik
         return (
-          <div className="container">
-            <h1>Rekisteröidy Kierratysavustin palveluun</h1>
-            <Form  >
-              <div className="form-row">
-                <label htmlFor="username">Käyttäjänimi: </label>
-                <Field
-                  type="username"
-                  name="username"
-                  id="usernameInput"
-                  className={errors.username && touched.username ?
-                    'input-error' : null}
-                />
-                <ErrorMessage name="username" component="span" className="error" />
-              </div>
+          <div>
+            <Container>
+              <Form  >
+                <h1>Rekisteröidy</h1>
+                <Notification />
+                <Formo.Group>
+                  <Formo.Label htmlFor="username">Käyttäjänimi: </Formo.Label>
+                  <Formo.Control as={Field}
+                    type="username"
+                    name="username"
+                    id="usernameInput"
+                    className={'form-control' + (errors.username && touched.username ?
+                      'input-error' : null)}
+                  />
+                  <ErrorMessage
+                    name="username"
+                    component="span"
+                    className="error"
+                  />
+                </Formo.Group>
 
-              <div className="form-row">
-                <label htmlFor="password">Salasana: </label>
-                <Field
-                  type="password"
-                  name="password"
-                  id="passwordInput"
-                  className={errors.password && touched.password ?
-                    'input-error' : null}
-                />
-                <ErrorMessage
-                  name="password"
-                  component="span"
-                  className="error"
-                />
-              </div>
-              <button
-                id='registerSubmit'
-                type="submit"
-                className={!(dirty && isValid) ? 'disabled-btn' : ''}
-                disabled={!(dirty && isValid)}
-              >
-              Luo käyttäjä
-              </button>
-            </Form>
-            <Notification />
+                <Formo.Group>
+                  <Formo.Label htmlFor="password">Salasana: </Formo.Label>
+                  <Formo.Control as={Field}
+                    type="password"
+                    name="password"
+                    id="passwordInput"
+                    className={'form-control' + (errors.password && touched.password ?
+                      'input-error' : null)}
+                  />
+                  <ErrorMessage
+                    name="password"
+                    component="span"
+                    className="error"
+                  />
+                </Formo.Group>
+                <Button
+                  id='registerSubmit'
+                  type="submit"
+                  className={!(dirty && isValid) ? 'disabled-btn' : ''}
+                  disabled={!(dirty && isValid)}
+                >
+                    Rekisteröidy
+                </Button>
+              </Form>
+            </Container>
           </div>
         )
       }}
     </Formik>
   )
+
 }
+
+
+
+
+
 export default RegisterForm

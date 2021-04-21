@@ -1,7 +1,7 @@
 post  http://localhost:3001/api/products
 Content-Type: application/json
-Authorization: bearer bearer-token-tähän
+Authorization: bearer lisää-token-tähän
 
 {
-    "productName":"makkara"
+    "name":"makkara"
 }

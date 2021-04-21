@@ -13,7 +13,7 @@ describe("Recycling app", () => {
     cy.get("#usernameInput").type("Kayttaja")
     cy.get("#passwordInput").type("kayttaja")
     cy.get("#registerSubmit").click()
-    cy.contains("Rekisteröityminen onnistui")
+    cy.contains("Kirjaudu sisään")
   })
 
   describe("when user has registered", () => {
@@ -79,7 +79,7 @@ describe("Recycling app", () => {
 
           it("its product information can be opened and seen", () => {
             cy.contains("Muovipussi").click()
-            cy.contains("Lisää tuotteelle kierrätysohje")
+            cy.contains("Lisää uusi ohje")
           })
 
           describe("and the product information is opened", () => {
@@ -88,11 +88,51 @@ describe("Recycling app", () => {
             })
 
             it("recycling information can be added to it", () => {
-              cy.get("#instructionInput").type(
+              cy.get("#instructionButton").click()
+              cy.get("#instructionText").type(
                 "Tuotteen voi uudelleen käyttää roskapussina"
               )
               cy.get("#addInstruction").click()
               cy.contains("Tuotteen voi uudelleen käyttää roskapussina")
+            })
+
+            it("recycling information can be liked", () => {
+              cy.get("#instructionButton").click()
+              cy.get("#instructionText").type(
+                "Tuotteen voi uudelleen käyttää roskapussina"
+              )
+              cy.get("#addInstruction").click()
+              cy.get("#likeButton").click()
+              cy.contains("Poista Like")
+            })
+            it("recycling information can be disliked", () => {
+              cy.get("#instructionButton").click()
+              cy.get("#instructionText").type(
+                "Tuotteen voi uudelleen käyttää roskapussina"
+              )
+              cy.get("#addInstruction").click()
+              cy.get("#dislikeButton").click()
+              cy.contains("Poista Dislike")
+            })
+            it("recycling information list order changes when liked or disliked", () => {
+              cy.get("#instructionButton").click()
+              cy.get("#instructionText").type(
+                "Ohje 1"
+              )
+              cy.get("#addInstruction").click()
+
+              cy.get("#instructionButton").click()
+              cy.get("#instructionText").type(
+                "Ohje 2"
+              )
+              cy.get("#addInstruction").click()
+              cy.get("#top-score").contains("Ohje 1")
+              
+              cy.get('[id^=dislikeButton]').eq(0).click()
+              cy.get("#top-score").contains("Ohje 2")
+
+              cy.get('[id^=likeButton]').eq(1).click()
+              cy.get("#top-score").contains("Ohje 1")
             })
 
             it("it can be added to favorites", () => {

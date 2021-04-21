@@ -4,6 +4,7 @@ const User = require('../models/user')
 const Product = require('../models/product')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
+const Instruction = require('../models/instruction')
 
 userRouter.post('/', async (req, res) => {
   try {
@@ -29,6 +30,203 @@ const getTokenFrom = (req) => {
   return null
 }
 
+userRouter.get('/votes/:id/', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const instruction = await Instruction.findById(req.params.id)
+  if (!instruction) {
+    return res.status(400).json({ error: 'No instruction' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+  return res.status(200).json(instruction.score)
+})
+
+userRouter.post('/likes/:id/', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const instruction = await Instruction.findById(req.params.id)
+  if (!instruction) {
+    return res.status(400).json({ error: 'No instruction' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+
+  if (user.likes.includes(instruction.id)) {
+    return res.status(400).json({ error: 'Instruction already in users likes' })
+  }
+
+  if (user.dislikes.includes(instruction.id)) {
+    user.dislikes = user.dislikes.pull({ _id: instruction.id })
+    instruction.score = instruction.score + 1
+  }
+
+  user.likes = user.likes.concat(instruction.id)
+  instruction.score = instruction.score + 1
+  await instruction.save()
+  await user.save()
+  res.status(201).json(instruction)
+})
+
+userRouter.put('/likes/:id', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const instruction = await Instruction.findById(req.params.id)
+  if (!instruction) {
+    return res.status(400).json({ error: 'No instruction' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+
+  if (!user.likes.includes(instruction.id)) {
+    return res.status(400).json({ error: 'Instruction not in users likes' })
+  }
+
+  user.likes = user.likes.pull({ _id: instruction.id })
+  instruction.score = instruction.score - 1
+  await instruction.save()
+  await user.save()
+  res.status(201).json(instruction)
+})
+
+userRouter.get('/likes/', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+  return res.status(201).json(user.likes)
+})
+
+userRouter.post('/dislikes/:id/', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const instruction = await Instruction.findById(req.params.id)
+  if (!instruction) {
+    return res.status(400).json({ error: 'No instruction' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+
+  if (user.dislikes.includes(instruction.id)) {
+    return res.status(400).json({ error: 'Instruction already in users dislikes' })
+  }
+
+  if (user.likes.includes(instruction.id)) {
+    user.likes = user.likes.pull({ _id: instruction.id })
+    instruction.score = instruction.score - 1
+  }
+
+  user.dislikes = user.dislikes.concat(instruction.id)
+  instruction.score = instruction.score - 1
+  await instruction.save()
+  await user.save()
+  res.status(201).json(instruction)
+})
+
+userRouter.put('/dislikes/:id', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const instruction = await Instruction.findById(req.params.id)
+  if (!instruction) {
+    return res.status(400).json({ error: 'No instruction' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+
+  if (!user.dislikes.includes(instruction.id)) {
+    return res.status(400).json({ error: 'Instruction not in users dislikes' })
+  }
+
+  user.dislikes = user.dislikes.pull({ _id: instruction.id })
+  instruction.score = instruction.score + 1
+  await instruction.save()
+  await user.save()
+  res.status(201).json(instruction)
+})
+
+userRouter.get('/dislikes/', async (req, res) => {
+  const token = getTokenFrom(req)
+  if (!token) {
+    return res.status(401).json({ error: 'token missing' })
+  }
+
+  const decodedToken = jwt.verify(token, config.SECRET)
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return res.status(400).json({ error: 'No user' })
+  }
+  return res.status(201).json(user.dislikes)
+})
+
 userRouter.post('/products/:id/', async (req, res) => {
   const token = getTokenFrom(req)
   if (!token) {
@@ -46,7 +244,7 @@ userRouter.post('/products/:id/', async (req, res) => {
   }
 
   const user = await User.findById(decodedToken.id)
-  if (!product) {
+  if (!user) {
     return res.status(400).json({ error: 'No user' })
   }
 
@@ -61,7 +259,7 @@ userRouter.post('/products/:id/', async (req, res) => {
   res.status(201).json(product)
 })
 
-userRouter.post('/products/remove/:id', async (req, res) => {
+userRouter.put('/products/:id', async (req, res) => {
   const token = getTokenFrom(req)
   if (!token) {
     return res.status(401).json({ error: 'token missing' })
@@ -78,7 +276,7 @@ userRouter.post('/products/remove/:id', async (req, res) => {
   }
 
   const user = await User.findById(decodedToken.id)
-  if (!product) {
+  if (!user) {
     return res.status(400).json({ error: 'No user' })
   }
 
