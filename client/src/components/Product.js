@@ -28,7 +28,7 @@ const Product = ({ product }) => {
   useEffect(() => {
     clearNotification()
   }, [])
-  console.log('tuote',product)
+  //console.log('tuote',product)
 
   if (!product) return null
 

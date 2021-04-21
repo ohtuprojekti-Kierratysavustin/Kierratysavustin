@@ -32,7 +32,6 @@ const VoteForm = ( { instruction, user, product }  ) => {
       instruction.score += -1
       setLikes(newArray)
       productService.removeLike(instruction.id).then(instruction => setVotes(instruction.score))
-      product.instructions.sort((a,b) => b.score - a.score)
     } else {
       setLike(true)
       productService.addLike(instruction.id).then(setLikes(likes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
@@ -47,10 +46,11 @@ const VoteForm = ( { instruction, user, product }  ) => {
         }
         setDislikes(newArray)
         setDislike(false)
-        product.instructions.sort((a,b) => b.score - a.score)
       }
 
     }
+
+    product.instructions.sort((a,b) => b.score - a.score)
 
   }
 
@@ -68,7 +68,6 @@ const VoteForm = ( { instruction, user, product }  ) => {
 
       setDislikes(newArray)
       productService.removeDislike(instruction.id).then(instruction => setVotes(instruction.score))
-      product.instructions.sort((a,b) => b.score - a.score)
 
     } else {
       setDislike(true)
@@ -87,8 +86,9 @@ const VoteForm = ( { instruction, user, product }  ) => {
       }
 
       productService.addDislike(instruction.id).then(setDislikes(dislikes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
-      product.instructions.sort((a,b) => b.score - a.score)
     }
+
+    product.instructions.sort((a,b) => b.score - a.score)
   }
   return (
     <div>
