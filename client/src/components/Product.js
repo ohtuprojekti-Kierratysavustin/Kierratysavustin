@@ -7,7 +7,7 @@ import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
 import { useStore  } from '../App'
 import { useHistory } from 'react-router-dom'
-import { Container, Row, Col, Jumbotron, ListGroup, Media, Modal, Button, Form } from 'react-bootstrap'
+import { Container, Row, Col, Jumbotron, ListGroup, Modal, Button, Form } from 'react-bootstrap'
 
 
 const ulStyle = {
@@ -25,10 +25,14 @@ const Product = ({ product }) => {
 
   const handleClose = () => setModalShow(false)
   const handleShow = () => setModalShow(true)
+
+  const [currentInstruction, setCurrentInstruction] = useState(0)
+  const handleInstructionClick = (id) => {
+    setCurrentInstruction(id)
+  }
   useEffect(() => {
     clearNotification()
   }, [])
-  console.log('tuote',product)
 
   if (!product) return null
 
@@ -82,13 +86,15 @@ const Product = ({ product }) => {
             <Col>
               {product.instructions.length !== 0 ? (
                 <p id='top-score'>
-                  {product.instructions[0].information}
+                  {product.instructions[currentInstruction].information}
+
                 </p>
               ) : (
                 <span>ei ohjeita</span>
               )}
 
             </Col>
+
           </Row>
         </Container>
       </Jumbotron>
@@ -112,31 +118,26 @@ const Product = ({ product }) => {
 
         </Form.Group>
         <ListGroup id='instruction-list' as='ul' style={ulStyle}>
-          {product.instructions.map(instruct =>
-            <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id}>
-              <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
-                <Media>
-                  <Media.Body>
+          {product.instructions.map((instruct, index) =>
+            <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id} >
+              <Link style={{ textDecoration: 'none' }}  to={`/products/${product.id}`}>
+                <Container id='vote-form'>
+                  <Row >
+                    <Col onClick={() => handleInstructionClick(index)}>
+                      {instruct.information !== null ? (
+                        <p>
+                          {instruct.information.slice(0, 75)}
+                        </p>
+                      ) : (
+                        ''
+                      )}
+                    </Col>
+                    <VoteForm instruction = {instruct} user = {user} product={product} />
+                  </Row>
 
-                    {instruct.information !== null ? (
-                      <Container id='vote-form'>
-                        <Row >
-                          <Col xs lg='10'>
-                            <p>
-                              {instruct.information.slice(0, 250)}
-                            </p>
-                          </Col>
-                          <Col >
-                            <VoteForm instruction = {instruct} user = {user} product={product} />
-                          </Col>
-                        </Row>
-                      </Container>
-                    ) : (
-                      ''
-                    )}
-                  </Media.Body>
-                </Media>
+                </Container>
               </Link>
+
             </ListGroup.Item>
           )}
         </ListGroup>

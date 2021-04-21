@@ -11,7 +11,6 @@ const SearchForm = ({ products, setFilteredProducts }) => {
   }
   const { user, favorites } = useStore()
 
-
   return (
     <div>
       <InfoBar header={'Kotitalouden kierrätysavustin'} text={'kierrätysavustimesta lyhyesti'} />

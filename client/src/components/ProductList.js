@@ -61,7 +61,7 @@ const ProductList = ({ products, setFilteredProducts }) => {
 
                             {product.instructions.length !== 0 ? (
                               <p>
-                                {product.instructions[0].information.slice(0,50)}...
+                                {product.instructions[0].information.slice(0,50)}
                               </p>
                             ) : (
                               ''
