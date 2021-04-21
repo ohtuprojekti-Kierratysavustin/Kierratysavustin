@@ -1,7 +1,7 @@
 # Kierratysavustin
 
-![Github Actions](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/workflows/Production/badge.svg)
-![Github Actions](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/workflows/Staging/badge.svg)
+![Github Actions](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/workflows/Pushing%20to%20main/badge.svg)
+![Github Actions](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/workflows/Pushing%20to%20staging/badge.svg)
 
 Ohjelmistotuotanto projekti kevät 2021. Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-sovellus, josta voi hakea kierrätettäviä tuotteita kierrätysohjeineen. Rekisteröityneet käyttäjät voivat kirjautuneina lisätä tietokantaan tuotteita sekä niille kierrätysohjeita. Kirjautuneena käyttäjät voivat myös pisteyttää tuotteille annettuja kierrätysohjeita. Pisteytykset näkyvät kaikille sovelluksen käyttäjille. 
 
