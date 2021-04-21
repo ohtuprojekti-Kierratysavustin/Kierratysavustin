@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 import { Container, Button, Form } from 'react-bootstrap'
 
 const LoginForm = () => {
-  const { setUser, setNotification, clearNotification, setFavorites } = useStore()
+  const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes } = useStore()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -26,9 +26,10 @@ const LoginForm = () => {
         'loggedUser', JSON.stringify(user)
       )
       productService.getFavorites(user.id).then(favorites => setFavorites(favorites))
+      productService.getLikes().then(likes => setLikes(likes))
+      productService.getDislikes().then(dislikes => setDislikes(dislikes))
       setNotification('Kirjautuminen onnistui', 'success')
       history.push('/')
-      window.location.reload(true) // Reload koska muuten aikaisemman kirjautuneen käyttäjän Liket näkyvät.
     } catch (e) {
       setNotification('Väärä nimi tai salasana', 'error')
     }
