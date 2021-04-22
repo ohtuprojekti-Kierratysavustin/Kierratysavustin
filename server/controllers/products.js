@@ -16,7 +16,10 @@ productRouter.get('/', async (req, res) => {
 })
 
 productRouter.get('/user', async (req, res) => {
-  const favorites = await Product.find( { users: req.query.id })
+  const favorites = await Product.find( { users: req.query.id }).populate('instructions', {
+    information:1
+  })
+  console.log('favos',favorites)
   res.json(favorites.map((product) => product.toJSON()))
 })
 

@@ -12,13 +12,13 @@ import InfoBar from './InfoBar'
 import FavoritesForm from './FavoritesForm'
 
 /** Component for showing list of products and a link to product page */
-const ProductList = ({ products, setFilteredProducts }) => {
+const ProductList = ({ products }) => {
   const { user } = useStore()
   if (products.length === 0) {
     return (
       <div>
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Miten kierrätysavustin toimii'} />
-        <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
+        <SearchBarForm  />
         <Container>
           <Row>
             <Col>
@@ -32,7 +32,7 @@ const ProductList = ({ products, setFilteredProducts }) => {
     return (
       <div>
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Miten kierrätysavustin toimii'} />
-        <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
+        <SearchBarForm />
         <Container>
           <h2>Tuotteet</h2>
           <ListGroup as='ul'>

@@ -1,0 +1,18 @@
+.ul-style {
+    max-height: 300px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    border: solid 1px
+  }
+
+.better-notification {
+    position: absolute !important;
+    top: 10px;
+    left: 45%;
+    margin-left: -width;
+}
+
+.better-votes {
+    padding-left: 10px;
+}
+

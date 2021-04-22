@@ -11,7 +11,7 @@ import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
 import SearchForm from './components/SearchForm'
 import LoginForm from './components/LoginForm'
-//import Notification from './components/Notification'
+import Notification from './components/Notification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export const useStore = create(set => ({
@@ -37,7 +37,7 @@ export const useStore = create(set => ({
     clearTimer: clearTimeout(state.timer),
     notification: { message, condition },
     timer: setTimeout(() => {
-      state.clearNotification() }, 5000)
+      state.clearNotification() }, 10000)
   })),
   updateProduct: (param) => set(state => ({
     ...state,
@@ -72,7 +72,7 @@ const App = () => {
   return (
     <div>
       <NavigationBar/>
-
+      <Notification/>
       <Switch>
         <Route path="/products/:id">
           <Product product={product} />

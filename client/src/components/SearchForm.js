@@ -6,10 +6,10 @@ import { useStore } from '../App'
 import InfoBar from './InfoBar'
 
 const SearchForm = ({ products, setFilteredProducts }) => {
+  const { user, favorites } = useStore()
   if (!products) {
     return null
   }
-  const { user, favorites } = useStore()
 
   return (
     <div>

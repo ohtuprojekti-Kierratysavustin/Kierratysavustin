@@ -19,7 +19,7 @@ test('VoteForm renders', () => {
   const component = render(
     <VoteForm instruction = {instruction} user={user} />
   )
-  expect(component.container).toHaveTextContent('Äänet:')
+  expect(component.container.querySelector('#votes')).toBe(0)
 
 })
 test('VoteForm like changes value', () => {
@@ -29,7 +29,7 @@ test('VoteForm like changes value', () => {
     <VoteForm instruction = {instruction}  user={user} product={product} />
   )
 
-  const btn = component.getByText('Like')
+  const btn = component.querySelector('#likeButton')
 
   fireEvent.click(btn)
   expect(btn.textContent === 'Poista Like')

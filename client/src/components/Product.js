@@ -7,24 +7,15 @@ import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
 import { useStore  } from '../App'
 import { useHistory } from 'react-router-dom'
-import { Container, Row, Col, Jumbotron, ListGroup, Modal, Button, Form } from 'react-bootstrap'
+import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
+import '../styles.css'
 
-
-const ulStyle = {
-  maxHeight:'300px',
-  overflowY:'scroll',
-  WebkitOverflowScrolling:'touch',
-  border:'solid 1px'
-}
 
 /** Component for showing product name and recycling information. */
 const Product = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
-  const [modalShow, setModalShow] = useState(false)
 
-  const handleClose = () => setModalShow(false)
-  const handleShow = () => setModalShow(true)
 
   const [currentInstruction, setCurrentInstruction] = useState(0)
   const handleInstructionClick = (id) => {
@@ -37,26 +28,7 @@ const Product = ({ product }) => {
   if (!product) return null
 
 
-  const InstructionPopup = (props) =>  {
 
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Uusi ohje tuotteelle
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <InstructionForm product = {product} handleClose={handleClose}/>
-        </Modal.Body>
-      </Modal>
-    )
-  }
   return (
     <div>
       <Jumbotron>
@@ -101,23 +73,15 @@ const Product = ({ product }) => {
       <Container>
         <Form.Group>
           {user !== null ? (
-            <Button
-              id='instructionButton'
-              variant="primary"
-              onClick={() => handleShow(true)}
-            >
-                    Lisää uusi ohje
-            </Button>
+            <InstructionForm product = {product} />
+
           ) : (
             ''
           )}
-          <InstructionPopup
-            show={modalShow}
-            onHide={() => handleClose(false)}
-          />
+
 
         </Form.Group>
-        <ListGroup id='instruction-list' as='ul' style={ulStyle}>
+        <ListGroup id='instruction-list' as='ul' className='ul-style'>
           {product.instructions.map((instruct, index) =>
             <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id} >
               <Link style={{ textDecoration: 'none' }}  to={`/products/${product.id}`}>

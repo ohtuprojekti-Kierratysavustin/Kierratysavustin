@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-
+import { useStore } from '../App'
 import { Form, Button, InputGroup, Container, Col, Row } from 'react-bootstrap'
 
-const SearchBarForm = ({ products, setFilteredProducts }) => {
+const SearchBarForm = () => {
+  const { products,setFilteredProducts } = useStore()
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
   if (!products) {
@@ -20,7 +21,7 @@ const SearchBarForm = ({ products, setFilteredProducts }) => {
       <Container>
         <Row>
           <Col>
-            <Form inline onSubmit={handleSubmit}>
+            <Form inline onSubmit={handleSubmit} id='searchForm'>
               <InputGroup className="mb-1">
                 <InputGroup.Prepend>
                   <Button id="searchBtn" type='submit' size='lg' variant='outline-dark'>Etsi</Button>

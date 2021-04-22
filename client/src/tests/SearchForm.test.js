@@ -4,7 +4,7 @@ import {
   Switch, Route
 } from 'react-router-dom'
 import { render, fireEvent } from '@testing-library/react'
-import SearchForm from '../components/SearchForm'
+import SearchBarForm from '../components/SearchBarForm'
 import ProductList from '../components/ProductList'
 import {
   BrowserRouter as Router
@@ -54,7 +54,7 @@ test('Search form renders and returns correct results', () => {
           <ProductList products={[]} />
         </Route>
         <Route path="/">
-          <SearchForm products={productsData} setFilteredProducts={changeFoundProducts} />
+          <SearchBarForm products={productsData} setFilteredProducts={changeFoundProducts} />
         </Route>
       </Switch>
     </Router>
@@ -65,16 +65,13 @@ test('Search form renders and returns correct results', () => {
     'Etsi'
   )
 
-  const input = component.container.querySelector('input')
-  const form = component.container.querySelector('form')
-
+  const input = component.container.querySelector('#searchInput')
+  const form = component.container.querySelector('#searchForm')
   fireEvent.change(input, {
     target: { value: 'lehti' }
   })
   fireEvent.submit(form)
-
   expect(changeFoundProducts.mock.calls).toHaveLength(1)
   expect(changeFoundProducts.mock.calls[0][0][0]).toBe(productB)
-
 
 })
