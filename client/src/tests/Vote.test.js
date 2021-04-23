@@ -13,15 +13,16 @@ const product = {
   name: 'Mustamakkarakastike pullo',
   instructions: []
 }
-
+/*
 test('VoteForm renders', () => {
   const instruction = { id:'123' }
   const component = render(
     <VoteForm instruction = {instruction} user={user} />
   )
-  expect(component.container.querySelector('#votes')).toBe(0)
+  expect(component.container).contains({ votes })
 
 })
+*/
 test('VoteForm like changes value', () => {
   const instruction = { id:'123' }
   product.instructions.push(instruction)
@@ -29,10 +30,10 @@ test('VoteForm like changes value', () => {
     <VoteForm instruction = {instruction}  user={user} product={product} />
   )
 
-  const btn = component.querySelector('#likeButton')
-
+  const btn = component.container.querySelector('#likeButton')
+  const votes = component.container.querySelector('#votes')
   fireEvent.click(btn)
-  expect(btn.textContent === 'Poista Like')
+  expect(votes.textContent === '1')
 })
 test('VoteForm dislike changes value', () => {
   const instruction = { id:'123' }
@@ -40,9 +41,10 @@ test('VoteForm dislike changes value', () => {
   const component = render(
     <VoteForm instruction = {instruction}  user={user} product={product} />
   )
-  const btn = component.getByText('Dislike')
+  const btn = component.container.querySelector('#dislikeButton')
+  const votes = component.container.querySelector('#votes')
   fireEvent.click(btn)
-  expect(btn.textContent === 'Poista Dislike')
+  expect(votes.textContent === '-1')
 })
 test('VoteForm dislike changes value after like is pressed', () => {
   const instruction = { id:'321' }
@@ -50,11 +52,12 @@ test('VoteForm dislike changes value after like is pressed', () => {
   const component = render(
     <VoteForm instruction = {instruction}  user={user} product={product} />
   )
-  const btn = component.getByText('Dislike')
-  const btn2 = component.getByText('Like')
+  const btn = component.container.querySelector('#dislikeButton')
+  const btn2 = component.container.querySelector('#likeButton')
+  const votes = component.container.querySelector('#votes')
   fireEvent.click(btn)
   fireEvent.click(btn2)
-  expect(btn.textContent === 'Dislike')
+  expect(votes.textContent === '0')
 })
 test('VoteForm like changes value after dislike is pressed', () => {
   const instruction = { id:'1111' }
@@ -62,8 +65,8 @@ test('VoteForm like changes value after dislike is pressed', () => {
   const component = render(
     <VoteForm instruction = {instruction}  user={user} product={product} />
   )
-  const btn2 = component.getByText('Dislike')
-  const btn = component.getByText('Like')
+  const btn2 = component.container.querySelector('#dislikeButton')
+  const btn = component.container.querySelector('#likeButton')
   fireEvent.click(btn)
   fireEvent.click(btn2)
   expect(btn.textContent === 'Like')
@@ -85,8 +88,8 @@ test('InstructionList order changes when score changes', () => {
     <VoteForm instruction = {instructionA}  user={user} product={productA} />
   )
   expect(productA.instructions[0]).toBe(instructionA)
-  const dislikeButton = componentA.getByText('Dislike')
+  //const dislikeButton = componentA.getByText('Dislike')
+  const dislikeButton = componentA.container.querySelector('#dislikeButton')
   fireEvent.click(dislikeButton)
   expect(productA.instructions[0]).toBe(instructionB)
-
 })

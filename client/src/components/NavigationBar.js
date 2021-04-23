@@ -5,12 +5,13 @@ import {
 } from 'react-router-dom'
 import productService from '../services/products'
 import { useStore } from '../App'
+import '../styles.css'
 
 const NavigationBar = () => {
   const { user,setUser } = useStore()
   return(
-    <Navbar bg='secondary' expand='sm'>
-      <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
+    <Navbar id = 'navbar'  expand='sm'>
+      <Navbar.Brand as={Link} to="/"> etusivu </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className='mr-auto'>

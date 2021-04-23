@@ -15,9 +15,12 @@ import '../styles.css'
 const Product = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
-
-
   const [currentInstruction, setCurrentInstruction] = useState(0)
+
+  const routeChange = () => {
+    let path = '/searchResults'
+    history.goBack(path)
+  }
   const handleInstructionClick = (id) => {
     setCurrentInstruction(id)
   }
@@ -31,9 +34,13 @@ const Product = ({ product }) => {
 
   return (
     <div>
-      <Jumbotron>
+      <Jumbotron id='infobar'>
         <Container>
-          <Row><Col><Button onClick={() => history.goBack()}>takaisin</Button></Col></Row>
+          <Row>
+            <Col>
+              <Button onClick={() => routeChange()} id='neutral-button'>takaisin</Button>
+            </Col>
+          </Row>
           <Row>
             <Col sm={10}>
               <h2>{product.name}</h2>
@@ -81,7 +88,7 @@ const Product = ({ product }) => {
 
 
         </Form.Group>
-        <ListGroup id='instruction-list' as='ul' className='ul-style'>
+        <ListGroup id='instruction-list' as='ul' >
           {product.instructions.map((instruct, index) =>
             <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id} >
               <Link style={{ textDecoration: 'none' }}  to={`/products/${product.id}`}>

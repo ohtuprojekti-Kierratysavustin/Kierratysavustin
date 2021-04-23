@@ -17,10 +17,11 @@ productRouter.get('/', async (req, res) => {
 
 productRouter.get('/user', async (req, res) => {
   const favorites = await Product.find( { users: req.query.id }).populate('instructions', {
+    score:1,
     information:1
   })
-  console.log('favos',favorites)
-  res.json(favorites.map((product) => product.toJSON()))
+  favorites.instructions.sort((a,b) => b.score - a.score)
+  res.json(favorites.map((favorite) => favorite.toJSON()))
 })
 
 productRouter.get('/:id', async (req, res) => {

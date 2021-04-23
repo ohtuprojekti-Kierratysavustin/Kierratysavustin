@@ -12,9 +12,9 @@ const FavouriteProducts = ({ userProducts }) => {
     <div>
       <Container>
         <h2>Suosikki tuotteet</h2>
-        <ListGroup as='ul'>
+        <ListGroup as='ul' id='list'>
           {userProducts.map(product =>
-            <ListGroup.Item action as='li' key={product.id}>
+            <ListGroup.Item action as='li' key={product.id} id='list-item'>
               <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
 
                 <Media>
@@ -32,7 +32,7 @@ const FavouriteProducts = ({ userProducts }) => {
                     {product.instructions.length !== 0 ? (
 
                       <p>
-                        {product.instructions[0].information}
+                        {product.instructions[0].information.slice(0,50)}
                       </p>
 
                     ) : (

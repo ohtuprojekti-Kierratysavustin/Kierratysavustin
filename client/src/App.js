@@ -13,6 +13,7 @@ import SearchForm from './components/SearchForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './styles.css'
 
 export const useStore = create(set => ({
   products: [],
@@ -70,10 +71,10 @@ const App = () => {
     : null
 
   return (
-    <div>
+    <div id='background'>
       <NavigationBar/>
       <Notification/>
-      <Switch>
+      <Switch >
         <Route path="/products/:id">
           <Product product={product} />
         </Route>
