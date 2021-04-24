@@ -5,7 +5,7 @@ import { useStore } from '../App'
 
 import InfoBar from './InfoBar'
 
-const SearchForm = ({ products, setFilteredProducts }) => {
+const ProductFilterForm = ({ products, setFilteredProducts }) => {
   if (!products) {
     return null
   }
@@ -19,11 +19,11 @@ const SearchForm = ({ products, setFilteredProducts }) => {
       <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
 
       {user !== null ? (
-        <FavouriteProducts userProducts={favorites}/>
+        <FavouriteProducts userProducts={favorites} />
       ) : (
         ''
       )}
     </div>
   )
 }
-export default SearchForm
+export default ProductFilterForm

@@ -4,7 +4,7 @@ import {
   Switch, Route
 } from 'react-router-dom'
 import { render, fireEvent } from '@testing-library/react'
-import SearchForm from '../components/SearchForm'
+import ProductFilterForm from '../components/ProductFilterForm'
 import ProductList from '../components/ProductList'
 import {
   BrowserRouter as Router
@@ -54,7 +54,7 @@ test('Search form renders and returns correct results', () => {
           <ProductList products={[]} />
         </Route>
         <Route path="/">
-          <SearchForm products={productsData} setFilteredProducts={changeFoundProducts} />
+          <ProductFilterForm products={productsData} setFilteredProducts={changeFoundProducts} />
         </Route>
       </Switch>
     </Router>
