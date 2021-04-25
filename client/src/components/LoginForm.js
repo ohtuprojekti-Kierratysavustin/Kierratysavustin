@@ -1,7 +1,8 @@
 import React, { useEffect,useState } from 'react'
-import loginService from '../services/login'
 import productService from '../services/products'
+import userService from '../services/user'
 import Notification from './Notification'
+import tokenService from '../services/token'
 import { useStore } from '../App'
 import { useHistory } from 'react-router-dom'
 
@@ -19,15 +20,15 @@ const LoginForm = () => {
   const onSubmit = async(values) => {
     values.preventDefault()
     try {
-      const user = await loginService.loginUser({ username:username, password:password })
+      const user = await userService.loginUser({ username:username, password:password })
       setUser(user)
-      productService.setToken(user.token)
+      tokenService.setToken(user.token)
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
       productService.getFavorites(user.id).then(favorites => setFavorites(favorites))
-      productService.getLikes().then(likes => setLikes(likes))
-      productService.getDislikes().then(dislikes => setDislikes(dislikes))
+      userService.getLikes().then(likes => setLikes(likes))
+      userService.getDislikes().then(dislikes => setDislikes(dislikes))
       setNotification('Kirjautuminen onnistui', 'success')
       history.push('/')
     } catch (e) {

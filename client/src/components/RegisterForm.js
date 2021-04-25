@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import registerService from '../services/register'
+import userService from '../services/user'
 import Notification from './Notification'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Container,Button, Form as Formo } from 'react-bootstrap'
@@ -24,7 +24,7 @@ const RegisterForm = () => {
   }
   const onSubmit =  async (values, submitProps) => {
     try {
-      await registerService.createUser(values)
+      await userService.createUser(values)
       setNotification('Rekisteröityminen onnistui', 'success')
       submitProps.setSubmitting(false)
       submitProps.resetForm()

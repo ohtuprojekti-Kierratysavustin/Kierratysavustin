@@ -1,5 +1,5 @@
 import React,{ useState } from 'react'
-import productService from '../services/products'
+import userService from '../services/user'
 import { useStore } from '../App'
 
 import { Button } from 'react-bootstrap'
@@ -15,11 +15,11 @@ const FavoritesForm = ({ product }) => {
   const handleClick = (event) => {
     event.preventDefault()
     if(favorite === true){
-      productService.removeFavorite(product)
+      userService.removeFavorite(product)
         .then(setFavorites(favorites.filter(p => p.id !== product.id)))
       setFavorite(false)
     } else {
-      productService.addFavorite(product).then(setFavorites(favorites.concat(product)))
+      userService.addFavorite(product).then(setFavorites(favorites.concat(product)))
       setFavorite(true)
     }
   }
