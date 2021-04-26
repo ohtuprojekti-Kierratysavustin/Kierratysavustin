@@ -12,15 +12,8 @@ const helper = require('./test_helper')
 
 
 let token = undefined
-/* const productsData = [
-  { name: 'Mustamakkarakastike pullo' },
-  {
-    name: 'Sanomalehti',
-  },
-] */
 
 beforeEach(async () => {
-  //helper.resetDB()
   await Product.deleteMany({})
   await Instruction.deleteMany({})
 
@@ -37,24 +30,6 @@ beforeEach(async () => {
   await productObject.save()
 })
 
-/* const productsInDb = async () => {
-  const products = await Product.find({})
-  return products.map(p => p.toJSON())
-} */
-
-/* const usersInDb = async () => {
-  const users = await User.find({})
-  return users.map((u) => u.toJSON())
-} */
-
-/* const getToken = async (props) => {
-  const login = await api
-    .post('/api/login')
-    .send(props)
-  
-  return login.body.token
-} */
-
 test('products are returned as json', async () => {
   await api
     .get('/api/products')
@@ -63,7 +38,6 @@ test('products are returned as json', async () => {
 })
 
 test('all products are returned', async () => {
-  //const response = await api.get('/api/products')
   const response = await helper.getProducts()
 
   expect(response.body).toHaveLength(helper.productsData.length)
@@ -111,7 +85,6 @@ test('all products instructions are ordered by score', async () => {
 })
 
 test('known existing product is in all products', async () => {
-  //const response = await api.get('/api/products')
   const response = await helper.getProducts()
   const contents = response.body.map((r) => r.name)
 
@@ -119,7 +92,7 @@ test('known existing product is in all products', async () => {
 })
 
 test('known existing instruction contains information and score', async () => {
-  const response = await api.get('/api/products')
+  const response = await helper.getProducts()
   const instruction = response.body[0].instructions[0]
   expect(instruction.score).toBe(0)
   expect(instruction.information).toBe('Muovi')
@@ -146,7 +119,6 @@ describe('One account already in database', () => {
     await user.save()
   })
   test('account can be made with new username', async () => {
-    //const usersAtStart = await usersInDb()
     const usersAtStart = await helper.usersInDb()
     const newUser = {
       username: 'admin',
@@ -157,7 +129,6 @@ describe('One account already in database', () => {
       .send(newUser)
       .expect(200)
       .expect('Content-Type', /application\/json/)
-    //const usersAtEnd = await usersInDb()
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
   })
@@ -168,9 +139,7 @@ describe('One account already in database', () => {
       password: 'salasana',
     }
 
-    //token = await getToken(user)
     token = await helper.getToken(user)
-    //console.log(token)
     expect(token).not.toBe(undefined)
   })
 
@@ -180,7 +149,6 @@ describe('One account already in database', () => {
         username: 'root',
         password: 'salasana',
       }
-      //token = await getToken(user)
       token = await helper.getToken(user)
     })
 
@@ -206,28 +174,18 @@ describe('One account already in database', () => {
       }
       const allProducts = await api.get('/api/products')
       const product = allProducts.body[0]
-      const result = await api.
-        post(`/api/products/${product.id}/instructions`)
-        .set('Authorization', 'bearer ' + token)
-        .set('Content-Type',  'application/json')
-        .send(newInstruction)
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
+      const result = await helper.addInstruction(product, token, newInstruction)
       expect(result.body.information).toBe(newInstruction.information)
   
     })
 
     test('user can add products to favourites', async () => {
 
-      const allProducts = await api.get('/api/products')
+      //const allProducts = await api.get('/api/products')
+      const allProducts = await helper.getProducts()
       const product = allProducts.body[0]
 
-      const result = await api
-        .post('/api/users/products/' + product.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
+      const result = await helper.addFavourite(product.id, token)
 
       const decodedToken = jwt.verify(token, config.SECRET)
       expect(result.body.users[0]).toBe(decodedToken.id)
@@ -239,25 +197,14 @@ describe('One account already in database', () => {
       const product = allProducts.body[0]
 
       // Lisätään
+      const result = await helper.addFavourite(product.id, token)
     
-      const result = await api
-        .post('/api/users/products/' + product.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
       const decodedToken = jwt.verify(token, config.SECRET)
       expect(result.body.users[0]).toBe(decodedToken.id)
 
       // Lisätään poistetaan
 
-      const resultB = await api
-        .put('/api/users/products/' + product.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
+      const resultB = await helper.removeFavourite(product.id, token)
 
       expect(resultB.body.users[0]).not.toBe(decodedToken.id)
     })
@@ -267,12 +214,7 @@ describe('One account already in database', () => {
       const allProducts = await api.get('/api/products')
       const instruction = allProducts.body[0].instructions[0]
 
-      const result = await api
-        .post('/api/users/likes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
+      const result = await helper.likeInstruction(instruction.id, token)
 
       const decodedToken = jwt.verify(token, config.SECRET)
       const user = await User.findById(decodedToken.id)
@@ -281,16 +223,10 @@ describe('One account already in database', () => {
     })
 
     test('user can dislike an instruction', async () => {
-
-      const allProducts = await api.get('/api/products')
+      const allProducts = await helper.getProducts()
       const instruction = allProducts.body[0].instructions[0]
-
-      const result = await api
-        .post('/api/users/dislikes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
+      
+      const result = await helper.disLikeInstruction(instruction.id, token)
 
       const decodedToken = jwt.verify(token, config.SECRET)
       const user = await User.findById(decodedToken.id)
@@ -304,26 +240,16 @@ describe('One account already in database', () => {
       const instruction = allProducts.body[0].instructions[0]
 
       //lisätään
-      let result = await api
-        .post('/api/users/likes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
+      let result = await helper.likeInstruction(instruction.id, token)
+      
       const decodedToken = jwt.verify(token, config.SECRET)
       let user = await User.findById(decodedToken.id)
       expect(result.body.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
 
       //poistetaan
-      result = await api
-        .put('/api/users/likes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
+      result = await helper.unLikeInstruction(instruction.id, token)
+      
       user = await User.findById(decodedToken.id)
       expect(result.body.score).toBe(0)
       expect(JSON.stringify(user.likes[0])).not.toBe(JSON.stringify(instruction.id))
@@ -335,26 +261,16 @@ describe('One account already in database', () => {
       const instruction = allProducts.body[0].instructions[0]
 
       //lisätään
-      let result = await api
-        .post('/api/users/dislikes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
+      let result = await helper.disLikeInstruction(instruction.id, token)
+      
       const decodedToken = jwt.verify(token, config.SECRET)
       let user = await User.findById(decodedToken.id)
       expect(result.body.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
 
       //poistetaan
-      result = await api
-        .put('/api/users/dislikes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
+      result = await helper.unDisLikeInstruction(instruction.id, token)
+      
       user = await User.findById(decodedToken.id)
       expect(result.body.score).toBe(0)
       expect(JSON.stringify(user.dislikes[0])).not.toBe(JSON.stringify(instruction.id))
@@ -366,26 +282,16 @@ describe('One account already in database', () => {
       const instruction = allProducts.body[0].instructions[0]
 
       //eitykätään
-      let result = await api
-        .post('/api/users/dislikes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
+      let result = await helper.disLikeInstruction(instruction.id, token)
+      
       const decodedToken = jwt.verify(token, config.SECRET)
       let user = await User.findById(decodedToken.id)
       expect(result.body.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
 
       //tykätään
-      result = await api
-        .post('/api/users/likes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
+      result = await helper.likeInstruction(instruction.id, token)
+      
       user = await User.findById(decodedToken.id)
       expect(result.body.score).toBe(1)
       expect(JSON.stringify(user.dislikes[0])).not.toBe(JSON.stringify(instruction.id))
@@ -398,26 +304,16 @@ describe('One account already in database', () => {
       const instruction = allProducts.body[0].instructions[0]
 
       //tykätään
-      let result = await api
-        .post('/api/users/likes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
+      let result = await helper.likeInstruction(instruction.id, token)
+      
       const decodedToken = jwt.verify(token, config.SECRET)
       let user = await User.findById(decodedToken.id)
       expect(result.body.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
 
       //eitykätään
-      result = await api
-        .post('/api/users/dislikes/' + instruction.id)
-        .set('Authorization', `bearer ${token}`)
-        .set('Content-Type',  'application/json')
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
+      result = await helper.disLikeInstruction(instruction.id, token)
+      
       user = await User.findById(decodedToken.id)
       expect(result.body.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
