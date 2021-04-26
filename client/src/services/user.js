@@ -46,9 +46,6 @@ const getDislikes = async () => {
   const response =  axios.get(`${userUrl}/dislikes`,  tokenService.getConfig())
   return response.then(response => response.data)
 }
-const getVotes = async (id) => {
-  const response =  axios.put(`${userUrl}/votes/${id}`, id, tokenService.getConfig())
-  return response.then(response => response.data)
-}
+
 export default{ createUser ,loginUser ,addFavorite, removeFavorite,
-  addDislike, addLike, removeDislike, removeLike, getLikes, getDislikes, getVotes }
+  addDislike, addLike, removeDislike, removeLike, getLikes, getDislikes }
