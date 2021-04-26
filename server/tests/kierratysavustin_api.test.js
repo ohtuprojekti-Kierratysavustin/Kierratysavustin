@@ -157,14 +157,9 @@ describe('One account already in database', () => {
         name: 'makkarakastike',
       }
 
-      await api
-        .post('/api/products')
-        .set('Authorization', `bearer ${token}`)
-        .send(newProduct)
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-      
-      const allProducts = await api.get('/api/products')
+      await helper.addNewProduct(newProduct, token)
+ 
+      const allProducts = await helper.getProducts()
       expect(allProducts.body).toHaveLength(helper.productsData.length + 1)
     })
 
@@ -172,7 +167,7 @@ describe('One account already in database', () => {
       const newInstruction = {
         information: 'maito',
       }
-      const allProducts = await api.get('/api/products')
+      const allProducts = await helper.getProducts()
       const product = allProducts.body[0]
       const result = await helper.addInstruction(product, token, newInstruction)
       expect(result.body.information).toBe(newInstruction.information)
@@ -180,8 +175,6 @@ describe('One account already in database', () => {
     })
 
     test('user can add products to favourites', async () => {
-
-      //const allProducts = await api.get('/api/products')
       const allProducts = await helper.getProducts()
       const product = allProducts.body[0]
 
@@ -192,8 +185,7 @@ describe('One account already in database', () => {
     })
 
     test('user can remove products from favorites', async () => {
-
-      const allProducts = await api.get('/api/products')
+      const allProducts = await helper.getProducts()
       const product = allProducts.body[0]
 
       // Lisätään
@@ -210,8 +202,7 @@ describe('One account already in database', () => {
     })
 
     test('user can like an instruction', async () => {
-
-      const allProducts = await api.get('/api/products')
+      const allProducts = await helper.getProducts()
       const instruction = allProducts.body[0].instructions[0]
 
       const result = await helper.likeInstruction(instruction.id, token)
@@ -235,8 +226,7 @@ describe('One account already in database', () => {
     })
 
     test('user can remove a like from an instruction', async () => {
-
-      const allProducts = await api.get('/api/products')
+      const allProducts = await helper.getProducts()
       const instruction = allProducts.body[0].instructions[0]
 
       //lisätään
@@ -256,8 +246,7 @@ describe('One account already in database', () => {
     })
 
     test('user can remove a dislike from an instruction', async () => {
-
-      const allProducts = await api.get('/api/products')
+      const allProducts = await helper.getProducts()
       const instruction = allProducts.body[0].instructions[0]
 
       //lisätään
@@ -277,8 +266,7 @@ describe('One account already in database', () => {
     })
 
     test('user can like an instruction after it has been disliked', async () => {
-
-      const allProducts = await api.get('/api/products')
+      const allProducts = await helper.getProducts()
       const instruction = allProducts.body[0].instructions[0]
 
       //eitykätään
@@ -299,8 +287,7 @@ describe('One account already in database', () => {
     })
 
     test('user can dislike an instruction after it has been liked', async () => {
-
-      const allProducts = await api.get('/api/products')
+      const allProducts = await helper.getProducts()
       const instruction = allProducts.body[0].instructions[0]
 
       //tykätään

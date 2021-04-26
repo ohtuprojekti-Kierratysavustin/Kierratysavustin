@@ -1,5 +1,3 @@
-//const Product = require('../models/product')
-//const Instruction = require('../models/instruction')
 const User = require('../models/user')
 const app = require('../app')
 const supertest = require('supertest')
@@ -18,10 +16,6 @@ const usersInDb = async () => {
   return users.map((u) => u.toJSON())
 }
 
-/* const productsInDb = async () => {
-  const products = await Product.find({})
-  return products.map(p => p.toJSON())
-} */
 
 const getToken = async (props) => {
   const login = await api
@@ -34,6 +28,16 @@ const getToken = async (props) => {
 const getProducts = async () => {
   const products = await api.get('/api/products')
   return products
+}
+
+const addNewProduct = async (newProduct, token) => {
+  const result = await api
+    .post('/api/products')
+    .set('Authorization', `bearer ${token}`)
+    .send(newProduct)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  return result
 }
 
 const addFavourite = async (productId, token) => {
@@ -113,5 +117,5 @@ module.exports = {
   usersInDb, getToken, productsData, getProducts
   , addInstruction, likeInstruction, disLikeInstruction
   , unLikeInstruction, unDisLikeInstruction, addFavourite
-  , removeFavourite
+  , removeFavourite, addNewProduct
 }
