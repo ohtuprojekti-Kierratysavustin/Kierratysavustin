@@ -8,20 +8,23 @@ const config = require('../utils/config')
 const Product = require('../models/product')
 const User = require('../models/user')
 const Instruction = require('../models/instruction')
+const helper = require('./test_helper')
+
 
 let token = undefined
-const productsData = [
+/* const productsData = [
   { name: 'Mustamakkarakastike pullo' },
   {
     name: 'Sanomalehti',
   },
-]
+] */
 
 beforeEach(async () => {
+  //helper.resetDB()
   await Product.deleteMany({})
   await Instruction.deleteMany({})
 
-  let productObject = new Product(productsData[0])
+  let productObject = new Product(helper.productsData[0])
   let instructionObject = new Instruction({
     information: 'Muovi',
     product: productObject.id
@@ -30,7 +33,7 @@ beforeEach(async () => {
   await instructionObject.save()
   await productObject.save()
 
-  productObject = new Product(productsData[1])
+  productObject = new Product(helper.productsData[1])
   await productObject.save()
 })
 
@@ -39,18 +42,18 @@ beforeEach(async () => {
   return products.map(p => p.toJSON())
 } */
 
-const usersInDb = async () => {
+/* const usersInDb = async () => {
   const users = await User.find({})
   return users.map((u) => u.toJSON())
-}
+} */
 
-const getToken = async (props) => {
+/* const getToken = async (props) => {
   const login = await api
     .post('/api/login')
     .send(props)
   
   return login.body.token
-}
+} */
 
 test('products are returned as json', async () => {
   await api
@@ -60,9 +63,10 @@ test('products are returned as json', async () => {
 })
 
 test('all products are returned', async () => {
-  const response = await api.get('/api/products')
+  //const response = await api.get('/api/products')
+  const response = await helper.getProducts()
 
-  expect(response.body).toHaveLength(productsData.length)
+  expect(response.body).toHaveLength(helper.productsData.length)
 })
 
 test('all products instructions are ordered by score', async () => {
@@ -75,8 +79,8 @@ test('all products instructions are ordered by score', async () => {
     password: 'testing',
   }
 
-  token = await getToken(user)
-  let allProducts = await api.get('/api/products')
+  token = await helper.getToken(user)
+  let allProducts = await helper.getProducts()
   const newInstruction1 = {
     information: 'first',
   }
@@ -87,50 +91,19 @@ test('all products instructions are ordered by score', async () => {
     information: 'third',
   }
   const product = allProducts.body[1]
-  await api.
-    post(`/api/products/${product.id}/instructions`)
-    .set('Authorization', 'bearer ' + token)
-    .set('Content-Type',  'application/json')
-    .send(newInstruction1)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-  await api.
-    post(`/api/products/${product.id}/instructions`)
-    .set('Authorization', 'bearer ' + token)
-    .set('Content-Type',  'application/json')
-    .send(newInstruction2)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-  await api.
-    post(`/api/products/${product.id}/instructions`)
-    .set('Authorization', 'bearer ' + token)
-    .set('Content-Type',  'application/json')
-    .send(newInstruction3)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-
-  allProducts = await api.get('/api/products')
+  await helper.addInstruction(product, token, newInstruction1)
+  await helper.addInstruction(product, token, newInstruction2)
+  await helper.addInstruction(product, token, newInstruction3)
+  
+  allProducts = await helper.getProducts()
   
   const firstInstructionAtStart = allProducts.body[1].instructions[0].id
   const secondInstructionAtStart = allProducts.body[1].instructions[1].id
   const thirdInstructionAtStart = allProducts.body[1].instructions[2].id
   
-
-  await api
-    .post('/api/users/likes/' + allProducts.body[1].instructions[2].id)
-    .set('Authorization', `bearer ${token}`)
-    .set('Content-Type',  'application/json')
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-
-  await api
-    .post('/api/users/dislikes/' + allProducts.body[1].instructions[0].id)
-    .set('Authorization', `bearer ${token}`)
-    .set('Content-Type',  'application/json')
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-
-  allProducts = await api.get('/api/products')
+  await helper.likeInstruction(allProducts.body[1].instructions[2].id, token)
+  await helper.disLikeInstruction(allProducts.body[1].instructions[0].id, token)
+  allProducts = await helper.getProducts()
 
   expect(allProducts.body[1].instructions[0].id).toBe(thirdInstructionAtStart)
   expect(allProducts.body[1].instructions[1].id).toBe(secondInstructionAtStart)
@@ -138,7 +111,8 @@ test('all products instructions are ordered by score', async () => {
 })
 
 test('known existing product is in all products', async () => {
-  const response = await api.get('/api/products')
+  //const response = await api.get('/api/products')
+  const response = await helper.getProducts()
   const contents = response.body.map((r) => r.name)
 
   expect(contents).toContain('Mustamakkarakastike pullo')
@@ -172,7 +146,8 @@ describe('One account already in database', () => {
     await user.save()
   })
   test('account can be made with new username', async () => {
-    const usersAtStart = await usersInDb()
+    //const usersAtStart = await usersInDb()
+    const usersAtStart = await helper.usersInDb()
     const newUser = {
       username: 'admin',
       password: 'adminn',
@@ -182,7 +157,8 @@ describe('One account already in database', () => {
       .send(newUser)
       .expect(200)
       .expect('Content-Type', /application\/json/)
-    const usersAtEnd = await usersInDb()
+    //const usersAtEnd = await usersInDb()
+    const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
   })
 
@@ -192,7 +168,8 @@ describe('One account already in database', () => {
       password: 'salasana',
     }
 
-    token = await getToken(user)
+    //token = await getToken(user)
+    token = await helper.getToken(user)
     //console.log(token)
     expect(token).not.toBe(undefined)
   })
@@ -203,7 +180,8 @@ describe('One account already in database', () => {
         username: 'root',
         password: 'salasana',
       }
-      token = await getToken(user)
+      //token = await getToken(user)
+      token = await helper.getToken(user)
     })
 
     test('Product can be added', async () => {
@@ -219,7 +197,7 @@ describe('One account already in database', () => {
         .expect('Content-Type', /application\/json/)
       
       const allProducts = await api.get('/api/products')
-      expect(allProducts.body).toHaveLength(productsData.length + 1)
+      expect(allProducts.body).toHaveLength(helper.productsData.length + 1)
     })
 
     test('user can add instruction for product', async () => {
