@@ -30,8 +30,6 @@ const Product = ({ product }) => {
 
   if (!product) return null
 
-
-
   return (
     <div>
       <Jumbotron id='infobar'>
