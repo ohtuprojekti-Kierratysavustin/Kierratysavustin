@@ -91,7 +91,7 @@ const App = () => {
           <ProductList products={products} setFilteredProducts={setFilteredProducts}/>
         </Route>
         <Route path="/searchResults">
-          <ProductList products={filteredProducts} />
+          <ProductList products={filteredProducts} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/">
           <SearchForm products={products} setFilteredProducts={setFilteredProducts} />

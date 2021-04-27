@@ -13,13 +13,13 @@ import FavoritesForm from './FavoritesForm'
 import '../styles.css'
 
 /** Component for showing list of products and a link to product page */
-const ProductList = ({ products }) => {
+const ProductList = ({ products,setFilteredProducts }) => {
   const { user } = useStore()
   if (products.length === 0) {
     return (
       <div>
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Miten kierrätysavustin toimii'} />
-        <SearchBarForm  />
+        <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
         <Container>
           <Row>
             <Col>
@@ -33,7 +33,7 @@ const ProductList = ({ products }) => {
     return (
       <div>
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Miten kierrätysavustin toimii'} />
-        <SearchBarForm />
+        <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
         <Container>
           <h2>Tuotteet</h2>
           <ListGroup as='ul' id='list'>

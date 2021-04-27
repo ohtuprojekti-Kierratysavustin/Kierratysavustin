@@ -14,10 +14,6 @@ import SearchForm from '../components/SearchForm'
 
 
 test('Search form renders and returns correct results', () => {
-  console.log('testi ei toimi')
-
-})
-/*
   const productA = {
     id: '1',
     name: 'Mustamakkarakastike pullo',
@@ -73,8 +69,7 @@ test('Search form renders and returns correct results', () => {
     target: { value: 'lehti' }
   })
   fireEvent.submit(form)
-  expect(changeFoundProducts.mock.calls).toHaveLength(0)
+  expect(changeFoundProducts.mock.calls).toHaveLength(1)
   expect(changeFoundProducts.mock.calls[0][0][0]).toBe(productB)
 
 })
-*/
