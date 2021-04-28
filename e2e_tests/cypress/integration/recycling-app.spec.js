@@ -103,7 +103,6 @@ describe("Recycling app", () => {
               )
               cy.get("#addInstruction").click()
               cy.get("#likeButton").click()
-              cy.contains("Poista Like")
             })
             it("recycling information can be disliked", () => {
               cy.get("#instructionButton").click()
@@ -112,7 +111,6 @@ describe("Recycling app", () => {
               )
               cy.get("#addInstruction").click()
               cy.get("#dislikeButton").click()
-              cy.contains("Poista Dislike")
             })
             it("recycling information list order changes when liked or disliked", () => {
               cy.get("#instructionButton").click()

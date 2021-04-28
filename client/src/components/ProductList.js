@@ -10,9 +10,10 @@ import { Media, ListGroup, Container, Row, Col } from 'react-bootstrap'
 import SearchBarForm from './SearchBarForm'
 import InfoBar from './InfoBar'
 import FavoritesForm from './FavoritesForm'
+import '../styles.css'
 
 /** Component for showing list of products and a link to product page */
-const ProductList = ({ products, setFilteredProducts }) => {
+const ProductList = ({ products,setFilteredProducts }) => {
   const { user } = useStore()
   if (products.length === 0) {
     return (
@@ -35,9 +36,9 @@ const ProductList = ({ products, setFilteredProducts }) => {
         <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
         <Container>
           <h2>Tuotteet</h2>
-          <ListGroup as='ul'>
+          <ListGroup as='ul' id='list'>
             {products.map(product =>
-              <ListGroup.Item action as='li' key={product.id} >
+              <ListGroup.Item as='li' key={product.id} id='list-item' >
                 <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`} state={{
                   product:product,
                 }}>
@@ -61,7 +62,7 @@ const ProductList = ({ products, setFilteredProducts }) => {
 
                             {product.instructions.length !== 0 ? (
                               <p>
-                                {product.instructions[0].information.slice(0,50)}...
+                                {product.instructions[0].information.slice(0,50)}
                               </p>
                             ) : (
                               ''
