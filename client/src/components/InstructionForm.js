@@ -71,6 +71,7 @@ const InstructionPopup = ( props ) =>  {
         props.product.instructions.push(i)
         props.product.instructions.sort((a,b) => b.score - a.score)
         updateProduct(props.product)
+        values.instructionText = ''
         props.handleClose()
         setNotification('Ohje lisätty!', 'success')
       }).catch(e => {
