@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import productService from '../services/products'
 import { useStore } from '../App'
 
@@ -9,6 +9,9 @@ const VoteForm = ( { instruction, user, product }  ) => {
   const { dislikes, setDislikes } = useStore()
   const [like, setLike] = useState(likes.some(p => p === instruction.id))
   const [disLike, setDislike] = useState(dislikes.some(p => p === instruction.id))
+  useEffect(( ) => { setLike(likes.some(p => p === instruction.id))
+    setDislike(dislikes.some(p => p === instruction.id))
+  })
   const [votes, setVotes] = useState(instruction.score)
   const labelLike = like ? 'Poista Like' : 'Like'
   const labelLikeVariant = like ? 'success' : 'outline-success'
