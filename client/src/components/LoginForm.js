@@ -1,7 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import productService from '../services/products'
 import userService from '../services/user'
-import Notification from './Notification'
 import tokenService from '../services/token'
 import { useStore } from '../App'
 import { useHistory } from 'react-router-dom'
@@ -41,7 +40,6 @@ const LoginForm = () => {
       <Container>
         <Form onSubmit={onSubmit}>
           <h1>Kirjaudu sisään</h1>
-          <Notification />
           <Form.Group>
             <Form.Label htmlFor="username">Käyttäjänimi: </Form.Label>
             <Form.Control

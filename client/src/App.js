@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import {
-  Switch, Route, Link, useRouteMatch
+  Switch, Route, useRouteMatch
 } from 'react-router-dom'
 import userService from './services/user'
+import NavigationBar from './components/NavigationBar'
 import productService from './services/products'
 import tokenService from './services/token'
 import create from 'zustand'
@@ -12,9 +13,9 @@ import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
 import SearchForm from './components/SearchForm'
 import LoginForm from './components/LoginForm'
-//import Notification from './components/Notification'
-import { Navbar, Nav } from 'react-bootstrap'
+import Notification from './components/Notification'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './styles.css'
 
 export const useStore = create(set => ({
   products: [],
@@ -39,7 +40,7 @@ export const useStore = create(set => ({
     clearTimer: clearTimeout(state.timer),
     notification: { message, condition },
     timer: setTimeout(() => {
-      state.clearNotification() }, 5000)
+      state.clearNotification() }, 10000)
   })),
   updateProduct: (param) => set(state => ({
     ...state,
@@ -48,7 +49,7 @@ export const useStore = create(set => ({
 }))
 
 const App = () => {
-  const { products, setProducts, filteredProducts, setFilteredProducts, user, setUser, setFavorites,setLikes,setDislikes } = useStore()
+  const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites,setLikes,setDislikes } = useStore()
 
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
@@ -72,40 +73,10 @@ const App = () => {
     : null
 
   return (
-    <div>
-      <Navbar bg='secondary' expand='sm'>
-        <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className='mr-auto'>
-            {user !== null ? (
-              <Nav.Link id='productForm' as={Link} to="/new">lisää tuote</Nav.Link>
-            ) : (
-              ''
-            )}
-            <Nav.Link id='productList' as={Link} to="/products">tuotteet</Nav.Link>
-          </Nav>
-
-          {user !== null ? (
-            <Nav className='justify-content-end'>
-              <Nav.Link id='LogoutButton' as={Link} onClick={() => {
-                window.localStorage.clear()
-                setUser(null)
-                tokenService.removeToken()
-              }} to="/">kirjaudu ulos
-              </Nav.Link>
-            </Nav>
-          ) : (
-            <Nav className='justify-content-end'>
-              <Nav.Link id='registerButton' as={Link} to="/register">rekisteröidy</Nav.Link>
-              <Nav.Link id='loginButton' as={Link} to="/login">kirjaudu</Nav.Link>
-            </Nav>
-          )}
-
-        </Navbar.Collapse>
-      </Navbar>
-
-      <Switch>
+    <div id='background'>
+      <NavigationBar/>
+      <Notification/>
+      <Switch >
         <Route path="/products/:id">
           <Product product={product} />
         </Route>
@@ -122,7 +93,7 @@ const App = () => {
           <ProductList products={products} setFilteredProducts={setFilteredProducts}/>
         </Route>
         <Route path="/searchResults">
-          <ProductList products={filteredProducts} />
+          <ProductList products={filteredProducts} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/">
           <SearchForm products={products} setFilteredProducts={setFilteredProducts} />

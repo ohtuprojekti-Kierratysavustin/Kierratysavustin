@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import userService from '../services/user'
-import Notification from './Notification'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Container,Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
@@ -49,7 +48,6 @@ const RegisterForm = () => {
             <Container>
               <Form  >
                 <h1>Rekisteröidy</h1>
-                <Notification />
                 <Formo.Group>
                   <Formo.Label htmlFor="username">Käyttäjänimi: </Formo.Label>
                   <Formo.Control as={Field}
