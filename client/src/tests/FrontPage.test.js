@@ -5,13 +5,11 @@ import {
   Switch, Route
 } from 'react-router-dom'
 import { render, fireEvent } from '@testing-library/react'
+import FrontPage from '../components/FrontPage'
 import ProductList from '../components/ProductList'
 import {
   BrowserRouter as Router
 } from 'react-router-dom'
-
-import SearchForm from '../components/SearchForm'
-
 
 test('Search form renders and returns correct results', () => {
   const productA = {
@@ -55,7 +53,7 @@ test('Search form renders and returns correct results', () => {
           <ProductList products={[]} />
         </Route>
         <Route path="/">
-          <SearchForm products={productsData} setFilteredProducts={changeFoundProducts} />
+          <FrontPage products={productsData} setFilteredProducts={changeFoundProducts} />
         </Route>
       </Switch>
     </Router>

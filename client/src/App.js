@@ -9,7 +9,7 @@ import ProductForm from './components/ProductForm'
 import Product from './components/Product'
 import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
-import SearchForm from './components/SearchForm'
+import ProductFilterForm from './components/FrontPage'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -17,10 +17,10 @@ import './styles.css'
 
 export const useStore = create(set => ({
   products: [],
-  prod:null,
+  prod: null,
   filteredProducts: [],
   favorites: [],
-  likes:[],
+  likes: [],
   dislikes: [],
   user: null,
   notification: { message: null, condition: null },
@@ -47,7 +47,7 @@ export const useStore = create(set => ({
 }))
 
 const App = () => {
-  const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites,setLikes,setDislikes } = useStore()
+  const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites, setLikes, setDislikes } = useStore()
 
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
@@ -88,13 +88,13 @@ const App = () => {
           <ProductForm />
         </Route>
         <Route path="/products">
-          <ProductList products={products} setFilteredProducts={setFilteredProducts}/>
+          <ProductList products={products} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/searchResults">
           <ProductList products={filteredProducts} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/">
-          <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
+          <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />
         </Route>
       </Switch>
     </div>
