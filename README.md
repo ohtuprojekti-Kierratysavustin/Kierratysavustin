@@ -9,6 +9,10 @@ Ohjelmistotuotanto projekti kevät 2021. Projektissa toteutetaan Kotitalouden ki
 
 [Kierrätysavustin staging](https://ohtup-staging.cs.helsinki.fi/kierratysavustin)
 
+## Sovelluksen tuotantoversio
+
+[Kierrätysavustin production](https://kierratysavustin.cs.helsinki.fi)
+
 ## Dokumentit
 
 [Asennusohjeet](documents/asennusohje.md)
