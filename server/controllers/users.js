@@ -30,29 +30,6 @@ const getTokenFrom = (req) => {
   return null
 }
 
-userRouter.get('/votes/:id/', async (req, res) => {
-  const token = getTokenFrom(req)
-  if (!token) {
-    return res.status(401).json({ error: 'token missing' })
-  }
-
-  const decodedToken = jwt.verify(token, config.SECRET)
-  if (!decodedToken) {
-    return res.status(401).json({ error: 'invalid token' })
-  }
-
-  const instruction = await Instruction.findById(req.params.id)
-  if (!instruction) {
-    return res.status(400).json({ error: 'No instruction' })
-  }
-
-  const user = await User.findById(decodedToken.id)
-  if (!user) {
-    return res.status(400).json({ error: 'No user' })
-  }
-  return res.status(200).json(instruction.score)
-})
-
 userRouter.post('/likes/:id/', async (req, res) => {
   const token = getTokenFrom(req)
   if (!token) {

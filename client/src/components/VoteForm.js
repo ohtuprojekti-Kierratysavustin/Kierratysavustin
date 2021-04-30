@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import productService from '../services/products'
+import React, { useState,useEffect } from 'react'
+import userService from '../services/user'
 import { useStore } from '../App'
 import { Button, Container, Row, Col, ButtonGroup } from 'react-bootstrap'
 import '../styles.css'
@@ -34,10 +34,10 @@ const VoteForm = ( { instruction, user, product }  ) => {
 
       instruction.score += -1
       setLikes(newArray)
-      productService.removeLike(instruction.id).then(instruction => setVotes(instruction.score))
+      userService.removeLike(instruction.id).then(instruction => setVotes(instruction.score))
     } else {
       setLike(true)
-      productService.addLike(instruction.id).then(setLikes(likes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
+      userService.addLike(instruction.id).then(setLikes(likes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
       instruction.score += 1
       if(disLike){
         instruction.score += 1
@@ -70,7 +70,7 @@ const VoteForm = ( { instruction, user, product }  ) => {
       }
 
       setDislikes(newArray)
-      productService.removeDislike(instruction.id).then(instruction => setVotes(instruction.score))
+      userService.removeDislike(instruction.id).then(instruction => setVotes(instruction.score))
 
     } else {
       setDislike(true)
@@ -88,7 +88,7 @@ const VoteForm = ( { instruction, user, product }  ) => {
         setLikes(newArray)
       }
 
-      productService.addDislike(instruction.id).then(setDislikes(dislikes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
+      userService.addDislike(instruction.id).then(setDislikes(dislikes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
     }
 
     product.instructions.sort((a,b) => b.score - a.score)

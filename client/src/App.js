@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 import {
   Switch, Route, useRouteMatch
 } from 'react-router-dom'
+import userService from './services/user'
 import NavigationBar from './components/NavigationBar'
 import productService from './services/products'
+import tokenService from './services/token'
 import create from 'zustand'
 import ProductForm from './components/ProductForm'
 import Product from './components/Product'
@@ -58,10 +60,10 @@ const App = () => {
     if (loggedUserJSON) {
       const userlogin = JSON.parse(loggedUserJSON)
       setUser(userlogin)
-      productService.setToken(userlogin.token)
+      tokenService.setToken(userlogin.token)
       productService.getFavorites(userlogin.id).then(favorites => setFavorites(favorites))
-      productService.getLikes().then(likes => setLikes(likes))
-      productService.getDislikes().then(dislikes => setDislikes(dislikes))
+      userService.getLikes().then(likes => setLikes(likes))
+      userService.getDislikes().then(dislikes => setDislikes(dislikes))
     }
   }, [])
 

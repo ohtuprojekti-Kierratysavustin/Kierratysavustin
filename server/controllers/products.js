@@ -20,7 +20,6 @@ productRouter.get('/user', async (req, res) => {
     score:1,
     information:1
   })
-  console.log(favorites)
   favorites.forEach(p => p.instructions.sort((a,b) => b.score - a.score))
   res.json(favorites.map((favorite) => favorite.toJSON()))
 })

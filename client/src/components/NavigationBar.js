@@ -3,7 +3,7 @@ import { Navbar, Nav } from 'react-bootstrap'
 import {
   Link
 } from 'react-router-dom'
-import productService from '../services/products'
+import tokenService from '../services/token'
 import { useStore } from '../App'
 import '../styles.css'
 
@@ -31,7 +31,7 @@ const NavigationBar = () => {
             <Nav.Link variant='outline-dark' id='LogoutButton' as={Link} onClick={() => {
               window.localStorage.clear()
               setUser(null)
-              productService.removeToken()
+              tokenService.removeToken()
             }} to="/">   kirjaudu ulos
             </Nav.Link>
           </Nav>
