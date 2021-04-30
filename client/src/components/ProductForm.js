@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import productService from '../services/products'
-import Notification from './Notification'
 import { useStore } from '../App'
 import InfoBar from './InfoBar'
 import { useHistory } from 'react-router-dom'
@@ -68,7 +67,6 @@ const ProductForm = () => {
               Lisää tuote
                 </Button>
               </Formo>
-              <Notification />
             </Container>
           </div>
         )

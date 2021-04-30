@@ -7,57 +7,38 @@ import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
 import { useStore  } from '../App'
 import { useHistory } from 'react-router-dom'
-import { Container, Row, Col, Jumbotron, ListGroup, Media, Modal, Button, Form } from 'react-bootstrap'
+import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
+import '../styles.css'
 
-
-const ulStyle = {
-  maxHeight:'300px',
-  overflowY:'scroll',
-  WebkitOverflowScrolling:'touch',
-  border:'solid 1px'
-}
 
 /** Component for showing product name and recycling information. */
 const Product = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
-  const [modalShow, setModalShow] = useState(false)
+  const [currentInstruction, setCurrentInstruction] = useState(0)
 
-  const handleClose = () => setModalShow(false)
-  const handleShow = () => setModalShow(true)
+  const routeChange = () => {
+    let path = '/searchResults'
+    history.goBack(path)
+  }
+  const handleInstructionClick = (id) => {
+    setCurrentInstruction(id)
+  }
   useEffect(() => {
     clearNotification()
   }, [])
-  console.log('tuote',product)
 
   if (!product) return null
 
-
-  const InstructionPopup = (props) =>  {
-
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Uusi ohje tuotteelle
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <InstructionForm product = {product} handleClose={handleClose}/>
-        </Modal.Body>
-      </Modal>
-    )
-  }
   return (
     <div>
-      <Jumbotron>
+      <Jumbotron id='infobar'>
         <Container>
-          <Row><Col><Button onClick={() => history.goBack()}>takaisin</Button></Col></Row>
+          <Row>
+            <Col>
+              <Button onClick={() => routeChange()} id='neutral-button'>takaisin</Button>
+            </Col>
+          </Row>
           <Row>
             <Col sm={10}>
               <h2>{product.name}</h2>
@@ -82,61 +63,50 @@ const Product = ({ product }) => {
             <Col>
               {product.instructions.length !== 0 ? (
                 <p id='top-score'>
-                  {product.instructions[0].information}
+                  {product.instructions[currentInstruction].information}
+
                 </p>
               ) : (
                 <span>ei ohjeita</span>
               )}
 
             </Col>
+
           </Row>
         </Container>
       </Jumbotron>
       <Container>
         <Form.Group>
           {user !== null ? (
-            <Button
-              id='instructionButton'
-              variant="primary"
-              onClick={() => handleShow(true)}
-            >
-                    Lisää uusi ohje
-            </Button>
+            <InstructionForm product = {product} />
+
           ) : (
             ''
           )}
-          <InstructionPopup
-            show={modalShow}
-            onHide={() => handleClose(false)}
-          />
+
 
         </Form.Group>
-        <ListGroup id='instruction-list' as='ul' style={ulStyle}>
-          {product.instructions.map(instruct =>
-            <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id}>
-              <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
-                <Media>
-                  <Media.Body>
+        <ListGroup id='instruction-list' as='ul' >
+          {product.instructions.map((instruct, index) =>
+            <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id} >
+              <Link style={{ textDecoration: 'none' }}  to={`/products/${product.id}`}>
+                <Container id='vote-form'>
+                  <Row >
+                    <Col onClick={() => handleInstructionClick(index)}>
+                      {instruct.information !== null ? (
+                        <p>
+                          {instruct.information.slice(0, 75)}
+                        </p>
+                      ) : (
+                        ''
+                      )}
+                    </Col>
+                    <VoteForm instruction = {instruct} user = {user} product={product} />
+                  </Row>
 
-                    {instruct.information !== null ? (
-                      <Container id='vote-form'>
-                        <Row >
-                          <Col xs lg='10'>
-                            <p>
-                              {instruct.information.slice(0, 250)}
-                            </p>
-                          </Col>
-                          <Col >
-                            <VoteForm instruction = {instruct} user = {user} product={product} />
-                          </Col>
-                        </Row>
-                      </Container>
-                    ) : (
-                      ''
-                    )}
-                  </Media.Body>
-                </Media>
+                </Container>
               </Link>
+
             </ListGroup.Item>
           )}
         </ListGroup>

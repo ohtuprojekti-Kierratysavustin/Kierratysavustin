@@ -5,12 +5,11 @@ import { useStore } from '../App'
 
 import InfoBar from './InfoBar'
 
-const ProductFilterForm = ({ products, setFilteredProducts }) => {
+const FrontPage = ( { products, setFilteredProducts } ) => {
+  const { user, favorites } = useStore()
   if (!products) {
     return null
   }
-  const { user, favorites } = useStore()
-
 
   return (
     <div>
@@ -26,4 +25,4 @@ const ProductFilterForm = ({ products, setFilteredProducts }) => {
     </div>
   )
 }
-export default ProductFilterForm
+export default FrontPage

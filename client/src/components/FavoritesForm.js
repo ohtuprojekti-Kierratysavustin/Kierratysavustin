@@ -1,17 +1,18 @@
-import React,{ useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import productService from '../services/products'
 import { useStore } from '../App'
 
 import { Button } from 'react-bootstrap'
 
+
 const FavoritesForm = ({ product }) => {
   const { favorites, setFavorites } = useStore()
   const [favorite, setFavorite] = useState(favorites.some(p => p.id === product.id))
+  useEffect(() => { setFavorite(favorites.some(p => p.id === product.id))})
   const buttonStyle = favorite
     ? 'outline-danger' : 'outline-success'
   const label = favorite
     ? 'Poista suosikeista' : 'Lisää suosikkeihin'
-
   const handleClick = (event) => {
     event.preventDefault()
     if(favorite === true){
