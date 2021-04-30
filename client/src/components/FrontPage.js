@@ -5,7 +5,7 @@ import { useStore } from '../App'
 
 import InfoBar from './InfoBar'
 
-const FrontPage = ( { products, setFilteredProducts } ) => {
+const FrontPage = ({ products, setFilteredProducts }) => {
   const { user, favorites } = useStore()
   if (!products) {
     return null
@@ -13,7 +13,7 @@ const FrontPage = ( { products, setFilteredProducts } ) => {
 
   return (
     <div>
-      <InfoBar header={'Kotitalouden kierrätysavustin'} text={'kierrätysavustimesta lyhyesti'} />
+      <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Kotitalouden kierrätysavustimen tavoitteena on nostaa kotitalouksien lajitteluastetta. Tule mukaan hakemaan oikea kierrätysohje haluamallesi tuotteelle tai rekisteröidy ja kirjaudu palveluun lisätäksesi tuotteita tai kierrätysohjeita palveluun!'} />
 
       <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
 
