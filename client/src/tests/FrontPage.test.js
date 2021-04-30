@@ -4,7 +4,7 @@ import {
   Switch, Route
 } from 'react-router-dom'
 import { render, fireEvent } from '@testing-library/react'
-import ProductFilterForm from '../components/ProductFilterForm'
+import ProductFilterForm from '../components/FrontPage'
 import ProductList from '../components/ProductList'
 import {
   BrowserRouter as Router
