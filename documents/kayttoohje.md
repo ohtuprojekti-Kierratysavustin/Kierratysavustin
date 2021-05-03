@@ -66,6 +66,6 @@ Järjestelmään lisättyjä ohjeita voi kirjautuneena äänestää ylös, mikä
 
 Kirjautunut käyttäjä voi lisätä tuotteita suosikeiksi. Suosikkituotteet näkyvät järjestelmän etusivulla, kun käyttäjä on kirjautuneena järjestelmään.
 
-![Tuotteen suosikoiminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/4e88ff1186a78defdae9c084a192f68dc926e824/documents/kuvat/kierratysavustin-suosikkeihin-lisaaminen.png)
+![Tuotteen suosikoiminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/c68f88359c0e7b790abebed9cff951ea968e3f80/documents/kuvat/kierratysavustin-lisaa-suosikkeihin.png)
 
 ![Etusivu kirjautumisen jälkeen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/bcba239dc9238cf6d433c7caf96e84c01ea3fc8d/documents/kuvat/kirjautuneen-etusivu.png)
