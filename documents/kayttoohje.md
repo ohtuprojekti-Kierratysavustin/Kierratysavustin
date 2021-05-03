@@ -1,7 +1,7 @@
 # Käyttöohje
 
 ![Sovelluksen aloitussivu](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/kuvat/aloitussivu.png)
-![Sovelluksen aloitussivu](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/kuvat/kierratysavustinetusivu.png)
+
 ## Käyttö ilman kirjautumista
 
 Ohjelmaa voi käyttää rajoitetusti ilman kirjautumista. Tuotteita voi hakea ja 
