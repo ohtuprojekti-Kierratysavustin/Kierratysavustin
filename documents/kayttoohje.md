@@ -68,4 +68,4 @@ Kirjautunut käyttäjä voi lisätä tuotteita suosikeiksi. Suosikkituotteet nä
 
 ![Tuotteen suosikoiminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/4e88ff1186a78defdae9c084a192f68dc926e824/documents/kuvat/kierratysavustin-suosikkeihin-lisaaminen.png)
 
-![Etusivu kirjautumisen jälkeen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/d85bccd0a55874bc6a37bd6d2656620754d62342/documents/kuvat/kierratysavustin-kirjautuneen%20etusivu.png)
+![Etusivu kirjautumisen jälkeen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/bcba239dc9238cf6d433c7caf96e84c01ea3fc8d/documents/kuvat/kirjautuneen-etusivu.png)
