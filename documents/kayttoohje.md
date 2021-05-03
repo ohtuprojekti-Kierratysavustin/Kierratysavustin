@@ -1,6 +1,6 @@
 # Käyttöohje
 
-![Sovelluksen aloitussivu](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/kuvat/aloitusivu.png)
+![Sovelluksen aloitussivu](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/kuvat/aloitussivu.png)
 
 ## Käyttö ilman kirjautumista
 
