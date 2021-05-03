@@ -60,12 +60,12 @@ Kierrätysohjeita voi lisätä avaamalla tuotteen tiedot ja lisäämällä ohjee
 
 Järjestelmään lisättyjä ohjeita voi kirjautuneena äänestää ylös, mikäli ne ovat käyttäjän mielestä osuvia ja alas, mikäli ne eivät käyttäjän mielestä ole hyviä. 
 
-![Tuotteen äänestäminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/4b39f38755d68fdcf164651ee59dc49214cba08e/documents/kuvat/kierratysavustin-uusi-ohje-tuotteelle.png)
+![Tuotteen äänestäminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/d85bccd0a55874bc6a37bd6d2656620754d62342/documents/kuvat/kierratysavustin-suosikkeihin-lisaaminen.png)
 
 ## Kierrätysohjeiden lisääminen suosikeiksi (kirjautuneena)
 
 Kirjautunut käyttäjä voi lisätä tuotteita suosikeiksi. Suosikkituotteet näkyvät järjestelmän etusivulla, kun käyttäjä on kirjautuneena järjestelmään.
 
-![Tuotteen suosikoiminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/d85bccd0a55874bc6a37bd6d2656620754d62342/documents/kuvat/kierratysavustin-suosikkeihin-lisaaminen.png)
+![Tuotteen suosikoiminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/4b39f38755d68fdcf164651ee59dc49214cba08e/documents/kuvat/kierratysavustin-uusi-ohje-tuotteelle.png)
 
 ![Etusivu kirjautumisen jälkeen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/d85bccd0a55874bc6a37bd6d2656620754d62342/documents/kuvat/kierratysavustin-kirjautuneen%20etusivu.png)
