@@ -4,4 +4,4 @@ Projektin frontend toimii selaimessa, joka takaa toiminnallisuuden useissa laitt
 
 Formien tekemiseen käytetään [Formik](https://formik.org/) kirjastoa, ja formien validointiin käytämme YUP jonka avulla voidaan luoda hyväksymiskriteerit formissa formin submittaamiselle.
 
-Frontendissa käytetään React kirjastoa. Reactin tilan(State) hallintaan käytämme [Zustand](https://github.com/pmndrs/zustand). Zustand 
+Frontendissa käytetään React kirjastoa. Reactin tilan(State) hallintaan käytämme [Zustand](https://github.com/pmndrs/zustand) kirjastoa 
