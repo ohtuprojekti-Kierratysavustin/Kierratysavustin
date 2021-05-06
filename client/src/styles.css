@@ -1,0 +1,202 @@
+:root {
+    --background-color: #F1F2EB;
+    --infobar-color: #A4C2A5;
+    --navbar-color: #137547;
+
+    --neutral-button-color: #31ac3d;
+    --neutral-button-color-hover: #23792c;
+    --neutral-button-color-shadow: #abdfb1;
+    --neutral-button-color-disabled: #5BBA6F;
+
+    --positive-button-color: #31ac3d;
+    --positive-button-color-hover: #23792c;
+    --positive-button-color-shadow: #abdfb1;
+
+    --negative-button-color: #c81d25;
+    --negative-button-color-hover: #9b181f;
+    --negative-button-color-shadow: #dd9ca0;
+
+    --list-color: #F1F2EB;
+    --list-color-hover: #d9dad4;
+    --list-color-active: #bfc0ba;
+
+    --form-background-color: #f2f3f0;
+}
+
+html {
+    background-color: var(--background-color);
+}
+
+#instruction-list {
+    max-height: 300px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    border: solid 1px;
+}
+
+.better-notification {
+    position: absolute !important;
+    top: 10px;
+    left: 45%;
+    margin-left: -width;
+}
+
+.better-votes {
+    padding-left: 10px;
+}
+
+/* _Colors_ */
+
+/* Navbar */
+#navbar {
+    background-color: var(--navbar-color);
+}
+#navbar a {
+    color:white;
+    font-size: 24px;
+}
+#navbar b {
+    color:#DAD7CD;
+    font-size: 24px;
+}
+
+/* Infobar */
+#infobar {
+    background-color: var(--infobar-color);
+}
+
+/* Background */
+#background {
+    background-color: var(--background-color);
+}
+
+/* List */
+#list-item {
+    background-color: var(--list-color);
+}
+#list > #list-item:hover { 
+    background-color: var(--list-color-hover); 
+}
+#list > #list-item:active {
+    background-color: var(--list-color-active); 
+}
+#list a {
+    color: black;
+}
+
+/* Instruction List */
+#instruction-list-item {
+    background-color: var(--list-color);
+}
+#instruction-list > #instruction-list-item:hover {
+    background-color: var(--list-color-hover); 
+}
+#instruction-list > #instruction-list-item:active {
+    background-color: var(--list-color-active); 
+}
+#instruction-list a {
+    color: black;
+}
+
+/* Buttons */
+
+/* default*/
+.btn.btn-primary {
+    background-color: var(--neutral-button-color);
+    border-color: var(--neutral-button-color);
+}
+.btn.btn-primary:hover {
+    background-color: var(--neutral-button-color-hover);
+    border-color: var(--neutral-button-color);
+}
+.btn.btn-primary:focus {
+    background-color: var(--neutral-button-color);
+    border-color: var(--neutral-button-color);
+    box-shadow: 0 0 0 0.2rem var(--neutral-button-color-shadow);
+}
+.disabled-btn.btn.btn-primary {
+    background-color: var(--neutral-button-color-disabled);
+    border-color: var(--neutral-button-color-disabled);
+}
+.disabled-btn.btn.btn-primary:hover {
+    background-color: var(--neutral-button-color-disabled);
+    border-color: var(--neutral-button-color-disabled);
+}
+.disabled-btn.btn.btn-primary:focus {
+    background-color: var(--neutral-button-color-disabled);
+    border-color: var(--neutral-button-color-disabled);
+    box-shadow: 0 0 0 0.2rem var(--neutral-button-color-shadow);
+}
+
+/* like */
+.btn.btn-outline-success {
+    border-color: var(--positive-button-color);
+    color: var(--positive-button-color);
+}
+.btn.btn-outline-success:hover {
+    background-color: var(--positive-button-color);
+    border-color: var(--positive-button-color);
+    color: white;
+}
+.btn.btn-outline-success:focus {
+    border-color: var(--positive-button-color);
+    box-shadow: 0 0 0 0.2rem var(--positive-button-color-shadow);
+}
+.btn.btn-success {
+    background-color: var(--positive-button-color);
+    border-color: var(--positive-button-color);
+}
+.btn.btn-success:hover {
+    background-color: var(--positive-button-color-hover);
+    border-color: var(--positive-button-color);
+}
+.btn.btn-success:focus {
+    background-color: var(--positive-button-color);
+    border-color: var(--positive-button-color);
+    box-shadow: 0 0 0 0.2rem var(--positive-button-color-shadow);
+}
+
+/* dislike */
+.btn.btn-outline-danger {
+    border-color: var(--negative-button-color);
+    color: var(--negative-button-color);
+}
+.btn.btn-outline-danger:hover {
+    background-color: var(--negative-button-color);
+    border-color: var(--negative-button-color);
+    color: white;
+}
+.btn.btn-outline-danger:focus {
+    border-color: var(--negative-button-color);
+    box-shadow: 0 0 0 0.2rem var(--negative-button-color-shadow);
+}
+.btn.btn-danger {
+    background-color: var(--negative-button-color);
+    border-color: var(--negative-button-color);
+}
+.btn.btn-danger:hover {
+    background-color: var(--negative-button-color-hover);
+    border-color: var(--negative-button-color);
+}
+.btn.btn-danger:focus {
+    background-color: var(--negative-button-color);
+    border-color: var(--negative-button-color);
+    box-shadow: 0 0 0 0.2rem var(--negative-button-color-shadow);
+}
+
+/* Forms */
+.form-control {
+    background-color: black;
+}
+#searchInput {
+    background-color: var(--form-background-color) !important;
+}
+#nameInput {
+    background-color: var(--form-background-color) !important;
+}
+#usernameInput {
+    background-color: var(--form-background-color) !important;
+}
+#passwordInput {
+    background-color: var(--form-background-color);
+}

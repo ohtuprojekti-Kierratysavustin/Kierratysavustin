@@ -1,52 +1,24 @@
 import React, { useEffect } from 'react'
 import {
-  Switch, Route, Link, useRouteMatch
+  Switch, Route, useRouteMatch
 } from 'react-router-dom'
+import userService from './services/user'
+import NavigationBar from './components/NavigationBar'
 import productService from './services/products'
-import create from 'zustand'
+import tokenService from './services/token'
 import ProductForm from './components/ProductForm'
 import Product from './components/Product'
 import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
-import SearchForm from './components/SearchForm'
+import ProductFilterForm from './components/FrontPage'
 import LoginForm from './components/LoginForm'
-//import Notification from './components/Notification'
-import { Navbar, Nav } from 'react-bootstrap'
+import Notification from './components/Notification'
+import { useStore } from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
-
-export const useStore = create(set => ({
-  products: [],
-  prod:null,
-  filteredProducts: [],
-  favorites: [],
-  likes:[],
-  dislikes: [],
-  user: null,
-  notification: { message: null, condition: null },
-  timer: null,
-  setUser: (param) => set(() => ({ user: param })),
-  setProducts: (param) => set(() => ({ products: param })),
-  setProduct: (param) => set(() => ({ prod: param })),
-  setFavorites: (param) => set(() => ({ favorites: param })),
-  setLikes: (param) => set(() => ({ likes: param })),
-  setDislikes: (param) => set(() => ({ dislikes: param })),
-  setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
-  clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
-  setNotification: (message, condition) => set(state => ({
-    ...state,
-    clearTimer: clearTimeout(state.timer),
-    notification: { message, condition },
-    timer: setTimeout(() => {
-      state.clearNotification() }, 5000)
-  })),
-  updateProduct: (param) => set(state => ({
-    ...state,
-    products: state.products.map(p => p.id !== param.id ? p : param)
-  }))
-}))
+import './styles.css'
 
 const App = () => {
-  const { products, setProducts, filteredProducts, setFilteredProducts, user, setUser, setFavorites,setLikes,setDislikes } = useStore()
+  const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites, setLikes, setDislikes } = useStore()
 
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
@@ -57,10 +29,10 @@ const App = () => {
     if (loggedUserJSON) {
       const userlogin = JSON.parse(loggedUserJSON)
       setUser(userlogin)
-      productService.setToken(userlogin.token)
+      tokenService.setToken(userlogin.token)
       productService.getFavorites(userlogin.id).then(favorites => setFavorites(favorites))
-      productService.getLikes().then(likes => setLikes(likes))
-      productService.getDislikes().then(dislikes => setDislikes(dislikes))
+      userService.getLikes().then(likes => setLikes(likes))
+      userService.getDislikes().then(dislikes => setDislikes(dislikes))
     }
   }, [])
 
@@ -70,40 +42,10 @@ const App = () => {
     : null
 
   return (
-    <div>
-      <Navbar bg='secondary' expand='sm'>
-        <Navbar.Brand as={Link} to="/">etusivu</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className='mr-auto'>
-            {user !== null ? (
-              <Nav.Link id='productForm' as={Link} to="/new">lisää tuote</Nav.Link>
-            ) : (
-              ''
-            )}
-            <Nav.Link id='productList' as={Link} to="/products">tuotteet</Nav.Link>
-          </Nav>
-
-          {user !== null ? (
-            <Nav className='justify-content-end'>
-              <Nav.Link id='LogoutButton' as={Link} onClick={() => {
-                window.localStorage.clear()
-                setUser(null)
-                productService.removeToken()
-              }} to="/">kirjaudu ulos
-              </Nav.Link>
-            </Nav>
-          ) : (
-            <Nav className='justify-content-end'>
-              <Nav.Link id='registerButton' as={Link} to="/register">rekisteröidy</Nav.Link>
-              <Nav.Link id='loginButton' as={Link} to="/login">kirjaudu</Nav.Link>
-            </Nav>
-          )}
-
-        </Navbar.Collapse>
-      </Navbar>
-
-      <Switch>
+    <div id='background'>
+      <NavigationBar/>
+      <Notification/>
+      <Switch >
         <Route path="/products/:id">
           <Product product={product} />
         </Route>
@@ -117,13 +59,13 @@ const App = () => {
           <ProductForm />
         </Route>
         <Route path="/products">
-          <ProductList products={products} setFilteredProducts={setFilteredProducts}/>
+          <ProductList products={products} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/searchResults">
-          <ProductList products={filteredProducts} />
+          <ProductList products={filteredProducts} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/">
-          <SearchForm products={products} setFilteredProducts={setFilteredProducts} />
+          <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />
         </Route>
       </Switch>
     </div>

@@ -1,7 +1,8 @@
 import React from 'react'
-import { useStore } from '../App'
+import { useStore } from '../store'
 
 import { Alert } from 'react-bootstrap'
+import '../styles.css'
 
 const Notification = () => {
   const { message, condition } = useStore().notification
@@ -10,13 +11,13 @@ const Notification = () => {
   }
   if (condition === 'success') {
     return (
-      <Alert variant='success'>
+      <Alert variant='success' className='better-notification'>
         {message}
       </Alert>
     )
   } else {
     return (
-      <Alert variant='danger'>
+      <Alert variant='danger' className='better-notification'>
         {message}
       </Alert>
     )

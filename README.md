@@ -9,23 +9,27 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 
 ## Ohjeita käyttäjälle
 
-- [Asennusohjeet](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/asennusohje.md)
+- [Asennusohjeet](documents/asennusohje.md)
 
-- [Käyttöohjeet](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/kayttoohje.md)
-
+- [Käyttöohjeet](documents/kayttoohje.md)
 
 ## Sovelluksen staging versio
 
 - [Kierrätysavustin staging](https://ohtup-staging.cs.helsinki.fi/kierratysavustin)
 
+## Sovelluksen tuotantoversio
+
+[Kierrätysavustin production](https://kierratysavustin.cs.helsinki.fi)
+
 ## Dokumentaatio
 
-- [Frontend-dokumentaatio](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/Frontend-dokumentaatio.md)
+- [Frontend-dokumentaatio](documents/Frontend-dokumentaatio.md)
 
-- [Backend-dokumentaatio](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/Backend-dokumentaatio.md)
+- [Backend-dokumentaatio](documents/Backend-dokumentaatio.md)
 
-- [Teknologiat](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/staging/documents/teknologiat.md)
-- [Definition of Done](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/main/documents/definitionOfDone.md) 
+- [Teknologiat](documents/teknologiat.md)
+
+- [Definition of Done](documents/definitionOfDone.md) 
 
 ## Projektin edistyminen
 

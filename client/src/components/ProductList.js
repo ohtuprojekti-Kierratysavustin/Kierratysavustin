@@ -1,15 +1,14 @@
 import React from 'react'
-import { useStore } from '../App'
+import { useStore } from '../store'
 import {
   Link
 } from 'react-router-dom'
-
 import logo from '../media/logo.png'
 import { Media, ListGroup, Container, Row, Col } from 'react-bootstrap'
-
 import SearchBarForm from './SearchBarForm'
 import InfoBar from './InfoBar'
 import FavoritesForm from './FavoritesForm'
+import '../styles.css'
 
 /** Component for showing list of products and a link to product page */
 const ProductList = ({ products, setFilteredProducts }) => {
@@ -17,7 +16,7 @@ const ProductList = ({ products, setFilteredProducts }) => {
   if (products.length === 0) {
     return (
       <div>
-        <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Miten kierrätysavustin toimii'} />
+        <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Hae tai selaa kierrätysavustimeen jo lisättyjä tuotteita.'} />
         <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
         <Container>
           <Row>
@@ -31,15 +30,15 @@ const ProductList = ({ products, setFilteredProducts }) => {
   } else {
     return (
       <div>
-        <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Miten kierrätysavustin toimii'} />
+        <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Hae tai selaa kierrätysavustimeen jo lisättyjä tuotteita.'} />
         <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
         <Container>
           <h2>Tuotteet</h2>
-          <ListGroup as='ul'>
+          <ListGroup as='ul' id='list'>
             {products.map(product =>
-              <ListGroup.Item action as='li' key={product.id} >
+              <ListGroup.Item as='li' key={product.id} id='list-item' >
                 <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`} state={{
-                  product:product,
+                  product: product,
                 }}>
                   <Media>
                     <img
@@ -61,7 +60,7 @@ const ProductList = ({ products, setFilteredProducts }) => {
 
                             {product.instructions.length !== 0 ? (
                               <p>
-                                {product.instructions[0].information.slice(0,50)}...
+                                {product.instructions[0].information.slice(0, 50)}
                               </p>
                             ) : (
                               ''

@@ -1,14 +1,14 @@
 import React, { useEffect,useState } from 'react'
-import loginService from '../services/login'
 import productService from '../services/products'
-import Notification from './Notification'
-import { useStore } from '../App'
+import userService from '../services/user'
+import tokenService from '../services/token'
+import { useStore } from '../store'
 import { useHistory } from 'react-router-dom'
 
 import { Container, Button, Form } from 'react-bootstrap'
 
 const LoginForm = () => {
-  const { setUser, setNotification, clearNotification, setFavorites } = useStore()
+  const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes } = useStore()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -19,16 +19,17 @@ const LoginForm = () => {
   const onSubmit = async(values) => {
     values.preventDefault()
     try {
-      const user = await loginService.loginUser({ username:username, password:password })
+      const user = await userService.loginUser({ username:username, password:password })
       setUser(user)
-      productService.setToken(user.token)
+      tokenService.setToken(user.token)
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
       productService.getFavorites(user.id).then(favorites => setFavorites(favorites))
+      userService.getLikes().then(likes => setLikes(likes))
+      userService.getDislikes().then(dislikes => setDislikes(dislikes))
       setNotification('Kirjautuminen onnistui', 'success')
       history.push('/')
-      window.location.reload(true) // Reload koska muuten aikaisemman kirjautuneen käyttäjän Liket näkyvät.
     } catch (e) {
       setNotification('Väärä nimi tai salasana', 'error')
     }
@@ -39,7 +40,6 @@ const LoginForm = () => {
       <Container>
         <Form onSubmit={onSubmit}>
           <h1>Kirjaudu sisään</h1>
-          <Notification />
           <Form.Group>
             <Form.Label htmlFor="username">Käyttäjänimi: </Form.Label>
             <Form.Control

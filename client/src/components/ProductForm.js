@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react'
 import productService from '../services/products'
-import Notification from './Notification'
-import { useStore } from '../App'
+import { useStore } from '../store'
 import InfoBar from './InfoBar'
 import { useHistory } from 'react-router-dom'
 import * as yup from 'yup'
-import { Formik, Form , Field, ErrorMessage  } from 'formik'
-
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Form as Formo, Button, Container } from 'react-bootstrap'
 
 const ProductForm = () => {
   const history = useHistory()
-  const { products, setProducts, setNotification , clearNotification } = useStore()
+  const { products, setProducts, setNotification, clearNotification } = useStore()
 
   useEffect(() => {
     clearNotification()
@@ -24,7 +22,7 @@ const ProductForm = () => {
   }
   const handleSubmit = async (values) => {
     const productName = values.productName
-    const product =  { name: productName }
+    const product = { name: productName }
     productService.create(product)
       .then(returnedProduct => {
         setProducts(products.concat(returnedProduct))
@@ -45,7 +43,7 @@ const ProductForm = () => {
         const { errors, touched, isValid, dirty } = formik
         return (
           <div>
-            <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Täällä voit lisätä tuotteen palveluun'} />
+            <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Puuttuuko kierrätysavustimesta jokin tuote? Ei hätää! Voit lisätä sen alla olevalla lomakkeella järjestelmään.'} />
             <Container>
               <Formo as={Form}  >
                 <Formo.Group>
@@ -65,10 +63,9 @@ const ProductForm = () => {
                   className={!(dirty && isValid) ? 'disabled-btn' : ''}
                   disabled={!(dirty && isValid)}
                 >
-              Lisää tuote
+                  Lisää tuote
                 </Button>
               </Formo>
-              <Notification />
             </Container>
           </div>
         )

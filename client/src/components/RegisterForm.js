@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
-import registerService from '../services/register'
-import Notification from './Notification'
+import userService from '../services/user'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Container,Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
-import { useStore } from '../App'
+import { useStore } from '../store'
 const RegisterForm = () => {
   const { setNotification, clearNotification } = useStore()
   const history = useHistory()
@@ -24,7 +23,7 @@ const RegisterForm = () => {
   }
   const onSubmit =  async (values, submitProps) => {
     try {
-      await registerService.createUser(values)
+      await userService.createUser(values)
       setNotification('Rekisteröityminen onnistui', 'success')
       submitProps.setSubmitting(false)
       submitProps.resetForm()
@@ -49,7 +48,6 @@ const RegisterForm = () => {
             <Container>
               <Form  >
                 <h1>Rekisteröidy</h1>
-                <Notification />
                 <Formo.Group>
                   <Formo.Label htmlFor="username">Käyttäjänimi: </Formo.Label>
                   <Formo.Control as={Field}
