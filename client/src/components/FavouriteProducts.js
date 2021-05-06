@@ -3,7 +3,6 @@ import {
   Link
 } from 'react-router-dom'
 import FavoritesForm from './FavoritesForm'
-
 import logo from '../media/logo.png'
 import { Container, Media, ListGroup } from 'react-bootstrap'
 

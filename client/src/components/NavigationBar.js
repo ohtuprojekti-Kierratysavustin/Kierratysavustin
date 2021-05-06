@@ -4,7 +4,7 @@ import {
   Link
 } from 'react-router-dom'
 import tokenService from '../services/token'
-import { useStore } from '../App'
+import { useStore } from '../store'
 import '../styles.css'
 
 const NavigationBar = () => {

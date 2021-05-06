@@ -2,7 +2,7 @@ import React, { useEffect,useState } from 'react'
 import productService from '../services/products'
 import userService from '../services/user'
 import tokenService from '../services/token'
-import { useStore } from '../App'
+import { useStore } from '../store'
 import { useHistory } from 'react-router-dom'
 
 import { Container, Button, Form } from 'react-bootstrap'

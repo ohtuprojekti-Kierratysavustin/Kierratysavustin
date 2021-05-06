@@ -1,5 +1,5 @@
 import React from 'react'
-import { useStore } from '../App'
+import { useStore } from '../store'
 
 import { Alert } from 'react-bootstrap'
 import '../styles.css'

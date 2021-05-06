@@ -1,12 +1,10 @@
 import React from 'react'
-import { useStore } from '../App'
+import { useStore } from '../store'
 import {
   Link
 } from 'react-router-dom'
-
 import logo from '../media/logo.png'
 import { Media, ListGroup, Container, Row, Col } from 'react-bootstrap'
-
 import SearchBarForm from './SearchBarForm'
 import InfoBar from './InfoBar'
 import FavoritesForm from './FavoritesForm'

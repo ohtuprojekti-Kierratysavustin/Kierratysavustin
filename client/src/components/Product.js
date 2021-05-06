@@ -5,7 +5,7 @@ import {
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
-import { useStore  } from '../App'
+import { useStore  } from '../store'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
 import '../styles.css'

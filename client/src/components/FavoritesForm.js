@@ -1,7 +1,6 @@
 import React,{ useState,useEffect } from 'react'
 import userService from '../services/user'
-import { useStore } from '../App'
-
+import { useStore } from '../store'
 import { Button } from 'react-bootstrap'
 
 

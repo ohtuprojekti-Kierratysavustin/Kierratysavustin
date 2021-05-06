@@ -6,7 +6,6 @@ import userService from './services/user'
 import NavigationBar from './components/NavigationBar'
 import productService from './services/products'
 import tokenService from './services/token'
-import create from 'zustand'
 import ProductForm from './components/ProductForm'
 import Product from './components/Product'
 import ProductList from './components/ProductList'
@@ -14,39 +13,9 @@ import RegisterForm from './components/RegisterForm'
 import ProductFilterForm from './components/FrontPage'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import { useStore } from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles.css'
-
-export const useStore = create(set => ({
-  products: [],
-  prod: null,
-  filteredProducts: [],
-  favorites: [],
-  likes: [],
-  dislikes: [],
-  user: null,
-  notification: { message: null, condition: null },
-  timer: null,
-  setUser: (param) => set(() => ({ user: param })),
-  setProducts: (param) => set(() => ({ products: param })),
-  setProduct: (param) => set(() => ({ prod: param })),
-  setFavorites: (param) => set(() => ({ favorites: param })),
-  setLikes: (param) => set(() => ({ likes: param })),
-  setDislikes: (param) => set(() => ({ dislikes: param })),
-  setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
-  clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
-  setNotification: (message, condition) => set(state => ({
-    ...state,
-    clearTimer: clearTimeout(state.timer),
-    notification: { message, condition },
-    timer: setTimeout(() => {
-      state.clearNotification() }, 10000)
-  })),
-  updateProduct: (param) => set(state => ({
-    ...state,
-    products: state.products.map(p => p.id !== param.id ? p : param)
-  }))
-}))
 
 const App = () => {
   const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites, setLikes, setDislikes } = useStore()

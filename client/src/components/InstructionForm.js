@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
-//import Notification from './Notification'
 import { Formik, Form, ErrorMessage, useField } from 'formik'
 import * as yup from 'yup'
-import { useStore } from '../App'
-
+import { useStore } from '../store'
 import {  Form as Formo, Button,  Modal } from 'react-bootstrap'
 
 const InstructionForm = ({ product }) => {

@@ -1,8 +1,7 @@
 import React from 'react'
 import FavouriteProducts from './FavouriteProducts'
 import SearchBarForm from './SearchBarForm'
-import { useStore } from '../App'
-
+import { useStore } from '../store'
 import InfoBar from './InfoBar'
 
 const FrontPage = ({ products, setFilteredProducts }) => {
