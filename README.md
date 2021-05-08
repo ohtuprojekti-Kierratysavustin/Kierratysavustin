@@ -19,7 +19,7 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 
 ## Sovelluksen tuotantoversio
 
-[Kierrätysavustin production](https://kierratysavustin.cs.helsinki.fi)
+- [Kierrätysavustin production](https://kierratysavustin.cs.helsinki.fi)
 
 ## Dokumentaatio
 
@@ -32,6 +32,8 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 - [Definition of Done](documents/definitionOfDone.md) 
 
 ## Projektin edistyminen
+
+- [Product Backlog](documents/ProductBacklog-Kierratysavustin.xlsx) 
 
 - [Product Backlog](https://helsinkifi-my.sharepoint.com/:x:/g/personal/nikoniem_ad_helsinki_fi/ERuO8ymmJqBNmf8HWcKgGzMBSdDg_Toyv-BznDmCSS-kbg)
 
