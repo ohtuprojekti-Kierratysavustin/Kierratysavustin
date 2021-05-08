@@ -35,6 +35,5 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 
 - [Product Backlog](documents/ProductBacklog-Kierratysavustin.xlsx) 
 
-- [Product Backlog](https://helsinkifi-my.sharepoint.com/:x:/g/personal/nikoniem_ad_helsinki_fi/ERuO8ymmJqBNmf8HWcKgGzMBSdDg_Toyv-BznDmCSS-kbg)
+- [Sprint Backlog](documents/backlog.xlsx) 
 
-- [Sprint Backlog](https://helsinkifi-my.sharepoint.com/:x:/g/personal/nikoniem_ad_helsinki_fi/ERAkIkV4J0xPrpyMbGz6f5cBf3QTdUrDT29EKru2q1t1LA?e=dhQ87B)
