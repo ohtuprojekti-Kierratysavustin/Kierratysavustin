@@ -13,15 +13,15 @@ assignees: ''
 # Käyttäjätarina
 **[ *Käyttäjänä/Pääkäyttäjänä/Yms* ]**
 Haluan **[ *Tavoite*  ]**
-( jotta **[ *Syy/Selitys* ]** )
+( Jotta **[ *Syy/Selitys* ]** )
 
 ## Hyväksymiskriteerit
 
 ### Toiminnalliset
 
 - [ ] Jos *[ Käyttäjäskenaario ]*
-      kun *[ Ympäristö ]*
-      niin *[ Seuraukset ]*
+      Kun *[ Ympäristö ]*
+      Niin *[ Seuraukset ]*
 
 ### Ei-toiminnalliset
 
