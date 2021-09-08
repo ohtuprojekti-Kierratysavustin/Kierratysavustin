@@ -33,7 +33,7 @@ Haluan **[ *Tavoite*  ]**
 
 ## Riippuvuudet
 **Toteutettavissa jälkeen:** [ *Issue* ]
-**Toteuttettava ennen:** [ *Issue* ]
+**Toteutettava ennen:** [ *Issue* ]
 **Liittyy:** [ *Issue* ]
 **Vaihtoehtoinen ratkaisu:** [ *Issue* ]
 
