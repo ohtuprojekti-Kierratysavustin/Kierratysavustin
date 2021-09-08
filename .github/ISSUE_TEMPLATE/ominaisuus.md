@@ -2,7 +2,7 @@
 name: Ominaisuus
 about: Ominaisuus issuen template
 title: "[ Tiivistelmä ominaisuudesta ]"
-labels: enhancement, Priority Medium, Size 9999
+labels: enhancement, Priority Low, Size 9999
 assignees: ''
 
 ---
