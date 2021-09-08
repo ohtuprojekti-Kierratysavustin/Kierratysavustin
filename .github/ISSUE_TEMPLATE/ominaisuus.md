@@ -7,7 +7,9 @@ assignees: ''
 
 ---
 
-**Kaikkia kohtia ei tarvitse välttämättä täyttää. Lisää Issue projektiin.**
+**Kaikkia kohtia ei tarvitse välttämättä täyttää, tarkennukset tehdään jos story suunnitellaan toteutettavan. Täytä vähintään käyttäjätarina**
+**Lisää myös Issue projektiin.**
+
 # Käyttäjätarina
 **[ *Käyttäjänä/Pääkäyttäjänä/Yms* ]**
 Haluan **[ *Tavoite*  ]**
