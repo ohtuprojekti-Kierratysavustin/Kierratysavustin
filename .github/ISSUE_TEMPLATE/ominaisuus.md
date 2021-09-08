@@ -32,8 +32,8 @@ Haluan **[ *Tavoite*  ]**
 - [ ] [ *Dokumentaation päivittäminen* ]
 
 ## Riippuvuudet
-**Estää:** [ *Issue* ]
-**Jälkeen:** [ *Issue* ]
+**Toteutettavissa jälkeen:** [ *Issue* ]
+**Toteuttettava ennen:** [ *Issue* ]
 **Vaihtoehtoinen ratkaisu:** [ *Issue* ]
 
 ## Valmis kun:
