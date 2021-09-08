@@ -1,13 +1,13 @@
 ---
 name: Ominaisuus
-about: Tiivistelmä ominaisuudesta
+about: Ominaisuus issuen template
 title: "[ Tiivistelmä ominaisuudesta ]"
 labels: enhancement, Priority Medium, Size 9999
 assignees: ''
 
 ---
 
-**Kaikkia kohtia ei tarvitse välttämättä täyttää**
+**Kaikkia kohtia ei tarvitse välttämättä täyttää. Lisää Issue projektiin.**
 # Käyttäjätarina
 **[ *Käyttäjänä/Pääkäyttäjänä/Yms* ]**
 Haluan **[ *Tavoite*  ]**
@@ -17,9 +17,9 @@ Haluan **[ *Tavoite*  ]**
 
 ### Toiminnalliset
 
-- [ ] Jos [ *Käyttäjäskenaario* ] 
-      kun [ *Ympäristö* ]
-      niin [ *Seuraukset* ]
+- [ ] Jos *[ Käyttäjäskenaario ]*
+      kun *[ Ympäristö ]*
+      niin *[ Seuraukset ]*
 
 ### Ei-toiminnalliset
 
@@ -34,11 +34,11 @@ Haluan **[ *Tavoite*  ]**
 **Jälkeen:** [ *Issue* ]
 **Vaihtoehtoinen ratkaisu:** [ *Issue* ]
 
-Definition Of Done
+## Valmis kun:
 - [ ] Ominaisuus on toteutettuna hyväksymiskriteerien mukaisesti ja toimii 
 - [ ] Ominaisuus on testattu käyttäjätarinan hyväksymiskriteerien mukaisesti ja testit menevät läpi
 - [ ] Kaikki ominaisuuteen liittyvä dokumentaatio on kirjoitettu
 - [ ] Koodi noudattaa määriteltyä koodaustyyliä
 - [ ] Koodi on katselmoitua: katselmoinnin on tehnyt vähintään 2 muuta henkilöä, kuin ominaisuuden koodannut henkilö
-- [  ] Ominaisuus mergetty mainiin ja toiminnassa staging-ympäristössä
+- [ ] Ominaisuus mergetty mainiin ja toiminnassa staging-ympäristössä
 - [ ] Ominaisuus on toiminnassa tuotanto-ympäristössä
