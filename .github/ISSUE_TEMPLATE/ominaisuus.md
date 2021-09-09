@@ -2,7 +2,7 @@
 name: Ominaisuus
 about: Ominaisuus issuen template
 title: "[ Tiivistelmä ominaisuudesta ]"
-labels: enhancement, Priority Medium, Size 9999
+labels: enhancement, Priority Low, Size 9999
 assignees: ''
 
 ---
@@ -13,15 +13,15 @@ assignees: ''
 # Käyttäjätarina
 **[ *Käyttäjänä/Pääkäyttäjänä/Yms* ]**
 Haluan **[ *Tavoite*  ]**
-( jotta **[ *Syy/Selitys* ]** )
+( Jotta **[ *Syy/Selitys* ]** )
 
 ## Hyväksymiskriteerit
 
 ### Toiminnalliset
 
 - [ ] Jos *[ Käyttäjäskenaario ]*
-      kun *[ Ympäristö ]*
-      niin *[ Seuraukset ]*
+      Kun *[ Ympäristö ]*
+      Niin *[ Seuraukset ]*
 
 ### Ei-toiminnalliset
 
@@ -32,8 +32,9 @@ Haluan **[ *Tavoite*  ]**
 - [ ] [ *Dokumentaation päivittäminen* ]
 
 ## Riippuvuudet
-**Estää:** [ *Issue* ]
-**Jälkeen:** [ *Issue* ]
+**Toteutettavissa jälkeen:** [ *Issue* ]
+**Toteutettava ennen:** [ *Issue* ]
+**Liittyy:** [ *Issue* ]
 **Vaihtoehtoinen ratkaisu:** [ *Issue* ]
 
 ## Valmis kun:
