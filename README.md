@@ -3,9 +3,9 @@
 ![Github Actions](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/workflows/Pushing%20to%20main/badge.svg)
 ![Github Actions](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/workflows/Pushing%20to%20staging/badge.svg)
 
-Helsingin yliopiston Ohjelmistotuotantoprojekti, kevät 2021. 
+Helsingin yliopiston Ohjelmistotuotantoprojekti, kevät 2021.
 
-Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-sovellus, josta voi hakea kierrätettäviä tuotteita kierrätysohjeineen. Rekisteröityneet käyttäjät voivat kirjautuneina lisätä tietokantaan tuotteita sekä niille kierrätysohjeita. Kirjautuneena käyttäjät voivat myös pisteyttää tuotteille annettuja kierrätysohjeita. Pisteytykset näkyvät kaikille sovelluksen käyttäjille. 
+Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-sovellus, josta voi hakea kierrätettäviä tuotteita kierrätysohjeineen. Rekisteröityneet käyttäjät voivat kirjautuneina lisätä tietokantaan tuotteita sekä niille kierrätysohjeita. Kirjautuneena käyttäjät voivat myös pisteyttää tuotteille annettuja kierrätysohjeita. Pisteytykset näkyvät kaikille sovelluksen käyttäjille.
 
 ## Ohjeita käyttäjälle
 
@@ -29,11 +29,10 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 
 - [Teknologiat](documents/teknologiat.md)
 
-- [Definition of Done](documents/definitionOfDone.md) 
+- [Definition of Done](documents/definitionOfDone.md)
 
 ## Projektin edistyminen
 
-- [Product Backlog](documents/ProductBacklog-Kierratysavustin.xlsx) 
+- [Product Backlog](documents/ProductBacklog-Kierratysavustin.xlsx)
 
-- [Sprint Backlog](documents/backlog.xlsx) 
-
+- [Sprint Backlog](https://docs.google.com/spreadsheets/d/1dKBMAt23TVvEonTM83ziInX4D8nmw7-NYQSOuEDP1fU/edit?usp=sharing)
