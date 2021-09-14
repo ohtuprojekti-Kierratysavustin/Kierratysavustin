@@ -3,6 +3,32 @@ import create from 'zustand'
 export const useStore = create<{
   setNotification: (message: string, condition: string) => void,
   clearNotification: () => void,
+  setUser: (user: {
+    id: Number,
+    username: string,
+    passwordHash: string,
+    likes: Number[],
+    dislikes: Number[],
+    products: Number[]
+  }) => void,
+  setFavorites: (favorites: [{
+    id: Number,
+    name: string,
+    instructions: Number[],
+    users: Number[]
+  }]) => void,
+  setLikes: (likes: [{
+    id: Number,
+    score: Number,
+    information: string,
+    product_id: Number
+  }]) => void,
+  setDislikes: (dislikes: [{
+    id: Number,
+    score: Number,
+    information: string,
+    product_id: Number
+  }]) => void,
   user: any,
   products: any,
   prod: any,
