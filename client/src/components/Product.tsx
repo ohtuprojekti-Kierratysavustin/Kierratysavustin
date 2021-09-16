@@ -11,12 +11,12 @@ import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-b
 import '../styles.css'
 import { Product } from '../types'
 
-type ProductProps = {
+type Props = {
   product: Product
 }
 
 /** Component for showing product name and recycling information. */
-const ProductPage: React.FC<ProductProps> = ({ product }) => {
+const ProductPage: React.FC<Props> = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
   const [currentInstruction, setCurrentInstruction] = useState(0)

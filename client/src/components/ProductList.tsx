@@ -11,13 +11,13 @@ import FavoritesForm from './FavoritesForm'
 import '../styles.css'
 import { Product } from '../types'
 
-type ProductListProps = {
+type Props = {
   products: Product[],
   setFilteredProducts: (filteredProducts: string) => void
 }
 
 /** Component for showing list of products and a link to product page */
-const ProductList: React.FC<ProductListProps> = ({ products, setFilteredProducts }) => {
+const ProductList: React.FC<Props> = ({ products, setFilteredProducts }) => {
   const { user } = useStore()
   if (products.length === 0) {
     return (
