@@ -17,13 +17,13 @@ type ProductListProps = {
 }
 
 /** Component for showing list of products and a link to product page */
-const ProductList: React.FC<ProductListProps> = (props: ProductListProps) => {
+const ProductList: React.FC<ProductListProps> = ({products, setFilteredProducts}) => {
   const { user } = useStore()
-  if (props.products.length === 0) {
+  if (products.length === 0) {
     return (
       <div>
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Hae tai selaa kierrätysavustimeen jo lisättyjä tuotteita.'} />
-        <SearchBarForm products={props.products} setFilteredProducts={props.setFilteredProducts} />
+        <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
         <Container>
           <Row>
             <Col>
@@ -37,11 +37,11 @@ const ProductList: React.FC<ProductListProps> = (props: ProductListProps) => {
     return (
       <div>
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Hae tai selaa kierrätysavustimeen jo lisättyjä tuotteita.'} />
-        <SearchBarForm products={props.products} setFilteredProducts={props.setFilteredProducts} />
+        <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
         <Container>
           <h2>Tuotteet</h2>
           <ListGroup as='ul' id='list'>
-            {props.products.map(product =>
+            {products.map(product =>
               <ListGroup.Item as='li' key={product.id} id='list-item' >
                 <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
                   <Media>
