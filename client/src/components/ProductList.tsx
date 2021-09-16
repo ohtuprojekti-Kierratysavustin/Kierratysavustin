@@ -9,15 +9,21 @@ import SearchBarForm from './SearchBarForm'
 import InfoBar from './InfoBar'
 import FavoritesForm from './FavoritesForm'
 import '../styles.css'
+import { Product } from '../types'
+
+type ProductListProps = {
+  products: Product[],
+  setFilteredProducts: (filteredProducts: string) => void
+}
 
 /** Component for showing list of products and a link to product page */
-const ProductList = ({ products, setFilteredProducts }) => {
+const ProductList: React.FC<ProductListProps> = (props: ProductListProps) => {
   const { user } = useStore()
-  if (products.length === 0) {
+  if (props.products.length === 0) {
     return (
       <div>
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Hae tai selaa kierrätysavustimeen jo lisättyjä tuotteita.'} />
-        <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
+        <SearchBarForm products={props.products} setFilteredProducts={props.setFilteredProducts} />
         <Container>
           <Row>
             <Col>
@@ -31,15 +37,13 @@ const ProductList = ({ products, setFilteredProducts }) => {
     return (
       <div>
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Hae tai selaa kierrätysavustimeen jo lisättyjä tuotteita.'} />
-        <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
+        <SearchBarForm products={props.products} setFilteredProducts={props.setFilteredProducts} />
         <Container>
           <h2>Tuotteet</h2>
           <ListGroup as='ul' id='list'>
-            {products.map(product =>
+            {props.products.map(product =>
               <ListGroup.Item as='li' key={product.id} id='list-item' >
-                <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`} state={{
-                  product: product,
-                }}>
+                <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
                   <Media>
                     <img
                       width={64}

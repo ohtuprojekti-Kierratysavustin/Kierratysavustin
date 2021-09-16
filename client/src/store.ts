@@ -1,34 +1,13 @@
 import create from 'zustand'
+import { Product, Instruction, User } from './types'
 
 export const useStore = create<{
   setNotification: (message: string, condition: string) => void,
   clearNotification: () => void,
-  setUser: (user: {
-    id: number,
-    username: string,
-    passwordHash: string,
-    likes: number[],
-    dislikes: number[],
-    products: number[]
-  }) => void,
-  setFavorites: (favorites: [{
-    id: number,
-    name: string,
-    instructions: number[],
-    users: number[]
-  }]) => void,
-  setLikes: (likes: [{
-    id: number,
-    score: number,
-    information: string,
-    product_id: number
-  }]) => void,
-  setDislikes: (dislikes: [{
-    id: number,
-    score: number,
-    information: string,
-    product_id: number
-  }]) => void,
+  setUser: (user: User) => void,
+  setFavorites: (favorites: Product[]) => void,
+  setLikes: (likes: Instruction[]) => void,
+  setDislikes: (dislikes: Instruction[]) => void,
   user: any,
   products: any,
   prod: any,
@@ -49,20 +28,8 @@ export const useStore = create<{
       notification: { message: null, condition: null },
       timer: null,
       setUser: (param) => set(() => ({ user: param })),
-      setProducts: (param: [
-        {
-          id: number,
-          name: string,
-          instructions: number[],
-          users: number[]
-        }
-      ]) => set(() => ({ products: param })),
-      setProduct: (param: {
-        id: number,
-        name: string,
-        instructions: number[],
-        users: number[]
-      }) => set(() => ({ prod: param })),
+      setProducts: (param: Product[]) => set(() => ({ products: param })),
+      setProduct: (param: Product) => set(() => ({ prod: param })),
       setFavorites: (param) => set(() => ({ favorites: param })),
       setLikes: (param) => set(() => ({ likes: param })),
       setDislikes: (param) => set(() => ({ dislikes: param })),
