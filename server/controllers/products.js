@@ -78,4 +78,27 @@ productRouter.post('/:id/instructions', async (req, res) => {
   res.status(201).json(result)
 })
 
+productRouter.put('/:productId/instructions/:instructionId', async (req, res) => {
+  try {
+    await authUtils.authenticateRequest(req)
+  } catch (e) {
+    console.log(e.message)
+    return res.status(401).json({ error: e.message })
+  }
+
+  const product = await Product.findById(req.params.productId)
+  if (!product) {
+    return res.status(401).json({ error: 'No product' })
+  }
+
+  const instruction = await Instruction.findById(req.params.instructionId)
+  if (!instruction) {
+    return res.status(400).json({ error: 'No instruction' })
+  }
+
+  product.instructions = product.instructions.pull({ _id: instruction.id })
+  await product.save()
+  res.status(201).json(product)
+})
+
 module.exports = productRouter

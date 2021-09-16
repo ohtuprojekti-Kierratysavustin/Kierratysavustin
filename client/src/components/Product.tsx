@@ -32,8 +32,9 @@ const ProductPage: React.FC<Props> = ({ product }) => {
     clearNotification()
   }, [])
 
-  const handleDelete = (id) => {
-    ProductService.deleteInstruction(id)
+  const handleDelete = (productId, instructionId) => {
+    ProductService.deleteInstruction(productId, instructionId)
+    window.location.reload()
   }
 
   if (!product) return null
@@ -102,13 +103,17 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                         ''
                       )}
                     </Col>
-                    <Button
-                      id='deleteInstructionButton'
-                      variant='outline-danger'
-                      onClick={() => handleDelete(instruct.id)}
-                    >
-                      Poista
-                    </Button>
+                    {user !== null ? (
+                      <Button
+                        id='deleteInstructionButton'
+                        variant='outline-danger'
+                        onClick={() => handleDelete(product.id, instruct.id)}
+                      >
+                        Poista
+                      </Button>
+                    ) : (
+                      ''
+                    )}
                     <VoteForm instruction = {instruct} user = {user} product={product} />
                   </Row>
 

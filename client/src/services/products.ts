@@ -13,8 +13,8 @@ const createInstruction = async (id: number, newObject: {information: string}) =
   return response.then(response => response.data)
 }
 
-const deleteInstruction = async (id) => {
-  const response =  axios.put(`${baseUrl}/instructions/${id}`, id, tokenService.getConfig())
+const deleteInstruction = async (productId, instructionId) => {
+  const response =  axios.put(`${baseUrl}/${productId}/instructions/${instructionId}`, instructionId, tokenService.getConfig())
   return response.then(response => response.data)
 }
 
