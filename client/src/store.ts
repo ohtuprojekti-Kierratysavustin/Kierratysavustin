@@ -48,14 +48,7 @@ export const useStore = create<{
       user: null,
       notification: { message: null, condition: null },
       timer: null,
-      setUser: (param: {
-        id: Number,
-        username: string,
-        passwordHash: string,
-        likes: Number[],
-        dislikes: Number[],
-        products: Number[]
-      }) => set(() => ({ user: param })),
+      setUser: (param) => set(() => ({ user: param })),
       setProducts: (param: [
         {
           id: Number,
@@ -70,9 +63,9 @@ export const useStore = create<{
         instructions: Number[],
         users: Number[]
       }) => set(() => ({ prod: param })),
-      setFavorites: (param: any) => set(() => ({ favorites: param })),
-      setLikes: (param: any) => set(() => ({ likes: param })),
-      setDislikes: (param: any) => set(() => ({ dislikes: param })),
+      setFavorites: (param) => set(() => ({ favorites: param })),
+      setLikes: (param) => set(() => ({ likes: param })),
+      setDislikes: (param) => set(() => ({ dislikes: param })),
       setFilteredProducts: (param: string) => set(() => ({ filteredProducts: param })),
       clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
       setNotification: (message, condition) => set(state => ({
