@@ -9,19 +9,22 @@ import { useStore  } from '../store'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
 import '../styles.css'
+import { Product } from '../types'
 
+type ProductProps = {
+  product: Product
+}
 
 /** Component for showing product name and recycling information. */
-const Product = ({ product }) => {
+const ProductPage: React.FC<ProductProps> = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
   const [currentInstruction, setCurrentInstruction] = useState(0)
 
   const routeChange = () => {
-    let path = '/searchResults'
-    history.goBack(path)
+    history.goBack()
   }
-  const handleInstructionClick = (id) => {
+  const handleInstructionClick = (id: number) => {
     setCurrentInstruction(id)
   }
   useEffect(() => {
@@ -58,20 +61,16 @@ const Product = ({ product }) => {
               </h4>
             </Col>
           </Row>
-
           <Row>
             <Col>
               {product.instructions.length !== 0 ? (
                 <p id='top-score'>
                   {product.instructions[currentInstruction].information}
-
                 </p>
               ) : (
                 <span>ei ohjeita</span>
               )}
-
             </Col>
-
           </Row>
         </Container>
       </Jumbotron>
@@ -79,12 +78,9 @@ const Product = ({ product }) => {
         <Form.Group>
           {user !== null ? (
             <InstructionForm product = {product} />
-
           ) : (
             ''
           )}
-
-
         </Form.Group>
         <ListGroup id='instruction-list' as='ul' >
           {product.instructions.map((instruct, index) =>
@@ -111,10 +107,8 @@ const Product = ({ product }) => {
           )}
         </ListGroup>
       </Container>
-
-
     </div>
   )
 }
 
-export default Product
+export default ProductPage
