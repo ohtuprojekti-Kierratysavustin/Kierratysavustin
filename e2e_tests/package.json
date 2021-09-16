@@ -11,8 +11,8 @@
     "start:test": "cd ../client && npm run build && cp -r build/ ../server/build && cd ../server && npm run start:test"
   },
   "devDependencies": {
-    "cypress": "^6.5.0",
-    "eslint": "^7.19.0",
-    "eslint-plugin-cypress": "^2.11.2"
+    "cypress": "^6.9.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-cypress": "^2.12.1"
   }
 }
