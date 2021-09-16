@@ -1,7 +1,7 @@
 const productRouter = require('express').Router()
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
-const authUtils = require('../utils/auth');
+const authUtils = require('../utils/auth')
 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find({}).populate('instructions', {
@@ -41,7 +41,7 @@ productRouter.get('/:id', async (req, res) => {
 
 productRouter.post('/', async (req, res) => {
   try {
-    await authUtils.authenticateRequest(req);
+    await authUtils.authenticateRequest(req)
   } catch (e) {
     return res.status(401).json({ error: e.message })
   }
@@ -61,7 +61,7 @@ productRouter.post('/', async (req, res) => {
 
 productRouter.post('/:id/instructions', async (req, res) => {
   try {
-    await authUtils.authenticateRequest(req);
+    await authUtils.authenticateRequest(req)
   } catch (e) {
     return res.status(401).json({ error: e.message })
   }
