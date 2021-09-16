@@ -5,6 +5,7 @@ import {
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
+import ProductService from '../services/products'
 import { useStore  } from '../store'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
@@ -31,6 +32,10 @@ const ProductPage: React.FC<Props> = ({ product }) => {
     clearNotification()
   }, [])
 
+  const handleDelete = (id) => {
+    ProductService.deleteInstruction(id)
+  }
+
   if (!product) return null
 
   return (
@@ -39,7 +44,7 @@ const ProductPage: React.FC<Props> = ({ product }) => {
         <Container>
           <Row>
             <Col>
-              <Button onClick={() => routeChange()} id='neutral-button'>takaisin</Button>
+              <Button onClick={() => routeChange()} id='neutral-button'>Takaisin</Button>
             </Col>
           </Row>
           <Row>
@@ -97,6 +102,13 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                         ''
                       )}
                     </Col>
+                    <Button
+                      id='deleteInstructionButton'
+                      variant='outline-danger'
+                      onClick={() => handleDelete(instruct.id)}
+                    >
+                      Poista
+                    </Button>
                     <VoteForm instruction = {instruct} user = {user} product={product} />
                   </Row>
 
