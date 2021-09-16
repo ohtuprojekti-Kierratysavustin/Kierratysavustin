@@ -4,30 +4,30 @@ export const useStore = create<{
   setNotification: (message: string, condition: string) => void,
   clearNotification: () => void,
   setUser: (user: {
-    id: Number,
+    id: number,
     username: string,
     passwordHash: string,
-    likes: Number[],
-    dislikes: Number[],
-    products: Number[]
+    likes: number[],
+    dislikes: number[],
+    products: number[]
   }) => void,
   setFavorites: (favorites: [{
-    id: Number,
+    id: number,
     name: string,
-    instructions: Number[],
-    users: Number[]
+    instructions: number[],
+    users: number[]
   }]) => void,
   setLikes: (likes: [{
-    id: Number,
-    score: Number,
+    id: number,
+    score: number,
     information: string,
-    product_id: Number
+    product_id: number
   }]) => void,
   setDislikes: (dislikes: [{
-    id: Number,
-    score: Number,
+    id: number,
+    score: number,
     information: string,
-    product_id: Number
+    product_id: number
   }]) => void,
   user: any,
   products: any,
@@ -51,17 +51,17 @@ export const useStore = create<{
       setUser: (param) => set(() => ({ user: param })),
       setProducts: (param: [
         {
-          id: Number,
+          id: number,
           name: string,
-          instructions: Number[],
-          users: Number[]
+          instructions: number[],
+          users: number[]
         }
       ]) => set(() => ({ products: param })),
       setProduct: (param: {
-        id: Number,
+        id: number,
         name: string,
-        instructions: Number[],
-        users: Number[]
+        instructions: number[],
+        users: number[]
       }) => set(() => ({ prod: param })),
       setFavorites: (param) => set(() => ({ favorites: param })),
       setLikes: (param) => set(() => ({ likes: param })),
