@@ -28,7 +28,7 @@ const NavigationBar = () => {
             <Navbar.Text>
               <b>{user.username}</b>
             </Navbar.Text>
-            <Nav.Link variant='outline-dark' id='LogoutButton' as={Link} onClick={() => {
+            <Nav.Link id='LogoutButton' as={Link} onClick={() => {
               window.localStorage.clear()
               setUser(null)
               tokenService.removeToken()
