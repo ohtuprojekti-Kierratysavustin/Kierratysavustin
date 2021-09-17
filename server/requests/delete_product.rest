@@ -1,0 +1,1 @@
+DELETE http://localhost:3001/api/products/lisää-tuotteen-id-tähän

@@ -78,4 +78,20 @@ productRouter.post('/:id/instructions', async (req, res) => {
   res.status(201).json(result)
 })
 
+/** 
+ * Tuotteen poistaminen. 
+ * Etsii tietokannasta id:tä vastaavan tuotteen ja poistaa sen.
+ * Vain tuotteen lisännyt käyttäjä voi poistaa tuotteen.
+ */
+productRouter.delete('/:id', async (req, res) => {
+
+  // tähän autentikointi ja käyttäjän vertaaminen tuotteen lisääjään
+  try {
+    await Product.findByIdAndDelete({ _id: req.params.id }).exec()
+    res.status(200).json()
+  } catch (error) {
+    return res.status(400).json({ error: error.message })
+  }
+})
+
 module.exports = productRouter
