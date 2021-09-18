@@ -7,7 +7,7 @@ import { Instruction, User, Product } from '../types'
 
 type Props = {
   instruction: Instruction,
-  user: User,
+  user: User | null,
   product: Product
 }
 
