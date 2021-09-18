@@ -1,13 +1,13 @@
 import create from 'zustand'
-import { Product, Instruction, User } from './types'
+import { Product, User } from './types'
 
 export const useStore = create<{
   setNotification: (message: string, condition: string) => void,
   clearNotification: () => void,
   setUser: (user: User | null) => void,
   setFavorites: (favorites: Product[]) => void,
-  setLikes: (likes: Instruction[]) => void,
-  setDislikes: (dislikes: Instruction[]) => void,
+  setLikes: (likes: number[]) => void,
+  setDislikes: (dislikes: number[]) => void,
   setFilteredProducts: (filteredProducts: Product[]) => void,
   setProduct: (prod: Product) => void,
   setProducts: (products: Product[]) => void,
@@ -15,8 +15,8 @@ export const useStore = create<{
   products: Product[],
   prod: any,
   favorites: Product[],
-  likes: Instruction[],
-  dislikes: Instruction[],
+  likes: number[],
+  dislikes: number[],
   filteredProducts: Product[],
   notification: { message: string | null, condition: string | null},
   timer: any
