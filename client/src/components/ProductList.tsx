@@ -13,7 +13,7 @@ import { Product } from '../types'
 
 type Props = {
   products: Product[],
-  setFilteredProducts: (filteredProducts: string) => void
+  setFilteredProducts: (filteredProducts: Product[]) => void
 }
 
 /** Component for showing list of products and a link to product page */
