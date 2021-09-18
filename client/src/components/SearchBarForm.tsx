@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Form, Button, InputGroup, Container, Col, Row } from 'react-bootstrap'
+import { Product } from '../types'
 
-const SearchBarForm = ( { products, setFilteredProducts }) => {
+type Props = {
+  products: Product[],
+  setFilteredProducts: (filteredProducts: Product[]) => void
+}
+
+const SearchBarForm: React.FC<Props> = ( { products, setFilteredProducts }) => {
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
   if (!products) {
     return null
   }
-  const handleSubmit = (event) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
     setFilteredProducts(products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())))
     setSearchTerm('')
