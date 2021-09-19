@@ -4,8 +4,13 @@ import { Formik, Form, ErrorMessage, useField } from 'formik'
 import * as yup from 'yup'
 import { useStore } from '../store'
 import {  Form as Formo, Button,  Modal } from 'react-bootstrap'
+import { Product, Instruction } from '../types'
 
-const InstructionForm = ({ product }) => {
+type InstructionFormProps = {
+  product: Product
+}
+
+const InstructionForm: React.FC<InstructionFormProps> = ({ product }) => {
   const [modalShow, setModalShow] = useState(false)
 
   const handleClose = () => setModalShow(false)
@@ -16,13 +21,13 @@ const InstructionForm = ({ product }) => {
       <Button
         id='instructionButton'
         variant="primary"
-        onClick={() => handleShow(true)}
+        onClick={() => handleShow()}
       >
         Lisää uusi ohje
       </Button>
       <InstructionPopup
         show={modalShow}
-        onHide={() => handleClose(false)}
+        onHide={() => handleClose()}
         product={product}
         handleClose={handleClose}
       />
@@ -30,11 +35,18 @@ const InstructionForm = ({ product }) => {
   )
 }
 
-const TextArea = ({ label, ...props }) => {
+type TextAreaProps = {
+  type: string | undefined,
+  name: string,
+  id: string | undefined,
+  rows: number,
+  cols: number
+}
+
+const TextArea: React.FC<TextAreaProps> = (props) => {
   const [field, meta] = useField(props)
   return (
     <>
-      <label htmlFor={props.id || props.name}>{label}</label>
       <textarea className="text-area" {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className="error">{meta.error}</div>
@@ -43,13 +55,23 @@ const TextArea = ({ label, ...props }) => {
   )
 }
 
+type InstructionPopupProps = {
+  show: boolean,
+  onHide: () => void,
+  product: Product,
+  handleClose: () => void
+}
 
-const InstructionPopup = ( props ) =>  {
-  const { updateProduct, setNotification } = useStore()
-  const notify = (message ) => {
-    setNotification(message),
+type InstructionPopupValues = {
+  instructionText: string
+}
+
+const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
+  const { updateProduct, setNotification, clearNotification } = useStore()
+  const notify = (message: string, condition: string) => {
+    setNotification(message, condition),
     setTimeout(() => {
-      setNotification(null)
+      clearNotification()
     }, 10000)
   }
 
@@ -57,17 +79,17 @@ const InstructionPopup = ( props ) =>  {
     instructionText: yup.string().min(3, 'Ohjeen tulee olla vähintään 3 kirjainta pitkä').max(500, 'Ohje saa olla enintään 500 merkkiä pitkä').required('Ohje vaaditaan'),
   })
 
-  const initialValues = {
+  const initialValues: InstructionPopupValues = {
     instructionText: ''
   }
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values: InstructionPopupValues) => {
     const information = values.instructionText
     const info = { information }
     productService.createInstruction(props.product.id, info)
       .then(i => {
         props.product.instructions.push(i)
-        props.product.instructions.sort((a,b) => b.score - a.score)
+        props.product.instructions.sort((a: Instruction, b: Instruction) => b.score - a.score)
         updateProduct(props.product)
         values.instructionText = ''
         props.handleClose()
@@ -109,7 +131,7 @@ const InstructionPopup = ( props ) =>  {
                     rows={5}
                     cols={100}
                     className={errors.instructionText && touched.instructionText ?
-                      'input-error' : null}
+                      'input-error' : undefined}
                   />
                   <ErrorMessage name="instructionText" component="span" className="error" />
                 </Formo.Group>

@@ -4,13 +4,14 @@ import { Product, User } from './types'
 export const useStore = create<{
   setNotification: (message: string, condition: string) => void,
   clearNotification: () => void,
-  setUser: (user: User | null) => void,
-  setFavorites: (favorites: Product[]) => void,
-  setLikes: (likes: number[]) => void,
-  setDislikes: (dislikes: number[]) => void,
-  setFilteredProducts: (filteredProducts: Product[]) => void,
-  setProduct: (prod: Product) => void,
-  setProducts: (products: Product[]) => void,
+  setUser: (param: User | null) => void,
+  setFavorites: (param: Product[]) => void,
+  setLikes: (param: number[]) => void,
+  setDislikes: (param: number[]) => void,
+  setFilteredProducts: (param: Product[]) => void,
+  setProduct: (param: Product) => void,
+  setProducts: (param: Product[]) => void,
+  updateProduct: (param: Product) => void,
   user: User | null,
   products: Product[],
   prod: any,
@@ -45,7 +46,7 @@ export const useStore = create<{
         timer: setTimeout(() => {
           state.clearNotification() }, 10000)
       })),
-      updateProduct: (param: any) => set(state => ({
+      updateProduct: (param) => set(state => ({
         ...state,
         products: state.products.map((p: any) => p.id !== param.id ? p : param)
       }))
