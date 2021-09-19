@@ -36,10 +36,10 @@ const App = () => {
     }
   }, [])
 
-  const match = useRouteMatch('/products/:id')
+  const match = useRouteMatch<{id: string}>('/products/:id')
   const product = match
-    ? products.find(p => p.id === match.params.id)
-    : null
+    ? products.find(p => p.id.toString() === match.params.id)
+    : undefined
 
   return (
     <div id='background'>

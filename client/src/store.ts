@@ -9,12 +9,10 @@ export const useStore = create<{
   setLikes: (param: number[]) => void,
   setDislikes: (param: number[]) => void,
   setFilteredProducts: (param: Product[]) => void,
-  setProduct: (param: Product) => void,
   setProducts: (param: Product[]) => void,
   updateProduct: (param: Product) => void,
   user: User | null,
   products: Product[],
-  prod: any,
   favorites: Product[],
   likes: number[],
   dislikes: number[],
@@ -23,7 +21,6 @@ export const useStore = create<{
   timer: any
     }>(set => ({
       products: [],
-      prod: null,
       filteredProducts: [],
       favorites: [],
       likes: [],
@@ -33,7 +30,6 @@ export const useStore = create<{
       timer: null,
       setUser: (param) => set(() => ({ user: param })),
       setProducts: (param) => set(() => ({ products: param })),
-      setProduct: (param) => set(() => ({ prod: param })),
       setFavorites: (param) => set(() => ({ favorites: param })),
       setLikes: (param) => set(() => ({ likes: param })),
       setDislikes: (param) => set(() => ({ dislikes: param })),
@@ -48,6 +44,6 @@ export const useStore = create<{
       })),
       updateProduct: (param) => set(state => ({
         ...state,
-        products: state.products.map((p: any) => p.id !== param.id ? p : param)
+        products: state.products.map((p) => p.id !== param.id ? p : param)
       }))
     }))

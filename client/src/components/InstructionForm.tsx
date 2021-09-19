@@ -4,7 +4,7 @@ import { Formik, Form, ErrorMessage, useField } from 'formik'
 import * as yup from 'yup'
 import { useStore } from '../store'
 import {  Form as Formo, Button,  Modal } from 'react-bootstrap'
-import { Product, Instruction } from '../types'
+import { Product } from '../types'
 
 type InstructionFormProps = {
   product: Product
@@ -89,7 +89,7 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
     productService.createInstruction(props.product.id, info)
       .then(i => {
         props.product.instructions.push(i)
-        props.product.instructions.sort((a: Instruction, b: Instruction) => b.score - a.score)
+        props.product.instructions.sort((a, b) => b.score - a.score)
         updateProduct(props.product)
         values.instructionText = ''
         props.handleClose()

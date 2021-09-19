@@ -12,7 +12,7 @@ import '../styles.css'
 import { Product } from '../types'
 
 type Props = {
-  product: Product
+  product?: Product
 }
 
 /** Component for showing product name and recycling information. */

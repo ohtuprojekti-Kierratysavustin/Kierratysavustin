@@ -8,7 +8,7 @@ type Props = {
   setFilteredProducts: (filteredProducts: Product[]) => void
 }
 
-const SearchBarForm: React.FC<Props> = ( { products, setFilteredProducts }) => {
+const SearchBarForm = ({ products, setFilteredProducts }: Props) => {
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
   if (!products) {

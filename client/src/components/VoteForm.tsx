@@ -44,9 +44,7 @@ const VoteForm: React.FC<Props> = ( { instruction, user, product }  ) => {
       userService.removeLike(instruction.id).then(instruction => setVotes(instruction.score))
     } else {
       setLike(true)
-      // i can't be used in setVotes as a parameter
-      // eslint-disable-next-line
-      userService.addLike(instruction.id).then(i => setLikes(likes.concat(i.id))).then(i => setVotes(instruction.score))
+      userService.addLike(instruction.id).then(() => setLikes(likes.concat(instruction.id))).then(() => setVotes(instruction.score))
       instruction.score += 1
       if(disLike){
         instruction.score += 1
@@ -96,9 +94,7 @@ const VoteForm: React.FC<Props> = ( { instruction, user, product }  ) => {
 
         setLikes(newArray)
       }
-      // i can't be used in setVotes as a parameter
-      // eslint-disable-next-line
-      userService.addDislike(instruction.id).then(i => setDislikes(dislikes.concat(i.id))).then(i => setVotes(instruction.score))
+      userService.addDislike(instruction.id).then(() => setDislikes(dislikes.concat(instruction.id))).then(() => setVotes(instruction.score))
     }
 
     product.instructions.sort((a,b) => b.score - a.score)
