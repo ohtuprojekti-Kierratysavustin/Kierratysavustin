@@ -16,6 +16,7 @@ export type User = {
   id: number,
   username: string,
   passwordHash: string,
+  token: string,
   likes: number[],
   dislikes: number[],
   products: number[]
