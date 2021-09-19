@@ -23,5 +23,9 @@ const getFavorites = (id) => {
   return request.then(response => response.data)
 }
 
+const remove = (id) => {
+  axios.delete(`${baseUrl}/${id}`, tokenService.getConfig())
+}
 
-export default { create, getAll, createInstruction , getFavorites, }
+
+export default { create, getAll, createInstruction , getFavorites, remove, }
