@@ -5,7 +5,7 @@ import {
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
-import ProductService from '../services/products'
+import DeleteInstructionForm from './DeleteInstructionForm'
 import { useStore  } from '../store'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
@@ -31,11 +31,6 @@ const ProductPage: React.FC<Props> = ({ product }) => {
   useEffect(() => {
     clearNotification()
   }, [])
-
-  const handleDelete = (productId, instructionId) => {
-    ProductService.deleteInstruction(productId, instructionId)
-    window.location.reload()
-  }
 
   if (!product) return null
 
@@ -103,17 +98,7 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                         ''
                       )}
                     </Col>
-                    {user !== null ? (
-                      <Button
-                        id='deleteInstructionButton'
-                        variant='outline-danger'
-                        onClick={() => handleDelete(product.id, instruct.id)}
-                      >
-                        Poista
-                      </Button>
-                    ) : (
-                      ''
-                    )}
+                    <DeleteInstructionForm user = {user} productId = {product.id} instructionId = {instruct.id} />
                     <VoteForm instruction = {instruct} user = {user} product={product} />
                   </Row>
 
