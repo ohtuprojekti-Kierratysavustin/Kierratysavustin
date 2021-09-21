@@ -1,6 +1,6 @@
 let token: string | null = null
 const getConfig = () => ({
-  headers: { Authorization: token }
+  headers: { Authorization: token },
 })
 
 const setToken = (newToken: string) => {
@@ -10,4 +10,5 @@ const setToken = (newToken: string) => {
 const removeToken = () => {
   token = null
 }
-export default { getConfig,setToken,removeToken }
+
+export default { getConfig, setToken, removeToken }
