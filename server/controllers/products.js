@@ -43,6 +43,7 @@ productRouter.post('/', async (req, res) => {
   try {
     await authUtils.authenticateRequest(req);
   } catch (e) {
+    res.setHeader("WWW-Authenticate", "Bearer")
     return res.status(401).json({ error: e.message })
   }
 
@@ -63,6 +64,7 @@ productRouter.post('/:id/instructions', async (req, res) => {
   try {
     await authUtils.authenticateRequest(req);
   } catch (e) {
+    res.setHeader("WWW-Authenticate", "Bearer")
     return res.status(401).json({ error: e.message })
   }
 

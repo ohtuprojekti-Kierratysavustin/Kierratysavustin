@@ -51,7 +51,7 @@ const getTokenFromRequest = (req) => {
     return null
 }
 
-
+// Has to be called with await! Otherwise authentication will be passed!
 const authenticateRequest = async (req) => {
     const token = getTokenFromRequest(req)
     if (!token) {
@@ -64,6 +64,7 @@ const authenticateRequest = async (req) => {
     }
 }
 
+// Has to be called with await! Otherwise authentication will be passed!
 const authenticateRequestReturnUser = async (req) => {
     const token = getTokenFromRequest(req)
     if (!token) {
