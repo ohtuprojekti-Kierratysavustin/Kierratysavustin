@@ -1,10 +1,16 @@
 import React, { useEffect } from 'react'
 import userService from '../services/user'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import { Container,Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
 import { useStore } from '../store'
+
+type RegisterFormValues = {
+  username: string,
+  password: string
+}
+
 const RegisterForm = () => {
   const { setNotification, clearNotification } = useStore()
   const history = useHistory()
@@ -17,11 +23,11 @@ const RegisterForm = () => {
     password: yup.string().min(6, 'Salasanan tulee olla vähintään 6 kirjainta pitkä').required('Salasana vaaditaa')
   })
 
-  const initialValues = {
+  const initialValues: RegisterFormValues = {
     username: '',
     password: ''
   }
-  const onSubmit =  async (values, submitProps) => {
+  const onSubmit = async (values: RegisterFormValues, submitProps: FormikHelpers<RegisterFormValues>) => {
     try {
       await userService.createUser(values)
       setNotification('Rekisteröityminen onnistui', 'success')

@@ -3,8 +3,15 @@ import userService from '../services/user'
 import { useStore } from '../store'
 import { Button, Container, Row, Col, ButtonGroup } from 'react-bootstrap'
 import '../styles.css'
+import { Instruction, User, Product } from '../types'
 
-const VoteForm = ( { instruction, user, product }  ) => {
+type Props = {
+  instruction: Instruction,
+  user: User | null,
+  product: Product
+}
+
+const VoteForm: React.FC<Props> = ( { instruction, user, product }  ) => {
   const { likes, setLikes } = useStore()
   const { dislikes, setDislikes } = useStore()
   const [like, setLike] = useState(likes.some(p => p === instruction.id))
@@ -20,7 +27,7 @@ const VoteForm = ( { instruction, user, product }  ) => {
   const labelDislikeVariant = disLike ? 'danger' : 'outline-danger'
 
   if (!instruction.id) return null
-  const handleLike = (event) => {
+  const handleLike: React.MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault()
     if(like){
 
@@ -37,13 +44,13 @@ const VoteForm = ( { instruction, user, product }  ) => {
       userService.removeLike(instruction.id).then(instruction => setVotes(instruction.score))
     } else {
       setLike(true)
-      userService.addLike(instruction.id).then(setLikes(likes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
+      userService.addLike(instruction.id).then(() => setLikes(likes.concat(instruction.id))).then(() => setVotes(instruction.score))
       instruction.score += 1
       if(disLike){
         instruction.score += 1
         const newArray = dislikes
         for(var j = 0; j < Object.keys(dislikes).length; j++){
-          if(newArray[j] === instruction.id.toString()){
+          if(newArray[j] === instruction.id){
             newArray.splice(j)
           }
         }
@@ -57,14 +64,14 @@ const VoteForm = ( { instruction, user, product }  ) => {
 
   }
 
-  const handleDislike= (event) => {
+  const handleDislike: React.MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault()
     if(disLike){
       instruction.score += 1
       setDislike(false)
       const newArray = dislikes
       for(var i = 0; i < Object.keys(dislikes).length; i++){
-        if(newArray[i] === instruction.id.toString()){
+        if(newArray[i] === instruction.id){
           newArray.splice(i)
         }
       }
@@ -80,15 +87,14 @@ const VoteForm = ( { instruction, user, product }  ) => {
         setLike(false)
         const newArray = likes
         for(var k = 0; k < Object.keys(likes).length; k++){
-          if(newArray[k] === instruction.id.toString()){
+          if(newArray[k] === instruction.id){
             newArray.splice(k)
           }
         }
 
         setLikes(newArray)
       }
-
-      userService.addDislike(instruction.id).then(setDislikes(dislikes.concat(instruction.id))).then(instruction => setVotes(instruction.score))
+      userService.addDislike(instruction.id).then(() => setDislikes(dislikes.concat(instruction.id))).then(() => setVotes(instruction.score))
     }
 
     product.instructions.sort((a,b) => b.score - a.score)

@@ -7,7 +7,7 @@ import NavigationBar from './components/NavigationBar'
 import productService from './services/products'
 import tokenService from './services/token'
 import ProductForm from './components/ProductForm'
-import Product from './components/Product'
+import ProductPage from './components/Product'
 import ProductList from './components/ProductList'
 import RegisterForm from './components/RegisterForm'
 import ProductFilterForm from './components/FrontPage'
@@ -36,10 +36,10 @@ const App = () => {
     }
   }, [])
 
-  const match = useRouteMatch('/products/:id')
+  const match = useRouteMatch<{id: string}>('/products/:id')
   const product = match
-    ? products.find(p => p.id === match.params.id)
-    : null
+    ? products.find(p => p.id.toString() === match.params.id)
+    : undefined
 
   return (
     <div id='background'>
@@ -47,7 +47,7 @@ const App = () => {
       <Notification/>
       <Switch >
         <Route path="/products/:id">
-          <Product product={product} />
+          <ProductPage product={product} />
         </Route>
         <Route path="/register">
           <RegisterForm />
@@ -70,7 +70,6 @@ const App = () => {
       </Switch>
     </div>
   )
-
 }
 
 export default App
