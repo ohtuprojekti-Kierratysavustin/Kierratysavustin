@@ -1,9 +1,9 @@
-let token = null
+let token: string | null = null
 const getConfig = () => ({
   headers: { Authorization: token }
 })
 
-const setToken = newToken => {
+const setToken = (newToken: string) => {
   token = `bearer ${newToken}`
 }
 

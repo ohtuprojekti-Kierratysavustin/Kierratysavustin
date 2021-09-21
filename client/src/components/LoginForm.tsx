@@ -16,7 +16,7 @@ const LoginForm = () => {
     clearNotification()
   }, [])
 
-  const onSubmit = async(values) => {
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = async(values) => {
     values.preventDefault()
     try {
       const user = await userService.loginUser({ username:username, password:password })

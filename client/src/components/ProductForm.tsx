@@ -7,6 +7,10 @@ import * as yup from 'yup'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Form as Formo, Button, Container } from 'react-bootstrap'
 
+type ProductFormValues = {
+  productName: string
+}
+
 const ProductForm = () => {
   const history = useHistory()
   const { products, setProducts, setNotification, clearNotification } = useStore()
@@ -20,7 +24,7 @@ const ProductForm = () => {
   const initialValues = {
     productName: ''
   }
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values: ProductFormValues) => {
     const productName = values.productName
     const product = { name: productName }
     productService.create(product)
@@ -53,7 +57,7 @@ const ProductForm = () => {
                     name="productName"
                     id="nameInput"
                     className={errors.productName && touched.productName ?
-                      'input-error' : null}
+                      'input-error' : undefined}
                   />
                   <ErrorMessage name="productName" component="span" className="error" />
                 </Formo.Group>

@@ -5,8 +5,13 @@ import {
 import FavoritesForm from './FavoritesForm'
 import logo from '../media/logo.png'
 import { Container, Media, ListGroup } from 'react-bootstrap'
+import { Product } from '../types'
 
-const FavouriteProducts = ({ userProducts }) => {
+type Props = {
+  userProducts: Product[]
+}
+
+const FavouriteProducts: React.FC<Props> = ({ userProducts }) => {
   return (
     <div>
       <Container>
