@@ -87,19 +87,21 @@ productRouter.post('/:id/instructions', async (req, res) => {
  * Vain tuotteen lisännyt käyttäjä voi poistaa tuotteen.
  */
 productRouter.delete('/:id', async (req, res) => {
-  let user    // haetaan tuote
+  let user    // haetaan pyynnön tehnyt käyttäjä
   try {
     user = await authUtils.authenticateRequestReturnUser(req);
   } catch (e) {
     return res.status(401).json({ error: e.message })
   }
+  console.log(user.username)
 
-  let product   // haetaan pyynnön tehnyt käyttäjä
+  let product   // haetaan poistettava tuote
   try {
     product = await Product.findById(req.params.id).exec()
   } catch (error) {
     return res.status(401).json({ error: error.message })
   }
+  console.log(product.user)
 
   // verrataan pyynnön tehnyttä käyttäjää tuotteen lisänneeseen käyttäjään
   if (product.user.toString() !== user.id.toString()) {
