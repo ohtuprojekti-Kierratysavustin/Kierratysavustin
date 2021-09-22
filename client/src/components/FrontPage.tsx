@@ -3,8 +3,14 @@ import FavouriteProducts from './FavouriteProducts'
 import SearchBarForm from './SearchBarForm'
 import { useStore } from '../store'
 import InfoBar from './InfoBar'
+import { Product } from '../types'
 
-const FrontPage = ({ products, setFilteredProducts }) => {
+type Props = {
+  products: Product[],
+  setFilteredProducts: (param: Product[]) => void
+}
+
+const FrontPage: React.FC<Props> = ({ products, setFilteredProducts }) => {
   const { user, favorites } = useStore()
   if (!products) {
     return null

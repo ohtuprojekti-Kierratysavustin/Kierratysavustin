@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render } from '@testing-library/react'
-import Product from '../components/Product'
+import ProductPage from '../components/Product'
 import {
   BrowserRouter as Router
 } from 'react-router-dom'
@@ -19,7 +19,7 @@ test('Product information can be seen', () => {
 
   const component = render(
     <Router>
-      <Product product={productA} />
+      <ProductPage product={productA} />
     </Router>
 
   )

@@ -3,8 +3,13 @@ import logo from '../media/logo.png'
 import { Jumbotron, Media, Image, Container, Row } from 'react-bootstrap'
 import '../styles.css'
 
+type Props = {
+  header: string,
+  text: string
+}
+
 /** Component for showing product name and recycling information. */
-const InfoBar = ({ header, text }) => {
+const InfoBar: React.FC<Props> = ({ header, text }) => {
   return (
     <div>
       <Jumbotron id='infobar'>

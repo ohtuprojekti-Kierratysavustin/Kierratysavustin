@@ -9,9 +9,15 @@ import SearchBarForm from './SearchBarForm'
 import InfoBar from './InfoBar'
 import FavoritesForm from './FavoritesForm'
 import '../styles.css'
+import { Product } from '../types'
+
+type Props = {
+  products: Product[],
+  setFilteredProducts: (filteredProducts: Product[]) => void
+}
 
 /** Component for showing list of products and a link to product page */
-const ProductList = ({ products, setFilteredProducts }) => {
+const ProductList: React.FC<Props> = ({ products, setFilteredProducts }) => {
   const { user } = useStore()
   if (products.length === 0) {
     return (
@@ -37,9 +43,7 @@ const ProductList = ({ products, setFilteredProducts }) => {
           <ListGroup as='ul' id='list'>
             {products.map(product =>
               <ListGroup.Item as='li' key={product.id} id='list-item' >
-                <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`} state={{
-                  product: product,
-                }}>
+                <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
                   <Media>
                     <img
                       width={64}

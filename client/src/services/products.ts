@@ -3,12 +3,12 @@ import tokenService from './token'
 const baseUrl = `${process.env.PUBLIC_URL}/api/products`
 
 
-const create = async newObject => {
+const create = async (newObject: {name: string}) => {
   const response =  axios.post(baseUrl, newObject, tokenService.getConfig())
   return response.then(response => response.data)
 }
 
-const createInstruction = async (id, newObject) => {
+const createInstruction = async (id: number, newObject: {information: string}) => {
   const response = axios.post(`${baseUrl}/${id}/instructions`, newObject, tokenService.getConfig())
   return response.then(response => response.data)
 }
@@ -18,8 +18,8 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-const getFavorites = (id) => {
-  const request = axios.get(`${baseUrl}/user`, { params: { id } }, tokenService.getConfig())
+const getFavorites = (id: number) => {
+  const request = axios.get(`${baseUrl}/user`, { params: { id } })
   return request.then(response => response.data)
 }
 
