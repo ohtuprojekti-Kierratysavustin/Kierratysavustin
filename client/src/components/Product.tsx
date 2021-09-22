@@ -5,6 +5,7 @@ import {
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
+import DeleteProduct from './DeleteProduct'
 import { useStore  } from '../store'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
@@ -48,7 +49,7 @@ const ProductPage: React.FC<Props> = ({ product }) => {
             </Col>
             <Col sm={2}>
               {user !== null ? (
-                <FavoritesForm product = {product}/>
+                <><FavoritesForm product={product} /><DeleteProduct product={product} /></>
               ) : (
                 ''
               )}
