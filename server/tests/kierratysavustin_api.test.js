@@ -12,7 +12,7 @@ const helper = require('./test_helper')
 let token = undefined
 
 beforeEach(async () => {
-  console.log("Starting to initalize test!")
+  console.log("Starting to initialize test!")
   await helper.clearDatabase();
 
   let productObject = new Product(helper.productsData[0])
