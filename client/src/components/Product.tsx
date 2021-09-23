@@ -98,7 +98,7 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                         ''
                       )}
                     </Col>
-                    <DeleteInstructionForm user = {user} productId = {product.id} instructionId = {instruct.id} />
+                    <DeleteInstructionForm product = {product} instruction = {instruct} />
                     <VoteForm instruction = {instruct} user = {user} product={product} />
                   </Row>
 

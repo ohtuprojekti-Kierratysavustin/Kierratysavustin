@@ -6,7 +6,8 @@ const authUtils = require('../utils/auth')
 productRouter.get('/', async (req, res) => {
   const products = await Product.find({}).populate('instructions', {
     score: 1,
-    information: 1
+    information: 1,
+    user: 1
   })
 
   products.forEach(p => p.instructions.sort((a, b) => b.score - a.score))
@@ -17,7 +18,8 @@ productRouter.get('/', async (req, res) => {
 productRouter.get('/user', async (req, res) => {
   const favorites = await Product.find({ users: req.query.id }).populate('instructions', {
     score: 1,
-    information: 1
+    information: 1,
+    user: 1
   })
   favorites.forEach(p => p.instructions.sort((a, b) => b.score - a.score))
   res.json(favorites.map((favorite) => favorite.toJSON()))
@@ -27,7 +29,8 @@ productRouter.get('/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate('instructions', {
       score: 1,
-      information: 1
+      information: 1,
+      user: 1
     })
     product.instructions.sort((a, b) => b.score - a.score)
     res.json(product)
@@ -60,8 +63,9 @@ productRouter.post('/', async (req, res) => {
 })
 
 productRouter.post('/:id/instructions', async (req, res) => {
+  let user     //haetaan käyttäjä
   try {
-    await authUtils.authenticateRequest(req)
+    user = await authUtils.authenticateRequestReturnUser(req)
   } catch (e) {
     return res.status(401).json({ error: e.message })
   }
@@ -72,6 +76,7 @@ productRouter.post('/:id/instructions', async (req, res) => {
   }
   const instruction = new Instruction(req.body)
   instruction.product = product.id
+  instruction.user = user.id
   const result = await instruction.save()
   product.instructions = product.instructions.concat(result)
   await product.save()
@@ -79,23 +84,33 @@ productRouter.post('/:id/instructions', async (req, res) => {
 })
 
 productRouter.put('/:productId/instructions/:instructionId', async (req, res) => {
+  let user     //haetaan ohjeen tehnyt käyttäjä
   try {
-    await authUtils.authenticateRequest(req)
+    user = await authUtils.authenticateRequestReturnUser(req)
   } catch (e) {
-    console.log(e.message)
     return res.status(401).json({ error: e.message })
   }
 
-  const product = await Product.findById(req.params.productId)
-  if (!product) {
-    return res.status(401).json({ error: 'No product' })
+  let product    //haetaan tuote, johon ohje liittyy
+  try {
+    product = await Product.findById(req.params.productId)
+  } catch (e) {
+    return res.status(401).json({ error: e.message })
   }
 
-  const instruction = await Instruction.findById(req.params.instructionId)
-  if (!instruction) {
-    return res.status(400).json({ error: 'No instruction' })
+  let instruction   //haetaan ohje
+  try {
+    instruction = await Instruction.findById(req.params.instructionId)
+  } catch (e) {
+    return res.status(400).json({ error: e.message })
   }
 
+  //verrataan, vastaako pyynnön tehnyt käyttäjä ohjeen lisännyttä käyttäjää
+  if (instruction.user.toString() !== user.id.toString()) {
+    return res.status(403).json({ error: 'unauthorized'})
+  }
+
+  //poistetaan ohje tietokannasta
   product.instructions = product.instructions.pull({ _id: instruction.id })
   await product.save()
   res.status(201).json(product)
