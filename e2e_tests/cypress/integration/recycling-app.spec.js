@@ -30,7 +30,7 @@ describe("Recycling app", () => {
       cy.get("#passwordInput").type("kayttaja")
       cy.get("#loginSubmit").click()
       cy.wait(10)
-      cy.contains("kirjaudu ulos")
+      cy.contains("Kirjaudu ulos")
     })
 
     describe("and logged in", () => {
