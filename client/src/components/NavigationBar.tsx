@@ -32,7 +32,7 @@ const NavigationBar = () => {
               window.localStorage.clear()
               setUser(null)
               tokenService.removeToken()
-            }} to="/">   kirjaudu ulos
+            }} to="/">   Kirjaudu ulos
             </Nav.Link>
           </Nav>
         ) : (
