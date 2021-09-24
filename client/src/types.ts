@@ -9,7 +9,8 @@ export type Instruction = {
   id: number,
   score: number,
   information: string,
-  product_id: number
+  product_id: number,
+  user: number
 }
 
 export type User = {

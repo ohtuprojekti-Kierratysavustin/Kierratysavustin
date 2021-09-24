@@ -2,8 +2,14 @@ import React from 'react'
 import ProductService from '../services/products'
 import { useStore } from '../store'
 import { Button } from 'react-bootstrap'
+import { Instruction, Product } from '../types'
 
-const DeleteInstructionForm = ( { product, instruction } ) => {
+type Props = {
+  instruction: Instruction,
+  product: Product
+}
+
+const DeleteInstructionForm: React.FC<Props> = ( { product, instruction } ) => {
   const creatorId = instruction.user
   const { user, setNotification } = useStore()
 
@@ -12,17 +18,19 @@ const DeleteInstructionForm = ( { product, instruction } ) => {
     return (null)
   }
 
-  const handleDelete = async (event) => {
+  const handleDelete: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
-    try{
-      ProductService.deleteInstruction(product.id, instruction.id)
-      window.location.reload()
-      setNotification(`ohje ${instruction.information} poistettu`)
-    } catch (e) {
-      setNotification('Ohjeen poistamisessa tapahtui virhe', 'error')
+    if (window.confirm(`Poistetaanko ohje ${instruction.information}?`)) {
+      try{
+        ProductService.deleteInstruction(product.id, instruction.id)
+        window.location.reload()
+        setNotification(`ohje ${instruction.information} poistettu`, 'success')
+      } catch (e) {
+        setNotification('Ohjeen poistamisessa tapahtui virhe', 'error')
+      }
     }
-
   }
+
   if (user.id === creatorId) {
     return (
       <div>
