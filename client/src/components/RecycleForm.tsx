@@ -11,9 +11,9 @@ type Props = {
 const RecycleForm: React.FC<Props> = ( { product }  ) => {
   const [ recycles, setRecycles ] = useState<number>(0)
 
-  useEffect(( ) => {
-
-  })
+  useEffect(() => {
+    setRecycles(recycles)
+  }, [recycles])
 
   const handleRecycle: React.MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault()
