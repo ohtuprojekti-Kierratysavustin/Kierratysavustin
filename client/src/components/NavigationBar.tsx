@@ -16,11 +16,11 @@ const NavigationBar = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className='mr-auto'>
           {user !== null ? (
-            <Nav.Link id='productForm' as={Link} to="/new">lisää tuote</Nav.Link>
+            <Nav.Link id='productForm' as={Link} to="/new">Lisää tuote</Nav.Link>
           ) : (
             ''
           )}
-          <Nav.Link id='productList' as={Link} to="/products">tuotteet</Nav.Link>
+          <Nav.Link id='productList' as={Link} to="/products">Tuotteet</Nav.Link>
         </Nav>
 
         {user !== null ? (
@@ -37,8 +37,8 @@ const NavigationBar = () => {
           </Nav>
         ) : (
           <Nav className='justify-content-end'>
-            <Nav.Link id='registerButton' as={Link} to="/register">rekisteröidy</Nav.Link>
-            <Nav.Link id='loginButton' as={Link} to="/login">kirjaudu</Nav.Link>
+            <Nav.Link id='registerButton' as={Link} to="/register">Rekisteröidy</Nav.Link>
+            <Nav.Link id='loginButton' as={Link} to="/login">Kirjaudu</Nav.Link>
           </Nav>
         )}
 
