@@ -4,12 +4,12 @@ const uniqueValidator = require('mongoose-unique-validator')
 const productUserRecycleCountSchema = new mongoose.Schema({
   userID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true
   },
   productID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
+    ref: 'Product',
     required: true
   },
   count: {
