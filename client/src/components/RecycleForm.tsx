@@ -12,7 +12,11 @@ const RecycleForm: React.FC<Props> = ( { product }  ) => {
   const [ recycles, setRecycles ] = useState<number>(0)
 
   useEffect(() => {
-    setRecycles(recycles)
+    const getRecycles = async () => {
+      const recycleData = await recycleService.getProductRecycleStats({ productID: product.id })
+      setRecycles(recycleData.count)
+    }
+    getRecycles()
   }, [recycles])
 
   const handleRecycle: React.MouseEventHandler<HTMLElement> = (event) => {

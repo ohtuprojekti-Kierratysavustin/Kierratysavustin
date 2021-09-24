@@ -9,7 +9,7 @@ const recycle = async (newObject: { productID: number, amount: number }) => {
   return response.then(response => response.data)
 }
 
-const getProductRecycleStats = (params: { productID: string }) => {
+const getProductRecycleStats = (params: { productID: number }) => {
   let config = {
     headers: tokenService.getConfig().headers,
     params: params
