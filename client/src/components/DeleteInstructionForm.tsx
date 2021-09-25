@@ -22,7 +22,7 @@ const DeleteInstructionForm: React.FC<Props> = ( { product, instruction } ) => {
     event.preventDefault()
     if (window.confirm(`Poistetaanko ohje ${instruction.information}?`)) {
       try{
-        ProductService.deleteInstruction(product.id, instruction.id)
+        await ProductService.deleteInstruction(product.id, instruction.id)
         window.location.reload()
         setNotification(`Ohje ${instruction.information} poistettu`, 'success')
       } catch (e) {
