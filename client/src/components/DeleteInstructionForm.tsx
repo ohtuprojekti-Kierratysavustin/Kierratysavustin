@@ -24,7 +24,7 @@ const DeleteInstructionForm: React.FC<Props> = ( { product, instruction } ) => {
       try{
         ProductService.deleteInstruction(product.id, instruction.id)
         window.location.reload()
-        setNotification(`ohje ${instruction.information} poistettu`, 'success')
+        setNotification(`Ohje ${instruction.information} poistettu`, 'success')
       } catch (e) {
         setNotification('Ohjeen poistamisessa tapahtui virhe', 'error')
       }

@@ -90,28 +90,33 @@ describe("Recycling app", () => {
             it("recycling information can be added to it", () => {
               cy.get("#instructionButton").click()
               cy.get("#instructionText").type(
-                "Tuotteen voi uudelleen käyttää roskapussina"
+                "Tuotteen voi uudelleenkäyttää roskapussina"
               )
               cy.get("#addInstruction").click()
-              cy.contains("Tuotteen voi uudelleen käyttää roskapussina")
+              cy.contains("Tuotteen voi uudelleenkäyttää roskapussina")
             })
 
-            it("recycling information can be liked", () => {
-              cy.get("#instructionButton").click()
-              cy.get("#instructionText").type(
-                "Tuotteen voi uudelleen käyttää roskapussina"
-              )
-              cy.get("#addInstruction").click()
-              cy.get("#likeButton").click()
+            describe("and the product has one recycling instruction", () => {
+              beforeEach(() => {
+                cy.get("#instructionButton").click()
+                cy.get("#instructionText").type(
+                  "Tuotteen voi uudelleenkäyttää roskapussina"
+                )
+                cy.get("#addInstruction").click()
+              })
+
+              it("recycling information can be liked", () => {
+                cy.get("#likeButton").click()
+              })
+              it("recycling information can be disliked", () => {
+                cy.get("#dislikeButton").click()
+              })
+              it("recycling information can be deleted by the user", () => {
+                cy.get("#deleteInstructionButton").click()
+                cy.contains("Ohje Tuotteen voi uudelleenkäyttää roskapussina poistettu")
+              })
             })
-            it("recycling information can be disliked", () => {
-              cy.get("#instructionButton").click()
-              cy.get("#instructionText").type(
-                "Tuotteen voi uudelleen käyttää roskapussina"
-              )
-              cy.get("#addInstruction").click()
-              cy.get("#dislikeButton").click()
-            })
+            
             it("recycling information list order changes when liked or disliked", () => {
               cy.get("#instructionButton").click()
               cy.get("#instructionText").type(
