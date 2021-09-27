@@ -3,7 +3,6 @@ const Product = require('../models/product')
 const ProductUserRecycleCount = require('../models/productUserRecycleCount')
 
 const authUtils = require('../utils/auth')
-// const NoUserFoundException = authUtils.NoUserFoundException
 
 productUserRecycleCountRouter.post('/', async (req, res) => {
   let user
