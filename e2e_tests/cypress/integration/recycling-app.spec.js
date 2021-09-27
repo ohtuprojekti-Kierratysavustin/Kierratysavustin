@@ -82,6 +82,12 @@ describe("Recycling app", () => {
             cy.contains("Lisää uusi ohje")
           })
 
+          it("can be removed by the user", () => {
+            cy.get("#deleteItem").click()
+            cy.contains("Tuote Muovipussi poistettu onnistuneesti")
+            cy.contains("Haulla ei löytynyt yhtään tuotetta!")
+          })
+
           describe("and the product information is opened", () => {
             beforeEach(() => {
               cy.contains("Muovipussi").click()
@@ -147,6 +153,12 @@ describe("Recycling app", () => {
               cy.get("#addToFavorites").click()
               cy.get("#addToFavorites").click()
               cy.get("#addToFavorites").contains('Lisää suosikkeihin')
+            })
+
+            it("can be removed by the user", () => {
+              cy.get("#deleteItem").click()
+              cy.contains("Tuote Muovipussi poistettu onnistuneesti")
+              cy.contains("Haulla ei löytynyt yhtään tuotetta!")
             })
           })
         })

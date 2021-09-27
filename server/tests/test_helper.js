@@ -45,6 +45,16 @@ const addNewProduct = async (newProduct, token) => {
   return result
 }
 
+const removeProduct = async (productId, token) => {
+  const result = api
+    .delete(`/api/products/${productId}`)
+    .set('Authorization', `bearer ${token}`)
+    .send()
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+  return result
+}
+
 const addFavourite = async (productId, token) => {
   const result = await api
     .post('/api/users/products/' + productId)
@@ -133,5 +143,5 @@ module.exports = {
   usersInDb, getToken, productsData, getProducts, getInstructionsOfProduct
   , addInstruction, deleteInstruction, likeInstruction, disLikeInstruction
   , unLikeInstruction, unDisLikeInstruction, addFavourite
-  , removeFavourite, addNewProduct
+  , removeFavourite, addNewProduct, removeProduct,
 }

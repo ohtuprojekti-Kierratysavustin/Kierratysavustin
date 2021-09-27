@@ -10,8 +10,13 @@ const User = require('../models/user')
 const Instruction = require('../models/instruction')
 const helper = require('./test_helper')
 
-
 let token = undefined
+let user = undefined
+
+beforeAll(async () => {
+  const passwordHash = await bcrypt.hash('salasana', 10)
+  user = new User({ username: 'root', passwordHash })
+})
 
 beforeEach(async () => {
   await Product.deleteMany({})
@@ -22,7 +27,7 @@ beforeEach(async () => {
     username: 'kayttaja'
   })
   let user = await userObject.save()
-  let productObject = new Product(helper.productsData[0])
+  let productObject = new Product({ name:helper.productsData[0].name, user:user.id })
   let instructionObject = new Instruction({
     information: 'Muovi',
     product: productObject.id,
@@ -32,7 +37,7 @@ beforeEach(async () => {
   await instructionObject.save()
   await productObject.save()
 
-  productObject = new Product(helper.productsData[1])
+  productObject = new Product({ name:helper.productsData[1].name, user:user.id })
   await productObject.save()
 })
 
@@ -115,6 +120,42 @@ test('Product cannot be added if not logged in', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
+describe('Schema is validated correctly', () => {
+  // Tarkastetaan että skeeman validointi on kunnossa
+  test('Product must have fields name and user', async () => {
+    //const passwordHash = await bcrypt.hash('salasana', 10)
+    //const user = new User({ username: 'root', passwordHash })
+    let error = null
+
+    // käyttäjä puuttuu
+    try {
+      const product = new Product({ name:'name field', })
+      await product.validate()
+    } catch(e) {
+      error = e
+    }
+    
+    // nimi puuttuu
+    try {
+      const product = new Product({ user:user.id, })
+      await product.validate()
+    } catch(e) {
+      error = e
+    }
+    expect(error).not.toBeNull()
+
+    // tämän pitäisi mennä läpi
+    error = null
+    try {
+      const product = new Product({ name:'name field', user: user.id })
+      await product.validate()
+    } catch(e) {
+      error = e
+    }
+    expect(error).toBeNull()
+  })
+}) 
+
 describe('One account already in database', () => {
   beforeEach(async () => {
     await User.deleteMany({})
@@ -167,6 +208,28 @@ describe('One account already in database', () => {
  
       const allProducts = await helper.getProducts()
       expect(allProducts.body).toHaveLength(helper.productsData.length + 1)
+    })
+
+    test('Product can be removed by creator', async () => {
+      const newProduct = await helper.addNewProduct({ name: 'litran mitta' }, token)
+      await helper.removeProduct(newProduct.body.id, token)
+      let allProducts = await helper.getProducts()
+
+      allProducts.body.map(p => expect(p.name).not.toContain(newProduct.body.name))
+    })
+
+    test('Product cannot be removed by non-creator', async () => {
+      const allProducts = await helper.getProducts()
+      let productId = allProducts.body[0].id
+
+      await api
+        .delete(`/api/products/${productId}`)
+        .set('Authorization', `bearer ${token}`)
+        .send()
+        .expect(403)
+      
+      const productsAfter = await helper.getProducts()
+      expect(productsAfter.body).toHaveLength(helper.productsData.length)
     })
 
     test('user can add instruction for product', async () => {

@@ -8,6 +8,7 @@ import { Media, ListGroup, Container, Row, Col } from 'react-bootstrap'
 import SearchBarForm from './SearchBarForm'
 import InfoBar from './InfoBar'
 import FavoritesForm from './FavoritesForm'
+import DeleteProduct from './DeleteProduct'
 import '../styles.css'
 import { Product } from '../types'
 
@@ -75,6 +76,9 @@ const ProductList: React.FC<Props> = ({ products, setFilteredProducts }) => {
                               ''
                             )}
 
+                          </Col>
+                          <Col>
+                            <DeleteProduct product={product} />
                           </Col>
                         </Row>
                       </Container>
