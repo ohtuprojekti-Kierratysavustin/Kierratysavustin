@@ -75,4 +75,4 @@ Kirjautunut käyttäjä voi lisätä tuotteita suosikeiksi. Suosikkituotteet nä
 Kirjautunut käyttäjä voi tilastoida kuinka montaa kertaa hän on kierrättänyt järjestelmässä olevan tuotteen. Tilastointi tapahtuu painamalla tuotteen kohdalla olevia nuolia, joiden vieressä näkyy tuotteen kierrätyskerrat. Nuolista painamalla voi joko lisätä tai vähentää yhden kierrätyksen.
 Tilastointinapit ovat nähtävissä jokaisessa tuotteessa tuotelistauksessa, suosikkituotelistauksessa, sekä tuotenäkymässä.
 
-![Kierrätystilaston kasvattaminen tuotteella](KUVA)
+![Kierrätystilaston kasvattaminen tuotteella](./kuvat/recycleCount.png)
