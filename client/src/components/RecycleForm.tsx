@@ -35,7 +35,7 @@ const RecycleForm: React.FC<Props> = ( { product }  ) => {
       <Container id='vote-element' >
         <Row>
           <Container id='votes'>
-            {recycles}
+            Kierrätetty {recycles} kpl
             <ButtonGroup vertical className='better-votes'>
               <Button variant='success' id = "recycleButton" onClick={handleRecycle} >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
