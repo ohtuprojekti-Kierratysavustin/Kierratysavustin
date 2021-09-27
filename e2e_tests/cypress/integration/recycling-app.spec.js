@@ -113,7 +113,7 @@ describe("Recycling app", () => {
               })
               it("recycling information can be deleted by the user", () => {
                 cy.get("#deleteInstructionButton").click()
-                cy.contains("Tuotteen voi uudelleenkäyttää roskapussina").should('not.exist')
+                cy.contains("Ohje Tuotteen voi uudelleenkäyttää roskapussina poistettu")
               })
             })
             

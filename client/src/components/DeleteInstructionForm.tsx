@@ -11,7 +11,7 @@ type Props = {
 
 const DeleteInstructionForm: React.FC<Props> = ( { product, instruction } ) => {
   const creatorId = instruction.user
-  const { user, setNotification } = useStore()
+  const { user, updateProduct, setNotification } = useStore()
 
   //ohjeen voi poistaa vain ohjeen luoja
   if (!user || !creatorId) {
@@ -23,7 +23,8 @@ const DeleteInstructionForm: React.FC<Props> = ( { product, instruction } ) => {
     if (window.confirm(`Poistetaanko ohje ${instruction.information}?`)) {
       try{
         await ProductService.deleteInstruction(product.id, instruction.id)
-        window.location.reload()
+        product.instructions = product.instructions.filter(i => i.id !== instruction.id)
+        updateProduct(product)
         setNotification(`Ohje ${instruction.information} poistettu`, 'success')
       } catch (e) {
         setNotification('Ohjeen poistamisessa tapahtui virhe', 'error')
