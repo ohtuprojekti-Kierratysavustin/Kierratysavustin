@@ -14,7 +14,7 @@ const createInstruction = async (id: number, newObject: {information: string}) =
 }
 
 const deleteInstruction = async (productId: number, instructionId: number) => {
-  const response =  axios.put(`${baseUrl}/${productId}/instructions/${instructionId}`, instructionId, tokenService.getConfig())
+  const response =  axios.delete(`${baseUrl}/${productId}/instructions/${instructionId}`, tokenService.getConfig())
   return response.then(response => response.data)
 }
 

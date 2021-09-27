@@ -342,7 +342,7 @@ describe('One account already in database', () => {
         
         //ensimmäinen käyttäjä yrittää poistaa ohjeen
         await api
-          .put(`/api/products/${product.body.id}/instructions/${instruction.body.id}`)
+          .delete(`/api/products/${product.body.id}/instructions/${instruction.body.id}`)
           .set('Authorization', `bearer ${token}`)
           .expect(403)
         
@@ -358,7 +358,7 @@ describe('One account already in database', () => {
       
         //poistetaan ohje
         await api
-          .put(`/api/products/${product.body.id}/instructions/${instruction.body.id}`)
+          .delete(`/api/products/${product.body.id}/instructions/${instruction.body.id}`)
           .set('Authorization', `bearer ${token}`)
           .expect(201)
 

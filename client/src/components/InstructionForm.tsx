@@ -88,7 +88,6 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
     const info = { information }
     productService.createInstruction(props.product.id, info)
       .then(i => {
-        console.log(i.user)
         props.product.instructions.push(i)
         props.product.instructions.sort((a, b) => b.score - a.score)
         updateProduct(props.product)

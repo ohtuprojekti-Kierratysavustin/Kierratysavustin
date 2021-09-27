@@ -80,7 +80,7 @@ const addInstruction = async (product, token, instruction) => {
 
 const deleteInstruction = async (product, token, instruction) => {
   const result = await api
-    .put(`/api/products/${product.id}/instructions/${instruction.id}`)
+    .delete(`/api/products/${product.id}/instructions/${instruction.id}`)
     .set('Authorization', 'bearer ' + token)
     .set('Content-Type', 'application/json')
     .expect(201)

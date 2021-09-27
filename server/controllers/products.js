@@ -83,7 +83,7 @@ productRouter.post('/:id/instructions', async (req, res) => {
   res.status(201).json(result)
 })
 
-productRouter.put('/:productId/instructions/:instructionId', async (req, res) => {
+productRouter.delete('/:productId/instructions/:instructionId', async (req, res) => {
   let user     //haetaan ohjeen tehnyt käyttäjä
   try {
     user = await authUtils.authenticateRequestReturnUser(req)
