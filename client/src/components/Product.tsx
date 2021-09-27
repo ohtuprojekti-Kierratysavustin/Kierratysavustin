@@ -5,6 +5,8 @@ import {
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
+import DeleteInstructionForm from './DeleteInstructionForm'
+import DeleteProduct from './DeleteProduct'
 import { useStore  } from '../store'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
@@ -40,7 +42,7 @@ const ProductPage: React.FC<Props> = ({ product }) => {
         <Container>
           <Row>
             <Col>
-              <Button onClick={() => routeChange()} id='neutral-button'>takaisin</Button>
+              <Button onClick={() => routeChange()} id='neutral-button'>Takaisin</Button>
             </Col>
           </Row>
           <Row>
@@ -52,6 +54,7 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                 <div>
                   <FavoritesForm product = {product}/>
                   <RecycleForm product={product} />
+                  <DeleteProduct product={product} />
                 </div>
               ) : (
                 ''
@@ -101,6 +104,7 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                         ''
                       )}
                     </Col>
+                    <DeleteInstructionForm product = {product} instruction = {instruct} />
                     <VoteForm instruction = {instruct} user = {user} product={product} />
                   </Row>
 

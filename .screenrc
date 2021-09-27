@@ -1,0 +1,29 @@
+# Remove some stupid / dangerous key bindings
+bind ^k
+# Make them better
+bind K kill
+bind I login on
+bind O login off
+bind } history
+
+startup_message off
+
+chdir $HOME/Kierratysavustin/client 
+screen -t client 0
+stuff 'npm start^M'
+split
+focus
+chdir $HOME/Kierratysavustin/e2e_tests
+screen -t e2e 1
+focus prev
+chdir $HOME/Kierratysavustin/server 
+split -v
+focus
+screen -t mongo 2
+stuff 'npm run start:mongo^M'
+split -v
+focus 
+screen -t server 3
+stuff 'npm run start:test^M'
+focus next
+chdir

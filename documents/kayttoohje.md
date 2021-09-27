@@ -12,7 +12,7 @@ pääsee lisäämään tuotteita ja kierrätysohjeita.
 
 ![Tuotteiden hakeminen aloitussivulta](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/89a4dbef0912d9517d485f2a0d79eeda66395fe5/documents/kuvat/kierratysavustinhaku.png)
 
-Sovelluksen aloitussivulta voi hakea tuotteita tuoteen nimellä. Haku palauttaa 
+Sovelluksen aloitussivulta voi hakea tuotteita tuotteen nimellä. Haku palauttaa 
 tuloksen, jos hakusana vastaa edes osaa tuotteen nimestä.
 
 ![Hakutuloksia](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/8f4bbd81782ffa05d554f0dae17e04bf6e89f61a/documents/kuvat/kierratysavustinhakutulokset.png)
@@ -23,29 +23,29 @@ Klikkaamalla tuotteen nimeä, pääsee näkemään tuotteeseen liittyvät kierr�
 
 ## Tuotelista
 
-Kaikki järjestelmässä olevat tuotteet näkee klikkaamalla ylävalikosta "tuottet"
+Kaikki järjestelmässä olevat tuotteet näkee klikkaamalla ylävalikosta "Tuotteet"
 
 ![Tuotelistaus](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/f00770a98e32d5de9bc3ddc075b64be17e7fe597/documents/kuvat/kierratysavustin-tuotteet.png)
 
 
 ## Rekisteröityminen
 
-Järjestelmään voi luoda tunnukset ylävalikon kohdasta "rekisteröidy".
+Järjestelmään voi luoda tunnukset ylävalikon kohdasta "Rekisteröidy".
 
 ![Tunnusten lisääminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/6f05a2e9d7732c394bbf9199d0d150ead6875575/documents/kuvat/kierratysavustin-rekisteroidy.png)
 
 ## Kirjautuminen
 
-Järjestelmään kirjaudutaan ylävalikon kohdasta "kirjaudu".
+Järjestelmään kirjaudutaan ylävalikon kohdasta "Kirjaudu".
 
 ![Kirjautuminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/c84a339676bef14f9dab9a27d655343ae21144ac/documents/kuvat/kierratysavustin-kirjaudu.png)
 
-Uloskirjautuminen onnistuu klikkaamalla ylävalikosta "kirjaudu ulos".
+Uloskirjautuminen onnistuu klikkaamalla ylävalikosta "Kirjaudu ulos".
 
 ## Tuotteen lisääminen (Kirjautuneena)
 
 Kirjautumisen jälkeen on mahdollista lisätä tuotteita ylävalikon kohdasta 
-"lisää tuote". Tuotteelle lisätään nimi.
+"Lisää tuote". Tuotteelle lisätään nimi.
 
 ![Tuotteen nimen lisääminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/689991765b31e3ab7aadad1da46f17e2e842d5f9/documents/kuvat/kierratysavustin-lisaa-tuote.png)
 

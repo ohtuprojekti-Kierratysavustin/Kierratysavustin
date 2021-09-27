@@ -2,14 +2,16 @@ export type Product = {
   id: number,
   name: string,
   instructions: Instruction[],
-  users: number[]
+  users: number[],
+  user: number
 }
 
 export type Instruction = {
   id: number,
   score: number,
   information: string,
-  product_id: number
+  product_id: number,
+  user: number
 }
 
 export type User = {

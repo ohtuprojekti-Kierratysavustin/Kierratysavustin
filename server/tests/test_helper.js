@@ -26,8 +26,6 @@ const usersInDb = async () => {
   return users.map((u) => u.toJSON())
 }
 
-
-
 const getToken = async (props) => {
   const login = await api
     .post('/api/login')
@@ -39,6 +37,11 @@ const getToken = async (props) => {
 const getProducts = async () => {
   const products = await api.get('/api/products')
   return products
+}
+
+const getInstructionsOfProduct = async (productID) => {
+  const result = await api.get(`/api/products/${productID}`)
+  return result.body.instructions
 }
 
 const addNewProduct = async (newProduct, token) => {
@@ -55,12 +58,20 @@ const addNewUser = async (newUser) => {
     .send(newUser)
 }
 
+const removeProduct = async (productId, token) => {
+  const result = api
+    .delete(`/api/products/${productId}`)
+    .set('Authorization', `bearer ${token}`)
+    .send()
+    .expect('Content-Type', /application\/json/)
+  return result
+}
+
 const addFavourite = async (productId, token) => {
   const result = await api
     .post('/api/users/products/' + productId)
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .expect(201)
     .expect('Content-Type', /application\/json/)
   return result
 }
@@ -70,19 +81,25 @@ const removeFavourite = async (productId, token) => {
     .put('/api/users/products/' + productId)
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  return result
+}
+
+const addInstruction = async (productID, token, instruction) => {
+  const result = await api.
+    post(`/api/products/${productID}/instructions`)
+    .set('Authorization', 'bearer ' + token)
+    .set('Content-Type', 'application/json')
+    .send(instruction)
     .expect('Content-Type', /application\/json/)
   return result
 }
 
 
-const addInstruction = async (product, token, instruction) => {
-  const result = await api.
-    post(`/api/products/${product.id}/instructions`)
+const deleteInstruction = async (productID, token, instructionID) => {
+  const result = await api
+    .delete(`/api/products/${productID}/instructions/${instructionID}`)
     .set('Authorization', 'bearer ' + token)
-    .set('Content-Type', 'application/json')
-    .send(instruction)
-    .expect(201)
     .expect('Content-Type', /application\/json/)
   return result
 }
@@ -187,9 +204,12 @@ module.exports = {
   addFavourite,
   removeFavourite,
   addNewProduct,
+  removeProduct,
   recycleProductOnce,
   unrecycleProductOnce,
   recycleProductFreeAmount,
   getProductRecycleStat,
-  addNewUser
+  addNewUser,
+  getInstructionsOfProduct,
+  deleteInstruction,
 }
