@@ -2,6 +2,7 @@ const productRouter = require('express').Router()
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 const authUtils = require('../utils/auth');
+const user = require('../models/user');
 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find({}).populate('instructions', {
@@ -40,8 +41,9 @@ productRouter.get('/:id', async (req, res) => {
 })
 
 productRouter.post('/', async (req, res) => {
+  let user
   try {
-    await authUtils.authenticateRequest(req);
+    user = await authUtils.authenticateRequestReturnUser(req);
   } catch (e) {
     return res.status(401).json({ error: e.message })
   }
@@ -50,6 +52,7 @@ productRouter.post('/', async (req, res) => {
   try {
     const product = new Product({
       name: body.name,
+      user: user.id,
     })
     const result = await product.save()
     return res.status(201).json(result)
@@ -76,6 +79,42 @@ productRouter.post('/:id/instructions', async (req, res) => {
   product.instructions = product.instructions.concat(result)
   await product.save()
   res.status(201).json(result)
+})
+
+/** 
+ * Tuotteen poistaminen. 
+ * Etsii tietokannasta id:tä vastaavan tuotteen ja poistaa sen.
+ * Vain tuotteen lisännyt käyttäjä voi poistaa tuotteen.
+ */
+productRouter.delete('/:id', async (req, res) => {
+  let user    // haetaan pyynnön tehnyt käyttäjä
+  try {
+    user = await authUtils.authenticateRequestReturnUser(req);
+  } catch (e) {
+    return res.status(401).json({ error: e.message })
+  }
+  console.log(user.username)
+
+  let product   // haetaan poistettava tuote
+  try {
+    product = await Product.findById(req.params.id).exec()
+  } catch (error) {
+    return res.status(401).json({ error: error.message })
+  }
+  console.log(product.user)
+
+  // verrataan pyynnön tehnyttä käyttäjää tuotteen lisänneeseen käyttäjään
+  if (product.user.toString() !== user.id.toString()) {
+    return res.status(403).json({ error: 'unauthorized' })
+  }
+
+  // poistetaan tuote tietokannasta
+  try {
+    await Product.findByIdAndDelete({ _id: req.params.id }).exec()
+    res.status(200).json()
+  } catch (error) {
+    return res.status(400).json({ error: error.message })
+  }
 })
 
 module.exports = productRouter
