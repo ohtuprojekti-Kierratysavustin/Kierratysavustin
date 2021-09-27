@@ -13,6 +13,11 @@ const createInstruction = async (id: number, newObject: {information: string}) =
   return response.then(response => response.data)
 }
 
+const deleteInstruction = async (productId: number, instructionId: number) => {
+  const response =  axios.delete(`${baseUrl}/${productId}/instructions/${instructionId}`, tokenService.getConfig())
+  return response.then(response => response.data)
+}
+
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
@@ -28,4 +33,4 @@ const remove = (id: number) => {
 }
 
 
-export default { create, getAll, createInstruction , getFavorites, remove, }
+export default { create, getAll, createInstruction , deleteInstruction, remove, getFavorites, }

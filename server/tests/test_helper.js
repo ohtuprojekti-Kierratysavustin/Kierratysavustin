@@ -30,6 +30,11 @@ const getProducts = async () => {
   return products
 }
 
+const getInstructionsOfProduct = async (product) => {
+  const result = await api.get(`/api/products/${product.id}`)
+  return result.body.instructions
+}
+
 const addNewProduct = async (newProduct, token) => {
   const result = await api
     .post('/api/products')
@@ -83,6 +88,17 @@ const addInstruction = async (product, token, instruction) => {
 }
 
 
+const deleteInstruction = async (product, token, instruction) => {
+  const result = await api
+    .delete(`/api/products/${product.id}/instructions/${instruction.id}`)
+    .set('Authorization', 'bearer ' + token)
+    .set('Content-Type', 'application/json')
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  return result
+}
+
+
 const likeInstruction = async (instructionId, token) => {
   const result = await api
     .post('/api/users/likes/' + instructionId)
@@ -124,8 +140,8 @@ const unDisLikeInstruction = async (instructionId, token) => {
 }
 
 module.exports = {
-  usersInDb, getToken, productsData, getProducts
-  , addInstruction, likeInstruction, disLikeInstruction
+  usersInDb, getToken, productsData, getProducts, getInstructionsOfProduct
+  , addInstruction, deleteInstruction, likeInstruction, disLikeInstruction
   , unLikeInstruction, unDisLikeInstruction, addFavourite
   , removeFavourite, addNewProduct, removeProduct,
 }

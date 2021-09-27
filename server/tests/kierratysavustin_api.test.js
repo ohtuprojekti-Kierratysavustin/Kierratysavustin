@@ -21,11 +21,17 @@ beforeAll(async () => {
 beforeEach(async () => {
   await Product.deleteMany({})
   await Instruction.deleteMany({})
+  await User.deleteMany({})
 
+  let userObject = new User({
+    username: 'kayttaja'
+  })
+  let user = await userObject.save()
   let productObject = new Product({ name:helper.productsData[0].name, user:user.id })
   let instructionObject = new Instruction({
     information: 'Muovi',
-    product: productObject.id
+    product: productObject.id,
+    user: user.id
   })
   productObject.instructions = productObject.instructions.concat(instructionObject.id)
   await instructionObject.save()
@@ -368,6 +374,61 @@ describe('One account already in database', () => {
       expect(result.body.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
       expect(JSON.stringify(user.likes[0])).not.toBe(JSON.stringify(instruction.id))
+    })
+
+    describe('Already one product in database', () => {
+      
+      let product
+      beforeEach(async () => {
+        const newProduct = {
+          name: 'perunan kuori',
+        }
+        product = await helper.addNewProduct(newProduct, token)
+      })
+
+      
+      test('user cannot delete an instruction made by another user', async () => {
+        //toisen käyttäjän luominen
+        const passwordHash = await bcrypt.hash('toinenSalasana', 10)
+        let user = new User({ username: 'toinenKayttaja', passwordHash })
+
+        await user.save()
+        user = {
+          username: 'toinenKayttaja',
+          password: 'toinenSalasana',
+        }
+
+        let anotherToken = await helper.getToken(user)
+
+        //toinen käyttäjä lisää ohjeen
+        let instruction = await helper.addInstruction(product.body, anotherToken, { information: 'toisen ohje' })
+        
+        //ensimmäinen käyttäjä yrittää poistaa ohjeen
+        await api
+          .delete(`/api/products/${product.body.id}/instructions/${instruction.body.id}`)
+          .set('Authorization', `bearer ${token}`)
+          .expect(403)
+        
+        //tarkastetaan, että ohje ei ole poistunut
+        const instructionsAfter = await helper.getInstructionsOfProduct(product.body)
+        expect(instructionsAfter).toHaveLength(1) 
+      })
+
+
+      test('user can delete an instruction they have created', async () => {
+        //luodaan uusi ohje 
+        let instruction = await helper.addInstruction(product.body, token, { information: 'uusi ohje' })
+      
+        //poistetaan ohje
+        await api
+          .delete(`/api/products/${product.body.id}/instructions/${instruction.body.id}`)
+          .set('Authorization', `bearer ${token}`)
+          .expect(201)
+
+        //tarkastetaan, että ohje on poistettu 
+        const instructionsAfter = await helper.getInstructionsOfProduct(product.body)
+        expect(instructionsAfter).toHaveLength(0)
+      })
     })
   })
 })

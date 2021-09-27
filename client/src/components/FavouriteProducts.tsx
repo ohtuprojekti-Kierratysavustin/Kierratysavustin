@@ -15,7 +15,7 @@ const FavouriteProducts: React.FC<Props> = ({ userProducts }) => {
   return (
     <div>
       <Container>
-        <h2>Suosikki tuotteet</h2>
+        <h2>Suosikkituotteet</h2>
         <ListGroup as='ul' id='list'>
           {userProducts.map(product =>
             <ListGroup.Item action as='li' key={product.id} id='list-item'>
