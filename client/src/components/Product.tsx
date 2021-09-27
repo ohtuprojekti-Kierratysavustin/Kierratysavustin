@@ -49,7 +49,10 @@ const ProductPage: React.FC<Props> = ({ product }) => {
             </Col>
             <Col sm={2}>
               {user !== null ? (
-                <FavoritesForm product = {product}/>
+                <div>
+                  <FavoritesForm product = {product}/>
+                  <RecycleForm product={product} />
+                </div>
               ) : (
                 ''
               )}
@@ -99,7 +102,6 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                       )}
                     </Col>
                     <VoteForm instruction = {instruct} user = {user} product={product} />
-                    <RecycleForm product={product} />
                   </Row>
 
                 </Container>
