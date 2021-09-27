@@ -14,26 +14,21 @@ const RecycleForm: React.FC<Props> = ( { product }  ) => {
   useEffect(() => {
     const getRecycles = async () => {
       await recycleService.getProductRecycleStats({ productID: product.id }).then(recycles => setRecycles(recycles.count))
+      .catch((error) => {console.log(error)})
     }
     getRecycles()
   }, [recycles])
 
   const handleRecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
-    try {
-      event.preventDefault()
-      await recycleService.recycle({ productID: product.id, amount: 1 }).then(() => { setRecycles(recycles + 1) })
-    } catch (error) {
-      console.log(error)
-    }
+    event.preventDefault()
+    await recycleService.recycle({ productID: product.id, amount: 1 }).then(() => { setRecycles(recycles + 1) })
+      .catch((error) => {console.log(error)})
   }
 
   const handleUnrecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
-    try {
-      event.preventDefault()
-      await recycleService.recycle({ productID: product.id, amount: -1 }).then(() => { setRecycles(recycles - 1) })
-    } catch (error) {
-      console.log(error)
-    }
+    event.preventDefault()
+    await recycleService.recycle({ productID: product.id, amount: -1 }).then(() => { setRecycles(recycles - 1) })
+      .catch((error) => {console.log(error)})
   }
 
   return (
