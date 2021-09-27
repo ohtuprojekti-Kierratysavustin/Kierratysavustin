@@ -42,30 +42,37 @@ Järjestelmään kirjaudutaan ylävalikon kohdasta "kirjaudu".
 
 Uloskirjautuminen onnistuu klikkaamalla ylävalikosta "kirjaudu ulos".
 
-## Tuotteen lisääminen (kirjautuneena)
+## Tuotteen lisääminen (Kirjautuneena)
 
 Kirjautumisen jälkeen on mahdollista lisätä tuotteita ylävalikon kohdasta 
 "lisää tuote". Tuotteelle lisätään nimi.
 
 ![Tuotteen nimen lisääminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/689991765b31e3ab7aadad1da46f17e2e842d5f9/documents/kuvat/kierratysavustin-lisaa-tuote.png)
 
-## Kierrätysohjeen lisääminen (kirjautuneena)
+## Kierrätysohjeen lisääminen (Kirjautuneena)
 
 Kirjautumisen jälkeen on mahdollista lisätä tuotteille kierrätysohjeita. 
 Kierrätysohjeita voi lisätä avaamalla tuotteen tiedot ja lisäämällä ohjeen lomakkeella.
 
 ![Tuotesivu kirjautumisen jälkeen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/4b39f38755d68fdcf164651ee59dc49214cba08e/documents/kuvat/kierratysavustin-uusi-ohje-tuotteelle.png)
 
-## Kierrätysohjeiden äänestäminen (kirjautuneena)
+## Kierrätysohjeiden äänestäminen (Kirjautuneena)
 
 Järjestelmään lisättyjä ohjeita voi kirjautuneena äänestää ylös, mikäli ne ovat käyttäjän mielestä osuvia ja alas, mikäli ne eivät käyttäjän mielestä ole hyviä. 
 
 ![Tuotteen äänestäminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/e116638fc87db396c7e73ff9d3ef43a374eaf461/documents/kuvat/kierratysavustin-aanestaminen.png)
 
-## Kierrätysohjeiden lisääminen suosikeiksi (kirjautuneena)
+## Kierrätysohjeiden lisääminen suosikeiksi (Kirjautuneena)
 
 Kirjautunut käyttäjä voi lisätä tuotteita suosikeiksi. Suosikkituotteet näkyvät järjestelmän etusivulla, kun käyttäjä on kirjautuneena järjestelmään.
 
 ![Tuotteen suosikoiminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/c68f88359c0e7b790abebed9cff951ea968e3f80/documents/kuvat/kierratysavustin-lisaa-suosikkeihin.png)
 
 ![Etusivu kirjautumisen jälkeen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/bcba239dc9238cf6d433c7caf96e84c01ea3fc8d/documents/kuvat/kirjautuneen-etusivu.png)
+
+## Kierrätettyjen tuotteiden tilastointi (Kirjautuneena)
+
+Kirjautunut käyttäjä voi tilastoida kuinka montaa kertaa hän on kierrättänyt järjestelmässä olevan tuotteen. Tilastointi tapahtuu painamalla tuotteen kohdalla olevia nuolia, joiden vieressä näkyy tuotteen kierrätyskerrat. Nuolista painamalla voi joko lisätä tai vähentää yhden kierrätyksen.
+Tilastointinapit ovat nähtävissä jokaisessa tuotteessa tuotelistauksessa, suosikkituotelistauksessa, sekä tuotenäkymässä.
+
+![Kierrätystilaston kasvattaminen tuotteella](KUVA)
