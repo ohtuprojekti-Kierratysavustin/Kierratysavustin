@@ -84,6 +84,12 @@ html {
     color: black;
 }
 
+/* List item buttons */
+.ListItemButtons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 /* Instruction List */
 #instruction-list-item {
     background-color: var(--list-color);

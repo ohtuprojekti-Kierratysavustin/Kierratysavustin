@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
 import '../styles.css'
 import { Product } from '../types'
+import RecycleForm from './RecycleForm'
 
 type Props = {
   product?: Product
@@ -50,7 +51,11 @@ const ProductPage: React.FC<Props> = ({ product }) => {
             </Col>
             <Col sm={2}>
               {user !== null ? (
-                <><FavoritesForm product={product} /><DeleteProduct product={product} /></>
+                <div>
+                  <FavoritesForm product = {product}/>
+                  <RecycleForm product={product} />
+                  <DeleteProduct product={product} />
+                </div>
               ) : (
                 ''
               )}

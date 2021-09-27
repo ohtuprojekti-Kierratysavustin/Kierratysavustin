@@ -11,6 +11,7 @@ import FavoritesForm from './FavoritesForm'
 import DeleteProduct from './DeleteProduct'
 import '../styles.css'
 import { Product } from '../types'
+import RecycleForm from './RecycleForm'
 
 type Props = {
   products: Product[],
@@ -71,7 +72,10 @@ const ProductList: React.FC<Props> = ({ products, setFilteredProducts }) => {
                               ''
                             )}
                             {user !== null ? (
-                              <FavoritesForm product={product} />
+                              <div className='ListItemButtons'>
+                                <FavoritesForm product={product} />
+                                <RecycleForm product={product} />
+                              </div>
                             ) : (
                               ''
                             )}

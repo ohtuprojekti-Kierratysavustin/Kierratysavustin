@@ -20,10 +20,11 @@ const FavoritesForm: React.FC<Props> = ({ product }) => {
     event.preventDefault()
     if(favorite === true){
       userService.removeFavorite(product)
-        .then(product => setFavorites(favorites.filter(p => p.id !== product.id)))
+        .then(product => setFavorites(favorites.filter(p => p.id !== product.id))).catch((error) => {console.log(error)})
       setFavorite(false)
     } else {
-      userService.addFavorite(product).then(p => setFavorites(favorites.concat(p)))
+      userService.addFavorite(product)
+        .then(p => setFavorites(favorites.concat(p))).catch((error) => {console.log(error)})
       setFavorite(true)
     }
   }
