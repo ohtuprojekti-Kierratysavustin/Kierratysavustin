@@ -12,8 +12,8 @@ const helper = require('./test_helper')
 let token = undefined
 
 beforeEach(async () => {
-  console.log("Starting to initialize test!")
-  await helper.clearDatabase();
+  console.log('Starting to initialize test!')
+  await helper.clearDatabase()
 
   let productObject = new Product(helper.productsData[0])
   let instructionObject = new Instruction({
@@ -22,14 +22,14 @@ beforeEach(async () => {
   })
   productObject.instructions = productObject.instructions.concat(instructionObject.id)
   await productObject.save()
-  console.log("Product 1 initialized for test", productObject)
+  console.log('Product 1 initialized for test', productObject)
   await instructionObject.save()
-  console.log("Instruction 1 initialized for test", instructionObject)
+  console.log('Instruction 1 initialized for test', instructionObject)
 
 
   productObject = new Product(helper.productsData[1])
   await productObject.save()
-  console.log("Product 1 initialized for test", productObject)
+  console.log('Product 1 initialized for test', productObject)
 })
 
 test('all products are returned', async () => {
@@ -97,7 +97,7 @@ test('Product cannot be added if not logged in', async () => {
   const newProduct = {
     name: 'maito',
   }
-  const result = await helper.addNewProduct(newProduct, "NO_TOKEN")
+  const result = await helper.addNewProduct(newProduct, 'NO_TOKEN')
   expect(result.status).toBe(401)
   const response = await helper.getProducts()
   expect(response.body).toHaveLength(helper.productsData.length)
@@ -110,7 +110,7 @@ describe('One account already in database', () => {
     const user = new User({ username: 'root', passwordHash })
 
     await user.save()
-    console.log("User initialized for test: ", user)
+    console.log('User initialized for test: ', user)
   })
   test('account can be made with new username', async () => {
     const usersAtStart = await helper.usersInDb()
@@ -142,7 +142,7 @@ describe('One account already in database', () => {
         password: 'salasana',
       }
       token = await helper.getToken(user)
-      console.log("Token initalized for test: ", token)
+      console.log('Token initalized for test: ', token)
     })
 
     test('Product can be added', async () => {
@@ -312,83 +312,83 @@ describe('One account already in database', () => {
     describe('Product Recycling Statistics', () => {
 
       test('user can recycle an existing product', async () => {
-        const allProducts = await helper.getProducts();
-        const product = allProducts.body[0];
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
 
-        await helper.recycleProductOnce(product.id, token);
+        await helper.recycleProductOnce(product.id, token)
 
-        const result = await helper.getProductRecycleStat(product.id, token);
-        expect(result.body.count).toBe(1);
+        const result = await helper.getProductRecycleStat(product.id, token)
+        expect(result.body.count).toBe(1)
 
       })
 
       test('user can recycle an existing product multiple times', async () => {
-        const allProducts = await helper.getProducts();
-        const product = allProducts.body[0];
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
 
-        await helper.recycleProductOnce(product.id, token);
-        await helper.recycleProductOnce(product.id, token);
-        await helper.recycleProductOnce(product.id, token);
-        await helper.recycleProductOnce(product.id, token);
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
 
-        const result = await helper.getProductRecycleStat(product.id, token);
-        expect(result.body.count).toBe(4);
+        const result = await helper.getProductRecycleStat(product.id, token)
+        expect(result.body.count).toBe(4)
       })
 
       test('user can unrecycle an existing product that has been recycled', async () => {
-        const allProducts = await helper.getProducts();
-        const product = allProducts.body[0];
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
 
-        await helper.recycleProductOnce(product.id, token);
-        await helper.recycleProductOnce(product.id, token);
-        await helper.recycleProductOnce(product.id, token);
-        await helper.unrecycleProductOnce(product.id, token);
-        await helper.unrecycleProductOnce(product.id, token);
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.unrecycleProductOnce(product.id, token)
+        await helper.unrecycleProductOnce(product.id, token)
 
-        const result = await helper.getProductRecycleStat(product.id, token);
-        expect(result.body.count).toBe(1);
+        const result = await helper.getProductRecycleStat(product.id, token)
+        expect(result.body.count).toBe(1)
       })
 
       test('user can not set product recycle stat to negative', async () => {
-        const allProducts = await helper.getProducts();
-        const product = allProducts.body[0];
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
 
-        await helper.recycleProductOnce(product.id, token);
-        await helper.unrecycleProductOnce(product.id, token);
-        await helper.unrecycleProductOnce(product.id, token);
-        await helper.unrecycleProductOnce(product.id, token);
+        await helper.recycleProductOnce(product.id, token)
+        await helper.unrecycleProductOnce(product.id, token)
+        await helper.unrecycleProductOnce(product.id, token)
+        await helper.unrecycleProductOnce(product.id, token)
 
-        const result = await helper.getProductRecycleStat(product.id, token);
-        expect(result.body.count).toBe(0);
+        const result = await helper.getProductRecycleStat(product.id, token)
+        expect(result.body.count).toBe(0)
       })
 
       test('recycling nonexistent product responds with product 404', async () => {
 
-        const result = await helper.recycleProductOnce("111111111111111111111111", token);
+        const result = await helper.recycleProductOnce('111111111111111111111111', token)
         expect(result.status).toBe(404)
       })
 
       test('recycling without authorization not possible', async () => {
-        const allProducts = await helper.getProducts();
-        const product = allProducts.body[0];
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
 
-        const result = await helper.getProductRecycleStat(product.id, "INVALID_TOKEN")
+        const result = await helper.getProductRecycleStat(product.id, 'INVALID_TOKEN')
         expect(result.status).toBe(401)
 
       })
 
       test('recycling stat of nonexistent product responds with product 404', async () => {
 
-        const result = await helper.getProductRecycleStat("111111111111111111111111", token)
+        const result = await helper.getProductRecycleStat('111111111111111111111111', token)
         expect(result.status).toBe(404)
 
       })
 
       test('recycling stat not given without authorization', async () => {
-        const allProducts = await helper.getProducts();
-        const product = allProducts.body[0];
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
 
-        const result = await helper.getProductRecycleStat(product.id, "INVALID_TOKEN")
+        const result = await helper.getProductRecycleStat(product.id, 'INVALID_TOKEN')
         expect(result.status).toBe(401)
       })
     })

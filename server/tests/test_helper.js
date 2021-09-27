@@ -4,7 +4,7 @@ const api = supertest(app)
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 const User = require('../models/user')
-const ProductUserRecycleCount = require('../models/productUserRecycleCount');
+const ProductUserRecycleCount = require('../models/productUserRecycleCount')
 
 const productsData = [
   { name: 'Mustamakkarakastike pullo' },
@@ -18,7 +18,7 @@ const clearDatabase = async () => {
   await Instruction.deleteMany({})
   await User.deleteMany({})
   await ProductUserRecycleCount.deleteMany({})
-  console.log("Database reset!")
+  console.log('Database reset!')
 }
 
 const usersInDb = async () => {
@@ -51,8 +51,8 @@ const addNewProduct = async (newProduct, token) => {
 
 const addNewUser = async (newUser) => {
   return await api
-      .post('/api/users')
-      .send(newUser)
+    .post('/api/users')
+    .send(newUser)
 }
 
 const addFavourite = async (productId, token) => {
@@ -130,8 +130,8 @@ const unDisLikeInstruction = async (instructionId, token) => {
 
 const recycleProductOnce = async (productID, token) => {
   const content = {
-    "productID": productID,
-    "amount": 1
+    'productID': productID,
+    'amount': 1
   }
   const result = await api
     .post('/api/recycle/')
@@ -169,8 +169,8 @@ const recycleProductFreeAmount = async (productID, amount, token) => {
 
 const getProductRecycleStat = async (productID, token) => {
   const result = await api.get('/api/recycle/?productID=' + productID)
-    .set('Authorization', `bearer ${token}`);
-  return result;
+    .set('Authorization', `bearer ${token}`)
+  return result
 }
 
 module.exports = {

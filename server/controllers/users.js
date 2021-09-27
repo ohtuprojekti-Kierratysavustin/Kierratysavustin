@@ -4,8 +4,7 @@ const User = require('../models/user')
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 
-const authUtils = require('../utils/auth');
-const NoUserFoundException = authUtils.NoUserFoundException;
+const authUtils = require('../utils/auth')
 
 userRouter.post('/', async (req, res) => {
   try {
@@ -24,12 +23,12 @@ userRouter.post('/', async (req, res) => {
 })
 
 userRouter.post('/likes/:id/', async (req, res) => {
-  let user;
+  let user
   try {
-    user = await authUtils.authenticateRequestReturnUser(req);
+    user = await authUtils.authenticateRequestReturnUser(req)
   } catch (e) {
-    res.setHeader("WWW-Authenticate", "Bearer")
-    return res.status(401).json({ error: e.message });
+    res.setHeader('WWW-Authenticate', 'Bearer')
+    return res.status(401).json({ error: e.message })
   }
 
   const instruction = await Instruction.findById(req.params.id)
@@ -54,12 +53,12 @@ userRouter.post('/likes/:id/', async (req, res) => {
 })
 
 userRouter.put('/likes/:id', async (req, res) => {
-  let user;
+  let user
   try {
-    user = await authUtils.authenticateRequestReturnUser(req, res);
+    user = await authUtils.authenticateRequestReturnUser(req, res)
   } catch (e) {
-    res.setHeader("WWW-Authenticate", "Bearer")
-    return res.status(401).json({ error: e.message });
+    res.setHeader('WWW-Authenticate', 'Bearer')
+    return res.status(401).json({ error: e.message })
   }
 
   const instruction = await Instruction.findById(req.params.id)
@@ -79,24 +78,24 @@ userRouter.put('/likes/:id', async (req, res) => {
 })
 
 userRouter.get('/likes/', async (req, res) => {
-  let user;
+  let user
   try {
-    user = await authUtils.authenticateRequestReturnUser(req);
+    user = await authUtils.authenticateRequestReturnUser(req)
   } catch (e) {
-    res.setHeader("WWW-Authenticate", "Bearer")
-    return res.status(401).json({ error: e.message });
+    res.setHeader('WWW-Authenticate', 'Bearer')
+    return res.status(401).json({ error: e.message })
   }
 
   return res.status(201).json(user.likes)
 })
 
 userRouter.post('/dislikes/:id/', async (req, res) => {
-  let user;
+  let user
   try {
-    user = await authUtils.authenticateRequestReturnUser(req);
+    user = await authUtils.authenticateRequestReturnUser(req)
   } catch (e) {
-    res.setHeader("WWW-Authenticate", "Bearer")
-    return res.status(401).json({ error: e.message });
+    res.setHeader('WWW-Authenticate', 'Bearer')
+    return res.status(401).json({ error: e.message })
   }
 
   const instruction = await Instruction.findById(req.params.id)
@@ -121,12 +120,12 @@ userRouter.post('/dislikes/:id/', async (req, res) => {
 })
 
 userRouter.put('/dislikes/:id', async (req, res) => {
-  let user;
+  let user
   try {
-    user = await authUtils.authenticateRequestReturnUser(req);
+    user = await authUtils.authenticateRequestReturnUser(req)
   } catch (e) {
-    res.setHeader("WWW-Authenticate", "Bearer")
-    return res.status(401).json({ error: e.message });
+    res.setHeader('WWW-Authenticate', 'Bearer')
+    return res.status(401).json({ error: e.message })
   }
 
   const instruction = await Instruction.findById(req.params.id)
@@ -146,24 +145,24 @@ userRouter.put('/dislikes/:id', async (req, res) => {
 })
 
 userRouter.get('/dislikes/', async (req, res) => {
-  let user;
+  let user
   try {
-    user = await authUtils.authenticateRequestReturnUser(req);
+    user = await authUtils.authenticateRequestReturnUser(req)
   } catch (e) {
-    res.setHeader("WWW-Authenticate", "Bearer")
-    return res.status(401).json({ error: e.message });
+    res.setHeader('WWW-Authenticate', 'Bearer')
+    return res.status(401).json({ error: e.message })
   }
 
   return res.status(201).json(user.dislikes)
 })
 
 userRouter.post('/products/:id/', async (req, res) => {
-  let user;
+  let user
   try {
-    user = await authUtils.authenticateRequestReturnUser(req);
+    user = await authUtils.authenticateRequestReturnUser(req)
   } catch (e) {
-    res.setHeader("WWW-Authenticate", "Bearer")
-    return res.status(401).json({ error: e.message });
+    res.setHeader('WWW-Authenticate', 'Bearer')
+    return res.status(401).json({ error: e.message })
   }
 
   const product = await Product.findById(req.params.id)
@@ -183,12 +182,12 @@ userRouter.post('/products/:id/', async (req, res) => {
 })
 
 userRouter.put('/products/:id', async (req, res) => {
-  let user;
+  let user
   try {
-    user = await authUtils.authenticateRequestReturnUser(req);
+    user = await authUtils.authenticateRequestReturnUser(req)
   } catch (e) {
-    res.setHeader("WWW-Authenticate", "Bearer")
-    return res.status(401).json({ error: e.message });
+    res.setHeader('WWW-Authenticate', 'Bearer')
+    return res.status(401).json({ error: e.message })
   }
 
   const product = await Product.findByIdAndUpdate(req.params.id)
