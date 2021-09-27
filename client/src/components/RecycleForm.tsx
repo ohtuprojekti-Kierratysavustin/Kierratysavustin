@@ -18,16 +18,22 @@ const RecycleForm: React.FC<Props> = ( { product }  ) => {
     getRecycles()
   }, [recycles])
 
-  const handleRecycle: React.MouseEventHandler<HTMLElement> = (event) => {
-    event.preventDefault()
-    recycleService.recycle({ productID: product.id, amount: 1 }).then(() => { setRecycles(recycles + 1) })
-
+  const handleRecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
+    try {
+      event.preventDefault()
+      await recycleService.recycle({ productID: product.id, amount: 1 }).then(() => { setRecycles(recycles + 1) })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  const handleUnrecycle: React.MouseEventHandler<HTMLElement> = (event) => {
-    event.preventDefault()
-
-    recycleService.recycle({ productID: product.id, amount: -1 }).then(() => { setRecycles(recycles - 1) })
+  const handleUnrecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
+    try {
+      event.preventDefault()
+      await recycleService.recycle({ productID: product.id, amount: -1 }).then(() => { setRecycles(recycles - 1) })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
