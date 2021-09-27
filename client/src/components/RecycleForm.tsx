@@ -14,7 +14,7 @@ const RecycleForm: React.FC<Props> = ( { product }  ) => {
   useEffect(() => {
     const getRecycles = async () => {
       await recycleService.getProductRecycleStats({ productID: product.id }).then(recycles => setRecycles(recycles.count))
-      .catch((error) => {console.log(error)})
+        .catch((error) => {console.log(error)})
     }
     getRecycles()
   }, [recycles])
