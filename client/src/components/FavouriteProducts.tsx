@@ -5,12 +5,18 @@ import {
 import FavoritesForm from './FavoritesForm'
 import logo from '../media/logo.png'
 import { Container, Media, ListGroup } from 'react-bootstrap'
+import { Product } from '../types'
+import RecycleForm from './RecycleForm'
 
-const FavouriteProducts = ({ userProducts }) => {
+type Props = {
+  userProducts: Product[]
+}
+
+const FavouriteProducts: React.FC<Props> = ({ userProducts }) => {
   return (
     <div>
       <Container>
-        <h2>Suosikki tuotteet</h2>
+        <h2>Suosikkituotteet</h2>
         <ListGroup as='ul' id='list'>
           {userProducts.map(product =>
             <ListGroup.Item action as='li' key={product.id} id='list-item'>
@@ -37,8 +43,10 @@ const FavouriteProducts = ({ userProducts }) => {
                     ) : (
                       ''
                     )}
-                    <FavoritesForm product={product} />
-
+                    <div className='ListItemButtons'>
+                      <FavoritesForm product={product} />
+                      <RecycleForm product={product} />
+                    </div>
                   </Media.Body>
                 </Media>
               </Link>

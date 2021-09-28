@@ -1,0 +1,7 @@
+post http://localhost:3001/api/recycle
+Authorization: bearer lisää-token-tähän
+
+{
+    "productID": "6148cdbf5a5039cea997ff90",
+    "amount": 1
+}

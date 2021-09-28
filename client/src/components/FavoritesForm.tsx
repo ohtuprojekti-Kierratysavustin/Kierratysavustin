@@ -2,9 +2,13 @@ import React,{ useState,useEffect } from 'react'
 import userService from '../services/user'
 import { useStore } from '../store'
 import { Button } from 'react-bootstrap'
+import { Product } from '../types'
 
+type Props = {
+  product: Product
+}
 
-const FavoritesForm = ({ product }) => {
+const FavoritesForm: React.FC<Props> = ({ product }) => {
   const { favorites, setFavorites } = useStore()
   const [favorite, setFavorite] = useState(favorites.some(p => p.id === product.id))
   useEffect(() => { setFavorite(favorites.some(p => p.id === product.id))})
@@ -12,14 +16,15 @@ const FavoritesForm = ({ product }) => {
     ? 'outline-danger' : 'outline-success'
   const label = favorite
     ? 'Poista suosikeista' : 'Lisää suosikkeihin'
-  const handleClick = (event) => {
+  const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault()
     if(favorite === true){
       userService.removeFavorite(product)
-        .then(setFavorites(favorites.filter(p => p.id !== product.id)))
+        .then(product => setFavorites(favorites.filter(p => p.id !== product.id))).catch((error) => {console.log(error)})
       setFavorite(false)
     } else {
-      userService.addFavorite(product).then(setFavorites(favorites.concat(product)))
+      userService.addFavorite(product)
+        .then(p => setFavorites(favorites.concat(p))).catch((error) => {console.log(error)})
       setFavorite(true)
     }
   }

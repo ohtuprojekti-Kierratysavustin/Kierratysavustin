@@ -8,10 +8,18 @@ import { Media, ListGroup, Container, Row, Col } from 'react-bootstrap'
 import SearchBarForm from './SearchBarForm'
 import InfoBar from './InfoBar'
 import FavoritesForm from './FavoritesForm'
+import DeleteProduct from './DeleteProduct'
 import '../styles.css'
+import { Product } from '../types'
+import RecycleForm from './RecycleForm'
+
+type Props = {
+  products: Product[],
+  setFilteredProducts: (filteredProducts: Product[]) => void
+}
 
 /** Component for showing list of products and a link to product page */
-const ProductList = ({ products, setFilteredProducts }) => {
+const ProductList: React.FC<Props> = ({ products, setFilteredProducts }) => {
   const { user } = useStore()
   if (products.length === 0) {
     return (
@@ -37,9 +45,7 @@ const ProductList = ({ products, setFilteredProducts }) => {
           <ListGroup as='ul' id='list'>
             {products.map(product =>
               <ListGroup.Item as='li' key={product.id} id='list-item' >
-                <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`} state={{
-                  product: product,
-                }}>
+                <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
                   <Media>
                     <img
                       width={64}
@@ -66,11 +72,17 @@ const ProductList = ({ products, setFilteredProducts }) => {
                               ''
                             )}
                             {user !== null ? (
-                              <FavoritesForm product={product} />
+                              <div className='ListItemButtons'>
+                                <FavoritesForm product={product} />
+                                <RecycleForm product={product} />
+                              </div>
                             ) : (
                               ''
                             )}
 
+                          </Col>
+                          <Col>
+                            <DeleteProduct product={product} />
                           </Col>
                         </Row>
                       </Container>

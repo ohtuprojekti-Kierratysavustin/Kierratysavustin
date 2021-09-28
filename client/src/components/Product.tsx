@@ -5,23 +5,29 @@ import {
 import InstructionForm from './InstructionForm'
 import FavoritesForm from './FavoritesForm'
 import VoteForm from './VoteForm'
+import DeleteInstructionForm from './DeleteInstructionForm'
+import DeleteProduct from './DeleteProduct'
 import { useStore  } from '../store'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
 import '../styles.css'
+import { Product } from '../types'
+import RecycleForm from './RecycleForm'
 
+type Props = {
+  product?: Product
+}
 
 /** Component for showing product name and recycling information. */
-const Product = ({ product }) => {
+const ProductPage: React.FC<Props> = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
   const [currentInstruction, setCurrentInstruction] = useState(0)
 
   const routeChange = () => {
-    let path = '/searchResults'
-    history.goBack(path)
+    history.goBack()
   }
-  const handleInstructionClick = (id) => {
+  const handleInstructionClick = (id: number) => {
     setCurrentInstruction(id)
   }
   useEffect(() => {
@@ -36,7 +42,7 @@ const Product = ({ product }) => {
         <Container>
           <Row>
             <Col>
-              <Button onClick={() => routeChange()} id='neutral-button'>takaisin</Button>
+              <Button onClick={() => routeChange()} id='neutral-button'>Takaisin</Button>
             </Col>
           </Row>
           <Row>
@@ -45,7 +51,11 @@ const Product = ({ product }) => {
             </Col>
             <Col sm={2}>
               {user !== null ? (
-                <FavoritesForm product = {product}/>
+                <div>
+                  <FavoritesForm product = {product}/>
+                  <RecycleForm product={product} />
+                  <DeleteProduct product={product} />
+                </div>
               ) : (
                 ''
               )}
@@ -58,20 +68,16 @@ const Product = ({ product }) => {
               </h4>
             </Col>
           </Row>
-
           <Row>
             <Col>
               {product.instructions.length !== 0 ? (
                 <p id='top-score'>
                   {product.instructions[currentInstruction].information}
-
                 </p>
               ) : (
                 <span>ei ohjeita</span>
               )}
-
             </Col>
-
           </Row>
         </Container>
       </Jumbotron>
@@ -79,12 +85,9 @@ const Product = ({ product }) => {
         <Form.Group>
           {user !== null ? (
             <InstructionForm product = {product} />
-
           ) : (
             ''
           )}
-
-
         </Form.Group>
         <ListGroup id='instruction-list' as='ul' >
           {product.instructions.map((instruct, index) =>
@@ -101,6 +104,7 @@ const Product = ({ product }) => {
                         ''
                       )}
                     </Col>
+                    <DeleteInstructionForm product = {product} instruction = {instruct} />
                     <VoteForm instruction = {instruct} user = {user} product={product} />
                   </Row>
 
@@ -111,10 +115,8 @@ const Product = ({ product }) => {
           )}
         </ListGroup>
       </Container>
-
-
     </div>
   )
 }
 
-export default Product
+export default ProductPage

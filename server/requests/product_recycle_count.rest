@@ -1,0 +1,2 @@
+get http://localhost:3001/api/recycle/?productID=tuotteen-id
+Authorization: bearer lisää-token-tähän
