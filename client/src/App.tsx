@@ -13,6 +13,7 @@ import RegisterForm from './components/RegisterForm'
 import ProductFilterForm from './components/FrontPage'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import RecycleStatistics from './components/RecycleStatistics'
 import { useStore } from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles.css'
@@ -63,6 +64,9 @@ const App = () => {
         </Route>
         <Route path="/searchResults">
           <ProductList products={filteredProducts} setFilteredProducts={setFilteredProducts} />
+        </Route>
+        <Route path="/statistics">
+          <RecycleStatistics />
         </Route>
         <Route path="/">
           <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />
