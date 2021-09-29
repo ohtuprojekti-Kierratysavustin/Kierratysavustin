@@ -40,7 +40,7 @@ export const useStore = create<{
         clearTimer: clearTimeout(state.timer),
         notification: { message, condition },
         timer: setTimeout(() => {
-          state.clearNotification() }, 10000)
+          state.clearNotification() }, 5000)
       })),
       updateProduct: (param) => set(state => ({
         ...state,
