@@ -22,13 +22,13 @@ const RecycleForm: React.FC<Props> = ( { product }  ) => {
   const handleRecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     await recycleService.recycle({ productID: product.id, amount: 1 }).then(() => { setRecycles(recycles + 1) })
-      .catch((error) => {console.log(error)})
+      .catch((error) => {console.log(error.response)})
   }
 
   const handleUnrecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     await recycleService.recycle({ productID: product.id, amount: -1 }).then(() => { setRecycles(recycles - 1) })
-      .catch((error) => {console.log(error)})
+      .catch((error) => {console.log(error.response)})
   }
 
   return (

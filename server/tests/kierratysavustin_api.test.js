@@ -7,6 +7,7 @@ const Product = require('../models/product')
 const User = require('../models/user')
 const Instruction = require('../models/instruction')
 const helper = require('./test_helper')
+const STATUS_CODES = require('http-status')
 
 let token = undefined
 let user = undefined
@@ -108,7 +109,7 @@ test('Product cannot be added if not logged in', async () => {
     name: 'maito',
   }
   const response = await helper.addNewProduct(newProduct, 'NO_TOKEN')
-  expect(response.status).toBe(401)
+  expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
   const response2 = await helper.getProducts()
   expect(response2.body).toHaveLength(helper.productsData.length)
 })
@@ -165,7 +166,7 @@ describe('One account already in database', () => {
       password: 'adminn',
     }
     const response = await helper.addNewUser(newUser)
-    expect(response.status).toBe(201)
+    expect(response.status).toBe(STATUS_CODES.CREATED)
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
@@ -205,7 +206,7 @@ describe('One account already in database', () => {
     test('Product can be removed by creator', async () => {
       const newProduct = await helper.addNewProduct({ name: 'litran mitta' }, token)
       let response = await helper.removeProduct(newProduct.body.id, token)
-      expect(response.status).toBe(200)
+      expect(response.status).toBe(STATUS_CODES.OK)
       let allProducts = await helper.getProducts()
 
       allProducts.body.map(p => expect(p.name).not.toContain(newProduct.body.name))
@@ -216,7 +217,7 @@ describe('One account already in database', () => {
       let productId = allProducts.body[0].id
 
       let response = await helper.removeProduct(productId, token)
-      expect(response.status).toBe(403)
+      expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
 
       const productsAfter = await helper.getProducts()
       expect(productsAfter.body).toHaveLength(helper.productsData.length)
@@ -229,7 +230,7 @@ describe('One account already in database', () => {
       const product = allProducts.body[0]
 
       const response = await helper.addFavourite(product.id, token)
-      expect(response.status).toBe(201)
+      expect(response.status).toBe(STATUS_CODES.CREATED)
 
       const decodedToken = jwt.verify(token, config.SECRET)
       expect(response.body.users[0]).toBe(decodedToken.id)
@@ -241,7 +242,7 @@ describe('One account already in database', () => {
 
       // Lisätään
       const response = await helper.addFavourite(product.id, token)
-      expect(response.status).toBe(201)
+      expect(response.status).toBe(STATUS_CODES.CREATED)
 
 
       const decodedToken = jwt.verify(token, config.SECRET)
@@ -250,7 +251,7 @@ describe('One account already in database', () => {
       // Lisätään poistetaan
 
       const responseB = await helper.removeFavourite(product.id, token)
-      expect(responseB.status).toBe(201)
+      expect(responseB.status).toBe(STATUS_CODES.CREATED)
 
 
       expect(responseB.body.users[0]).not.toBe(decodedToken.id)
@@ -433,10 +434,10 @@ describe('One account already in database', () => {
         expect(response.body.count).toBe(0)
       })
 
-      test('recycling nonexistent product responds with product 404', async () => {
+      test('recycling nonexistent product responds with product not found', async () => {
 
         const response = await helper.recycleProductOnce('111111111111111111111111', token)
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
       })
 
       test('recycling without authorization not possible', async () => {
@@ -444,14 +445,14 @@ describe('One account already in database', () => {
         const product = allProducts.body[0]
 
         const response = await helper.getProductRecycleStat(product.id, 'INVALID_TOKEN')
-        expect(response.status).toBe(401)
+        expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
 
       })
 
-      test('recycling stat of nonexistent product responds with product 404', async () => {
+      test('recycling stat of nonexistent product responds with product not found', async () => {
 
         const response = await helper.getProductRecycleStat('111111111111111111111111', token)
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
 
       })
 
@@ -460,7 +461,7 @@ describe('One account already in database', () => {
         const product = allProducts.body[0]
 
         const response = await helper.getProductRecycleStat(product.id, 'INVALID_TOKEN')
-        expect(response.status).toBe(401)
+        expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
       })
     })
 
@@ -494,7 +495,7 @@ describe('One account already in database', () => {
 
         //ensimmäinen käyttäjä yrittää poistaa ohjeen
         let response = await helper.deleteInstruction(product.id, token, instruction.body.id)
-        expect(response.status).toBe(403)
+        expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
 
         //tarkastetaan, että ohje ei ole poistunut
         const instructionsAfter = await helper.getInstructionsOfProduct(product.id)
@@ -508,7 +509,7 @@ describe('One account already in database', () => {
 
         //poistetaan ohje
         let response = await helper.deleteInstruction(product.id, token, instruction.body.id)
-        expect(response.status).toBe(201)
+        expect(response.status).toBe(STATUS_CODES.CREATED)
 
         //tarkastetaan, että ohje on poistettu 
         const instructionsAfter = await helper.getInstructionsOfProduct(product.id)

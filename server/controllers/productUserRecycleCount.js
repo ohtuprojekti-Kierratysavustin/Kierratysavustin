@@ -1,25 +1,22 @@
 const productUserRecycleCountRouter = require('express').Router()
 const Product = require('../models/product')
 const ProductUserRecycleCount = require('../models/productUserRecycleCount')
-
 const authUtils = require('../utils/auth')
+const STATUS_CODES = require('http-status')
+const { ResourceNotFoundException, ParameterValidationException, ValidationErrorObject, buildValidationErrorObjectFromMongooseValidationError } = require('../error/exceptions')
 
-productUserRecycleCountRouter.post('/', async (req, res) => {
-  let user
+productUserRecycleCountRouter.post('/', async (req, res, next) => {
   try {
-    user = await authUtils.authenticateRequestReturnUser(req)
-  } catch (e) {
-    res.setHeader('WWW-Authenticate', 'Bearer')
-    return res.status(401).json({ error: e.message })
-  }
-  try {
+    let user = await authUtils.authenticateRequestReturnUser(req).catch((error) => { throw error })
+
     const body = req.body
 
     const product = await Product.findById(body.productID)
     if (!product) {
-      return res.status(404).json({ error: 'Product not found!' })
+      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + body.productID + ' ei löytynyt!')
     }
 
+    ProductUserRecycleCount.validate
     let productUserRecycleCount = await ProductUserRecycleCount.findOne({ userID: user.id, productID: product.id })
     if (!productUserRecycleCount) {
       productUserRecycleCount = new ProductUserRecycleCount({
@@ -29,49 +26,67 @@ productUserRecycleCountRouter.post('/', async (req, res) => {
     }
 
     productUserRecycleCount.count += body.amount
+
     if (productUserRecycleCount.count < 0) {
-      return res.status(401).json({ error: 'Product recycled count can not be smaller than 0!' })
+      throw new ParameterValidationException(
+        'Tuotteen kierrätystilasto ei voi olla pienempi kuin 0!',
+        // new ValidationErrorObject(
+        //   'amount',
+        //   'ValidationError', 'amount should be bigger than' + (productUserRecycleCount.count - body.amount),
+        //   body.amount,
+        //   '> ' + (productUserRecycleCount.count - body.amount),
+        //   typeof body.amount,
+        //   ProductUserRecycleCount.schema.paths.count.instance
+        // )
+      )
     }
+    productUserRecycleCount.validate
 
     await productUserRecycleCount.save()
+      .then(() => {
+        return res.status(STATUS_CODES.CREATED).json({ message: 'Tuotteen: "' + product.name + '" kierrätystilasto päivitetty!' })
+      })
+      .catch((error) => {
+        let validationErrorObject = buildValidationErrorObjectFromMongooseValidationError(error)
+        throw new ParameterValidationException('Syötteen validointi epäonnistui!', validationErrorObject)
+      })
   } catch (error) {
-    console.log('Unexpected Error updating product recycle count :>> ', error)
-    return res.status(400).json({ error: 'An unexpected error happened!' })
+    // To the errorhandler in app.js
+    next(error)
   }
-
-  res.status(201).send('Product recycle statistics updated!')
 })
 
-productUserRecycleCountRouter.get('/', async (req, res) => {
-  let user
+productUserRecycleCountRouter.get('/', async (req, res, next) => {
   try {
-    user = await authUtils.authenticateRequestReturnUser(req)
-  } catch (e) {
-    res.setHeader('WWW-Authenticate', 'Bearer')
-    return res.status(401).json({ error: e.message })
-  }
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
-  try {
     const product = await Product.findById(req.query.productID)
+      .catch((error) => {
+        let validationErrorObject = buildValidationErrorObjectFromMongooseValidationError(error)
+        throw new ParameterValidationException('Syötteen validointi epäonnistui!', validationErrorObject)
+      })
     if (!product) {
-      return res.status(404).json({ error: 'Product not found!' })
+      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.query.productID + ' ei löytynyt!')
     }
 
     const productUserRecycleCount = await ProductUserRecycleCount.findOne({ userID: user.id, productID: product.id })
+      .catch((error) => {
+        let validationErrorObject = buildValidationErrorObjectFromMongooseValidationError(error)
+        throw new ParameterValidationException('Syötteen validointi epäonnistui!', validationErrorObject)
+      })
     if (!productUserRecycleCount) {
-      return res.status(200).json({
+      return res.status(STATUS_CODES.OK).json({
         productID: product.id,
         count: 0
       })
     }
 
-    return res.status(200).json({
+    return res.status(STATUS_CODES.OK).json({
       productID: product.id,
       count: productUserRecycleCount.count
     })
   } catch (error) {
-    console.log('Unexpected Error getting product recycle count :>> ', error)
-    return res.status(400).json({ error: 'An unexpected error happened!' })
+    next(error)
   }
 })
 
