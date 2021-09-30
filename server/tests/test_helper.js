@@ -4,7 +4,7 @@ const api = supertest(app)
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 const User = require('../models/user')
-const ProductUserRecycleCount = require('../models/productUserRecycleCount')
+const ProductCounter = require('../models/productCounter')
 
 const productsData = [
   { name: 'Mustamakkarakastike pullo' },
@@ -17,7 +17,7 @@ const clearDatabase = async () => {
   await Product.deleteMany({})
   await Instruction.deleteMany({})
   await User.deleteMany({})
-  await ProductUserRecycleCount.deleteMany({})
+  await ProductCounter.deleteMany({})
   console.log('Database reset!')
 }
 

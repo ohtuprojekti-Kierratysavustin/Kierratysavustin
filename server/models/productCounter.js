@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
-const productUserRecycleCountSchema = new mongoose.Schema({
+const productCounterSchema = new mongoose.Schema({
   userID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -12,19 +12,24 @@ const productUserRecycleCountSchema = new mongoose.Schema({
     ref: 'Product',
     required: true
   },
-  count: {
+  recycleCount: {
     type: Number,
     min: 0,
     default: 0
-  }
+  },
+  purchaseCount: {
+    type: Number,
+    min: 0,
+    default: 0
+  },
 })
 
-productUserRecycleCountSchema.plugin(uniqueValidator)
-productUserRecycleCountSchema.set('toJSON', {
+productCounterSchema.plugin(uniqueValidator)
+productCounterSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     delete returnedObject._id
     delete returnedObject.__v
   },
 })
 
-module.exports = mongoose.model('ProductUserRecycleCount', productUserRecycleCountSchema)
+module.exports = mongoose.model('ProductUserRecycleCount', productCounterSchema)

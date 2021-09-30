@@ -1,10 +1,10 @@
-const productUserRecycleCountRouter = require('express').Router()
+const productCounterRouter = require('express').Router()
 const Product = require('../models/product')
-const ProductUserRecycleCount = require('../models/productUserRecycleCount')
+const ProductCounter = require('../models/productCounter')
 
 const authUtils = require('../utils/auth')
 
-productUserRecycleCountRouter.post('/', async (req, res) => {
+productCounterRouter.post('/', async (req, res) => {
   let user
   try {
     user = await authUtils.authenticateRequestReturnUser(req)
@@ -20,20 +20,20 @@ productUserRecycleCountRouter.post('/', async (req, res) => {
       return res.status(404).json({ error: 'Product not found!' })
     }
 
-    let productUserRecycleCount = await ProductUserRecycleCount.findOne({ userID: user.id, productID: product.id })
-    if (!productUserRecycleCount) {
-      productUserRecycleCount = new ProductUserRecycleCount({
+    let productCounter = await ProductCounter.findOne({ userID: user.id, productID: product.id })
+    if (!productCounter) {
+      productCounter = new ProductCounter({
         userID: user.id,
         productID: product.id
       })
     }
 
-    productUserRecycleCount.count += body.amount
-    if (productUserRecycleCount.count < 0) {
+    productCounter.recycleCount += body.amount
+    if (productCounter.recycleCount < 0) {
       return res.status(401).json({ error: 'Product recycled count can not be smaller than 0!' })
     }
 
-    await productUserRecycleCount.save()
+    await productCounter.save()
   } catch (error) {
     console.log('Unexpected Error updating product recycle count :>> ', error)
     return res.status(400).json({ error: 'An unexpected error happened!' })
@@ -42,7 +42,7 @@ productUserRecycleCountRouter.post('/', async (req, res) => {
   res.status(201).send('Product recycle statistics updated!')
 })
 
-productUserRecycleCountRouter.get('/', async (req, res) => {
+productCounterRouter.get('/', async (req, res) => {
   let user
   try {
     user = await authUtils.authenticateRequestReturnUser(req)
@@ -57,8 +57,8 @@ productUserRecycleCountRouter.get('/', async (req, res) => {
       return res.status(404).json({ error: 'Product not found!' })
     }
 
-    const productUserRecycleCount = await ProductUserRecycleCount.findOne({ userID: user.id, productID: product.id })
-    if (!productUserRecycleCount) {
+    const productCounter = await ProductCounter.findOne({ userID: user.id, productID: product.id })
+    if (!productCounter) {
       return res.status(200).json({
         productID: product.id,
         count: 0
@@ -67,7 +67,7 @@ productUserRecycleCountRouter.get('/', async (req, res) => {
 
     return res.status(200).json({
       productID: product.id,
-      count: productUserRecycleCount.count
+      count: productCounter.recycleCount
     })
   } catch (error) {
     console.log('Unexpected Error getting product recycle count :>> ', error)
@@ -76,4 +76,4 @@ productUserRecycleCountRouter.get('/', async (req, res) => {
 })
 
 
-module.exports = productUserRecycleCountRouter
+module.exports = productCounterRouter
