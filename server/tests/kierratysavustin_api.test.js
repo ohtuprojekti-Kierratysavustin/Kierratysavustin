@@ -389,7 +389,7 @@ describe('One account already in database', () => {
         await helper.recycleProductOnce(product.id, token)
         
         const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.query.recycleCount).toBe(1)
+        expect(response.body.recycleCount).toBe(1)
 
       })
 
@@ -403,7 +403,7 @@ describe('One account already in database', () => {
         await helper.recycleProductOnce(product.id, token)
 
         const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.query.recycleCount).toBe(4)
+        expect(response.body.recycleCount).toBe(4)
       })
 
       test('user can unrecycle an existing product that has been recycled', async () => {
@@ -417,7 +417,7 @@ describe('One account already in database', () => {
         await helper.unrecycleProductOnce(product.id, token)
 
         const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.query.recycleCount).toBe(1)
+        expect(response.body.recycleCount).toBe(1)
       })
 
       test('user can not set product recycle stat to negative', async () => {
@@ -430,7 +430,7 @@ describe('One account already in database', () => {
         await helper.unrecycleProductOnce(product.id, token)
 
         const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.query.recycleCount).toBe(0)
+        expect(response.body.recycleCount).toBe(0)
       })
 
       test('recycling nonexistent product responds with product 404', async () => {

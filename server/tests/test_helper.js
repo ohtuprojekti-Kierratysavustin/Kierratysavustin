@@ -18,7 +18,7 @@ const clearDatabase = async () => {
   await Instruction.deleteMany({})
   await User.deleteMany({})
   await ProductCounter.deleteMany({})
-  console.log('Database reset!')
+  // console.log('Database reset!')
 }
 
 const usersInDb = async () => {
@@ -188,7 +188,7 @@ const recycleProductFreeAmount = async (productID, amount, token) => {
 }
 
 const getProductRecycleStat = async (productID, token) => {
-  const result = await api.get('/api/recycle/?productID=' + productID)
+  const result = await api.get('/api/recycle/?productID=' + productID + '&type=recycle')
     .set('Authorization', `bearer ${token}`)
   return result
 }
