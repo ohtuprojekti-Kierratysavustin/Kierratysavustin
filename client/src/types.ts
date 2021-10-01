@@ -23,3 +23,8 @@ export type User = {
   dislikes: number[],
   products: number[]
 }
+
+export type RecyclingStat = {
+  product: Product,
+  amount: number
+}
