@@ -1,2 +1,7 @@
-get http://localhost:3001/api/recycle/?productID=tuotteen-id
-Authorization: bearer lisää-token-tähän
+get http://localhost:3001/api/recycle/
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlcnVuYSIsImlkIjoiNjE1MWE2OWJmMWJjZTE0NDBjZTE3NmUxIiwiaWF0IjoxNjMzMDczNjM5fQ.lrrxEhenmuNTyxEzChREhqnf4-OA1xT4z576ERRfes4
+
+{
+    "productID": "6151a6c4f1bce1440ce176e4",
+    "type": "recycle"
+}

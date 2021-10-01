@@ -4,12 +4,12 @@ const baseUrl = `${process.env.PUBLIC_URL}/api/recycle`
 
 //TODO Poikkeusten hallinta!?
 
-const recycle = async (newObject: { productID: number, amount: number }) => {
+const recycle = async (newObject: { productID: number, amount: number, type: String }) => {
   const response = axios.post(baseUrl, newObject, tokenService.getConfig())
   return response.then(response => response.data)
 }
 
-const getProductRecycleStats = (params: { productID: number }) => {
+const getProductStats = (params: { productID: number, type: String }) => {
   let config = {
     headers: tokenService.getConfig().headers,
     params: params
@@ -19,4 +19,4 @@ const getProductRecycleStats = (params: { productID: number }) => {
 }
 
 
-export default { recycle, getProductRecycleStats }
+export default { recycle, getProductStats }

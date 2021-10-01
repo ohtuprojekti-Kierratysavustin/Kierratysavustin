@@ -147,8 +147,9 @@ const unDisLikeInstruction = async (instructionId, token) => {
 
 const recycleProductOnce = async (productID, token) => {
   const content = {
-    'productID': productID,
-    'amount': 1
+    productID: productID,
+    amount: 1,
+    type: 'recycle'
   }
   const result = await api
     .post('/api/recycle/')
@@ -161,7 +162,8 @@ const recycleProductOnce = async (productID, token) => {
 const unrecycleProductOnce = async (productID, token) => {
   const content = {
     productID: productID,
-    amount: -1
+    amount: -1,
+    type: 'recycle'
   }
   const result = await api
     .post('/api/recycle/')
@@ -174,7 +176,8 @@ const unrecycleProductOnce = async (productID, token) => {
 const recycleProductFreeAmount = async (productID, amount, token) => {
   const content = {
     productID: productID,
-    amount: amount
+    amount: amount,
+    type: 'recycle'
   }
   const result = await api
     .post('/api/recycle/')

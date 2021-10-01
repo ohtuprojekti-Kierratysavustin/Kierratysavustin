@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const supertest = require('supertest')
+//const supertest = require('supertest')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -17,7 +17,7 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
-  console.log('Starting to initialize test!')
+  //console.log('Starting to initialize test!')
   await helper.clearDatabase()
 
   let userObject = new User({
@@ -32,14 +32,14 @@ beforeEach(async () => {
   })
   productObject.instructions = productObject.instructions.concat(instructionObject.id)
   await productObject.save()
-  console.log('Product 1 initialized for test', productObject)
+  //console.log('Product 1 initialized for test', productObject)
   await instructionObject.save()
-  console.log('Instruction 1 initialized for test', instructionObject)
+  //console.log('Instruction 1 initialized for test', instructionObject)
 
 
   productObject = new Product({ name: helper.productsData[1].name, user: user.id })
   await productObject.save()
-  console.log('Product 1 initialized for test', productObject)
+  //console.log('Product 1 initialized for test', productObject)
 })
 
 test('all products are returned', async () => {
@@ -156,7 +156,7 @@ describe('One account already in database', () => {
     const user = new User({ username: 'root', passwordHash })
 
     await user.save()
-    console.log('User initialized for test: ', user)
+    //console.log('User initialized for test: ', user)
   })
   test('account can be made with new username', async () => {
     const usersAtStart = await helper.usersInDb()
@@ -188,7 +188,7 @@ describe('One account already in database', () => {
         password: 'salasana',
       }
       token = await helper.getToken(user)
-      console.log('Token initalized for test: ', token)
+      //console.log('Token initalized for test: ', token)
     })
 
     test('Product can be added', async () => {
@@ -387,9 +387,9 @@ describe('One account already in database', () => {
         const product = allProducts.body[0]
 
         await helper.recycleProductOnce(product.id, token)
-
+        
         const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.body.count).toBe(1)
+        expect(response.query.recycleCount).toBe(1)
 
       })
 
@@ -403,7 +403,7 @@ describe('One account already in database', () => {
         await helper.recycleProductOnce(product.id, token)
 
         const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.body.count).toBe(4)
+        expect(response.query.recycleCount).toBe(4)
       })
 
       test('user can unrecycle an existing product that has been recycled', async () => {
@@ -417,7 +417,7 @@ describe('One account already in database', () => {
         await helper.unrecycleProductOnce(product.id, token)
 
         const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.body.count).toBe(1)
+        expect(response.query.recycleCount).toBe(1)
       })
 
       test('user can not set product recycle stat to negative', async () => {
@@ -430,7 +430,7 @@ describe('One account already in database', () => {
         await helper.unrecycleProductOnce(product.id, token)
 
         const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.body.count).toBe(0)
+        expect(response.query.recycleCount).toBe(0)
       })
 
       test('recycling nonexistent product responds with product 404', async () => {

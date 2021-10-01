@@ -6,14 +6,14 @@ const cors = require('cors')
 const productRouter = require('./controllers/products')
 const userRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
-const productUserRecycleCountRouter = require('./controllers/productCounter')
+const productCounterRouter = require('./controllers/productCounter')
 const path = require('path')
 app.use(cors())
 app.use(express.json())
 app.use('/api/products', productRouter)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
-app.use('/api/recycle', productUserRecycleCountRouter)
+app.use('/api/recycle', productCounterRouter)
 
 
 if (process.env.NODE_ENV === 'test') {

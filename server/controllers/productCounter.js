@@ -28,18 +28,30 @@ productCounterRouter.post('/', async (req, res) => {
       })
     }
 
-    productCounter.recycleCount += body.amount
-    if (productCounter.recycleCount < 0) {
-      return res.status(401).json({ error: 'Product recycled count can not be smaller than 0!' })
+    if (body.type === 'recycle') {
+      productCounter.recycleCount += body.amount
+      if (productCounter.recycleCount < 0) {
+        return res.status(401).json({ error: 'Product recycled count can not be smaller than 0!' })
+      }
+    } else if (body.type === 'purchase') {
+      productCounter.purchaseCount += body.amount
+      if (productCounter.purchaseCount < 0) {
+        return res.status(401).json({ error: 'Product purchase count can not be smaller than 0!' })
+      }
     }
-
+    
     await productCounter.save()
   } catch (error) {
-    console.log('Unexpected Error updating product recycle count :>> ', error)
+    console.log('Unexpected Error updating product recycle or purchase count :>> ', error)
     return res.status(400).json({ error: 'An unexpected error happened!' })
   }
 
-  res.status(201).send('Product recycle statistics updated!')
+  if (req.body.type === 'recycle') {
+    res.status(201).send('Product recycle count updated!')
+  } else if (req.body.type === 'purchase') {
+    res.status(201).send('Product purchase count updated!')
+  }
+  
 })
 
 productCounterRouter.get('/', async (req, res) => {
@@ -61,16 +73,25 @@ productCounterRouter.get('/', async (req, res) => {
     if (!productCounter) {
       return res.status(200).json({
         productID: product.id,
-        count: 0
+        recycleCount: 0,
+        purchaseCount: 0
       })
     }
 
-    return res.status(200).json({
-      productID: product.id,
-      count: productCounter.recycleCount
-    })
+    if (req.query.type === 'recycle') {
+      return res.status(200).json({
+        productID: product.id,
+        recycleCount: productCounter.recycleCount
+      })
+    } else if (req.query.type === 'purchase') {
+      return res.status(200).json({
+        productID: product.id,
+        purchaceCount: productCounter.purchaseCount
+      })
+    }
+    
   } catch (error) {
-    console.log('Unexpected Error getting product recycle count :>> ', error)
+    console.log('Unexpected Error getting product recycle or purchase count :>> ', error)
     return res.status(400).json({ error: 'An unexpected error happened!' })
   }
 })
