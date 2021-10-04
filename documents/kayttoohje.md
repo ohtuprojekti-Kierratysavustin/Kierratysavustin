@@ -49,6 +49,12 @@ Kirjautumisen jälkeen on mahdollista lisätä tuotteita ylävalikon kohdasta
 
 ![Tuotteen nimen lisääminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/689991765b31e3ab7aadad1da46f17e2e842d5f9/documents/kuvat/kierratysavustin-lisaa-tuote.png)
 
+## Tuotteen poistaminen (Kirjautuneena)
+
+Kirjautunut käyttäjä voi poistaa lisäämiään tuotteita klikkaamalla tuotelistauksessa tai tuotenäkymässä näkyvää "Poista"-nappia.
+
+![Tuotteen poistaminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/main/documents/kuvat/tuotteen-poistaminen.png)
+
 ## Kierrätysohjeen lisääminen (Kirjautuneena)
 
 Kirjautumisen jälkeen on mahdollista lisätä tuotteille kierrätysohjeita. 
