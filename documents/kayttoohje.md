@@ -51,9 +51,9 @@ Kirjautumisen jälkeen on mahdollista lisätä tuotteita ylävalikon kohdasta
 
 ## Tuotteen poistaminen (Kirjautuneena)
 
-Kirjautunut käyttäjä voi poistaa lisäämiään tuotteita klikkaamalla tuotelistauksessa tai tuotenäkymässä näkyvää "Poista"-nappia.
+Kirjautunut käyttäjä voi poistaa lisäämiään tuotteita klikkaamalla tuotelistauksessa tai tuotenäkymässä näkyvää "Poista tuote"-nappia.
 
-![Tuotteen poistaminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/main/documents/kuvat/tuotteen-poistaminen.png)
+![Tuotteen poistaminen](./kuvat/tuotteen-poistaminen.png)
 
 ## Kierrätysohjeen lisääminen (Kirjautuneena)
 
