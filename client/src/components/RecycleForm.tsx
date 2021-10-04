@@ -11,7 +11,7 @@ type Props = {
 
 const RecycleForm: React.FC<Props> = ({ product }) => {
   const [recycles, setRecycles] = useState<number>(0)
-  const { setNotification } = useStore()
+  const { setNotification, clearNotification } = useStore()
 
   useEffect(() => {
     const getRecycles = async () => {
@@ -25,6 +25,7 @@ const RecycleForm: React.FC<Props> = ({ product }) => {
 
   const handleRecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
+    clearNotification()
     await recycleService.recycle({ productID: product.id, amount: 1 }).then(() => { setRecycles(recycles + 1) })
       .catch((error) => {
         setNotification(error.response.data.message, 'error')

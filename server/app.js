@@ -9,6 +9,7 @@ const loginRouter = require('./controllers/login')
 const productUserRecycleCountRouter = require('./controllers/productUserRecycleCount')
 const path = require('path')
 const { devErrorHandler, productionErrorHandler } = require('./error/errorHandler')
+
 app.use(cors())
 app.use(express.json())
 app.use('/api/products', productRouter)

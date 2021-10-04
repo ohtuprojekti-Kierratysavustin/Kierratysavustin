@@ -1,25 +1,24 @@
 const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator')
 
 const productUserRecycleCountSchema = new mongoose.Schema({
   userID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: [true, 'Käyttäjän ID vaaditaan!']
   },
   productID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
-    required: true
+    required: [true, 'Tuotteen ID vaaditaan!']
   },
   count: {
     type: Number,
-    min: 0,
-    default: 0
+    min: [0, 'Tuotteen kierrätystilasto ei voi olla pienempi kuin 0!'],
+    default: 0,
+    cast: 'Kierrätystilaston on oltava numeerinen!'
   }
 })
 
-productUserRecycleCountSchema.plugin(uniqueValidator)
 productUserRecycleCountSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     delete returnedObject._id

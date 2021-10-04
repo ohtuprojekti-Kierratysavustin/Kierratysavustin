@@ -9,7 +9,7 @@ type Props = {
 }
 
 const FavoritesForm: React.FC<Props> = ({ product }) => {
-  const { favorites, setFavorites } = useStore()
+  const { favorites, setFavorites, setNotification } = useStore()
   const [favorite, setFavorite] = useState(favorites.some(p => p.id === product.id))
   useEffect(() => { setFavorite(favorites.some(p => p.id === product.id))})
   const buttonStyle = favorite
@@ -20,11 +20,17 @@ const FavoritesForm: React.FC<Props> = ({ product }) => {
     event.preventDefault()
     if(favorite === true){
       userService.removeFavorite(product)
-        .then(product => setFavorites(favorites.filter(p => p.id !== product.id))).catch((error) => {console.log(error)})
+        .then(response => setFavorites(favorites.filter(p => p.id !== response.resource.id)))
+        .catch((error) => {
+          setNotification((error.response.data.message ? error.response.data.message : 'Poistettaessa tuotetta suosikeista tapahtui odottamaton virhe!'), 'error')
+        })
       setFavorite(false)
     } else {
       userService.addFavorite(product)
-        .then(p => setFavorites(favorites.concat(p))).catch((error) => {console.log(error)})
+        .then(response => setFavorites(favorites.concat(response.resource)))
+        .catch((error) => {
+          setNotification((error.response.data.message ? error.response.data.message : 'Lisättäessä tuotetta suosikkeihin tapahtui odottamaton virhe!'), 'error')
+        })
       setFavorite(true)
     }
   }

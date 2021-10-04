@@ -87,16 +87,15 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
     const information = values.instructionText
     const info = { information }
     productService.createInstruction(props.product.id, info)
-      .then(i => {
-        props.product.instructions.push(i)
+      .then(response => {
+        props.product.instructions.push(response.resource)
         props.product.instructions.sort((a, b) => b.score - a.score)
         updateProduct(props.product)
         values.instructionText = ''
         props.handleClose()
-        setNotification('Ohje lisätty!', 'success')
-      }).catch(e => {
-        console.log(e)
-        notify('Ohjeen lisääminen ei onnistunut', 'error')
+        setNotification(response.message, 'success')
+      }).catch((error) => {
+        notify((error.response.data.message ? error.response.data.message : 'Ohjetta lisättäessä tapahtui odottamaton virhe!'), 'error')
       })
   }
   return (

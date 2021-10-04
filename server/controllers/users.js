@@ -5,24 +5,24 @@ const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')
+const { restructureCastAndValidationErrorsFromMongoose, ResourceNotFoundException } = require('../error/exceptions')
 
 userRouter.post('/', async (req, res, next) => {
   try {
-    try {
-      const body = req.body
-      const saltRounds = 10
-      const passwordHash = await bcrypt.hash(body.password, saltRounds)
-      const user = new User({
-        username: body.username,
-        passwordHash,
-      })
-      const savedUser = await user.save()
-      res.status(STATUS_CODES.CREATED).json(savedUser)
-    } catch (error) {
-      return res.status(STATUS_CODES.BAD_REQUEST).send('already in use')
-    }
+    const body = req.body
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(body.password, saltRounds)
+    const user = new User({
+      username: body.username,
+      passwordHash,
+    })
+
+    const savedUser = await user.save()
+    res.status(STATUS_CODES.CREATED).json({ message: 'Rekisteröityminen onnistui!', resource: savedUser })
   } catch (error) {
-    next(error)
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 
@@ -32,11 +32,11 @@ userRouter.post('/likes/:id/', async (req, res, next) => {
 
     const instruction = await Instruction.findById(req.params.id)
     if (!instruction) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'No instruction' })
+      throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
 
     if (user.likes.includes(instruction.id)) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'Instruction already in users likes' })
+      throw new ResourceNotFoundException('Ohje on jo tykätyissä!')
     }
 
     if (user.dislikes.includes(instruction.id)) {
@@ -46,11 +46,15 @@ userRouter.post('/likes/:id/', async (req, res, next) => {
 
     user.likes = user.likes.concat(instruction.id)
     instruction.score = instruction.score + 1
+
+    // ToDO Transaktio
     await instruction.save()
     await user.save()
-    res.status(STATUS_CODES.CREATED).json(instruction)
+    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta tykätty!', resource: instruction })
   } catch (error) {
-    next(error)
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 
@@ -60,36 +64,34 @@ userRouter.put('/likes/:id', async (req, res, next) => {
 
     const instruction = await Instruction.findById(req.params.id)
     if (!instruction) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'No instruction' })
+      throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
 
     if (!user.likes.includes(instruction.id)) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'Instruction not in users likes' })
+      throw new ResourceNotFoundException('Ohjetta ei löytynyt tykätyistä!')
     }
 
     user.likes = user.likes.pull({ _id: instruction.id })
     instruction.score = instruction.score - 1
     await instruction.save()
     await user.save()
-    res.status(STATUS_CODES.CREATED).json(instruction)
+    res.status(STATUS_CODES.OK).json({ message: 'Ohjeen tykkäys peruttu!', resource: instruction })
   } catch (error) {
-    next(error)
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 
 userRouter.get('/likes/', async (req, res, next) => {
   try {
-    let user
-    try {
-      user = await authUtils.authenticateRequestReturnUser(req)
-    } catch (e) {
-      res.setHeader('WWW-Authenticate', 'Bearer')
-      return res.status(STATUS_CODES.UNAUTHORIZED).json({ error: e.message })
-    }
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
-    return res.status(STATUS_CODES.CREATED).json(user.likes)
+    return res.status(STATUS_CODES.OK).json(user.likes)
   } catch (error) {
-    next(error)
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 
@@ -99,11 +101,11 @@ userRouter.post('/dislikes/:id/', async (req, res, next) => {
 
     const instruction = await Instruction.findById(req.params.id)
     if (!instruction) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'No instruction' })
+      throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
 
     if (user.dislikes.includes(instruction.id)) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'Instruction already in users dislikes' })
+      throw new ResourceNotFoundException('Ohjetta on jo ei-tykätyissä!')
     }
 
     if (user.likes.includes(instruction.id)) {
@@ -115,9 +117,11 @@ userRouter.post('/dislikes/:id/', async (req, res, next) => {
     instruction.score = instruction.score - 1
     await instruction.save()
     await user.save()
-    res.status(STATUS_CODES.CREATED).json(instruction)
+    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta ei-tykätty!', resource: instruction })
   } catch (error) {
-    next(error)
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 
@@ -127,20 +131,22 @@ userRouter.put('/dislikes/:id', async (req, res, next) => {
 
     const instruction = await Instruction.findById(req.params.id)
     if (!instruction) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'No instruction' })
+      throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
 
     if (!user.dislikes.includes(instruction.id)) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'Instruction not in users dislikes' })
+      throw new ResourceNotFoundException('Ohjetta ei löytynyt ei-tykätyistä!')
     }
 
     user.dislikes = user.dislikes.pull({ _id: instruction.id })
     instruction.score = instruction.score + 1
     await instruction.save()
     await user.save()
-    res.status(STATUS_CODES.CREATED).json(instruction)
+    res.status(STATUS_CODES.OK).json({ message: 'Ohjeen ei-tykkäys peruttu!', resource: instruction })
   } catch (error) {
-    next(error)
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 
@@ -148,9 +154,11 @@ userRouter.get('/dislikes/', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
-    return res.status(STATUS_CODES.CREATED).json(user.dislikes)
+    return res.status(STATUS_CODES.OK).json(user.dislikes)
   } catch (error) {
-    next(error)
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 
@@ -160,20 +168,22 @@ userRouter.post('/products/:id/', async (req, res, next) => {
 
     const product = await Product.findById(req.params.id)
     if (!product) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'No product' })
+      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
 
     if (product.users.indexOf(user.id) > -1) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'Product already in users favourites' })
+      throw new ResourceNotFoundException('Tuote löytyy jo suosikeista!')
     }
 
     product.users = product.users.concat(user.id)
     user.products = user.products.concat(product.id)
     await product.save()
     await user.save()
-    res.status(STATUS_CODES.CREATED).json(product)
+    res.status(STATUS_CODES.OK).json({ message: 'Tuote \'' + product.name + ' \' lisätty suosikkeihin!', resource: product })
   } catch (error) {
-    next(error)
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 
@@ -183,20 +193,22 @@ userRouter.put('/products/:id', async (req, res, next) => {
 
     const product = await Product.findByIdAndUpdate(req.params.id)
     if (!product) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'No product' })
+      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
 
     if (product.users.indexOf(user.id) === -1) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ error: 'Product not in users favourites' })
+      throw new ResourceNotFoundException('Tuote ei löydy suosikeista!')
     }
 
     product.users = product.users.pull({ _id: user.id })
     user.products = user.products.pull({ _id: product.id })
     await product.save()
     await user.save()
-    res.status(STATUS_CODES.CREATED).json(product)
+    res.status(STATUS_CODES.OK).json({ message: 'Tuote \'' + product.name + ' \' poistettu suosikeista!', resource: product })
   } catch (error) {
-    next(error)
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 

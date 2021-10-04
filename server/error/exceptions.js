@@ -6,7 +6,6 @@
 const { KierratysavustinError } = require('./errorBase')
 const STATUS_CODES = require('http-status')
 
-
 // Authorization
 ////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -91,6 +90,46 @@ ResourceNotFoundException.prototype.isOperationalError = true
 ResourceNotFoundException.prototype.defaultHttpStatusCode = STATUS_CODES.NOT_FOUND
 
 /**
+ * Error for if resource trying to be added breaks a uniqueness constraint.
+ * @param {*} message - Should be augmented according to the resource 
+ * @param {*} httpStatusCode 
+ * @class
+ * @augments KierratysavustinError
+ */
+function DuplicateResourceException(message, httpStatusCode) {
+  KierratysavustinError.call(this, message, httpStatusCode)
+}
+
+DuplicateResourceException.prototype = Object.create(KierratysavustinError.prototype)
+DuplicateResourceException.prototype.name = 'DuplicateResourceException'
+DuplicateResourceException.prototype.constructor = DuplicateResourceException
+DuplicateResourceException.prototype.defaultMessage = 'Resurssi on jo olemassa! Ei voida luoda toista samanlaista!'
+DuplicateResourceException.prototype.isOperationalError = true
+DuplicateResourceException.prototype.defaultHttpStatusCode = STATUS_CODES.BAD_REQUEST
+
+/**
+ * Error for if user is unauthorized to resource.
+ * @example 
+ * if (instruction.user.toString() !== user.id.toString()) {
+      throw new UnauthorizedException('Vain ohjeen luoja voi poistaa ohjeen!')
+    }
+ * @param {*} message - Should be augmented according to the resource 
+ * @param {*} httpStatusCode 
+ * @class
+ * @augments KierratysavustinError
+ */
+function UnauthorizedException(message, httpStatusCode) {
+  KierratysavustinError.call(this, message, httpStatusCode)
+}
+
+UnauthorizedException.prototype = Object.create(KierratysavustinError.prototype)
+UnauthorizedException.prototype.name = 'UnauthorizedException'
+UnauthorizedException.prototype.constructor = UnauthorizedException
+UnauthorizedException.prototype.defaultMessage = 'Ei käyttöoikeutta resurssiin!'
+UnauthorizedException.prototype.isOperationalError = true
+UnauthorizedException.prototype.defaultHttpStatusCode = STATUS_CODES.FORBIDDEN
+
+/**
  * To send structured data to a validation exception
  * @param {*} parameter - Name of the invalid parameter
  * @param {*} validationType - Type of the validation error
@@ -115,38 +154,6 @@ ValidationErrorObject.prototype.name = 'ValidationErrorObject'
 ValidationErrorObject.prototype.constructor = ValidationErrorObject
 
 /**
- * 
- * @param {Error} error - Error from mongoose 
- * @returns a new ValidationErrorObject filled with information from the mongoose error
- */
-function buildValidationErrorObjectFromMongooseValidationError(error) {
-  let selectedErrorField
-  let selectedError
-  if (error.name === 'CastError') {
-    selectedErrorField = error.path
-    selectedError = error
-  } else if (error.name === 'ValidationError') {
-    selectedErrorField = Object.keys(error.errors)[0]
-    selectedError = error.errors[selectedErrorField]
-    if (!selectedError) {
-      throw error
-    } 
-  } else {
-    throw error
-  }
-
-  return new ValidationErrorObject(
-    selectedErrorField,
-    selectedError.name,
-    selectedError.message,
-    selectedError.value,
-    null,
-    selectedError.valueType,
-    selectedError.kind
-  )
-}
-
-/**
  * @classdesc Class for different kinds of validationerrors.
  * @param {string} message  - The errormessage, defaults if not given
  * @param {*} validationErrorObject - Object with more specific information about the validation error 
@@ -154,21 +161,21 @@ function buildValidationErrorObjectFromMongooseValidationError(error) {
  * @class
  * @augments KierratysavustinError
  */
-function ParameterValidationException(message, validationErrorObject, httpStatusCode) {
+function ValidationException(message, validationErrorObject, httpStatusCode) {
   if (validationErrorObject && validationErrorObject.name !== 'ValidationErrorObject') {
-    throw new KierratysavustinError('ParameterValidationException object should take in a ValidationErrorObject. Given object of name: "' + validationErrorObject.name + '"')
+    throw new KierratysavustinError('ValidationException object should take in a ValidationErrorObject. Given object of name: "' + validationErrorObject.name + '"')
   }
   KierratysavustinError.call(this, message, httpStatusCode)
   this.validationErrorObject = validationErrorObject
 }
 
-ParameterValidationException.prototype = Object.create(KierratysavustinError.prototype)
-ParameterValidationException.prototype.name = 'ParameterValidationException'
-ParameterValidationException.prototype.constructor = ParameterValidationException
-ParameterValidationException.prototype.defaultMessage = 'Parametrin validointi epäonnistui!' // Good to give a more precise message when thrown
-ParameterValidationException.prototype.isOperationalError = true
-ParameterValidationException.prototype.defaultHttpStatusCode = STATUS_CODES.BAD_REQUEST
-ParameterValidationException.prototype.toUserFriendlyObject = function () {
+ValidationException.prototype = Object.create(KierratysavustinError.prototype)
+ValidationException.prototype.name = 'ValidationException'
+ValidationException.prototype.constructor = ValidationException
+ValidationException.prototype.defaultMessage = 'Parametrin validointi epäonnistui!' // Good to give a more precise message when thrown
+ValidationException.prototype.isOperationalError = true
+ValidationException.prototype.defaultHttpStatusCode = STATUS_CODES.BAD_REQUEST
+ValidationException.prototype.toUserFriendlyObject = function () {
   return {
     error: this.name,
     validationErrorObject: this.validationErrorObject,
@@ -176,5 +183,52 @@ ParameterValidationException.prototype.toUserFriendlyObject = function () {
   }
 }
 
+/**
+ * 
+ * @param {Error} error - Error from mongoose validation
+ * @return a new ValidationException filled with information from the mongoose error,
+ *  or the mongoose as it was givenerror.
+ */
+function restructureCastAndValidationErrorsFromMongoose(error) {
+  let selectedErrorField
+  let selectedError
+  if (error.name === 'CastError') {
+    selectedErrorField = error.path
+    selectedError = error
+    if (error.message.includes('Cast')) {
+      let castErrorMessage = selectedErrorField.replace('_', '') + ' muuntaminen tyyppiin: ' + selectedError.kind + ', epäonnistui!'
+      selectedError.message = castErrorMessage.charAt(0).toUpperCase() + castErrorMessage.slice(1)
+    }
+  } else if (error.name === 'ValidationError') {
+    selectedErrorField = Object.keys(error.errors)[0]
+    selectedError = error.errors[selectedErrorField]
+    if (!selectedError) {
+      return error
+    }
+  } else {
+    return error
+  }
 
-module.exports = { TokenMissingException, InvalidTokenException, NoUserFoundException, ResourceNotFoundException, ParameterValidationException, ValidationErrorObject, buildValidationErrorObjectFromMongooseValidationError }
+  return new ValidationException(
+    selectedError.message,
+    new ValidationErrorObject(
+      selectedErrorField,
+      selectedError.name,
+      selectedError.message,
+      selectedError.value,
+      null,
+      selectedError.valueType,
+      selectedError.kind
+    )
+  )
+}
+
+module.exports = { TokenMissingException, 
+  InvalidTokenException,
+  NoUserFoundException,
+  ResourceNotFoundException,
+  DuplicateResourceException,
+  UnauthorizedException,
+  ValidationException, 
+  ValidationErrorObject,
+  restructureCastAndValidationErrorsFromMongoose }

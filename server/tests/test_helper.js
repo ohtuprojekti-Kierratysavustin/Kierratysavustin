@@ -111,7 +111,7 @@ const likeInstruction = async (instructionId, token) => {
     .post('/api/users/likes/' + instructionId)
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .expect(STATUS_CODES.CREATED)
+    .expect(STATUS_CODES.OK)
     .expect('Content-Type', /application\/json/)
   return result
 }
@@ -121,7 +121,7 @@ const unLikeInstruction = async (instructionId, token) => {
     .put('/api/users/likes/' + instructionId)
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .expect(STATUS_CODES.CREATED)
+    .expect(STATUS_CODES.OK)
     .expect('Content-Type', /application\/json/)
   return result
 }
@@ -131,7 +131,7 @@ const disLikeInstruction = async (instructionId, token) => {
     .post('/api/users/dislikes/' + instructionId)
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .expect(STATUS_CODES.CREATED)
+    .expect(STATUS_CODES.OK)
     .expect('Content-Type', /application\/json/)
   return result
 }
@@ -141,7 +141,7 @@ const unDisLikeInstruction = async (instructionId, token) => {
     .put('/api/users/dislikes/' + instructionId)
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .expect(STATUS_CODES.CREATED)
+    .expect(STATUS_CODES.OK)
     .expect('Content-Type', /application\/json/)
   return result
 }

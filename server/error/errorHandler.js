@@ -20,7 +20,7 @@ const devErrorHandler = function (err, req, res, next) {
     }
     return res.status(err.httpStatusCode).json(err.toUserFriendlyObject())
   } else {
-    next(err)
+    next(err) // To express default errorhandler, which throws the error at the dev
   }
 }
 
