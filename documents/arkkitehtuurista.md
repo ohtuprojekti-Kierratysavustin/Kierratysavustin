@@ -12,13 +12,15 @@ Sillä toiminnalliset virheet halutaan palauttaa aina käyttäjälle selkeässä
 
 Aina kun logiikka sitä vaatii, heitetään jokin näistä määritellyistä virheistä selvällä viestillä. Virhe valuu expressin yliajettuun virheenhallitsijaan, joka tarkastelee virhettä. Jos virhe on toiminnallinen, lähtee vastaus yksinkertaisen virheviestin kera. Jos kyseessä on ei-toiminnallinen virhe (esim. bugi) se ympäristöstä riippuen, joko lähetetään stack tracen kanssa clientille, tai logataan (tulevaisuudessa) virhelogiin ja lähetetään käyttäjäystävällinen virhe clientille.
 
-Vastaukset, nin virheet kuin onnistuneet, ovat muotoa: 
+Järjestelmän tilaa muuttavien kutsujen vastaukset, niin virheet kuin onnistuneet, ovat muotoa: 
 {
     error: undefined | VirheenTyyppi
     validationErrorObject: undefined | ValidationErrorObject
     message: "Suoraan käyttäjälle näytettävä viesti"
     resource: Object (esim. juuri lisätty tuote)
 }
+
+GET-kutsut palauttavat vain kysytyn resursin.
 
 ## Frontend
 

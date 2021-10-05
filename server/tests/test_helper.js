@@ -4,8 +4,13 @@ const api = supertest(app)
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 const User = require('../models/user')
-const ProductUserRecycleCount = require('../models/productUserRecycleCount')
 const STATUS_CODES = require('http-status')
+const ProductUserCounter = require('../models/productUserCounter')
+
+const { REQUEST_TYPE } = require('../enum/productUserCount')
+
+const productUserCounterRouter = require('../controllers/productUserCounter')
+const counterURLS = productUserCounterRouter.URLS
 
 const productsData = [
   { name: 'Mustamakkarakastike pullo' },
@@ -18,8 +23,8 @@ const clearDatabase = async () => {
   await Product.deleteMany({})
   await Instruction.deleteMany({})
   await User.deleteMany({})
-  await ProductUserRecycleCount.deleteMany({})
-  console.log('Database reset!')
+  await ProductUserCounter.deleteMany({})
+  // console.log('Database reset!')
 }
 
 const usersInDb = async () => {
@@ -148,11 +153,12 @@ const unDisLikeInstruction = async (instructionId, token) => {
 
 const recycleProductOnce = async (productID, token) => {
   const content = {
-    'productID': productID,
-    'amount': 1
+    productID: productID,
+    amount: 1,
+    type: REQUEST_TYPE.RECYCLE
   }
   const result = await api
-    .post('/api/recycle/')
+    .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(content)
@@ -162,10 +168,11 @@ const recycleProductOnce = async (productID, token) => {
 const unrecycleProductOnce = async (productID, token) => {
   const content = {
     productID: productID,
-    amount: -1
+    amount: -1,
+    type: REQUEST_TYPE.RECYCLE
   }
   const result = await api
-    .post('/api/recycle/')
+    .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(content)
@@ -175,18 +182,60 @@ const unrecycleProductOnce = async (productID, token) => {
 const recycleProductFreeAmount = async (productID, amount, token) => {
   const content = {
     productID: productID,
-    amount: amount
+    amount: amount,
+    type: REQUEST_TYPE.RECYCLE
   }
   const result = await api
-    .post('/api/recycle/')
+    .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
+    .set('Authorization', `bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .send(content)
+  return result
+}
+const purchaseProductOnce = async (productID, token) => {
+  const content = {
+    productID: productID,
+    amount: 1,
+    type: REQUEST_TYPE.RECYCLE
+  }
+  const result = await api
+    .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(content)
   return result
 }
 
-const getProductRecycleStat = async (productID, token) => {
-  const result = await api.get('/api/recycle/?productID=' + productID)
+const unPurchaseProductOnce = async (productID, token) => {
+  const content = {
+    productID: productID,
+    amount: -1,
+    type: REQUEST_TYPE.PURCHASE
+  }
+  const result = await api
+    .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
+    .set('Authorization', `bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .send(content)
+  return result
+}
+
+const purchaseProductFreeAmount = async (productID, amount, token) => {
+  const content = {
+    productID: productID,
+    amount: amount,
+    type: REQUEST_TYPE.PURCHASE
+  }
+  const result = await api
+    .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
+    .set('Authorization', `bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .send(content)
+  return result
+}
+
+const getProductUserCounts = async (productID, token) => {
+  const result = await api.get('/api' + counterURLS.BASE_URL + counterURLS.GET_PRODUCT_USER_COUNT + '/?productID=' + productID)
     .set('Authorization', `bearer ${token}`)
   return result
 }
@@ -209,7 +258,10 @@ module.exports = {
   recycleProductOnce,
   unrecycleProductOnce,
   recycleProductFreeAmount,
-  getProductRecycleStat,
+  purchaseProductOnce,
+  unPurchaseProductOnce,
+  purchaseProductFreeAmount,
+  getProductUserCounts,
   addNewUser,
   getInstructionsOfProduct,
   deleteInstruction,

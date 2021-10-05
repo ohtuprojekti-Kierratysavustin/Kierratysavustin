@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import recycleService from '../services/recycle'
+import recycleService from '../services/productUserCount'
 import { Button, Container, Row, ButtonGroup } from 'react-bootstrap'
 import '../styles.css'
 import { Product } from '../types'
@@ -15,7 +15,8 @@ const RecycleForm: React.FC<Props> = ({ product }) => {
 
   useEffect(() => {
     const getRecycles = async () => {
-      await recycleService.getProductRecycleStats({ productID: product.id }).then(recycles => setRecycles(recycles.count))
+      await recycleService.getProductUserCounts({ productID: product.id })
+        .then(recycles => setRecycles(recycles.recycleCount))
         .catch((error) => {
           setNotification(error.response.data.message, 'error')
         })
@@ -26,17 +27,20 @@ const RecycleForm: React.FC<Props> = ({ product }) => {
   const handleRecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     clearNotification()
-    await recycleService.recycle({ productID: product.id, amount: 1 }).then(() => { setRecycles(recycles + 1) })
+    await recycleService.updateCount({ productID: product.id, amount: 1, type: recycleService.REQUEST_TYPE.RECYCLE })
+      .then(() => { setRecycles(recycles + 1) })
       .catch((error) => {
-        setNotification(error.response.data.message, 'error')
+        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe lisätessä tuotteen kierrätystilastoa!'), 'error')
       })
   }
 
   const handleUnrecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
-    await recycleService.recycle({ productID: product.id, amount: -1 }).then(() => { setRecycles(recycles - 1) })
+    clearNotification()
+    await recycleService.updateCount({ productID: product.id, amount: -1, type: recycleService.REQUEST_TYPE.RECYCLE })
+      .then(() => { setRecycles(recycles - 1) })
       .catch((error) => {
-        setNotification(error.response.data.message, 'error')
+        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe vähennettäessä tuotteen kierrätystilastoa!'), 'error')
       })
   }
 

@@ -130,6 +130,28 @@ UnauthorizedException.prototype.isOperationalError = true
 UnauthorizedException.prototype.defaultHttpStatusCode = STATUS_CODES.FORBIDDEN
 
 /**
+ * Error for if user is unauthorized to resource.
+ * @example 
+ * if (instruction.user.toString() !== user.id.toString()) {
+      throw new UnauthorizedException('Vain ohjeen luoja voi poistaa ohjeen!')
+    }
+ * @param {*} message - Should be augmented according to the resource 
+ * @param {*} httpStatusCode 
+ * @class
+ * @augments KierratysavustinError
+ */
+function InvalidParameterException(message, httpStatusCode) {
+  KierratysavustinError.call(this, message, httpStatusCode)
+}
+
+InvalidParameterException.prototype = Object.create(KierratysavustinError.prototype)
+InvalidParameterException.prototype.name = 'InvalidParameterException'
+InvalidParameterException.prototype.constructor = InvalidParameterException
+InvalidParameterException.prototype.defaultMessage = 'Virheelliset kyselyn parametrit!'
+InvalidParameterException.prototype.isOperationalError = true
+InvalidParameterException.prototype.defaultHttpStatusCode = STATUS_CODES.BAD_REQUEST
+
+/**
  * To send structured data to a validation exception
  * @param {*} parameter - Name of the invalid parameter
  * @param {*} validationType - Type of the validation error
@@ -229,6 +251,7 @@ module.exports = { TokenMissingException,
   ResourceNotFoundException,
   DuplicateResourceException,
   UnauthorizedException,
+  InvalidParameterException,
   ValidationException, 
   ValidationErrorObject,
   restructureCastAndValidationErrorsFromMongoose }
