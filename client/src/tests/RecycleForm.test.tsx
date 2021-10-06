@@ -8,7 +8,8 @@ const product: Product = {
   id: 1,
   name: 'Juustoportti suklaamaito',
   instructions: [],
-  users: []
+  users: [],
+  user: 1
 }
 
 describe('When pressing +', () => {
