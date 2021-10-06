@@ -3,6 +3,7 @@ import recycleService from '../services/recycle'
 import { Button, Container, Row, ButtonGroup } from 'react-bootstrap'
 import '../styles.css'
 import { Product } from '../types'
+import { useStore } from '../store'
 
 type Props = {
   product: Product
@@ -10,6 +11,8 @@ type Props = {
 
 const RecycleForm: React.FC<Props> = ( { product }  ) => {
   const [ recycles, setRecycles ] = useState<number>(0)
+  const { recyclingStats, updateRecyclingStats } = useStore()
+  const amount = recyclingStats.find(stat => stat.product.id === product.id)?.amount
 
   useEffect(() => {
     const getRecycles = async () => {
@@ -21,13 +24,19 @@ const RecycleForm: React.FC<Props> = ( { product }  ) => {
 
   const handleRecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
-    await recycleService.recycle({ productID: product.id, amount: 1 }).then(() => { setRecycles(recycles + 1) })
+    await recycleService.recycle({ productID: product.id, amount: 1 }).then(() => {
+      setRecycles(recycles + 1)
+      updateRecyclingStats( { product: product, amount:recycles + 1 })
+    })
       .catch((error) => {console.log(error)})
   }
 
   const handleUnrecycle: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
-    await recycleService.recycle({ productID: product.id, amount: -1 }).then(() => { setRecycles(recycles - 1) })
+    await recycleService.recycle({ productID: product.id, amount: -1 }).then(() => {
+      setRecycles(recycles - 1)
+      updateRecyclingStats( { product: product, amount:recycles - 1 })
+    })
       .catch((error) => {console.log(error)})
   }
 
@@ -36,7 +45,7 @@ const RecycleForm: React.FC<Props> = ( { product }  ) => {
       <Container id='vote-element' >
         <Row>
           <Container id='votes'>
-            Kierrätetty {recycles} kpl
+            Kierrätetty {amount} kpl
             <ButtonGroup vertical className='better-votes'>
               <Button variant='success' id = "recycleButton" onClick={handleRecycle} >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">

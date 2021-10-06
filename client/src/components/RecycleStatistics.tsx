@@ -1,46 +1,47 @@
-import React , { useState, useEffect } from 'react'
+import React from 'react'
 import { Table, Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { RecyclingStat } from '../types'
 import InfoBar from './InfoBar'
+import { useStore } from '../store'
 
 const RecycleStatistics = () => {
-  const [recycledProducts, setRecycledProducts] = useState<RecyclingStat[]>([])
+  const { recyclingStats } = useStore()
+  // const [recycledProducts, setRecycledProducts] = useState<RecyclingStat[]>([])
 
-  useEffect(() => {
-    setRecycledProducts([
-      {
-        product: {
-          id: 123,
-          name: 'tuote 1',
-          instructions: [],
-          users: [],
-          user: 1236
-        },
-        amount: 1
-      },
-      {
-        product: {
-          id: 1233,
-          name: 'tuote 2',
-          instructions: [],
-          users: [],
-          user: 1231
-        },
-        amount: 10
-      },
-      {
-        product: {
-          id: 1233,
-          name: 'tuote 3',
-          instructions: [],
-          users: [],
-          user: 1231
-        },
-        amount: 4
-      }
-    ])
-  },[])
+  // useEffect(() => {
+  //   setRecycledProducts([
+  //     {
+  //       product: {
+  //         id: 123,
+  //         name: 'tuote 1',
+  //         instructions: [],
+  //         users: [],
+  //         user: 1236
+  //       },
+  //       amount: 1
+  //     },
+  //     {
+  //       product: {
+  //         id: 1233,
+  //         name: 'tuote 2',
+  //         instructions: [],
+  //         users: [],
+  //         user: 1231
+  //       },
+  //       amount: 10
+  //     },
+  //     {
+  //       product: {
+  //         id: 1233,
+  //         name: 'tuote 3',
+  //         instructions: [],
+  //         users: [],
+  //         user: 1231
+  //       },
+  //       amount: 4
+  //     }
+  //   ])
+  // },[])
 
   let index :number = 1
 
@@ -50,7 +51,7 @@ const RecycleStatistics = () => {
       <Container id='stat-list' >
         <h2>Kierrätetyt tuotteet</h2>
         <h5>Kierrätysaste: 0%</h5>
-        <Table striped bordered hover size="m">
+        <Table striped bordered hover size="sm">
           <thead>
             <tr>
               <th>#</th>
@@ -60,9 +61,9 @@ const RecycleStatistics = () => {
               <th>Kierrätysaste</th>
             </tr>
           </thead>
-          {recycledProducts.map(stat =>
-            <tbody key={stat.product.id}>
-              <tr>
+          <tbody>
+            {recyclingStats.map(stat =>
+              <tr key={stat.product.id}>
                 <td>{index++}</td>
                 <td>
                   <Link to={`/products/${stat.product.id}`}>{stat.product.name}</Link>
@@ -71,8 +72,8 @@ const RecycleStatistics = () => {
                 <td>{stat.amount}</td>
                 <td>null</td>
               </tr>
-            </tbody>
-          )}
+            )}
+          </tbody>
         </Table>
       </Container>
     </div>
