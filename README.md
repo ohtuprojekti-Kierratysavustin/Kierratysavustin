@@ -31,6 +31,8 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 
 - [Definition of Done](documents/definitionOfDone.md)
 
+- [Arkkitehtuurista ja koodeista](documents/arkkitehtuurista.md)
+
 ## Projektin edistyminen
 
 - [Product Backlog](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/projects/1)

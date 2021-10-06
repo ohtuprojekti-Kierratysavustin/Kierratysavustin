@@ -28,13 +28,13 @@ const ProductForm = () => {
     const productName = values.productName
     const product = { name: productName }
     productService.create(product)
-      .then(returnedProduct => {
-        setProducts(products.concat(returnedProduct))
-        history.push(`products/${returnedProduct.id}`)
+      .then(response => {
+        let newProduct = response.resource
+        setProducts(products.concat(newProduct))
+        history.push(`products/${newProduct.id}`)
         setNotification(`Tuote ${productName} lisätty!`, 'success')
-      }).catch(e => {
-        console.log(e)
-        setNotification('Et voi lisätä tyhjää tuotetta', 'error')
+      }).catch((error) => {
+        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe lisätessä uutta tuotetta!'), 'error')
       })
   }
   return (
