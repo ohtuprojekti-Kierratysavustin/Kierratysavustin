@@ -387,6 +387,7 @@ describe('One account already in database', () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
 
+        await helper.purchaseProductOnce(product.id, token)
         await helper.recycleProductOnce(product.id, token)
         
         const response = await helper.getProductUserCounts(product.id, token)
@@ -397,6 +398,8 @@ describe('One account already in database', () => {
       test('user can recycle an existing product multiple times', async () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 4, token)
 
         await helper.recycleProductOnce(product.id, token)
         await helper.recycleProductOnce(product.id, token)
@@ -410,6 +413,8 @@ describe('One account already in database', () => {
       test('user can unrecycle an existing product that has been recycled', async () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 3, token)
 
         await helper.recycleProductOnce(product.id, token)
         await helper.recycleProductOnce(product.id, token)
@@ -425,6 +430,8 @@ describe('One account already in database', () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
 
+        await helper.purchaseProductFreeAmount(product.id, 3, token)
+
         await helper.recycleProductOnce(product.id, token)
         await helper.unrecycleProductOnce(product.id, token)
         await helper.unrecycleProductOnce(product.id, token)
@@ -432,6 +439,29 @@ describe('One account already in database', () => {
 
         const response = await helper.getProductUserCounts(product.id, token)
         expect(response.body.recycleCount).toBe(0)
+      })
+
+      test('user can not recycle more than purchased', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+
+        let response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(2)
+        expect(response.body.purchaseCount).toBe(3)
+
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+
+        response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(3)
+        expect(response.body.purchaseCount).toBe(3)
+
       })
 
       test('recycling nonexistent product responds with product not found', async () => {
