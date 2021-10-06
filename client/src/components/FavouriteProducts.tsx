@@ -6,7 +6,8 @@ import FavoritesForm from './FavoritesForm'
 import logo from '../media/logo.png'
 import { Container, Media, ListGroup } from 'react-bootstrap'
 import { Product } from '../types'
-import RecycleForm from './RecycleForm'
+import ProductUserCountForm from './ProductUserCountForm'
+import { REQUEST_TYPE as COUNT_REQUEST_TYPE } from '../services/productUserCount'
 
 type Props = {
   userProducts: Product[]
@@ -45,7 +46,8 @@ const FavouriteProducts: React.FC<Props> = ({ userProducts }) => {
                     )}
                     <div className='ListItemButtons'>
                       <FavoritesForm product={product} />
-                      <RecycleForm product={product} />
+                      <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.RECYCLE} amountText={'Kierrätetty'} sendUpdateText={'Kierrätä'} redoUpdateText={'Peru viimeisin kierrätys'}/>
+                      <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.PURCHASE} amountText={'Hankittu'} sendUpdateText={'Hanki'} redoUpdateText={'Peru viimeisin hankinta'}/>
                     </div>
                   </Media.Body>
                 </Media>

@@ -11,7 +11,9 @@ import FavoritesForm from './FavoritesForm'
 import DeleteProduct from './DeleteProduct'
 import '../styles.css'
 import { Product } from '../types'
-import RecycleForm from './RecycleForm'
+import ProductUserCountForm from './ProductUserCountForm'
+import { REQUEST_TYPE as COUNT_REQUEST_TYPE } from '../services/productUserCount'
+
 
 type Props = {
   products: Product[],
@@ -74,7 +76,8 @@ const ProductList: React.FC<Props> = ({ products, setFilteredProducts }) => {
                             {user !== null ? (
                               <div className='ListItemButtons'>
                                 <FavoritesForm product={product} />
-                                <RecycleForm product={product} />
+                                <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.RECYCLE} amountText={'Kierrätetty'} sendUpdateText={'Kierrätä'} redoUpdateText={'Peru viimeisin kierrätys'}/>
+                                <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.PURCHASE} amountText={'Hankittu'} sendUpdateText={'Hanki'} redoUpdateText={'Peru viimeisin hankinta'}/>
                               </div>
                             ) : (
                               ''

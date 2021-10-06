@@ -441,6 +441,20 @@ describe('One account already in database', () => {
         expect(response.body.recycleCount).toBe(0)
       })
 
+      test('unrecycling to smaller than 0, leaves unrecycling stat untouched', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 3, token)
+
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.purchaseProductFreeAmount(product.id, -5, token)
+
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(2)
+      })
+
       test('user can not recycle more than purchased', async () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
@@ -463,6 +477,16 @@ describe('One account already in database', () => {
         expect(response.body.purchaseCount).toBe(3)
 
       })
+      test('adding count returns error on not integer amount', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        let response = await helper.purchaseProductFreeAmount(product.id, 'sff24', token)
+        expect(response.status).toBeGreaterThanOrEqual(400)
+        response = await helper.purchaseProductFreeAmount(product.id, 1.57, token)
+        expect(response.status).toBeGreaterThanOrEqual(400)
+
+      })
 
       test('recycling nonexistent product responds with product not found', async () => {
 
@@ -479,14 +503,119 @@ describe('One account already in database', () => {
 
       })
 
-      test('recycling stat of nonexistent product responds with product not found', async () => {
+      test('count stats of nonexistent product responds with product not found', async () => {
 
         const response = await helper.getProductUserCounts('111111111111111111111111', token)
         expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
 
       })
 
-      test('recycling stat not given without authorization', async () => {
+      // Purchase product
+      ////////////////////////////////////////////////////////////////////////////////////////////////
+      test('user can purchase an existing product', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+        await helper.purchaseProductOnce(product.id, token)        
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(1)
+
+      })
+
+      test('user can purchase an existing product multiple times', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 4, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        
+
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(7)
+      })
+
+      test('user can unpurchase an existing product that has been purchased', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 3, token)        
+        await helper.unPurchaseProductOnce(product.id, token)
+        await helper.unPurchaseProductOnce(product.id, token)
+        
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(1)
+      })
+
+      test('user can not set product purchase stat to negative', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.unPurchaseProductOnce(product.id, token)
+        let response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(0)
+      })
+      
+      test('unpurchasing to smaller than 0, leaves purchase stat untouched', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 3, token)
+
+        await helper.purchaseProductFreeAmount(product.id, -53, token)
+
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(3)
+      })
+
+      test('user can not unpurchase product to have less purchases than recycles', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+
+        let response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(3)
+        expect(response.body.purchaseCount).toBe(3)
+
+        await helper.unPurchaseProductOnce(product.id, token)
+
+        response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(3)
+        expect(response.body.purchaseCount).toBe(3)
+
+      })
+
+      test('purchasing nonexistent product responds with product not found', async () => {
+
+        const response = await helper.purchaseProductOnce('111111111111111111111111', token)
+        expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
+      })
+
+      //////////////////////////////////////////////////////////////////////////////////////
+
+      test('recycling without authorization not possible', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        const response = await helper.getProductUserCounts(product.id, 'INVALID_TOKEN')
+        expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
+
+      })
+
+      test('count stats of nonexistent product responds with product not found', async () => {
+
+        const response = await helper.getProductUserCounts('111111111111111111111111', token)
+        expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
+
+      })
+
+      test('count stats not given without authorization', async () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
 

@@ -53,4 +53,4 @@ const productionErrorHandler = function (err, req, res, next) {
   }
 }
 
-module.exports = {devErrorHandler, productionErrorHandler}
+module.exports = { devErrorHandler, productionErrorHandler }

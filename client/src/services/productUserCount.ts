@@ -2,8 +2,9 @@ import axios from 'axios'
 import tokenService from './token'
 const baseUrl = `${process.env.PUBLIC_URL}/api/count/product/user`
 
-const REQUEST_TYPE = { PURCHASE: 'purchase',
-  RECYCLE: 'recycle'
+export enum REQUEST_TYPE {
+  PURCHASE = 'purchaseCount',
+  RECYCLE = 'recycleCount'
 }
 
 const updateCount = async (newObject: { productID: number, amount: number, type: String }) => {
@@ -21,4 +22,4 @@ const getProductUserCounts = async (params: { productID: number }) => {
 }
 
 
-export default { updateCount, getProductUserCounts, REQUEST_TYPE }
+export default { updateCount, getProductUserCounts }
