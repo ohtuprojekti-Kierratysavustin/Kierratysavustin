@@ -9,7 +9,7 @@ type Props = {
   product: Product
 }
 
-const DeleteInstructionForm: React.FC<Props> = ( { product, instruction } ) => {
+const DeleteInstructionForm: React.FC<Props> = ({ product, instruction }) => {
   const creatorId = instruction.user
   const { user, updateProduct, setNotification } = useStore()
 
@@ -21,14 +21,15 @@ const DeleteInstructionForm: React.FC<Props> = ( { product, instruction } ) => {
   const handleDelete: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     if (window.confirm(`Poistetaanko ohje ${instruction.information}?`)) {
-      try{
-        await ProductService.deleteInstruction(product.id, instruction.id)
-        product.instructions = product.instructions.filter(i => i.id !== instruction.id)
-        updateProduct(product)
-        setNotification(`Ohje ${instruction.information} poistettu`, 'success')
-      } catch (e) {
-        setNotification('Ohjeen poistamisessa tapahtui virhe', 'error')
-      }
+      await ProductService.deleteInstruction(product.id, instruction.id)
+        .then((response) => {
+          product.instructions = product.instructions.filter(i => i.id !== instruction.id)
+          updateProduct(product)
+          setNotification(response.message, 'success')
+        })
+        .catch((error) => {
+          setNotification((error.response.data.message ? error.response.data.message : 'Ohjetta poistettaessa tapahtui odottamaton virhe!'), 'error')
+        })
     }
   }
 
@@ -48,5 +49,5 @@ const DeleteInstructionForm: React.FC<Props> = ( { product, instruction } ) => {
   }
 }
 
-export default  DeleteInstructionForm
+export default DeleteInstructionForm
 

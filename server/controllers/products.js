@@ -2,122 +2,135 @@ const productRouter = require('express').Router()
 const Product = require('../models/product')
 const Instruction = require('../models/instruction')
 const authUtils = require('../utils/auth')
+const STATUS_CODES = require('http-status')
+const { ResourceNotFoundException, restructureCastAndValidationErrorsFromMongoose, UnauthorizedException } = require('../error/exceptions')
 
-productRouter.get('/', async (req, res) => {
-  const products = await Product.find({}).populate('instructions', {
-    score: 1,
-    information: 1,
-    user: 1
-  })
+productRouter.get('/', async (req, res, next) => {
+  try {
+    const products = await Product.find({}).populate('instructions', {
+      score: 1,
+      information: 1,
+      user: 1
+    })
 
-  products.forEach(p => p.instructions.sort((a, b) => b.score - a.score))
-  res.json(products.map((product) => product.toJSON()))
-
+    products.forEach(p => p.instructions.sort((a, b) => b.score - a.score))
+    res.status(STATUS_CODES.OK).json(products.map((product) => product.toJSON()))
+  } catch (error) {
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
+  }
 })
 
-productRouter.get('/user', async (req, res) => {
-  const favorites = await Product.find({ users: req.query.id }).populate('instructions', {
-    score: 1,
-    information: 1,
-    user: 1
-  })
-  favorites.forEach(p => p.instructions.sort((a, b) => b.score - a.score))
-  res.json(favorites.map((favorite) => favorite.toJSON()))
+productRouter.get('/user', async (req, res, next) => {
+  try {
+    const favorites = await Product.find({ users: req.query.id }).populate('instructions', {
+      score: 1,
+      information: 1,
+      user: 1
+    })
+    favorites.forEach(p => p.instructions.sort((a, b) => b.score - a.score))
+    res.status(STATUS_CODES.OK).json(favorites.map((favorite) => favorite.toJSON()))
+  } catch (error) {
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
+  }
 })
 
-productRouter.get('/:id', async (req, res) => {
+productRouter.get('/:id', async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id).populate('instructions', {
       score: 1,
       information: 1,
       user: 1
     })
+    if (!product) {
+      throw ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
+    }
+
     product.instructions.sort((a, b) => b.score - a.score)
-    res.json(product)
+    res.status(STATUS_CODES.OK).json(product)
 
   } catch (error) {
-    return res.status(400).json({ error: 'no product found' })
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
-
-
 })
 
-productRouter.post('/', async (req, res) => {
-  let user
+productRouter.post('/', async (req, res, next) => {
   try {
-    user = await authUtils.authenticateRequestReturnUser(req)
-  } catch (e) {
-    res.setHeader('WWW-Authenticate', 'Bearer')
-    return res.status(401).json({ error: e.message })
-  }
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
-  const body = req.body
-  try {
+    const body = req.body
     const product = new Product({
       name: body.name,
       user: user.id,
     })
     const result = await product.save()
-    return res.status(201).json(result)
+    return res.status(STATUS_CODES.CREATED).json({ message: 'Tuote luotu onnistuneesti!', resource: result })
   } catch (error) {
-    return res.status(400).
-      json({ error: 'product name required' })
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 
-productRouter.post('/:id/instructions', async (req, res) => {
-  let user     //haetaan käyttäjä
+productRouter.post('/:id/instructions', async (req, res, next) => {
   try {
-    user = await authUtils.authenticateRequestReturnUser(req)
-  } catch (e) {
-    res.setHeader('WWW-Authenticate', 'Bearer')
-    return res.status(401).json({ error: e.message })
-  }
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
-  const product = await Product.findById(req.params.id)
-  if (!product) {
-    return res.status(401).json({ error: 'No product' })
+    const product = await Product.findById(req.params.id)
+    if (!product) {
+      throw ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
+    }
+    const instruction = new Instruction(req.body)
+    instruction.product = product.id
+    instruction.user = user.id
+    const result = await instruction.save()
+    product.instructions = product.instructions.concat(result)
+    await product.save()
+    res.status(STATUS_CODES.CREATED).json({ message: 'Ohje luotu onnistuneesti!', resource: result})
+  } catch (error) {
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
-  const instruction = new Instruction(req.body)
-  instruction.product = product.id
-  instruction.user = user.id
-  const result = await instruction.save()
-  product.instructions = product.instructions.concat(result)
-  await product.save()
-  res.status(201).json(result)
 })
 
-productRouter.delete('/:productId/instructions/:instructionId', async (req, res) => {
-  let user     //haetaan ohjeen tehnyt käyttäjä
+/**
+ * Poistaa tuotteeseen liittyvän ohjeen
+ */
+productRouter.delete('/:productId/instructions/:instructionId', async (req, res, next) => {
   try {
-    user = await authUtils.authenticateRequestReturnUser(req)
-  } catch (e) {
-    return res.status(401).json({ error: e.message })
-  }
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
-  let product    //haetaan tuote, johon ohje liittyy
-  try {
-    product = await Product.findById(req.params.productId)
-  } catch (e) {
-    return res.status(401).json({ error: e.message })
-  }
+    let product = await Product.findById(req.params.productId)
 
-  let instruction   //haetaan ohje
-  try {
-    instruction = await Instruction.findById(req.params.instructionId)
-  } catch (e) {
-    return res.status(400).json({ error: e.message })
-  }
+    let instruction = await Instruction.findById(req.params.instructionId)
 
-  //verrataan, vastaako pyynnön tehnyt käyttäjä ohjeen lisännyttä käyttäjää
-  if (instruction.user.toString() !== user.id.toString()) {
-    return res.status(403).json({ error: 'unauthorized'})
-  }
+    //verrataan, vastaako pyynnön tehnyt käyttäjä ohjeen lisännyttä käyttäjää
+    if (instruction.user.toString() !== user.id.toString()) {
+      throw new UnauthorizedException('Vain ohjeen luoja voi poistaa ohjeen!')
+    }
 
-  //poistetaan ohje tietokannasta
-  product.instructions = product.instructions.pull({ _id: instruction.id })
-  await product.save()
-  res.status(201).json(product)
+    let deletedInstructionText = instruction.information
+    //poistetaan ohje tietokannasta
+    product.instructions = product.instructions.pull({ _id: instruction.id })
+    await product.save()
+    res.status(STATUS_CODES.OK)
+      .json(
+        {
+          message: 'Ohje \'' + deletedInstructionText + '\' poistettiin onnistuneesti!',
+          resource: product
+        }
+      )
+  } catch (error) {
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
+  }
 })
 
 /** 
@@ -125,34 +138,27 @@ productRouter.delete('/:productId/instructions/:instructionId', async (req, res)
  * Etsii tietokannasta id:tä vastaavan tuotteen ja poistaa sen.
  * Vain tuotteen lisännyt käyttäjä voi poistaa tuotteen.
  */
-productRouter.delete('/:id', async (req, res) => {
-  let user    // haetaan pyynnön tehnyt käyttäjä
+productRouter.delete('/:id', async (req, res, next) => {
   try {
-    user = await authUtils.authenticateRequestReturnUser(req)
-  } catch (e) {
-    return res.status(401).json({ error: e.message })
-  }
-  console.log(user.username)
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
-  let product   // haetaan poistettava tuote
-  try {
-    product = await Product.findById(req.params.id).exec()
-  } catch (error) {
-    return res.status(401).json({ error: error.message })
-  }
-  console.log(product.user)
+    let product = await Product.findById(req.params.id).exec()
+    if (!product) {
+      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.query.productID + ' ei löytynyt!')
+    }
 
-  // verrataan pyynnön tehnyttä käyttäjää tuotteen lisänneeseen käyttäjään
-  if (product.user.toString() !== user.id.toString()) {
-    return res.status(403).json({ error: 'unauthorized' })
-  }
-
-  // poistetaan tuote tietokannasta
-  try {
+    // verrataan pyynnön tehnyttä käyttäjää tuotteen lisänneeseen käyttäjään
+    if (product.user.toString() !== user.id.toString()) {
+      throw new UnauthorizedException('Vain tuotteen luoja voi poistaa ohjeen!')
+    }
+    let deletedProductName = product.name
+    // poistetaan tuote tietokannasta
     await Product.findByIdAndDelete({ _id: req.params.id }).exec()
-    res.status(200).json()
+    res.status(STATUS_CODES.OK).json({message: 'Tuote \'' + deletedProductName + '\' poistettiin onnistuneesti!'})
   } catch (error) {
-    return res.status(400).json({ error: error.message })
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    // To the errorhandler in app.js
+    next(handledError)
   }
 })
 

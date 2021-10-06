@@ -84,7 +84,7 @@ describe("Recycling app", () => {
 
           it("can be removed by the user", () => {
             cy.get("#deleteItem").click()
-            cy.contains("Tuote Muovipussi poistettu onnistuneesti")
+            cy.contains("Tuote 'Muovipussi' poistettiin onnistuneesti!")
             cy.contains("Haulla ei löytynyt yhtään tuotetta!")
           })
 
@@ -119,7 +119,7 @@ describe("Recycling app", () => {
               })
               it("recycling information can be deleted by the user", () => {
                 cy.get("#deleteInstructionButton").click()
-                cy.contains("Ohje Tuotteen voi uudelleenkäyttää roskapussina poistettu")
+                cy.contains("Ohje 'Tuotteen voi uudelleenkäyttää roskapussina' poistettiin onnistuneesti!")
               })
             })
             
@@ -157,7 +157,7 @@ describe("Recycling app", () => {
 
             it("can be removed by the user", () => {
               cy.get("#deleteItem").click()
-              cy.contains("Tuote Muovipussi poistettu onnistuneesti")
+              cy.contains("Tuote 'Muovipussi' poistettiin onnistuneesti!")
               cy.contains("Haulla ei löytynyt yhtään tuotetta!")
             })
           })
