@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import productService from '../services/products'
 import userService from '../services/user'
 import tokenService from '../services/token'
+import countService from '../services/productUserCount'
 import { useStore } from '../store'
 import { useHistory } from 'react-router-dom'
 
 import { Container, Button, Form } from 'react-bootstrap'
 
 const LoginForm = () => {
-  const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes } = useStore()
+  const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes, setRecyclingStats } = useStore()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -39,6 +40,11 @@ const LoginForm = () => {
           .then(dislikes => setDislikes(dislikes))
           .catch((error) => {
             setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
+          })
+        countService.getUserCounts()
+          .then(counts => setRecyclingStats(counts))
+          .catch((error) => {
+            setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe haettaessa kierrätystatistiikkaa'), 'error')
           })
         setNotification('Kirjautuminen onnistui', 'success')
         history.push('/')

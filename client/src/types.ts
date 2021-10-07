@@ -26,5 +26,6 @@ export type User = {
 
 export type RecyclingStat = {
   product: Product,
-  amount: number
+  purchaseCount: number,
+  recycleCount: number,
 }

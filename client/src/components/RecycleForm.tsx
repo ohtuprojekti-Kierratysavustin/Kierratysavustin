@@ -12,7 +12,8 @@ type Props = {
 const RecycleForm: React.FC<Props> = ({ product }) => {
   const [recycles, setRecycles] = useState<number>(0)
   const { setNotification, clearNotification, recyclingStats, updateRecyclingStats  } = useStore()
-  const amount = recyclingStats.find(stat => stat.product.id === product.id)?.amount
+  const recycleAmount = recyclingStats.find(stat => stat.product.id === product.id)?.recycleCount || 0
+  const purchaseAmount = recyclingStats.find(stat => stat.product.id === product.id)?.purchaseCount || 0
 
   useEffect(() => {
     const getRecycles = async () => {
@@ -31,7 +32,7 @@ const RecycleForm: React.FC<Props> = ({ product }) => {
     await recycleService.updateCount({ productID: product.id, amount: 1, type: recycleService.REQUEST_TYPE.RECYCLE })
       .then(() => {
         setRecycles(recycles + 1)
-        updateRecyclingStats( { product: product, amount:recycles + 1 })
+        updateRecyclingStats( { product: product, recycleCount:recycleAmount + 1, purchaseCount: purchaseAmount })
       })
       .catch((error) => {
         setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe lisätessä tuotteen kierrätystilastoa!'), 'error')
@@ -44,7 +45,7 @@ const RecycleForm: React.FC<Props> = ({ product }) => {
     await recycleService.updateCount({ productID: product.id, amount: -1, type: recycleService.REQUEST_TYPE.RECYCLE })
       .then(() => {
         setRecycles(recycles - 1)
-        updateRecyclingStats( { product: product, amount:recycles + 1 })
+        updateRecyclingStats( { product: product, recycleCount:recycleAmount - 1, purchaseCount: purchaseAmount })
       })
       .catch((error) => {
         setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe vähennettäessä tuotteen kierrätystilastoa!'), 'error')
@@ -56,7 +57,7 @@ const RecycleForm: React.FC<Props> = ({ product }) => {
       <Container id='vote-element' >
         <Row>
           <Container id='votes'>
-            Kierrätetty {amount} kpl
+            Kierrätetty {recycleAmount} kpl
             <ButtonGroup vertical className='better-votes'>
               <Button variant='success' id="recycleButton" onClick={handleRecycle} >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">

@@ -66,7 +66,8 @@ const addOrUpdateRecyclingStat = (stats :RecyclingStat[], newStat :RecyclingStat
   if (stats.some(stat => stat.product.id === newStat.product.id )) {
     const newStats :RecyclingStat[] = stats.map(stat => ({
       ...stat,
-      amount: stat.product.id === newStat.product.id ? newStat.amount : stat.amount
+      recycleCount: stat.product.id === newStat.product.id ? newStat.recycleCount : stat.recycleCount,
+      purchaseCount: stat.product.id === newStat.product.id ? newStat.purchaseCount : stat.purchaseCount
     }))
     return newStats
   }
