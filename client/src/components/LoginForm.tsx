@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom'
 import { Container, Button, Form } from 'react-bootstrap'
 
 const LoginForm = () => {
-  const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes, setRecyclingStats } = useStore()
+  const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes, setProductStatistics } = useStore()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -42,7 +42,7 @@ const LoginForm = () => {
             setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
           })
         countService.getUserCounts()
-          .then(counts => setRecyclingStats(counts))
+          .then(counts => setProductStatistics(counts))
           .catch((error) => {
             setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe haettaessa kierrätystatistiikkaa'), 'error')
           })

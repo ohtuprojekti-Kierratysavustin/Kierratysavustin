@@ -5,7 +5,7 @@ import InfoBar from './InfoBar'
 import { useStore } from '../store'
 
 const RecycleStatistics = () => {
-  const { recyclingStats } = useStore()
+  const { productStatistics } = useStore()
 
   let index :number = 1
   return (
@@ -25,7 +25,7 @@ const RecycleStatistics = () => {
             </tr>
           </thead>
           <tbody>
-            {recyclingStats.map(stat =>
+            {productStatistics.map(stat =>
               <tr key={stat.product.id}>
                 <td>{index++}</td>
                 <td>

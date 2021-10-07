@@ -12,7 +12,8 @@ import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
 import '../styles.css'
 import { Product } from '../types'
-import RecycleForm from './RecycleForm'
+import ProductUserCountForm from './ProductUserCountForm'
+import { REQUEST_TYPE as COUNT_REQUEST_TYPE } from '../services/productUserCount'
 
 type Props = {
   product?: Product
@@ -53,7 +54,8 @@ const ProductPage: React.FC<Props> = ({ product }) => {
               {user !== null ? (
                 <div>
                   <FavoritesForm product = {product}/>
-                  <RecycleForm product={product} />
+                  <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.RECYCLE} amountText={'Kierrätetty'} sendUpdateText={'Kierrätä'} redoUpdateText={'Peru viimeisin kierrätys'}/>
+                  <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.PURCHASE} amountText={'Hankittu'} sendUpdateText={'Hanki'} redoUpdateText={'Peru viimeisin hankinta'}/>
                   <DeleteProduct product={product} />
                 </div>
               ) : (
