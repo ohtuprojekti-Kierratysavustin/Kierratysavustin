@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import productUserCountService, { REQUEST_TYPE } from '../services/productUserCount'
-import { Button, Container, Row, ButtonGroup } from 'react-bootstrap'
+import { Button, Container, Col, ButtonGroup } from 'react-bootstrap'
 import '../styles.css'
 import { Product } from '../types'
 import { useStore } from '../store'
@@ -79,21 +79,20 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
   return (
     <div>
       <Container id='vote-element' >
-        <Row>
+        <Col>
           <Container id='votes'>
-            {amountText} {count} kpl
             <ButtonGroup vertical className='better-votes'>
+              {amountText} <br></br>{count} kpl
               <Button disabled={inputInvalid} variant='success' id="addCountButton" onClick={handleAddCount} >
                 {sendUpdateText}
               </Button>
               <Button disabled={lastAddedAmount === 0} variant='warning' id="redoButton" onClick={handleRedo}>
                 {redoUpdateText}
               </Button>
-              <input type='number' value={amountToAdd.value} onChange={onInputChange}></input>
+              <input id='input-field' type='number' value={amountToAdd.value} onChange={onInputChange}></input>
             </ButtonGroup>
           </Container>
-
-        </Row>
+        </Col>
       </Container>
 
     </div>
