@@ -51,6 +51,9 @@ h2 {
     margin-left: -width;
 }
 
+.tooltip.show /* The CSS classes that the tooltip has */ {
+    opacity: 0.5!important; /* or whatever */
+}
 .better-votes {
     padding-left: 10px;
 }
