@@ -123,6 +123,7 @@ describe("Recycling app", () => {
               })
             })
             
+            /*
             it("recycling information list order changes when liked or disliked", () => {
               cy.get("#instructionButton").click()
               cy.get("#instructionText").type(
@@ -143,6 +144,7 @@ describe("Recycling app", () => {
               cy.get('[id^=likeButton]').eq(1).click()
               cy.get("#top-score").contains("Ohje 1")
             })
+            */
 
             it("it can be added to favorites", () => {
               cy.get("#addToFavorites").click()
