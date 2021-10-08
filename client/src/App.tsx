@@ -3,9 +3,10 @@ import {
   Switch, Route, useRouteMatch
 } from 'react-router-dom'
 import userService from './services/user'
-import NavigationBar from './components/NavigationBar'
 import productService from './services/products'
 import tokenService from './services/token'
+import countService from './services/productUserCount'
+import NavigationBar from './components/NavigationBar'
 import ProductForm from './components/ProductForm'
 import ProductPage from './components/Product'
 import ProductList from './components/ProductList'
@@ -19,7 +20,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles.css'
 
 const App = () => {
-  const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites, setLikes, setDislikes } = useStore()
+  const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites, setLikes, setDislikes, setProductStatistics } = useStore()
 
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
@@ -34,6 +35,7 @@ const App = () => {
       productService.getFavorites(userlogin.id).then(favorites => setFavorites(favorites))
       userService.getLikes().then(likes => setLikes(likes))
       userService.getDislikes().then(dislikes => setDislikes(dislikes))
+      countService.getUserCounts().then(stats => setProductStatistics(stats))
     }
   }, [])
 

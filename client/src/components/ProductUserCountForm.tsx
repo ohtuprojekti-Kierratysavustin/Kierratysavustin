@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import productUserCountService, { REQUEST_TYPE } from '../services/productUserCount'
 import { Button, Container, Row, ButtonGroup } from 'react-bootstrap'
 import '../styles.css'
-import { Product, ProductStatistic } from '../types'
+import { Product } from '../types'
 import { useStore } from '../store'
 import useInput from '../utils/useInput'
 import { isInteger } from '../utils/validation'
@@ -24,7 +24,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
   const amountToAdd = useInput<number>(1, 1)
   const [lastAddedAmount, setLastAddedAmount] = useState<number>(0)
   const [inputInvalid, setInputInvalid] = useState<boolean>(false)
-  const { setNotification, clearNotification, productStatistics, updateProductStatistics } = useStore()
+  const { setNotification, clearNotification, updateProductStatistics } = useStore()
 
   const onInputChange = (event: any) => {
     if (isInteger(event.target.value)) {
@@ -48,32 +48,18 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
     getCounts()
   }, [count])
 
-  const getProductStats = (): ProductStatistic => {
-    const stats = productStatistics.find(stat => stat.product.id === product.id)
-      || {
-        product: product,
-        purchaseCount: 0,
-        recycleCount: 0
-      }
-    return stats
-  }
-
   const handleAddCount: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     clearNotification()
     await productUserCountService.updateCount({ productID: product.id, amount: amountToAdd.value, type: countType })
-      .then(() => {
+      .then((result) => {
         setLastAddedAmount(amountToAdd.value)
         setCount(count + Number(amountToAdd.value))
-        //updateRecyclingStats( { product: product, recycleCount:recycleAmount + Number(amountToAdd.value), purchaseCount: purchaseAmount })
-        const stat = getProductStats()
-        const newStat = {
+        updateProductStatistics({
           product: product,
-          purchaseCount: countType === REQUEST_TYPE.PURCHASE ? stat.purchaseCount + Number(amountToAdd.value) : stat.purchaseCount,
-          recycleCount: countType === REQUEST_TYPE.RECYCLE ? stat.recycleCount + Number(amountToAdd.value) : stat.recycleCount
-        }
-        console.log(newStat)
-        updateProductStatistics(newStat)
+          purchaseCount: result.resource.purchaseCount,
+          recycleCount: result.resource.recycleCount,
+        })
       })
       .catch((error) => {
         setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe!'), 'error')
