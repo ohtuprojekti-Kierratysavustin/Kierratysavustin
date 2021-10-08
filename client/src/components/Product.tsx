@@ -65,10 +65,10 @@ const ProductPage: React.FC<Props> = ({ product }) => {
             {user !== null ? (
               <>
                 <Col sm={2} className='product-user-count-form'>
-                  <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.PURCHASE} amountText={'Hankittu'} sendUpdateText={'Hanki'} redoUpdateText={'Peruuta'}/>
+                  <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.PURCHASE} amountText={'Hankittu'} sendUpdateText={'Hanki'} redoUpdateText={'Poista'}/>
                 </Col>
                 <Col sm={2} className='product-user-count-form'>
-                  <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.RECYCLE} amountText={'Kierrätetty'} sendUpdateText={'Kierrätä'} redoUpdateText={'Peruuta'}/>
+                  <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.RECYCLE} amountText={'Kierrätetty'} sendUpdateText={'Kierrätä'} redoUpdateText={'Poista'}/>
                 </Col>
               </>
             ) : (

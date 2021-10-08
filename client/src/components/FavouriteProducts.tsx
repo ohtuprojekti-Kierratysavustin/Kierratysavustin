@@ -39,12 +39,14 @@ const FavouriteProducts: React.FC<Props> = ({ userProducts }) => {
                             <h5>{product.name}</h5>
                           </Row>
                           <Row>
-                            {product.instructions.length !== 0 ? (
+                            {product.instructions.length === 0 ? '' : product.instructions[0].information.length >= 50 ? (
                               <p>
-                                {product.instructions[0].information.slice(0, 50)}
+                                Suositelluin ohje: {product.instructions[0].information.slice(0, 50)}...
                               </p>
                             ) : (
-                              ''
+                              <p>
+                                Suositelluin ohje: {product.instructions[0].information.slice(0, 50)}
+                              </p>
                             )}
                           </Row>
                           <Row>
@@ -54,10 +56,10 @@ const FavouriteProducts: React.FC<Props> = ({ userProducts }) => {
                           </Row>
                         </Col>
                         <Col sm={2}>
-                          <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.PURCHASE} amountText={'Hankittu'} sendUpdateText={'Hanki'} redoUpdateText={'Peruuta'}/>
+                          <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.PURCHASE} amountText={'Hankittu'} sendUpdateText={'Hanki'} redoUpdateText={'Poista'}/>
                         </Col>
                         <Col sm={2}>
-                          <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.RECYCLE} amountText={'Kierrätetty'} sendUpdateText={'Kierrätä'} redoUpdateText={'Peruuta'}/>
+                          <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.RECYCLE} amountText={'Kierrätetty'} sendUpdateText={'Kierrätä'} redoUpdateText={'Poista'}/>
                         </Col>
                       </Row>
                     </Container>

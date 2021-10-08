@@ -11,7 +11,7 @@ const NavigationBar = () => {
   const { user,setUser } = useStore()
   return(
     <Navbar id = 'navbar'  expand='sm'>
-      <Navbar.Brand as={Link} to="/"> etusivu </Navbar.Brand>
+      <Navbar.Brand as={Link} to="/"> Etusivu </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className='mr-auto'>
