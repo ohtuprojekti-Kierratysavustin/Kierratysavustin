@@ -92,10 +92,26 @@ const ProductList: React.FC<Props> = ({ products, setFilteredProducts }) => {
                           {user !== null ? (
                             <>
                               <Col sm={2}>
-                                <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.PURCHASE} amountText={'Hankittu'} sendUpdateText={'Hanki'} redoUpdateText={'Poista'}/>
+                                <ProductUserCountForm
+                                  product={product}
+                                  countType={COUNT_REQUEST_TYPE.PURCHASE}
+                                  amountText={'Hankittu'}
+                                  sendUpdateText={'Hanki'}
+                                  redoUpdateText={'Poista'}
+                                  tooltipAdd={'Lisää hankkimiasi tuotteita tietokantaan.'}
+                                  tooltipDelete={'Poista hankkimiasi tuotteita tietokannasta.'}
+                                />
                               </Col>
                               <Col sm={2}>
-                                <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.RECYCLE} amountText={'Kierrätetty'} sendUpdateText={'Kierrätä'} redoUpdateText={'Poista'}/>
+                                <ProductUserCountForm
+                                  product={product}
+                                  countType={COUNT_REQUEST_TYPE.RECYCLE}
+                                  amountText={'Kierrätetty'}
+                                  sendUpdateText={'Kierrätä'}
+                                  redoUpdateText={'Poista'}
+                                  tooltipAdd={'Kierrätä tuotetta.'}
+                                  tooltipDelete={'Poista tuotteen kierrätys.'}
+                                />
                               </Col>
                             </>
                           ) : (

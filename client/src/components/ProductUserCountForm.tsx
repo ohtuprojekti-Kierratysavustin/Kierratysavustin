@@ -6,20 +6,24 @@ import { Product } from '../types'
 import { useStore } from '../store'
 import useInput from '../utils/useInput'
 import { isInteger } from '../utils/validation'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
 
 type Props = {
   product: Product,
   countType: REQUEST_TYPE,
   amountText: String,
   sendUpdateText: String,
-  redoUpdateText: String
+  redoUpdateText: String,
+  tooltipAdd: String,
+  tooltipDelete: String
 }
 
 // Tooltip napeille, notta mitä tästä lisäyksestä tapahtuu
 // Tuotenäkymässä paremmalle
 // Input vakiona 1., voi laittaa lisää
 
-const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, redoUpdateText }) => {
+const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, redoUpdateText, tooltipAdd, tooltipDelete }) => {
   const [count, setCount] = useState<number>(0)
   const amountToAdd = useInput<number>(1, 1)
   const [inputInvalid, setInputInvalid] = useState<boolean>(false)
@@ -79,12 +83,16 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
           <Container id='votes'>
             <ButtonGroup vertical className='better-votes'>
               {amountText} <br></br>{count} kpl
-              <Button disabled={inputInvalid} variant='success' id="addCountButton" onClick={handleAddCount} >
-                {sendUpdateText}
-              </Button>
-              <Button disabled={inputInvalid} variant='danger' id="redoButton" onClick={handleRedo}>
-                {redoUpdateText}
-              </Button>
+              <OverlayTrigger placement="top" overlay={<Tooltip id='buttonTooltip'>{tooltipAdd}</Tooltip>}>
+                <Button disabled={inputInvalid} variant='success' id='addCountButton' onClick={handleAddCount} >
+                  {sendUpdateText}
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger placement="top" overlay={<Tooltip id='buttonTooltip'>{tooltipDelete}</Tooltip>}>
+                <Button disabled={inputInvalid} variant='danger' id='redoButton' onClick={handleRedo}>
+                  {redoUpdateText}
+                </Button>
+              </OverlayTrigger>
               <input id='input-field' type='number' value={amountToAdd.value} onChange={onInputChange}></input>
             </ButtonGroup>
           </Container>
