@@ -5,12 +5,19 @@ import InfoBar from './InfoBar'
 import { useStore } from '../store'
 
 const RecycleStatistics = () => {
-  const { productStatistics } = useStore()
+  const { productStatistics, user } = useStore()
 
   if (productStatistics.length === 0) {
     return (
       <div>
-        tänne jotain, jos kierrätystilastoja ei ole
+        <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Seuraa kierrättämiesti tuotteiden lukumääriä.'} />
+        <Container id='nostats' >
+          {user
+            ? <div><p>Voit kirjata tuotteita sovellukseen niitä hankkittuasi, ja merkitä niitä myöhemmin kierrätetyksi.<br/>
+              Näin tehdessäsi, näet tältä sivulta tietoja kierrättämiesi tuotteiden määristä ja kierrätysasteestasi.</p></div>
+            : <h5><Link to={'/login'}>Kirjaudu sisään</Link> nähdäksesi tietoja kierrätyksestäsi</h5>
+          }
+        </Container>
       </div>
     )
   }
