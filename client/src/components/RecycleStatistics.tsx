@@ -35,7 +35,7 @@ const RecycleStatistics = () => {
       <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Seuraa kierrättämiesti tuotteiden lukumääriä.'} />
       <Container id='stat-list' >
         <h2>Kierrätetyt tuotteet</h2>
-        <h5>Kokonaiskierrätysaste: {(totalPurchased.recycleCount / totalPurchased.purchaseCount * 100).toFixed(1)}</h5>
+        <h5>Kokonaiskierrätysaste: {(totalPurchased.recycleCount / totalPurchased.purchaseCount * 100).toFixed(1)} %</h5>
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
@@ -48,7 +48,7 @@ const RecycleStatistics = () => {
           </thead>
           <tbody>
             {productStatistics.map(stat =>
-              <tr key={stat.product.id}>
+              <tr key={stat.product.id} id={`listElement${index}`}>
                 <td>{index++}</td>
                 <td>
                   <Link to={`/products/${stat.product.id}`}>{stat.product.name}</Link>
