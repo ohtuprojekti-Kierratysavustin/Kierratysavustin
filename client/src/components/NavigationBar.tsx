@@ -8,7 +8,7 @@ import { useStore } from '../store'
 import '../styles.css'
 
 const NavigationBar = () => {
-  const { user,setUser } = useStore()
+  const { user, setUser, setProductStatistics } = useStore()
   return(
     <Navbar id = 'navbar'  expand='sm'>
       <Navbar.Brand as={Link} to="/"> Etusivu </Navbar.Brand>
@@ -31,6 +31,7 @@ const NavigationBar = () => {
               window.localStorage.clear()
               setUser(null)
               tokenService.removeToken()
+              setProductStatistics([])
             }} to="/">   Kirjaudu ulos
             </Nav.Link>
           </Nav>

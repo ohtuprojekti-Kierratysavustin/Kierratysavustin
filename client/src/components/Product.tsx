@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
   Link
 } from 'react-router-dom'
@@ -23,13 +23,9 @@ type Props = {
 const ProductPage: React.FC<Props> = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
-  const [currentInstruction, setCurrentInstruction] = useState(0)
 
   const routeChange = () => {
     history.goBack()
-  }
-  const handleInstructionClick = (id: number) => {
-    setCurrentInstruction(id)
   }
   useEffect(() => {
     clearNotification()
@@ -47,75 +43,108 @@ const ProductPage: React.FC<Props> = ({ product }) => {
             </Col>
           </Row>
           <Row>
-            <Col sm={10}>
-              <h2>{product.name}</h2>
+            <Col sm={8}>
+              <Row>
+                <h2>{product.name}</h2>
+              </Row>
+              <Row>
+                {user !== null ? (
+                  <>
+                    <Col sm={3}>
+                      <FavoritesForm product = {product}/>
+                    </Col>
+                    <Col sm={3}>
+                      <DeleteProduct product = {product} />
+                    </Col>
+                  </>
+                ) : (
+                  ''
+                )}
+              </Row>
             </Col>
-            <Col sm={2}>
-              {user !== null ? (
-                <div>
-                  <FavoritesForm product = {product}/>
-                  <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.RECYCLE} amountText={'Kierrätetty'} sendUpdateText={'Kierrätä'} redoUpdateText={'Peru viimeisin kierrätys'}/>
-                  <ProductUserCountForm product={product} countType={COUNT_REQUEST_TYPE.PURCHASE} amountText={'Hankittu'} sendUpdateText={'Hanki'} redoUpdateText={'Peru viimeisin hankinta'}/>
-                  <DeleteProduct product={product} />
-                </div>
-              ) : (
-                ''
-              )}
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <h4>
-                Ohjeet kierrätykseen
-              </h4>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              {product.instructions.length !== 0 ? (
-                <p id='top-score'>
-                  {product.instructions[currentInstruction].information}
-                </p>
-              ) : (
-                <span>ei ohjeita</span>
-              )}
-            </Col>
+            {user !== null ? (
+              <>
+                <Col sm={2} className='product-user-count-form'>
+                  <ProductUserCountForm
+                    product={product}
+                    countType={COUNT_REQUEST_TYPE.PURCHASE}
+                    amountText={'Hankittu'}
+                    sendUpdateText={'Hanki'}
+                    redoUpdateText={'Poista'}
+                    tooltipAdd={'Lisää hankkimiasi tuotteita tietokantaan.'}
+                    tooltipDelete={'Poista hankkimiasi tuotteita tietokannasta.'}
+                  />
+                </Col>
+                <Col sm={2} className='product-user-count-form'>
+                  <ProductUserCountForm
+                    product={product}
+                    countType={COUNT_REQUEST_TYPE.RECYCLE}
+                    amountText={'Kierrätetty'}
+                    sendUpdateText={'Kierrätä'}
+                    redoUpdateText={'Poista'}
+                    tooltipAdd={'Kierrätä tuotetta.'}
+                    tooltipDelete={'Poista tuotteen kierrätys.'}
+                  />
+                </Col>
+              </>
+            ) : (
+              ''
+            )}
           </Row>
         </Container>
       </Jumbotron>
       <Container>
-        <Form.Group>
-          {user !== null ? (
-            <InstructionForm product = {product} />
-          ) : (
-            ''
-          )}
-        </Form.Group>
-        <ListGroup id='instruction-list' as='ul' >
-          {product.instructions.map((instruct, index) =>
-            <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id} >
-              <Link style={{ textDecoration: 'none' }}  to={`/products/${product.id}`}>
-                <Container id='vote-form'>
-                  <Row >
-                    <Col onClick={() => handleInstructionClick(index)}>
-                      {instruct.information !== null ? (
-                        <p>
-                          {instruct.information.slice(0, 75)}
-                        </p>
+        <Row>
+          <Col sm={10}>
+            <h3>
+              Kierrätysohjeet
+            </h3>
+          </Col>
+          <Col sm={2}>
+            <Form.Group>
+              {user !== null ? (
+                <InstructionForm product = {product} />
+              ) : (
+                ''
+              )}
+            </Form.Group>
+          </Col>
+        </Row>
+        {product.instructions.length !== 0 ? (
+          <ListGroup id='instruction-list' as='ul' >
+            {product.instructions.map((instruct) =>
+              <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id} >
+                <Link style={{ textDecoration: 'none' }}  to={`/products/${product.id}`}>
+                  <Container id='vote-form'>
+                    <Row >
+                      <Col>
+                        {instruct.information !== null ? (
+                          <p>
+                            {instruct.information.slice(0, 75)}
+                          </p>
+                        ) : (
+                          ''
+                        )}
+                      </Col>
+                      {user !== null ? (
+                        <>
+                          <DeleteInstructionForm product = {product} instruction = {instruct} />
+                          <VoteForm instruction = {instruct} user = {user} product={product} />
+                        </>
                       ) : (
                         ''
                       )}
-                    </Col>
-                    <DeleteInstructionForm product = {product} instruction = {instruct} />
-                    <VoteForm instruction = {instruct} user = {user} product={product} />
-                  </Row>
+                    </Row>
 
-                </Container>
-              </Link>
+                  </Container>
+                </Link>
 
-            </ListGroup.Item>
-          )}
-        </ListGroup>
+              </ListGroup.Item>
+            )}
+          </ListGroup>
+        ) : (
+          <span>ei ohjeita</span>
+        )}
       </Container>
     </div>
   )

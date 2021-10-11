@@ -18,7 +18,14 @@ const FrontPage: React.FC<Props> = ({ products, setFilteredProducts }) => {
 
   return (
     <div>
-      <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Kotitalouden kierrätysavustimen tavoitteena on nostaa kotitalouksien lajitteluastetta. Tule mukaan hakemaan oikea kierrätysohje haluamallesi tuotteelle tai rekisteröidy ja kirjaudu palveluun lisätäksesi tuotteita tai kierrätysohjeita palveluun!'} />
+      <InfoBar
+        header={'Kotitalouden kierrätysavustin'}
+        text={user !== null ? (
+          `Hei ${user.username}! Tervetuloa takaisin käyttämään kierrätysavustinta.`
+        ) : (
+          'Kotitalouden kierrätysavustimen tavoitteena on nostaa kotitalouksien lajitteluastetta. Tule mukaan hakemaan oikea kierrätysohje haluamallesi tuotteelle tai rekisteröidy ja kirjaudu palveluun lisätäksesi tuotteita tai kierrätysohjeita palveluun!'
+        )}
+      />
 
       <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
 

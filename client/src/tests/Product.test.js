@@ -27,8 +27,4 @@ test('Product information can be seen', () => {
   expect(component.container).toHaveTextContent(
     'Mustamakkarakastike pullo'
   )
-
-  expect(component.container).toHaveTextContent(
-    'Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.'
-  )
 })
