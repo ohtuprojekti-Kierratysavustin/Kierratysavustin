@@ -36,12 +36,12 @@ const user: User = {
 
 const statistics: ProductStatistic[] = new Array(
     {
-        product: juustopaketti,
+        productID: juustopaketti,
         purchaseCount: 2,
         recycleCount: 1,
     },
     {
-        product: sipsipussi,
+        productID: sipsipussi,
         purchaseCount: 1,
         recycleCount: 0,
     },
@@ -73,7 +73,7 @@ describe('When user has signed in', () => {
         )
     
         expect(component.container).toHaveTextContent(
-            'Voit kirjata tuotteita sovellukseen niitä hankkittuasi, ja merkitä niitä myöhemmin kierrätetyksi.Näin tehdessäsi, näet tältä sivulta tietoja kierrättämiesi tuotteiden määristä ja kierrätysasteestasi'
+            'Voit kirjata tuotteita sovellukseen niitä hankkittuasi, ja merkitä niitä myöhemmin kierrätetyiksi.Näin tehdessäsi, näet tältä sivulta tietoja kierrättämiesi tuotteiden määristä ja kierrätysasteestasi'
         )
     })
 
