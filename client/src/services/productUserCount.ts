@@ -25,7 +25,7 @@ const getUserCounts = async () => {
   let config = {
     headers: tokenService.getConfig().headers
   }
-  const request = await axios.get(`${baseUrl}/stats`, config)
+  const request = await axios.get(`${process.env.PUBLIC_URL}/api/statistics`, config)
   return request.data
 }
 

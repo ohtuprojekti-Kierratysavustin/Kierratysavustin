@@ -25,7 +25,7 @@ export type User = {
 }
 
 export type ProductStatistic = {
-  product: Product,
+  id: string,
   purchaseCount: number,
   recycleCount: number,
 }

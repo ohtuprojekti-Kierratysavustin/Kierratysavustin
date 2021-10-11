@@ -25,14 +25,15 @@ const RecycleStatistics = () => {
     {
       purchaseCount: a.purchaseCount + b.purchaseCount,
       recycleCount: a.recycleCount + b.recycleCount,
-      product: a.product
+      id: a.id
     }
   ))
+  console.log('nakke', productStatistics)
 
   let index :number = 1
   return (
     <div>
-      <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Seuraa kierrättämiesti tuotteiden lukumääriä.'} />
+      <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Seuraa kierrättämiesi tuotteiden lukumääriä.'} />
       <Container id='stat-list' >
         <h2>Kierrätetyt tuotteet</h2>
         <h5>Kokonaiskierrätysaste: {(totalPurchased.recycleCount / totalPurchased.purchaseCount * 100).toFixed(1)} %</h5>
@@ -48,10 +49,10 @@ const RecycleStatistics = () => {
           </thead>
           <tbody>
             {productStatistics.map(stat =>
-              <tr key={stat.product.id} id={`listElement${index}`}>
+              <tr key={stat.id} id={`listElement${index}`}>
                 <td>{index++}</td>
                 <td>
-                  <Link to={`/products/${stat.product.id}`}>{stat.product.name}</Link>
+                  <Link to={`/products/${stat.id}`}>Tuote</Link>
                 </td>
                 <td>{stat.purchaseCount}</td>
                 <td>{stat.recycleCount}</td>
