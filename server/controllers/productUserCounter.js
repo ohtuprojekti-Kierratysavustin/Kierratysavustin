@@ -47,7 +47,7 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       successMessage += 'Kierrätystilasto päivitetty'
     } else if (body.type === REQUEST_TYPE.PURCHASE) {
       productUserCounter.purchaseCount += amount
-      successMessage += 'Kankintatilasto päivitetty'
+      successMessage += 'Hankintatilasto päivitetty'
     }
 
     await productUserCounter.save()

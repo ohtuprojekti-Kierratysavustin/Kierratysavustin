@@ -10,10 +10,10 @@ const RecycleStatistics = () => {
   if (productStatistics.length === 0) {
     return (
       <div>
-        <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Seuraa kierrättämiesti tuotteiden lukumääriä.'} />
+        <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Seuraa kierrättämiesi tuotteiden lukumääriä.'} />
         <Container id='nostats' >
           {user
-            ? <div><p>Voit kirjata tuotteita sovellukseen niitä hankkittuasi, ja merkitä niitä myöhemmin kierrätetyksi.<br/>
+            ? <div><p>Voit kirjata tuotteita sovellukseen niitä hankkittuasi, ja merkitä niitä myöhemmin kierrätetyiksi.<br/>
               Näin tehdessäsi, näet tältä sivulta tietoja kierrättämiesi tuotteiden määristä ja kierrätysasteestasi.</p></div>
             : <h5><Link to={'/login'}>Kirjaudu sisään</Link> nähdäksesi tietoja kierrätyksestäsi</h5>
           }
@@ -28,7 +28,6 @@ const RecycleStatistics = () => {
       productID: a.productID
     }
   ))
-  console.log('nakke', productStatistics)
 
   let index :number = 1
   return (
