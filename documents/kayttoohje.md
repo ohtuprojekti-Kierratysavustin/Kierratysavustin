@@ -1,4 +1,4 @@
-f# Käyttöohje
+# Käyttöohje
 
 ![Sovelluksen aloitussivu](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/2b5dc2e341f1fb7313bfacffffee14611f0bda7c/documents/kuvat/kierratysavustinetusivu.png)
 
