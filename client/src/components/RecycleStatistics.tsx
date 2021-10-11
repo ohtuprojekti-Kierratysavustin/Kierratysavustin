@@ -25,7 +25,7 @@ const RecycleStatistics = () => {
     {
       purchaseCount: a.purchaseCount + b.purchaseCount,
       recycleCount: a.recycleCount + b.recycleCount,
-      id: a.id
+      productID: a.productID
     }
   ))
   console.log('nakke', productStatistics)
@@ -49,10 +49,10 @@ const RecycleStatistics = () => {
           </thead>
           <tbody>
             {productStatistics.map(stat =>
-              <tr key={stat.id} id={`listElement${index}`}>
+              <tr key={stat.productID.id} id={`listElement${index}`}>
                 <td>{index++}</td>
                 <td>
-                  <Link to={`/products/${stat.id}`}>Tuote</Link>
+                  <Link to={`/products/${stat.productID.id}`}>{stat.productID.name}</Link>
                 </td>
                 <td>{stat.purchaseCount}</td>
                 <td>{stat.recycleCount}</td>

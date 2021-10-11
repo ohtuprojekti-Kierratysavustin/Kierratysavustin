@@ -56,7 +56,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
         setLastAddedAmount(amountToAdd.value)
         setCount(count + Number(amountToAdd.value))
         updateProductStatistics({
-          id: product.id.toString(),
+          productID: product,
           purchaseCount: result.resource.purchaseCount,
           recycleCount: result.resource.recycleCount,
         })

@@ -63,11 +63,11 @@ export const useStore = create<{
     }))
 
 const addOrUpdateRecyclingStat = (stats :ProductStatistic[], newStat :ProductStatistic) :ProductStatistic[] => {
-  if (stats.some(stat => stat.id === newStat.id )) {
+  if (stats.some(stat => stat.productID.id === newStat.productID.id )) {
     const newStats :ProductStatistic[] = stats.map(stat => ({
       ...stat,
-      recycleCount: stat.id === newStat.id ? newStat.recycleCount : stat.recycleCount,
-      purchaseCount: stat.id === newStat.id ? newStat.purchaseCount : stat.purchaseCount
+      recycleCount: stat.productID.id === newStat.productID.id ? newStat.recycleCount : stat.recycleCount,
+      purchaseCount: stat.productID.id === newStat.productID.id ? newStat.purchaseCount : stat.purchaseCount
     }))
     return newStats
   }
