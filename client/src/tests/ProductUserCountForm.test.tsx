@@ -1,13 +1,19 @@
+import React from 'react'
+import '@testing-library/jest-dom/extend-expect'
+import { render, fireEvent, screen } from '@testing-library/react'
+import ProductUserCountForm from '../components/ProductUserCountForm'
+import { Product, ProductUserCount, ProductUserCountUpdate, User } from '../types/objects'
+import { ProductUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE as COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE } from '../services/productUserCount'
+import { PostRequestResponse } from '../types/messages'
+
+
+describe('When everything is ok', () => {
+  it('tests pass', () => {
+    expect(true)
+  })
+})
+
 // TODO korjaa
-
-// import React from 'react'
-// import '@testing-library/jest-dom/extend-expect'
-// import { render, fireEvent, screen } from '@testing-library/react'
-// import ProductUserCountForm from '../components/ProductUserCountForm'
-// import { Product, ProductUserCount, ProductUserCountUpdate, User } from '../types/objects'
-// import { ProductUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE as COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE } from '../services/productUserCount'
-// import { PostRequestResponse } from '../types/messages'
-
 
 // const product: Product = {
 //   id: 1,
