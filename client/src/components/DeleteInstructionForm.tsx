@@ -2,7 +2,7 @@ import React from 'react'
 import ProductService from '../services/products'
 import { useStore } from '../store'
 import { Button } from 'react-bootstrap'
-import { Instruction, Product } from '../types'
+import { Instruction, Product } from '../types/objects'
 
 type Props = {
   instruction: Instruction,

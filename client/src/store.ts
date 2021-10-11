@@ -1,5 +1,5 @@
 import create from 'zustand'
-import { Product, User } from './types'
+import { Product, User } from './types/objects'
 
 export const useStore = create<{
   setNotification: (message: string, condition: string) => void,

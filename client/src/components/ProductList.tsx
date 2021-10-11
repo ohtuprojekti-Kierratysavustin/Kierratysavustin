@@ -10,9 +10,9 @@ import InfoBar from './InfoBar'
 import FavoritesForm from './FavoritesForm'
 import DeleteProduct from './DeleteProduct'
 import '../styles.css'
-import { Product } from '../types'
+import { Product } from '../types/objects'
 import ProductUserCountForm from './ProductUserCountForm'
-import { REQUEST_TYPE as COUNT_REQUEST_TYPE } from '../services/productUserCount'
+import productUserCountService, { PRODUCT_USER_COUNT_REQUEST_TYPE as COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE } from '../services/productUserCount'
 
 
 type Props = {
@@ -94,23 +94,25 @@ const ProductList: React.FC<Props> = ({ products, setFilteredProducts }) => {
                               <Col sm={2}>
                                 <ProductUserCountForm
                                   product={product}
-                                  countType={COUNT_REQUEST_TYPE.PURCHASE}
+                                  countType={COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE}
                                   amountText={'Hankittu'}
                                   sendUpdateText={'Hanki'}
-                                  redoUpdateText={'Poista'}
-                                  tooltipAdd={'Lisää hankkimiasi tuotteita tietokantaan.'}
-                                  tooltipDelete={'Poista hankkimiasi tuotteita tietokannasta.'}
+                                  subtractUpdateText={'Vähennä'}
+                                  tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
+                                  tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
+                                  productUserCountService={productUserCountService}
                                 />
                               </Col>
                               <Col sm={2}>
                                 <ProductUserCountForm
                                   product={product}
-                                  countType={COUNT_REQUEST_TYPE.RECYCLE}
+                                  countType={COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE}
                                   amountText={'Kierrätetty'}
                                   sendUpdateText={'Kierrätä'}
-                                  redoUpdateText={'Poista'}
-                                  tooltipAdd={'Kierrätä tuotetta.'}
-                                  tooltipDelete={'Poista tuotteen kierrätys.'}
+                                  subtractUpdateText={'Vähennä'}
+                                  tooltipAdd={'Kasvata tuotteen kierrätystilastoa.'}
+                                  tooltipDelete={'Vähennä tuotteen kierrätystilastoa.'}
+                                  productUserCountService={productUserCountService}
                                 />
                               </Col>
                             </>

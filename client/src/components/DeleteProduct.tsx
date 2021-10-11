@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import productService from '../services/products'
 import { useStore } from '../store'
 import { useHistory } from 'react-router-dom'
-import { Product } from '../types'
+import { Product } from '../types/objects'
 
 type Props = {
   product: Product

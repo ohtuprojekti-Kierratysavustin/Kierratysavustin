@@ -33,8 +33,8 @@ h2 {
     padding-top: 20px;
 }
 
-#input-field {
-  width: 82px;
+.count-input {
+  width: 100%;
 }
 
 #instruction-list {

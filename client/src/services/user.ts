@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Product, User } from '../types'
+import { Product, User } from '../types/objects'
 import tokenService from './token'
 const registerUrl = `${process.env.PUBLIC_URL}/api/users`
 const userUrl = `${process.env.PUBLIC_URL}/api/users`
