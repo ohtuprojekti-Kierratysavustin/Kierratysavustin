@@ -12,8 +12,13 @@ statisticsRouter.get('/', async (req, res, next) => {
     const productStats = await ProductUserCounter.find({userID: user.id})
     const filteredProducts = allProducts.filter(product => productStats.some(stat =>
       product._id.toString() === stat.productID.toString()
-    ))
-    res.status(STATUS_CODES.OK).json(filteredProducts.map((product) => product.toJSON()))
+    )).map(product => {
+      const matchingStatistic = productStats.find(stat =>
+        product._id.toString() === stat.productID.toString()
+      )
+      return {...product.toJSON(), recycleCount: matchingStatistic.recycleCount, purchaseCount: matchingStatistic.purchaseCount}
+    })
+    res.status(STATUS_CODES.OK).json(filteredProducts)
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     next(handledError)
