@@ -24,7 +24,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
   const [count, setCount] = useState<number>(0)
   const amountToAdd = useInput<number>(1, 1)
   const [inputInvalid, setInputInvalid] = useState<boolean>(false)
-  const { setNotification, clearNotification } = useStore()
+  const { setNotification, clearNotification, updateProductStatistics } = useStore()
 
   const onInputChange = (event: any) => {
     if (isInteger(event.target.value) && Number.parseInt(event.target.value) > 0) {
@@ -37,7 +37,6 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
     amountToAdd.onChange(event)
   }
 
-
   useEffect(() => {
     const getCounts = async () => {
       await productUserCountService.getProductUserCounts(product.id)
@@ -49,12 +48,21 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
     getCounts()
   }, [count])
 
+  const updateStatsInStore = (purchases: number, recycles: number) => {
+    updateProductStatistics({
+      productID: product,
+      purchaseCount: purchases,
+      recycleCount: recycles,
+    })
+  }
+
   const handleAddCount: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     clearNotification()
     await productUserCountService.updateCount({ productID: product.id, amount: amountToAdd.value, type: countType })
-      .then(() => {
+      .then((result) => {
         setCount(count + Number(amountToAdd.value))
+        updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
       })
       .catch((error) => {
         setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe!'), 'error')
@@ -65,8 +73,9 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
     event.preventDefault()
     clearNotification()
     await productUserCountService.updateCount({ productID: product.id, amount: -amountToAdd.value, type: countType })
-      .then(() => {
+      .then((result) => {
         setCount(count - Number(amountToAdd.value))
+        updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
       })
       .catch((error) => {
         setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe'), 'error')

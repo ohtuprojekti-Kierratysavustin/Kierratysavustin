@@ -25,14 +25,20 @@ export type User = {
 }
 
 export type ProductUserCount = {
-    recycleCount: number,
-    purchaseCount: number,
-    userID: number,
-    productID: number
+  recycleCount: number,
+  purchaseCount: number,
+  userID: number,
+  productID: number
 }
 
 export type ProductUserCountUpdate = {
   productID: number,
   amount: number,
   type: String
+}
+
+export type ProductStatistic = {
+  productID: Product,
+  purchaseCount: number,
+  recycleCount: number,
 }

@@ -3,9 +3,10 @@ import {
   Switch, Route, useRouteMatch
 } from 'react-router-dom'
 import userService from './services/user'
-import NavigationBar from './components/NavigationBar'
 import productService from './services/products'
 import tokenService from './services/token'
+import countService from './services/productUserCount'
+import NavigationBar from './components/NavigationBar'
 import ProductForm from './components/ProductForm'
 import ProductPage from './components/Product'
 import ProductList from './components/ProductList'
@@ -13,12 +14,13 @@ import RegisterForm from './components/RegisterForm'
 import ProductFilterForm from './components/FrontPage'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import RecycleStatistics from './components/RecycleStatistics'
 import { useStore } from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles.css'
 
 const App = () => {
-  const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites, setLikes, setDislikes } = useStore()
+  const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites, setLikes, setDislikes, setProductStatistics } = useStore()
 
   useEffect(() => {
     productService.getAll().then(p => setProducts(p))
@@ -33,6 +35,7 @@ const App = () => {
       productService.getFavorites(userlogin.id).then(favorites => setFavorites(favorites))
       userService.getLikes().then(likes => setLikes(likes))
       userService.getDislikes().then(dislikes => setDislikes(dislikes))
+      countService.getUserCounts().then(stats => setProductStatistics(stats))
     }
   }, [])
 
@@ -63,6 +66,9 @@ const App = () => {
         </Route>
         <Route path="/searchResults">
           <ProductList products={filteredProducts} setFilteredProducts={setFilteredProducts} />
+        </Route>
+        <Route path="/statistics">
+          <RecycleStatistics />
         </Route>
         <Route path="/">
           <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />
