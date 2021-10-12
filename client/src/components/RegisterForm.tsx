@@ -35,7 +35,7 @@ const RegisterForm = () => {
         submitProps.resetForm()
         setTimeout(() => {
           history.push('/login')
-        }, 2000)
+        }, 3000)
       })
       .catch((error) => {
         submitProps.setSubmitting(false)

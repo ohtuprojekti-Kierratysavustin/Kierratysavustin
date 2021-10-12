@@ -4,5 +4,5 @@ Authorization: bearer lisää-token-tähän
 {
     "productID": "6148cdbf5a5039cea997ff90",
     "amount": 1,
-    "type": "recycleCount"
+    "type": "purchaseCount"
 }

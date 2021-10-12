@@ -196,7 +196,7 @@ const purchaseProductOnce = async (productID, token) => {
   const content = {
     productID: productID,
     amount: 1,
-    type: REQUEST_TYPE.RECYCLE
+    type: REQUEST_TYPE.PURCHASE
   }
   const result = await api
     .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)

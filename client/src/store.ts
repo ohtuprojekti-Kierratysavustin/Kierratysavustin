@@ -1,5 +1,5 @@
 import create from 'zustand'
-import { Product, User } from './types'
+import { Product, User, ProductStatistic } from './types'
 
 export const useStore = create<{
   setNotification: (message: string, condition: string) => void,
@@ -11,12 +11,15 @@ export const useStore = create<{
   setFilteredProducts: (param: Product[]) => void,
   setProducts: (param: Product[]) => void,
   updateProduct: (param: Product) => void,
+  updateProductStatistics: (newStat: ProductStatistic) => void,
+  setProductStatistics: (stats: ProductStatistic[]) => void,
   user: User | null,
   products: Product[],
   favorites: Product[],
   likes: number[],
   dislikes: number[],
   filteredProducts: Product[],
+  productStatistics: ProductStatistic[],
   notification: { message: string | null, condition: string | null},
   timer: any
     }>(set => ({
@@ -25,6 +28,7 @@ export const useStore = create<{
       favorites: [],
       likes: [],
       dislikes: [],
+      productStatistics: [],
       user: null,
       notification: { message: null, condition: null },
       timer: null,
@@ -35,6 +39,7 @@ export const useStore = create<{
       setDislikes: (param) => set(() => ({ dislikes: param })),
       setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
       clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
+
       setNotification: (message, condition) => set(state => ({
         ...state,
         clearTimer: clearTimeout(state.timer),
@@ -42,8 +47,29 @@ export const useStore = create<{
         timer: setTimeout(() => {
           state.clearNotification() }, 5000)
       })),
+
       updateProduct: (param) => set(state => ({
         ...state,
         products: state.products.map((p) => p.id !== param.id ? p : param)
-      }))
+      })),
+
+      updateProductStatistics: (newStat) =>
+        set((state) => ({
+          ...state,
+          productStatistics: addOrUpdateRecyclingStat(state.productStatistics, newStat)
+        })),
+
+      setProductStatistics: (stats) => set(() => ({ productStatistics: stats })),
     }))
+
+const addOrUpdateRecyclingStat = (stats :ProductStatistic[], newStat :ProductStatistic) :ProductStatistic[] => {
+  if (stats.some(stat => stat.productID.id === newStat.productID.id )) {
+    const newStats :ProductStatistic[] = stats.map(stat => ({
+      ...stat,
+      recycleCount: stat.productID.id === newStat.productID.id ? newStat.recycleCount : stat.recycleCount,
+      purchaseCount: stat.productID.id === newStat.productID.id ? newStat.purchaseCount : stat.purchaseCount
+    }))
+    return newStats
+  }
+  return [...stats, newStat]
+}

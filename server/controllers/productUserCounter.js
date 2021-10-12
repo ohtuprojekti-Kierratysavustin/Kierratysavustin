@@ -6,6 +6,7 @@ const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')
 
 const { REQUEST_TYPE } = require('../enum/productUserCount')
+const { tryCastToInteger } = require('../utils/validation')
 
 const URLS = { BASE_URL: '/count',
   UPDATE_PRODUCT_USER_COUNT: '/product/user',
@@ -20,7 +21,7 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
 
     if (body.type !== REQUEST_TYPE.RECYCLE && body.type !== REQUEST_TYPE.PURCHASE) {
       throw new InvalidParameterException(
-        'Virheelliset kyselyn parametrit. Sallittuja: [ '
+        'Virheellinen kyselyn parametri \'type\'. Sallittuja: [ '
         + REQUEST_TYPE.PURCHASE + ', ' + REQUEST_TYPE.RECYCLE + ' ] '
         + ' Annettiin \'' + body.type + '\'')
     }
@@ -38,13 +39,15 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       })
     }
 
+    let amount = tryCastToInteger(body.amount, 'Lisättävän määrän on oltava kokonaisluku! Annettiin {value}', 'amount')
+
     let successMessage = 'Tuotteen \'{nimi}\' '
     if (body.type === REQUEST_TYPE.RECYCLE) {
-      productUserCounter.recycleCount += body.amount
-      successMessage += 'kierrätystilasto päivitetty'
+      productUserCounter.recycleCount += amount
+      successMessage += 'Kierrätystilasto päivitetty'
     } else if (body.type === REQUEST_TYPE.PURCHASE) {
-      productUserCounter.purchaseCount += body.amount
-      successMessage += 'hankintatilasto päivitetty'
+      productUserCounter.purchaseCount += amount
+      successMessage += 'Hankintatilasto päivitetty'
     }
 
     await productUserCounter.save()
