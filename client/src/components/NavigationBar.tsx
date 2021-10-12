@@ -8,19 +8,18 @@ import { useStore } from '../store'
 import '../styles.css'
 
 const NavigationBar = () => {
-  const { user,setUser } = useStore()
+  const { user, setUser, setProductStatistics } = useStore()
   return(
     <Navbar id = 'navbar'  expand='sm'>
-      <Navbar.Brand as={Link} to="/"> etusivu </Navbar.Brand>
+      <Navbar.Brand as={Link} to="/"> Etusivu </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className='mr-auto'>
-          {user !== null ? (
-            <Nav.Link id='productForm' as={Link} to="/new">Lisää tuote</Nav.Link>
-          ) : (
-            ''
-          )}
+          {user !== null
+            ? (<Nav.Link id='productForm' as={Link} to="/new">Lisää tuote</Nav.Link>)
+            : ('')}
           <Nav.Link id='productList' as={Link} to="/products">Tuotteet</Nav.Link>
+          <Nav.Link id='recyclingStats' as={Link} to="/statistics">Kierrätyslaskuri</Nav.Link>
         </Nav>
 
         {user !== null ? (
@@ -32,6 +31,7 @@ const NavigationBar = () => {
               window.localStorage.clear()
               setUser(null)
               tokenService.removeToken()
+              setProductStatistics([])
             }} to="/">   Kirjaudu ulos
             </Nav.Link>
           </Nav>

@@ -1,14 +1,15 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import productService from '../services/products'
 import userService from '../services/user'
 import tokenService from '../services/token'
+import countService from '../services/productUserCount'
 import { useStore } from '../store'
 import { useHistory } from 'react-router-dom'
 
 import { Container, Button, Form } from 'react-bootstrap'
 
 const LoginForm = () => {
-  const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes } = useStore()
+  const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes, setProductStatistics } = useStore()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -16,23 +17,42 @@ const LoginForm = () => {
     clearNotification()
   }, [])
 
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = async(values) => {
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (values) => {
     values.preventDefault()
-    try {
-      const user = await userService.loginUser({ username:username, password:password })
-      setUser(user)
-      tokenService.setToken(user.token)
-      window.localStorage.setItem(
-        'loggedUser', JSON.stringify(user)
-      )
-      productService.getFavorites(user.id).then(favorites => setFavorites(favorites))
-      userService.getLikes().then(likes => setLikes(likes))
-      userService.getDislikes().then(dislikes => setDislikes(dislikes))
-      setNotification('Kirjautuminen onnistui', 'success')
-      history.push('/')
-    } catch (e) {
-      setNotification('Väärä nimi tai salasana', 'error')
-    }
+    await userService.loginUser({ username: username, password: password })
+      .then((user) => {
+        setUser(user)
+        tokenService.setToken(user.token)
+        window.localStorage.setItem(
+          'loggedUser', JSON.stringify(user)
+        )
+        productService.getFavorites(user.id)
+          .then(favorites => setFavorites(favorites))
+          .catch((error) => {
+            setNotification((error.response.data.message ? error.response.data.message : 'Odottamaton virhe haettaessa suosikkituotteita!'), 'error')
+          })
+        userService.getLikes()
+          .then(likes => setLikes(likes))
+          .catch((error) => {
+            setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
+          })
+        userService.getDislikes()
+          .then(dislikes => setDislikes(dislikes))
+          .catch((error) => {
+            setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
+          })
+        countService.getUserCounts()
+          .then(counts => setProductStatistics(counts))
+          .catch((error) => {
+            setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe haettaessa kierrätystatistiikkaa'), 'error')
+          })
+        setNotification('Kirjautuminen onnistui', 'success')
+        history.push('/')
+      })
+      .catch((error) => {
+        setNotification((error.response.data.message ? error.response.data.message : 'Väärä nimi tai salasana'), 'error')
+      })
+
   }
   return (
 
@@ -46,7 +66,7 @@ const LoginForm = () => {
               type="username"
               name="username"
               id="usernameInput"
-              onChange = {({ target }) => setUsername(target.value)}
+              onChange={({ target }) => setUsername(target.value)}
             />
           </Form.Group>
           <Form.Group>
@@ -55,7 +75,7 @@ const LoginForm = () => {
               type="password"
               name="password"
               id="passwordInput"
-              onChange = {({ target }) => setPassword(target.value)}
+              onChange={({ target }) => setPassword(target.value)}
             />
 
           </Form.Group>
@@ -63,10 +83,11 @@ const LoginForm = () => {
             id='loginSubmit'
             type="submit"
           >
-                    Kirjaudu
+            Kirjaudu
           </Button>
         </Form>
       </Container>
     </div>
-  )}
+  )
+}
 export default LoginForm

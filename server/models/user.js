@@ -5,8 +5,8 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
-    required: true,
-    minlength: 3
+    required: [true, 'Käyttäjänimi vaaditaan!'],
+    minlength: [3, 'Käyttäjänimen on oltava vähintään 3 merkkiä pitkä!']
   },
   passwordHash: String,
   products: [
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
   ],
 })
 
-userSchema.plugin(uniqueValidator)
+userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimi \'{VALUE}\' on jo käytössä!' })
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()

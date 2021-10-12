@@ -1,7 +1,12 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { 
+    type: String, 
+    required: [true, 'Tuotteen nimi vaaditaan!'],
+    unique: true 
+  },
   instructions: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -17,10 +22,11 @@ const productSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: [true, 'Tuote on yhdistettävä käyttäjään! Käyttäjän ID:tä ei annettu!'],
   }
 })
 
+productSchema.plugin(uniqueValidator, { message: 'Tuote \'{VALUE}\' on jo järjestelmässä!' })
 productSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()

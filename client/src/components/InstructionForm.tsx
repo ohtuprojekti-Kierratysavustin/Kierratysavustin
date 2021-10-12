@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import productService from '../services/products'
-import { Formik, Form, ErrorMessage, useField } from 'formik'
+import { Formik, Form, useField } from 'formik'
 import * as yup from 'yup'
 import { useStore } from '../store'
 import {  Form as Formo, Button,  Modal } from 'react-bootstrap'
@@ -13,7 +13,9 @@ type InstructionFormProps = {
 const InstructionForm: React.FC<InstructionFormProps> = ({ product }) => {
   const [modalShow, setModalShow] = useState(false)
 
-  const handleClose = () => setModalShow(false)
+  const handleClose = () => {
+    setModalShow(false)
+  }
   const handleShow = () => setModalShow(true)
 
   return (
@@ -76,7 +78,10 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
   }
 
   const InstructionSchema = yup.object().shape({
-    instructionText: yup.string().min(3, 'Ohjeen tulee olla vähintään 3 kirjainta pitkä').max(500, 'Ohje saa olla enintään 500 merkkiä pitkä').required('Ohje vaaditaan'),
+    instructionText: yup.string()
+      .min(3, 'Ohjeen tulee olla vähintään 3 kirjainta pitkä')
+      .max(500, 'Ohje saa olla enintään 500 merkkiä pitkä')
+      .required('Ohje vaaditaan'),
   })
 
   const initialValues: InstructionPopupValues = {
@@ -87,18 +92,18 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
     const information = values.instructionText
     const info = { information }
     productService.createInstruction(props.product.id, info)
-      .then(i => {
-        props.product.instructions.push(i)
+      .then(response => {
+        props.product.instructions.push(response.resource)
         props.product.instructions.sort((a, b) => b.score - a.score)
         updateProduct(props.product)
         values.instructionText = ''
         props.handleClose()
-        setNotification('Ohje lisätty!', 'success')
-      }).catch(e => {
-        console.log(e)
-        notify('Ohjeen lisääminen ei onnistunut', 'error')
+        setNotification(response.message, 'success')
+      }).catch((error) => {
+        notify((error.response.data.message ? error.response.data.message : 'Ohjetta lisättäessä tapahtui odottamaton virhe!'), 'error')
       })
   }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -117,13 +122,12 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
           >
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">
-                Uusi ohje tuotteelle
+                Uusi kierrätysohje tuotteelle
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Formo as={Form} >
                 <Formo.Group>
-                  <Formo.Label htmlFor="instructionText">kierrätysohje</Formo.Label>
                   <Formo.Control as={TextArea}
                     type='textarea'
                     name='instructionText'
@@ -133,7 +137,6 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
                     className={errors.instructionText && touched.instructionText ?
                       'input-error' : undefined}
                   />
-                  <ErrorMessage name="instructionText" component="span" className="error" />
                 </Formo.Group>
                 <Button
                   id="addInstruction"
@@ -141,7 +144,7 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
                   className={!(dirty && isValid) ? 'disabled-btn' : ''}
                   disabled={!(dirty && isValid)}
                 //onClick={() => handleSubmit()}
-                >lisää</Button>
+                >Lisää</Button>
               </Formo>
             </Modal.Body>
           </Modal>

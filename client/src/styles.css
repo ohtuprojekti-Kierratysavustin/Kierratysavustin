@@ -27,6 +27,16 @@ html {
     background-color: var(--background-color);
 }
 
+h2 {
+    padding-left: 13px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+#input-field {
+  width: 82px;
+}
+
 #instruction-list {
     max-height: 300px;
     overflow-y: scroll;
@@ -41,6 +51,9 @@ html {
     margin-left: -width;
 }
 
+.tooltip.show /* The CSS classes that the tooltip has */ {
+    opacity: 0.5!important; /* or whatever */
+}
 .better-votes {
     padding-left: 10px;
 }

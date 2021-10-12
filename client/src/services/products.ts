@@ -29,7 +29,8 @@ const getFavorites = (id: number) => {
 }
 
 const remove = (id: number) => {
-  axios.delete(`${baseUrl}/${id}`, tokenService.getConfig())
+  const request = axios.delete(`${baseUrl}/${id}`, tokenService.getConfig())
+  return request.then(response => response.data)
 }
 
 

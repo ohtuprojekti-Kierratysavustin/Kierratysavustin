@@ -1,12 +1,12 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import productService from '../services/products'
-import { useStore  } from '../store'
+import { useStore } from '../store'
 import { useHistory } from 'react-router-dom'
 import { Product } from '../types'
 
 type Props = {
-    product: Product
+  product: Product
 }
 
 const DeleteProduct: React.FC<Props> = ({ product }) => {
@@ -21,14 +21,16 @@ const DeleteProduct: React.FC<Props> = ({ product }) => {
   const handleClick: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     if (window.confirm(`Poista tuote ${product.name}`)) {
-      try {
-        await productService.remove(product.id)
-        setProducts(products.filter(p => p.id !== product.id))
-        history.push('/products')
-        setNotification(`Tuote ${product.name} poistettu onnistuneesti`, 'success')
-      } catch(error) {
-        setNotification('Tuotteen poistaminen ei onnistunut', 'error')
-      }
+      await productService.remove(product.id)
+        .then((response) => {
+          setProducts(products.filter(p => p.id !== product.id))
+          history.push('/products')
+          setNotification(response.message, 'success')
+        })
+        .catch((error) => {
+          setNotification((error.response.data.message ? error.response.data.message : 'Tuotetta poistettaessa tapahtui odottamaton virhe!')
+            , 'error')
+        })
     }
   }
 
@@ -36,7 +38,7 @@ const DeleteProduct: React.FC<Props> = ({ product }) => {
     return (
       <div>
         <Button variant={'outline-danger'} id="deleteItem" onClick={handleClick}>
-        Poista tuote
+          Poista tuote
         </Button>
       </div>
     )

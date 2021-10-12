@@ -31,7 +31,7 @@ const SearchBarForm = ({ products, setFilteredProducts }: Props) => {
                   <Button id="searchBtn" type='submit' size='lg' variant='outline-dark'>Etsi</Button>
                 </InputGroup.Prepend>
                 <Form.Control
-                  placeholder='Hae'
+                  placeholder='Kirjoita hakusana...'
                   size='lg'
                   id="searchInput"
                   type='text'

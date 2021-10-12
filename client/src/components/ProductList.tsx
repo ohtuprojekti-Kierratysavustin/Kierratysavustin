@@ -11,7 +11,9 @@ import FavoritesForm from './FavoritesForm'
 import DeleteProduct from './DeleteProduct'
 import '../styles.css'
 import { Product } from '../types'
-import RecycleForm from './RecycleForm'
+import ProductUserCountForm from './ProductUserCountForm'
+import { REQUEST_TYPE as COUNT_REQUEST_TYPE } from '../services/productUserCount'
+
 
 type Props = {
   products: Product[],
@@ -57,33 +59,64 @@ const ProductList: React.FC<Props> = ({ products, setFilteredProducts }) => {
                     <Media.Body>
                       <Container>
                         <Row>
-                          <Col>
-                            <h5>{product.name}</h5>
+                          <Col sm={8}>
+                            <Row>
+                              <h5>{product.name}</h5>
+                            </Row>
+                            <Row>
+                              {product.instructions.length === 0 ? '' : product.instructions[0].information.length >= 50 ? (
+                                <p>
+                                  Suositelluin ohje: {product.instructions[0].information.slice(0, 50)}...
+                                </p>
+                              ) : (
+                                <p>
+                                  Suositelluin ohje: {product.instructions[0].information.slice(0, 50)}
+                                </p>
+                              )}
+                            </Row>
+                            <Row>
+                              {user !== null ? (
+                                <div className='ListItemButtons'>
+                                  <Col>
+                                    <FavoritesForm product={product} />
+                                  </Col>
+                                  <Col>
+                                    <DeleteProduct product={product} />
+                                  </Col>
+                                </div>
+                              ) : (
+                                ''
+                              )}
+                            </Row>
                           </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-
-                            {product.instructions.length !== 0 ? (
-                              <p>
-                                {product.instructions[0].information.slice(0, 50)}
-                              </p>
-                            ) : (
-                              ''
-                            )}
-                            {user !== null ? (
-                              <div className='ListItemButtons'>
-                                <FavoritesForm product={product} />
-                                <RecycleForm product={product} />
-                              </div>
-                            ) : (
-                              ''
-                            )}
-
-                          </Col>
-                          <Col>
-                            <DeleteProduct product={product} />
-                          </Col>
+                          {user !== null ? (
+                            <>
+                              <Col sm={2}>
+                                <ProductUserCountForm
+                                  product={product}
+                                  countType={COUNT_REQUEST_TYPE.PURCHASE}
+                                  amountText={'Hankittu'}
+                                  sendUpdateText={'Hanki'}
+                                  redoUpdateText={'Poista'}
+                                  tooltipAdd={'Lisää hankkimiasi tuotteita tietokantaan.'}
+                                  tooltipDelete={'Poista hankkimiasi tuotteita tietokannasta.'}
+                                />
+                              </Col>
+                              <Col sm={2}>
+                                <ProductUserCountForm
+                                  product={product}
+                                  countType={COUNT_REQUEST_TYPE.RECYCLE}
+                                  amountText={'Kierrätetty'}
+                                  sendUpdateText={'Kierrätä'}
+                                  redoUpdateText={'Poista'}
+                                  tooltipAdd={'Kierrätä tuotetta.'}
+                                  tooltipDelete={'Poista tuotteen kierrätys.'}
+                                />
+                              </Col>
+                            </>
+                          ) : (
+                            ''
+                          )}
                         </Row>
                       </Container>
                     </Media.Body>

@@ -83,7 +83,6 @@ test('InstructionList order changes when score changes', () => {
   productA.instructions.push(instructionA)
   productA.instructions.push(instructionB)
   productA.instructions.push(instructionC)
-  //console.log(productA.instructions)
   const componentA = render(
     <VoteForm instruction = {instructionA}  user={user} product={productA} />
   )

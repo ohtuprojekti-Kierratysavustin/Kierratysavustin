@@ -23,3 +23,9 @@ export type User = {
   dislikes: number[],
   products: number[]
 }
+
+export type ProductStatistic = {
+  productID: Product,
+  purchaseCount: number,
+  recycleCount: number,
+}

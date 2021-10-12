@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import userService from '../services/user'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
-import { Container,Button, Form as Formo } from 'react-bootstrap'
+import { Container, Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
 import { useStore } from '../store'
@@ -19,8 +19,8 @@ const RegisterForm = () => {
   }, [])
 
   const SignupSchema = yup.object().shape({
-    username: yup.string().min(2, 'Nimen tulee olla vähintään 2 kirjainta pitkä').required('Käyttäjänimi vaaditaan'),
-    password: yup.string().min(6, 'Salasanan tulee olla vähintään 6 kirjainta pitkä').required('Salasana vaaditaa')
+    username: yup.string().min(3, 'Nimen tulee olla vähintään 3 kirjainta pitkä').required('Käyttäjänimi vaaditaan'),
+    password: yup.string().min(6, 'Salasanan tulee olla vähintään 6 kirjainta pitkä').required('Salasana vaaditaan')
   })
 
   const initialValues: RegisterFormValues = {
@@ -28,17 +28,20 @@ const RegisterForm = () => {
     password: ''
   }
   const onSubmit = async (values: RegisterFormValues, submitProps: FormikHelpers<RegisterFormValues>) => {
-    try {
-      await userService.createUser(values)
-      setNotification('Rekisteröityminen onnistui', 'success')
-      submitProps.setSubmitting(false)
-      submitProps.resetForm()
-      history.push('/login')
-    } catch (error) {
-      submitProps.setSubmitting(false)
-      submitProps.resetForm()
-      setNotification('Käyttäjätunnus on jo käytössä', 'error')
-    }
+    await userService.createUser(values)
+      .then((response) => {
+        setNotification(response.data.message, 'success')
+        submitProps.setSubmitting(false)
+        submitProps.resetForm()
+        setTimeout(() => {
+          history.push('/login')
+        }, 3000)
+      })
+      .catch((error) => {
+        submitProps.setSubmitting(false)
+        submitProps.resetForm()
+        setNotification(error.response.data.message, 'error')
+      })
   }
 
   return (
@@ -91,7 +94,7 @@ const RegisterForm = () => {
                   className={!(dirty && isValid) ? 'disabled-btn' : ''}
                   disabled={!(dirty && isValid)}
                 >
-                    Rekisteröidy
+                  Rekisteröidy
                 </Button>
               </Form>
             </Container>

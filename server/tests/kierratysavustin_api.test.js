@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const supertest = require('supertest')
+//const supertest = require('supertest')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
@@ -7,6 +7,7 @@ const Product = require('../models/product')
 const User = require('../models/user')
 const Instruction = require('../models/instruction')
 const helper = require('./test_helper')
+const STATUS_CODES = require('http-status')
 
 let token = undefined
 let user = undefined
@@ -17,7 +18,7 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
-  console.log('Starting to initialize test!')
+  //console.log('Starting to initialize test!')
   await helper.clearDatabase()
 
   let userObject = new User({
@@ -32,14 +33,14 @@ beforeEach(async () => {
   })
   productObject.instructions = productObject.instructions.concat(instructionObject.id)
   await productObject.save()
-  console.log('Product 1 initialized for test', productObject)
+  //console.log('Product 1 initialized for test', productObject)
   await instructionObject.save()
-  console.log('Instruction 1 initialized for test', instructionObject)
+  //console.log('Instruction 1 initialized for test', instructionObject)
 
 
   productObject = new Product({ name: helper.productsData[1].name, user: user.id })
   await productObject.save()
-  console.log('Product 1 initialized for test', productObject)
+  //console.log('Product 1 initialized for test', productObject)
 })
 
 test('all products are returned', async () => {
@@ -108,7 +109,7 @@ test('Product cannot be added if not logged in', async () => {
     name: 'maito',
   }
   const response = await helper.addNewProduct(newProduct, 'NO_TOKEN')
-  expect(response.status).toBe(401)
+  expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
   const response2 = await helper.getProducts()
   expect(response2.body).toHaveLength(helper.productsData.length)
 })
@@ -156,7 +157,7 @@ describe('One account already in database', () => {
     const user = new User({ username: 'root', passwordHash })
 
     await user.save()
-    console.log('User initialized for test: ', user)
+    //console.log('User initialized for test: ', user)
   })
   test('account can be made with new username', async () => {
     const usersAtStart = await helper.usersInDb()
@@ -165,7 +166,7 @@ describe('One account already in database', () => {
       password: 'adminn',
     }
     const response = await helper.addNewUser(newUser)
-    expect(response.status).toBe(201)
+    expect(response.status).toBe(STATUS_CODES.CREATED)
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
@@ -188,7 +189,7 @@ describe('One account already in database', () => {
         password: 'salasana',
       }
       token = await helper.getToken(user)
-      console.log('Token initalized for test: ', token)
+      //console.log('Token initalized for test: ', token)
     })
 
     test('Product can be added', async () => {
@@ -203,12 +204,12 @@ describe('One account already in database', () => {
     })
 
     test('Product can be removed by creator', async () => {
-      const newProduct = await helper.addNewProduct({ name: 'litran mitta' }, token)
-      let response = await helper.removeProduct(newProduct.body.id, token)
-      expect(response.status).toBe(200)
+      const newProductRes = await helper.addNewProduct({ name: 'litran mitta' }, token)
+      let response = await helper.removeProduct(newProductRes.body.resource.id, token)
+      expect(response.status).toBe(STATUS_CODES.OK)
       let allProducts = await helper.getProducts()
 
-      allProducts.body.map(p => expect(p.name).not.toContain(newProduct.body.name))
+      allProducts.body.map(p => expect(p.name).not.toContain(newProductRes.body.resource.name))
     })
 
     test('Product cannot be removed by non-creator', async () => {
@@ -216,7 +217,7 @@ describe('One account already in database', () => {
       let productId = allProducts.body[0].id
 
       let response = await helper.removeProduct(productId, token)
-      expect(response.status).toBe(403)
+      expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
 
       const productsAfter = await helper.getProducts()
       expect(productsAfter.body).toHaveLength(helper.productsData.length)
@@ -229,10 +230,10 @@ describe('One account already in database', () => {
       const product = allProducts.body[0]
 
       const response = await helper.addFavourite(product.id, token)
-      expect(response.status).toBe(201)
+      expect(response.status).toBe(STATUS_CODES.OK)
 
       const decodedToken = jwt.verify(token, config.SECRET)
-      expect(response.body.users[0]).toBe(decodedToken.id)
+      expect(response.body.resource.users[0]).toBe(decodedToken.id)
     })
 
     test('user can remove products from favorites', async () => {
@@ -241,19 +242,19 @@ describe('One account already in database', () => {
 
       // Lisätään
       const response = await helper.addFavourite(product.id, token)
-      expect(response.status).toBe(201)
+      expect(response.status).toBe(STATUS_CODES.OK)
 
 
       const decodedToken = jwt.verify(token, config.SECRET)
-      expect(response.body.users[0]).toBe(decodedToken.id)
+      expect(response.body.resource.users[0]).toBe(decodedToken.id)
 
       // Lisätään poistetaan
 
       const responseB = await helper.removeFavourite(product.id, token)
-      expect(responseB.status).toBe(201)
+      expect(responseB.status).toBe(STATUS_CODES.OK)
 
 
-      expect(responseB.body.users[0]).not.toBe(decodedToken.id)
+      expect(responseB.body.resource.users[0]).not.toBe(decodedToken.id)
     })
 
     // Instructions
@@ -266,7 +267,7 @@ describe('One account already in database', () => {
       const allProducts = await helper.getProducts()
       const product = allProducts.body[0]
       const response = await helper.addInstruction(product.id, token, newInstruction)
-      expect(response.body.information).toBe(newInstruction.information)
+      expect(response.body.resource.information).toBe(newInstruction.information)
 
     })
 
@@ -279,7 +280,7 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(token, config.SECRET)
       const user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(1)
+      expect(response.body.resource.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
     })
 
@@ -291,7 +292,7 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(token, config.SECRET)
       const user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(-1)
+      expect(response.body.resource.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
     })
 
@@ -304,14 +305,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(1)
+      expect(response.body.resource.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
 
       //poistetaan
       response = await helper.unLikeInstruction(instruction.id, token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(0)
+      expect(response.body.resource.score).toBe(0)
       expect(JSON.stringify(user.likes[0])).not.toBe(JSON.stringify(instruction.id))
     })
 
@@ -324,14 +325,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(-1)
+      expect(response.body.resource.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
 
       //poistetaan
       response = await helper.unDisLikeInstruction(instruction.id, token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(0)
+      expect(response.body.resource.score).toBe(0)
       expect(JSON.stringify(user.dislikes[0])).not.toBe(JSON.stringify(instruction.id))
     })
 
@@ -344,14 +345,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(-1)
+      expect(response.body.resource.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
 
       //tykätään
       response = await helper.likeInstruction(instruction.id, token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(1)
+      expect(response.body.resource.score).toBe(1)
       expect(JSON.stringify(user.dislikes[0])).not.toBe(JSON.stringify(instruction.id))
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
     })
@@ -365,14 +366,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(1)
+      expect(response.body.resource.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
 
       //eitykätään
       response = await helper.disLikeInstruction(instruction.id, token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.score).toBe(-1)
+      expect(response.body.resource.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
       expect(JSON.stringify(user.likes[0])).not.toBe(JSON.stringify(instruction.id))
     })
@@ -386,10 +387,11 @@ describe('One account already in database', () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
 
+        await helper.purchaseProductOnce(product.id, token)
         await helper.recycleProductOnce(product.id, token)
-
-        const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.body.count).toBe(1)
+        
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(1)
 
       })
 
@@ -397,70 +399,228 @@ describe('One account already in database', () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
 
+        await helper.purchaseProductFreeAmount(product.id, 4, token)
+
         await helper.recycleProductOnce(product.id, token)
         await helper.recycleProductOnce(product.id, token)
         await helper.recycleProductOnce(product.id, token)
         await helper.recycleProductOnce(product.id, token)
 
-        const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.body.count).toBe(4)
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(4)
       })
 
       test('user can unrecycle an existing product that has been recycled', async () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
 
+        await helper.purchaseProductFreeAmount(product.id, 3, token)
+
         await helper.recycleProductOnce(product.id, token)
         await helper.recycleProductOnce(product.id, token)
         await helper.recycleProductOnce(product.id, token)
         await helper.unrecycleProductOnce(product.id, token)
         await helper.unrecycleProductOnce(product.id, token)
 
-        const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.body.count).toBe(1)
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(1)
       })
 
       test('user can not set product recycle stat to negative', async () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
 
+        await helper.purchaseProductFreeAmount(product.id, 3, token)
+
         await helper.recycleProductOnce(product.id, token)
         await helper.unrecycleProductOnce(product.id, token)
         await helper.unrecycleProductOnce(product.id, token)
         await helper.unrecycleProductOnce(product.id, token)
 
-        const response = await helper.getProductRecycleStat(product.id, token)
-        expect(response.body.count).toBe(0)
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(0)
       })
 
-      test('recycling nonexistent product responds with product 404', async () => {
+      test('unrecycling to smaller than 0, leaves unrecycling stat untouched', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 3, token)
+
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.purchaseProductFreeAmount(product.id, -5, token)
+
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(2)
+      })
+
+      test('user can not recycle more than purchased', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+
+        let response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(2)
+        expect(response.body.purchaseCount).toBe(3)
+
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+
+        response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(3)
+        expect(response.body.purchaseCount).toBe(3)
+
+      })
+      test('adding count returns error on not integer amount', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        let response = await helper.purchaseProductFreeAmount(product.id, 'sff24', token)
+        expect(response.status).toBeGreaterThanOrEqual(400)
+        response = await helper.purchaseProductFreeAmount(product.id, 1.57, token)
+        expect(response.status).toBeGreaterThanOrEqual(400)
+
+      })
+
+      test('recycling nonexistent product responds with product not found', async () => {
 
         const response = await helper.recycleProductOnce('111111111111111111111111', token)
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
       })
 
       test('recycling without authorization not possible', async () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
 
-        const response = await helper.getProductRecycleStat(product.id, 'INVALID_TOKEN')
-        expect(response.status).toBe(401)
+        const response = await helper.getProductUserCounts(product.id, 'INVALID_TOKEN')
+        expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
 
       })
 
-      test('recycling stat of nonexistent product responds with product 404', async () => {
+      test('count stats of nonexistent product responds with product not found', async () => {
 
-        const response = await helper.getProductRecycleStat('111111111111111111111111', token)
-        expect(response.status).toBe(404)
+        const response = await helper.getProductUserCounts('111111111111111111111111', token)
+        expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
 
       })
 
-      test('recycling stat not given without authorization', async () => {
+      // Purchase product
+      ////////////////////////////////////////////////////////////////////////////////////////////////
+      test('user can purchase an existing product', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+        await helper.purchaseProductOnce(product.id, token)        
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(1)
+
+      })
+
+      test('user can purchase an existing product multiple times', async () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
 
-        const response = await helper.getProductRecycleStat(product.id, 'INVALID_TOKEN')
-        expect(response.status).toBe(401)
+        await helper.purchaseProductFreeAmount(product.id, 4, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        
+
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(7)
+      })
+
+      test('user can unpurchase an existing product that has been purchased', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 3, token)        
+        await helper.unPurchaseProductOnce(product.id, token)
+        await helper.unPurchaseProductOnce(product.id, token)
+        
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(1)
+      })
+
+      test('user can not set product purchase stat to negative', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.unPurchaseProductOnce(product.id, token)
+        let response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(0)
+      })
+      
+      test('unpurchasing to smaller than 0, leaves purchase stat untouched', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 3, token)
+
+        await helper.purchaseProductFreeAmount(product.id, -53, token)
+
+        const response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.purchaseCount).toBe(3)
+      })
+
+      test('user can not unpurchase product to have less purchases than recycles', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+
+        let response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(3)
+        expect(response.body.purchaseCount).toBe(3)
+
+        await helper.unPurchaseProductOnce(product.id, token)
+
+        response = await helper.getProductUserCounts(product.id, token)
+        expect(response.body.recycleCount).toBe(3)
+        expect(response.body.purchaseCount).toBe(3)
+
+      })
+
+      test('purchasing nonexistent product responds with product not found', async () => {
+
+        const response = await helper.purchaseProductOnce('111111111111111111111111', token)
+        expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
+      })
+
+      //////////////////////////////////////////////////////////////////////////////////////
+
+      test('recycling without authorization not possible', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        const response = await helper.getProductUserCounts(product.id, 'INVALID_TOKEN')
+        expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
+
+      })
+
+      test('count stats of nonexistent product responds with product not found', async () => {
+
+        const response = await helper.getProductUserCounts('111111111111111111111111', token)
+        expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
+
+      })
+
+      test('count stats not given without authorization', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        const response = await helper.getProductUserCounts(product.id, 'INVALID_TOKEN')
+        expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
       })
     })
 
@@ -472,7 +632,7 @@ describe('One account already in database', () => {
           name: 'perunan kuori',
         }
         let res = await helper.addNewProduct(newProduct, token)
-        product = res.body
+        product = res.body.resource
       })
 
 
@@ -493,8 +653,8 @@ describe('One account already in database', () => {
         let instruction = await helper.addInstruction(product.id, anotherToken, { information: 'toisen ohje' })
 
         //ensimmäinen käyttäjä yrittää poistaa ohjeen
-        let response = await helper.deleteInstruction(product.id, token, instruction.body.id)
-        expect(response.status).toBe(403)
+        let response = await helper.deleteInstruction(product.id, token, instruction.body.resource.id)
+        expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
 
         //tarkastetaan, että ohje ei ole poistunut
         const instructionsAfter = await helper.getInstructionsOfProduct(product.id)
@@ -507,8 +667,8 @@ describe('One account already in database', () => {
         let instruction = await helper.addInstruction(product.id, token, { information: 'uusi ohje' })
 
         //poistetaan ohje
-        let response = await helper.deleteInstruction(product.id, token, instruction.body.id)
-        expect(response.status).toBe(201)
+        let response = await helper.deleteInstruction(product.id, token, instruction.body.resource.id)
+        expect(response.status).toBe(STATUS_CODES.OK)
 
         //tarkastetaan, että ohje on poistettu 
         const instructionsAfter = await helper.getInstructionsOfProduct(product.id)
