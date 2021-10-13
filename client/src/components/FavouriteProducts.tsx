@@ -7,7 +7,7 @@ import logo from '../media/logo.png'
 import { Container, Media, ListGroup, Row, Col } from 'react-bootstrap'
 import { Product } from '../types/objects'
 import ProductUserCountForm from './ProductUserCountForm'
-import { PRODUCT_USER_COUNT_REQUEST_TYPE as COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE, productUserCountService } from '../services/productUserCount'
+import { PRODUCT_USER_COUNT_REQUEST_TYPE, productUserCountService } from '../services/productUserCount'
 
 type Props = {
   userProducts: Product[]
@@ -58,7 +58,7 @@ const FavouriteProducts: React.FC<Props> = ({ userProducts }) => {
                         <Col sm={2}>
                           <ProductUserCountForm
                             product={product}
-                            countType={COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE}
+                            countType={PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE}
                             amountText={'Hankittu'}
                             sendUpdateText={'Hanki'}
                             subtractUpdateText={'Vähennä'}
@@ -70,7 +70,7 @@ const FavouriteProducts: React.FC<Props> = ({ userProducts }) => {
                         <Col sm={2}>
                           <ProductUserCountForm
                             product={product}
-                            countType={COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE}
+                            countType={PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE}
                             amountText={'Kierrätetty'}
                             sendUpdateText={'Kierrätä'}
                             subtractUpdateText={'Vähennä'}
