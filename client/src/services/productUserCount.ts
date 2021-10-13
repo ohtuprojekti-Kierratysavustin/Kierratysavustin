@@ -9,9 +9,11 @@ export enum PRODUCT_USER_COUNT_REQUEST_TYPE {
   RECYCLE = 'recycleCount'
 }
 
-const updateCount = async (updateObject: ProductUserCountUpdate) => {
-  const response = await axios.post(`${baseUrl}/product/user`, updateObject, tokenService.getConfig())
-  return response.data
+const updateCount = async (updateObject: ProductUserCountUpdate): Promise<PostRequestResponse> => {
+  const response = axios.post(`${baseUrl}/product/user`, updateObject, tokenService.getConfig())
+  return response
+    .then(response => response.data)
+    .catch(error => Promise.reject(error.response.data))
 }
 
 const getProductUserCounts = async (productID: number) => {
@@ -19,16 +21,21 @@ const getProductUserCounts = async (productID: number) => {
     headers: tokenService.getConfig().headers,
     params: { productID }
   }
-  const request = await axios.get(`${baseUrl}/product/user`, config)
-  return request.data
+  const response = axios.get(`${baseUrl}/product/user`, config)
+  return response
+    .then(response => response.data)
+    .catch(error => Promise.reject(error.response.data))
+
 }
 
 const getUserCounts = async () => {
   let config = {
     headers: tokenService.getConfig().headers
   }
-  const request = await axios.get(`${process.env.PUBLIC_URL}/api/statistics`, config)
-  return request.data
+  const response = axios.get(`${process.env.PUBLIC_URL}/api/statistics`, config)
+  return response
+    .then(response => response.data)
+    .catch(error => Promise.reject(error.response.data))
 }
 
 export type ProductUserCountService = {
@@ -37,6 +44,4 @@ export type ProductUserCountService = {
   getUserCounts: () => Promise<any>
 }
 
-const productUserCountService: ProductUserCountService = { updateCount, getProductUserCounts, getUserCounts }
-
-export default productUserCountService
+export const productUserCountService: ProductUserCountService = { updateCount, getProductUserCounts, getUserCounts }

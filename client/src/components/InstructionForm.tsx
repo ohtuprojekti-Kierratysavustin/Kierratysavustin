@@ -100,7 +100,7 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
         props.handleClose()
         setNotification(response.message, 'success')
       }).catch((error) => {
-        notify((error.response.data.message ? error.response.data.message : 'Ohjetta lisättäessä tapahtui odottamaton virhe!'), 'error')
+        notify((error.message ? error.message : 'Ohjetta lisättäessä tapahtui odottamaton virhe!'), 'error')
       })
   }
 

@@ -28,7 +28,7 @@ const DeleteProduct: React.FC<Props> = ({ product }) => {
           setNotification(response.message, 'success')
         })
         .catch((error) => {
-          setNotification((error.response.data.message ? error.response.data.message : 'Tuotetta poistettaessa tapahtui odottamaton virhe!')
+          setNotification((error.message ? error.message : 'Tuotetta poistettaessa tapahtui odottamaton virhe!')
             , 'error')
         })
     }

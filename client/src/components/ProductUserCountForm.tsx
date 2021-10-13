@@ -42,7 +42,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
       await productUserCountService.getProductUserCounts(product.id)
         .then(counts => setCount(counts[countType]))
         .catch((error) => { //TODO tyypitys?!
-          setNotification(error.response.data.message, 'error')
+          setNotification(error.message, 'error')
         })
     }
     getCounts()
@@ -65,7 +65,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
       })
       .catch((error) => {
-        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe!'), 'error')
+        setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe!'), 'error')
       })
   }
 
@@ -78,7 +78,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
       })
       .catch((error) => {
-        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe'), 'error')
+        setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe'), 'error')
       })
   }
 

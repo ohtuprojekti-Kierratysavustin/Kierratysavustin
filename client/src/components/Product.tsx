@@ -13,7 +13,7 @@ import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-b
 import '../styles.css'
 import { Product } from '../types/objects'
 import ProductUserCountForm from './ProductUserCountForm'
-import productUserCountService, { PRODUCT_USER_COUNT_REQUEST_TYPE as COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE } from '../services/productUserCount'
+import { productUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE as COUNT_PRODUCT_USER_COUNT_REQUEST_TYPE } from '../services/productUserCount'
 
 type Props = {
   product?: Product

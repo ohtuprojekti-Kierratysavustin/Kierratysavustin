@@ -40,7 +40,7 @@ const RegisterForm = () => {
       .catch((error) => {
         submitProps.setSubmitting(false)
         submitProps.resetForm()
-        setNotification(error.response.data.message, 'error')
+        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe!'), 'error')
       })
   }
 

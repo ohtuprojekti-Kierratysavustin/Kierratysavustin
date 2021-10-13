@@ -28,7 +28,7 @@ const DeleteInstructionForm: React.FC<Props> = ({ product, instruction }) => {
           setNotification(response.message, 'success')
         })
         .catch((error) => {
-          setNotification((error.response.data.message ? error.response.data.message : 'Ohjetta poistettaessa tapahtui odottamaton virhe!'), 'error')
+          setNotification((error.message ? error.message : 'Ohjetta poistettaessa tapahtui odottamaton virhe!'), 'error')
         })
     }
   }
