@@ -1,12 +1,11 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, fireEvent, screen } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import ProductUserCountForm from '../components/ProductUserCountForm'
-import { Product, ProductUserCount, ProductUserCountUpdate, User } from '../types/objects'
+import { Product, ProductUserCount } from '../types/objects'
 import { PRODUCT_USER_COUNT_REQUEST_TYPE, productUserCountService } from '../services/productUserCount'
 import { ErrorResponse, PostRequestResponse } from '../types/messages'
 import { waitFor } from '@testing-library/dom'
-import { AxiosError } from 'axios'
 
 /**
  * ProductUserCount service has been mocked with jest. The return values of nth calls to the service functions are set manually
