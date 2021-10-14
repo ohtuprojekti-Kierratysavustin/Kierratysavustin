@@ -3,6 +3,7 @@ import { Table, Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import InfoBar from './InfoBar'
 import { useStore } from '../store'
+import { Line } from 'react-chartjs-2'
 
 const RecycleStatistics = () => {
   const { productStatistics, user } = useStore()
@@ -28,6 +29,32 @@ const RecycleStatistics = () => {
       productID: a.productID
     }
   ))
+
+  //kuvaajan testaamiseen, koska ei vielä bäkkäriä mistä oikea data
+  type dataValues = {
+    labels: number[],
+    datasets: [
+      {
+        label: string,
+        data: number[],
+        fill: boolean,
+        borderColor: string
+      }
+    ]
+  }
+
+  //kuvaajan testaamiseen, koska ei vielä bäkkäriä mistä oikea data
+  const chartDataForTesting: dataValues = {
+    labels: [1,2,3,4,5,6,7],
+    datasets: [
+      {
+        label: 'Päivittäinen kierrätysaste',
+        data: [0.3,0.3,0.5,0.6,0.6,0.87,0.6],
+        fill: false,
+        borderColor: '#137447'
+      }
+    ]
+  }
 
   let index :number = 1
   return (
@@ -60,6 +87,9 @@ const RecycleStatistics = () => {
             )}
           </tbody>
         </Table>
+        <br></br>
+        <h5>Kokonaiskerrätysaste viimeisen 30 päivän aikana</h5>
+        <Line data={chartDataForTesting} />
       </Container>
     </div>
   )
