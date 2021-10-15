@@ -7,6 +7,7 @@ const STATUS_CODES = require('http-status')
 
 const { REQUEST_TYPE } = require('../enum/productUserCount')
 const { tryCastToInteger } = require('../utils/validation')
+const { startOfDay, endOfDay } = require('date-fns')
 
 const URLS = { BASE_URL: '/count',
   UPDATE_PRODUCT_USER_COUNT: '/product/user',
@@ -31,7 +32,18 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + body.productID + ' ei löytynyt!')
     }
 
-    let productUserCounter = await ProductUserCounter.findOne({ userID: user.id, productID: product.id }).exec()
+    // Haetaan tietokannasta tuote-käyttäjä paria joka olisi luotu tänään
+    let today = new Date()
+    //let priorDate = new Date().setDate(today.getDate()-23)
+    let productUserCounter = await ProductUserCounter.findOne({
+      createdAt: {
+        $gte: startOfDay(today),
+        $lte: endOfDay(today)
+      },
+      userID: user.id,
+      productID: product.id
+    }).exec()
+
     if (!productUserCounter) {
       productUserCounter = new ProductUserCounter({
         userID: user.id,
@@ -54,7 +66,7 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       .then(() => {
         return res.status(STATUS_CODES.OK).json({ message: successMessage.replace('{nimi}', product.name), resource: productUserCounter })
       })
-
+  
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     // To the errorhandler in app.js
