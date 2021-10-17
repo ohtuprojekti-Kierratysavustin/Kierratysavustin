@@ -1,6 +1,5 @@
 const statisticsRouter = require('express').Router()
 const ProductUserCounter = require('../models/productUserCounter')
-//const Product = require('../models/product')
 const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')
 const { restructureCastAndValidationErrorsFromMongoose } = require('../error/exceptions')
@@ -9,43 +8,40 @@ const ObjectID = require('mongodb').ObjectID
 statisticsRouter.get('/', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
-    //const productStats = await ProductUserCounter.find({userID: user.id}).populate('productID')
 
-    // Tietokantakysely
-    var user_id = new ObjectID(user.id)
-    const pipeline = [
+    const aggCursor = await ProductUserCounter.collection.aggregate([
       {
-        '$match': { 'userID': user_id }
+        // Rajataan haku kirjautuneen käyttäjän tietoihin
+        $match: { 'userID': new ObjectID(user.id) }
       },
       {
-        '$group': {
-          '_id': '$productID',
-          'purchased':  { '$sum': '$purchaseCount' },
-          'recycled':  { '$sum': '$recycleCount' },
+        // Ryhmitellään tuotteittain ja lasketaan summat hankinnoille ja kierrätyksille
+        $group: {
+          _id: '$productID',
+          'purchaseCount':  { $sum: '$purchaseCount' },
+          'recycleCount':  { $sum: '$recycleCount' },
         }
-      }
-    ]
-
-    // const findProd = async (id) => {
-    //   var prod_id = new ObjectID(id)
-    //   let product = await Product.findById(prod_id)
-    //   console.log(product)
-    //   return product
-    // }
-
-    let stats = []
-    const aggCursor = ProductUserCounter.collection.aggregate(pipeline)
-    await aggCursor.forEach(item => { 
-      stats.push(
-        {
-          productID: item._id,
-          purchaseCount: item.purchased,
-          recycleCount: item.recycled
+      },
+      {
+        // Haetaan tuotteen tiedot taulusta products
+        $lookup: {
+          from: 'products', 
+          localField: '_id',
+          foreignField: '_id',
+          as: 'productID'
         }
-      )  
-    })
+      },
+      {
+        // Puretaan tuotteen tiedot kentiksi
+        $unwind: '$productID'
+      },
+      {
+        // Lisätään kenttä 'id' tuotteen tietoihin
+        $addFields: { productID: { 'id': '$_id'} }
+      },
+    ]).toArray()
 
-    res.status(STATUS_CODES.OK).json(stats)
+    res.status(STATUS_CODES.OK).json(aggCursor)
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     next(handledError)

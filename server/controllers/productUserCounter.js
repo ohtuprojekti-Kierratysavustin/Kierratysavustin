@@ -8,6 +8,7 @@ const STATUS_CODES = require('http-status')
 const { REQUEST_TYPE } = require('../enum/productUserCount')
 const { tryCastToInteger } = require('../utils/validation')
 const { startOfDay, endOfDay } = require('date-fns')
+const ObjectID = require('mongodb').ObjectID
 
 const URLS = { BASE_URL: '/count',
   UPDATE_PRODUCT_USER_COUNT: '/product/user',
@@ -32,10 +33,12 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + body.productID + ' ei löytynyt!')
     }
 
+    let productUserCounter = null
+    //let priorDate = new Date().setDate(today.getDate()-23)
+    
     // Haetaan tietokannasta tuote-käyttäjä paria joka olisi luotu tänään
     let today = new Date()
-    //let priorDate = new Date().setDate(today.getDate()-23)
-    let productUserCounter = await ProductUserCounter.findOne({
+    productUserCounter = await ProductUserCounter.findOne({
       createdAt: {
         $gte: startOfDay(today),
         $lte: endOfDay(today)
@@ -44,15 +47,16 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       productID: product.id
     }).exec()
 
+    
     if (!productUserCounter) {
       productUserCounter = new ProductUserCounter({
         userID: user.id,
         productID: product.id
       })
     }
-
+    
     let amount = tryCastToInteger(body.amount, 'Lisättävän määrän on oltava kokonaisluku! Annettiin {value}', 'amount')
-
+    
     let successMessage = 'Tuotteen \'{nimi}\' '
     if (body.type === REQUEST_TYPE.RECYCLE) {
       productUserCounter.recycleCount += amount
@@ -61,12 +65,12 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       productUserCounter.purchaseCount += amount
       successMessage += 'Hankintatilasto päivitetty'
     }
-
+    
     await productUserCounter.save()
       .then(() => {
         return res.status(STATUS_CODES.OK).json({ message: successMessage.replace('{nimi}', product.name), resource: productUserCounter })
       })
-  
+
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     // To the errorhandler in app.js
@@ -83,7 +87,33 @@ router.get(URLS.GET_PRODUCT_USER_COUNT, async (req, res, next) => {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.query.productID + ' ei löytynyt!')
     }
 
-    const productUserCounter = await ProductUserCounter.findOne({ userID: user.id, productID: product.id }).exec()
+    const aggCursor = await ProductUserCounter.collection.aggregate([
+      {
+        $match: {
+          userID: new ObjectID(user.id),
+          productID: new ObjectID(product.id)
+        }
+      },
+      {
+        $group: {
+          _id: '$productID',
+          userID : { $first: '$userID' },
+          purchaseCount:  { $sum: '$purchaseCount' },
+          recycleCount:  { $sum: '$recycleCount' },
+        }
+      },
+      {
+        $project: {
+          productID: '$_id',
+          userID: '$userID',
+          purchaseCount: '$purchaseCount',
+          recycleCount: '$recycleCount'
+        }
+      }
+    ]).toArray()
+    
+    const productUserCounter = aggCursor[0]
+
     if (!productUserCounter) {
       return res.status(200).json(new ProductUserCounter({
         userID: user.id,
@@ -99,6 +129,5 @@ router.get(URLS.GET_PRODUCT_USER_COUNT, async (req, res, next) => {
     next(handledError)
   }
 })
-
 
 module.exports = { router, URLS }
