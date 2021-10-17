@@ -653,6 +653,16 @@ describe('One account already in database', () => {
         expect(response.body[0].recycleCount).toBe(1)
       })
 
+      test('user stats will return product name', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        const response = await helper.getStatistics(token)
+        expect(response.body[0].productID.name).toBe('Mustamakkarakastike pullo')
+      })
+
       test('user recycle and purchase stats cannot be seen without login', async () => {
         const response = await helper.getStatistics('INVALID_TOKEN')
         expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
