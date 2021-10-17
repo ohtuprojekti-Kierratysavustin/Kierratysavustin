@@ -653,6 +653,30 @@ describe('One account already in database', () => {
         expect(response.body[0].recycleCount).toBe(1)
       })
 
+      test('user stats will update after unpurchasing', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 2, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.unPurchaseProductOnce(product.id, token)
+        const response = await helper.getStatistics(token)
+
+        expect(response.body[0].purchaseCount).toBe(1)
+      })
+
+      test('user stats will update after unrecycling', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 2, token)
+        await helper.recycleProductOnce(product.id, token)
+        await helper.unrecycleProductOnce(product.id, token)
+        const response = await helper.getStatistics(token)
+
+        expect(response.body[0].recycleCount).toBe(0)
+      })
+
       test('user stats will return product name', async () => {
         const allProducts = await helper.getProducts()
         const product = allProducts.body[0]
