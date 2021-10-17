@@ -622,6 +622,41 @@ describe('One account already in database', () => {
         const response = await helper.getProductUserCounts(product.id, 'INVALID_TOKEN')
         expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
       })
+
+      test('user purchase and recycle stats are empty by default', async () => {
+        const response = await helper.getStatistics(token)
+
+        expect(response.body[0]).toBe(undefined)
+      })
+
+      test('user purchase stats will grow after purchasing ', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductFreeAmount(product.id, 4, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.purchaseProductOnce(product.id, token)
+        const response = await helper.getStatistics(token)
+
+        expect(response.body[0].purchaseCount).toBe(7)
+      })
+
+      test('user recycle stats will grow after recycling ', async () => {
+        const allProducts = await helper.getProducts()
+        const product = allProducts.body[0]
+
+        await helper.purchaseProductOnce(product.id, token)
+        await helper.recycleProductOnce(product.id, token)
+        const response = await helper.getStatistics(token)
+
+        expect(response.body[0].recycleCount).toBe(1)
+      })
+
+      test('user recycle and purchase stats cannot be seen without login', async () => {
+        const response = await helper.getStatistics('INVALID_TOKEN')
+        expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
+      })
     })
 
     describe('Already one product in database', () => {

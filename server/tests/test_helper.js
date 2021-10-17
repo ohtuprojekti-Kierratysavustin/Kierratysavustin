@@ -50,6 +50,14 @@ const getInstructionsOfProduct = async (productID) => {
   return result.body.instructions
 }
 
+const getStatistics = async (token) => {
+  const result = await api
+    .get('/api/statistics')
+    .set('Authorization', `bearer ${token}`)
+  return result
+}
+
+
 const addNewProduct = async (newProduct, token) => {
   const result = await api
     .post('/api/products')
@@ -246,6 +254,7 @@ module.exports = {
   getToken,
   productsData,
   getProducts,
+  getStatistics,
   addInstruction,
   likeInstruction,
   disLikeInstruction,
