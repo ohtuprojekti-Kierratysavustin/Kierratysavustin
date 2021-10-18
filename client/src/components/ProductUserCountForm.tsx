@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import productUserCountService, { REQUEST_TYPE } from '../services/productUserCount'
+import { ProductUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../services/productUserCount'
 import { Button, Container, Col, ButtonGroup } from 'react-bootstrap'
 import '../styles.css'
-import { Product } from '../types'
+import { Product } from '../types/objects'
 import { useStore } from '../store'
 import useInput from '../utils/useInput'
 import { isInteger } from '../utils/validation'
@@ -11,41 +11,38 @@ import Tooltip from 'react-bootstrap/Tooltip'
 
 type Props = {
   product: Product,
-  countType: REQUEST_TYPE,
-  amountText: String,
-  sendUpdateText: String,
-  redoUpdateText: String,
-  tooltipAdd: String,
-  tooltipDelete: String
+  countType: PRODUCT_USER_COUNT_REQUEST_TYPE,
+  amountText: string,
+  sendUpdateText: string,
+  subtractUpdateText: string,
+  tooltipAdd: string,
+  tooltipDelete: string,
+  productUserCountService: ProductUserCountService
 }
 
-// Tooltip napeille, notta mitä tästä lisäyksestä tapahtuu
-// Tuotenäkymässä paremmalle
-// Input vakiona 1., voi laittaa lisää
-
-const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, redoUpdateText, tooltipAdd, tooltipDelete }) => {
+const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, subtractUpdateText, tooltipAdd, tooltipDelete, productUserCountService }) => {
   const [count, setCount] = useState<number>(0)
   const amountToAdd = useInput<number>(1, 1)
   const [inputInvalid, setInputInvalid] = useState<boolean>(false)
   const { setNotification, clearNotification, updateProductStatistics } = useStore()
 
   const onInputChange = (event: any) => {
-    if (isInteger(event.target.value)) {
+    if (isInteger(event.target.value) && Number.parseInt(event.target.value) > 0) {
       setInputInvalid(false)
       clearNotification()
     } else {
       setInputInvalid(true)
-      setNotification('Syötteen on oltava kokonaisluku', 'error')
+      setNotification('Syötteen on oltava positiivinen kokonaisluku', 'error')
     }
     amountToAdd.onChange(event)
   }
 
   useEffect(() => {
     const getCounts = async () => {
-      await productUserCountService.getProductUserCounts({ productID: product.id })
+      await productUserCountService.getProductUserCounts(product.id)
         .then(counts => setCount(counts[countType]))
-        .catch((error) => {
-          setNotification(error.response.data.message, 'error')
+        .catch((error) => { //TODO tyypitys?!
+          setNotification(error.message, 'error')
         })
     }
     getCounts()
@@ -68,11 +65,11 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
       })
       .catch((error) => {
-        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe!'), 'error')
+        setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe!'), 'error')
       })
   }
 
-  const handleRedo: React.MouseEventHandler<HTMLElement> = async (event) => {
+  const handleSubtractCount: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     clearNotification()
     await productUserCountService.updateCount({ productID: product.id, amount: -amountToAdd.value, type: countType })
@@ -81,28 +78,28 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
       })
       .catch((error) => {
-        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe'), 'error')
+        setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe'), 'error')
       })
   }
 
   return (
     <div>
-      <Container id='vote-element' >
+      <Container id={'count-element' + product.id + countType} >
         <Col>
-          <Container id='votes'>
-            <ButtonGroup vertical className='better-votes'>
+          <Container id='productUserCountContainer'>
+            <ButtonGroup vertical>
               {amountText} <br></br>{count} kpl
-              <OverlayTrigger placement="top" overlay={<Tooltip id='buttonTooltip'>{tooltipAdd}</Tooltip>}>
-                <Button disabled={inputInvalid} variant='success' id='addCountButton' onClick={handleAddCount} >
+              <OverlayTrigger placement="top" overlay={<Tooltip id={'buttonTooltipAdd' + product.id + countType}>{tooltipAdd}</Tooltip>}>
+                <Button disabled={inputInvalid} variant='success' id={'addCountButton' + product.id + countType} onClick={handleAddCount} >
                   {sendUpdateText}
                 </Button>
               </OverlayTrigger>
-              <OverlayTrigger placement="top" overlay={<Tooltip id='buttonTooltip'>{tooltipDelete}</Tooltip>}>
-                <Button disabled={inputInvalid} variant='danger' id='redoButton' onClick={handleRedo}>
-                  {redoUpdateText}
+              <OverlayTrigger placement="top" overlay={<Tooltip id={'buttonTooltipSubtract' + product.id + countType}>{tooltipDelete}</Tooltip>}>
+                <Button disabled={inputInvalid} variant='danger' id={'subtractCountButton' + product.id + countType} onClick={handleSubtractCount}>
+                  {subtractUpdateText}
                 </Button>
               </OverlayTrigger>
-              <input id='input-field' type='number' value={amountToAdd.value} onChange={onInputChange}></input>
+              <input id={'countInput' + product.id + countType} type='number' value={amountToAdd.value} onChange={onInputChange} className='count-input'></input>
             </ButtonGroup>
           </Container>
         </Col>
