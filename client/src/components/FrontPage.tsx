@@ -3,7 +3,7 @@ import FavouriteProducts from './FavouriteProducts'
 import SearchBarForm from './SearchBarForm'
 import { useStore } from '../store'
 import InfoBar from './InfoBar'
-import { Product } from '../types'
+import { Product } from '../types/objects'
 
 type Props = {
   products: Product[],

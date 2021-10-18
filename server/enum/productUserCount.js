@@ -1,6 +1,6 @@
-const REQUEST_TYPE = { 
+const PRODUCT_USER_COUNT_REQUEST_TYPE = { 
   PURCHASE: 'purchaseCount',
   RECYCLE: 'recycleCount'
 }
 
-module.exports = { REQUEST_TYPE }
+module.exports = { PRODUCT_USER_COUNT_REQUEST_TYPE }

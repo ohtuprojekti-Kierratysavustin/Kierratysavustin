@@ -2,7 +2,7 @@ import React from 'react'
 import ProductService from '../services/products'
 import { useStore } from '../store'
 import { Button } from 'react-bootstrap'
-import { Instruction, Product } from '../types'
+import { Instruction, Product } from '../types/objects'
 
 type Props = {
   instruction: Instruction,
@@ -28,7 +28,7 @@ const DeleteInstructionForm: React.FC<Props> = ({ product, instruction }) => {
           setNotification(response.message, 'success')
         })
         .catch((error) => {
-          setNotification((error.response.data.message ? error.response.data.message : 'Ohjetta poistettaessa tapahtui odottamaton virhe!'), 'error')
+          setNotification((error.message ? error.message : 'Ohjetta poistettaessa tapahtui odottamaton virhe!'), 'error')
         })
     }
   }

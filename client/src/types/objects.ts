@@ -24,6 +24,19 @@ export type User = {
   products: number[]
 }
 
+export type ProductUserCount = {
+  recycleCount: number,
+  purchaseCount: number,
+  userID: number,
+  productID: number
+}
+
+export type ProductUserCountUpdate = {
+  productID: number,
+  amount: number,
+  type: String
+}
+
 export type ProductStatistic = {
   productID: Product,
   purchaseCount: number,

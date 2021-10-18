@@ -5,7 +5,7 @@ import {
 import userService from './services/user'
 import productService from './services/products'
 import tokenService from './services/token'
-import countService from './services/productUserCount'
+import { productUserCountService } from './services/productUserCount'
 import NavigationBar from './components/NavigationBar'
 import ProductForm from './components/ProductForm'
 import ProductPage from './components/Product'
@@ -35,7 +35,7 @@ const App = () => {
       productService.getFavorites(userlogin.id).then(favorites => setFavorites(favorites))
       userService.getLikes().then(likes => setLikes(likes))
       userService.getDislikes().then(dislikes => setDislikes(dislikes))
-      countService.getUserCounts().then(stats => setProductStatistics(stats))
+      productUserCountService.getUserCounts().then(stats => setProductStatistics(stats))
     }
   }, [])
 
