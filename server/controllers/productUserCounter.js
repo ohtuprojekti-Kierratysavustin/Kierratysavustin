@@ -34,7 +34,6 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
     }
 
     let productUserCounter = null
-    //let priorDate = new Date().setDate(today.getDate()-23)
     
     // Haetaan tietokannasta tuote-käyttäjä paria joka olisi luotu tänään
     let today = new Date()
@@ -47,16 +46,15 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       productID: product.id
     }).exec()
 
-    
     if (!productUserCounter) {
       productUserCounter = new ProductUserCounter({
         userID: user.id,
         productID: product.id
       })
     }
-    
+
     let amount = tryCastToInteger(body.amount, 'Lisättävän määrän on oltava kokonaisluku! Annettiin {value}', 'amount')
-    
+
     let successMessage = 'Tuotteen \'{nimi}\' '
     if (body.type === REQUEST_TYPE.RECYCLE) {
       productUserCounter.recycleCount += amount
@@ -65,7 +63,7 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       productUserCounter.purchaseCount += amount
       successMessage += 'Hankintatilasto päivitetty'
     }
-    
+
     await productUserCounter.save()
       .then(() => {
         return res.status(STATUS_CODES.OK).json({ message: successMessage.replace('{nimi}', product.name), resource: productUserCounter })
@@ -111,7 +109,7 @@ router.get(URLS.GET_PRODUCT_USER_COUNT, async (req, res, next) => {
         }
       }
     ]).toArray()
-    
+
     const productUserCounter = aggCursor[0]
 
     if (!productUserCounter) {
