@@ -5,8 +5,8 @@ import {
   Switch, Route
 } from 'react-router-dom'
 import { render, fireEvent } from '@testing-library/react'
-import FrontPage from '../components/FrontPage'
-import ProductList from '../components/ProductList'
+import FrontPage from '../components/views/FrontPage'
+import ProductListView from '../components/views/ProductListView'
 import {
   BrowserRouter as Router
 } from 'react-router-dom'
@@ -50,7 +50,7 @@ test('Search form renders and returns correct results', () => {
     <Router>
       <Switch>
         <Route path="/searchResults">
-          <ProductList products={[]} />
+          <ProductListView products={[]} />
         </Route>
         <Route path="/">
           <FrontPage products={productsData} setFilteredProducts={changeFoundProducts} />

@@ -1,12 +1,12 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render } from '@testing-library/react'
-import FavouriteProducts from '../components/FavouriteProducts'
+import ProductsList from '../components/ProductsList'
 import {
   BrowserRouter as Router
 } from 'react-router-dom'
 
-test('FavouriteProducts list products', () => {
+test('ProductsList list products', () => {
   const productA = {
     id: '1',
     name: 'Mustamakkarakastike pullo',
@@ -43,7 +43,7 @@ test('FavouriteProducts list products', () => {
 
   const component = render(
     <Router>
-      <FavouriteProducts userProducts={productsData} />
+      <ProductsList userProducts={productsData} />
     </Router>
   )
 
