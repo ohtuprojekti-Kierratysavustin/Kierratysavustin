@@ -99,7 +99,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
                   {subtractUpdateText}
                 </Button>
               </OverlayTrigger>
-              <input id={'countInput' + product.id + countType} type='number' value={amountToAdd.value} onChange={onInputChange} className='count-input'></input>
+              <input id={'countInput' + product.id + countType} type='number' value={amountToAdd.value} onChange={onInputChange} className='count-input' onClick={(event: any) => event.preventDefault()}></input>
             </ButtonGroup>
           </Container>
         </Col>
