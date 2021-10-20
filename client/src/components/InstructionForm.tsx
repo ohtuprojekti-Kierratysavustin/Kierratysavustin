@@ -4,7 +4,7 @@ import { Formik, Form, useField } from 'formik'
 import * as yup from 'yup'
 import { useStore } from '../store'
 import {  Form as Formo, Button,  Modal } from 'react-bootstrap'
-import { Product } from '../types'
+import { Product } from '../types/objects'
 
 type InstructionFormProps = {
   product: Product
@@ -100,7 +100,7 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
         props.handleClose()
         setNotification(response.message, 'success')
       }).catch((error) => {
-        notify((error.response.data.message ? error.response.data.message : 'Ohjetta lisättäessä tapahtui odottamaton virhe!'), 'error')
+        notify((error.message ? error.message : 'Ohjetta lisättäessä tapahtui odottamaton virhe!'), 'error')
       })
   }
 

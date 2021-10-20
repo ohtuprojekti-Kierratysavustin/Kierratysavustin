@@ -34,7 +34,7 @@ const ProductForm = () => {
         history.push(`products/${newProduct.id}`)
         setNotification(`Tuote ${productName} lisätty!`, 'success')
       }).catch((error) => {
-        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe lisätessä uutta tuotetta!'), 'error')
+        setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe lisätessä uutta tuotetta!'), 'error')
       })
   }
   return (

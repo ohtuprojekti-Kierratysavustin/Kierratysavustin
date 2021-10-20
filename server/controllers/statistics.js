@@ -1,5 +1,4 @@
 const statisticsRouter = require('express').Router()
-// const Product = require('../models/product')
 const ProductUserCounter = require('../models/productUserCounter')
 const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')

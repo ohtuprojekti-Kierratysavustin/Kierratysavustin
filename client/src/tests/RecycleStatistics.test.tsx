@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render } from '@testing-library/react'
-import { Product, ProductStatistic, User } from '../types'
+import { Product, ProductStatistic, User } from '../types/objects'
 import RecycleStatistics from '../components/RecycleStatistics'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useStore } from '../store'
