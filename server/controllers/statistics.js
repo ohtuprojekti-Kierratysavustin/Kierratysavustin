@@ -42,29 +42,36 @@ statisticsRouter.get('/', async (req, res, next) => {
       },
     ]).toArray()
 
-    let today = new Date()
-    const aggCursor2 = await ProductUserCounter.collection.aggregate([
-      {
-        // Rajataan haku kirjautuneen käyttäjän tietoihin
-        $match: { 
-          'userID': new ObjectID(user.id),
-          createdAt: {
-            $gte: startOfDay(today),
-            $lte: endOfDay(today)
-          },
-        },
-      },
-      {
-        // Ryhmitellään tuotteittain ja lasketaan summat hankinnoille ja kierrätyksille
-        $group: {
-          _id: '$userID',
-          'purchaseCount':  { $sum: '$purchaseCount' },
-          'recycleCount':  { $sum: '$recycleCount' },
-        }
-      },
-    ]).toArray()
 
-    console.log(aggCursor2)
+
+
+    let numOfDays = 30
+    let baselineStart = 365
+    let today = new Date()
+
+    let baselineStartDate = new Date()
+    baselineStartDate.setDate(today.getDate() - baselineStart)
+    let baselineEndDate = new Date()
+    baselineEndDate.setDate(today.getDate() - numOfDays)
+
+    let baseLine = await getCountsFrom(user, baselineStartDate, baselineEndDate)
+
+    let totalPurchases = baseLine[0].purchaseCount
+    let totalRecycles = baseLine[0].recycleCount
+
+    for (let i=1; i<=numOfDays; i++) {
+      let day = new Date()
+      day.setDate(day.getDate() - (numOfDays - i))
+      let dailyValues = await getCountsFrom(user, day, day)
+
+      totalPurchases +=  dailyValues[0] ? dailyValues[0].purchaseCount : 0
+      totalRecycles += dailyValues[0] ? dailyValues[0].recycleCount : 0
+
+      let totalRecyclingRate = totalRecycles === 0 ? 0 : totalRecycles / totalPurchases
+      console.log('kokonaiskierrätysaste:', totalRecyclingRate)
+    }
+
+
 
     res.status(STATUS_CODES.OK).json(aggCursor)
   } catch (error) {
@@ -72,5 +79,32 @@ statisticsRouter.get('/', async (req, res, next) => {
     next(handledError)
   } 
 })
+
+async function getCountsFrom(user, startDate, endDate) {
+  console.log('start ', startDate, ' end', endDate)
+  const aggCursor2 = await ProductUserCounter.collection.aggregate([
+    {
+      // Rajataan haku kirjautuneen käyttäjän tietoihin
+      $match: { 
+        'userID': new ObjectID(user.id),
+        createdAt: {
+          $gte: startOfDay(startDate),
+          $lte: endOfDay(endDate)
+        },
+      },
+    },
+    {
+      // Ryhmitellään tuotteittain ja lasketaan summat hankinnoille ja kierrätyksille
+      $group: {
+        _id: '$userID',
+        'purchaseCount':  { $sum: '$purchaseCount' },
+        'recycleCount':  { $sum: '$recycleCount' },
+      }
+    },
+  ]).toArray()
+
+  console.log(aggCursor2)
+  return aggCursor2
+}
 
 module.exports = statisticsRouter
