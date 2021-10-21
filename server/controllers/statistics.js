@@ -4,6 +4,7 @@ const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')
 const { restructureCastAndValidationErrorsFromMongoose } = require('../error/exceptions')
 const ObjectID = require('mongodb').ObjectID
+const { startOfDay, endOfDay } = require('date-fns')
 
 statisticsRouter.get('/', async (req, res, next) => {
   try {
@@ -40,6 +41,30 @@ statisticsRouter.get('/', async (req, res, next) => {
         $addFields: { productID: { 'id': '$_id'} }
       },
     ]).toArray()
+
+    let today = new Date()
+    const aggCursor2 = await ProductUserCounter.collection.aggregate([
+      {
+        // Rajataan haku kirjautuneen käyttäjän tietoihin
+        $match: { 
+          'userID': new ObjectID(user.id),
+          createdAt: {
+            $gte: startOfDay(today),
+            $lte: endOfDay(today)
+          },
+        },
+      },
+      {
+        // Ryhmitellään tuotteittain ja lasketaan summat hankinnoille ja kierrätyksille
+        $group: {
+          _id: '$userID',
+          'purchaseCount':  { $sum: '$purchaseCount' },
+          'recycleCount':  { $sum: '$recycleCount' },
+        }
+      },
+    ]).toArray()
+
+    console.log(aggCursor2)
 
     res.status(STATUS_CODES.OK).json(aggCursor)
   } catch (error) {
