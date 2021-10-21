@@ -8,7 +8,7 @@ import tokenService from './services/token'
 import { productUserCountService } from './services/productUserCount'
 import NavigationBar from './components/NavigationBar'
 import ProductForm from './components/forms/ProductForm'
-import ProductPageView from './components/views/ProductView'
+import ProductView from './components/views/ProductView'
 import ProductListView from './components/views/ProductListView'
 import RegisterForm from './components/forms/RegisterForm'
 import ProductFilterForm from './components/views/FrontPage'
@@ -50,7 +50,7 @@ const App = () => {
       <Notification/>
       <Switch >
         <Route path="/products/:id">
-          <ProductPageView product={product} />
+          <ProductView product={product} />
         </Route>
         <Route path="/register">
           <RegisterForm />

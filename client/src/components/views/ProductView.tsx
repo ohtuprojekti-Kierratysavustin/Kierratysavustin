@@ -20,7 +20,7 @@ type Props = {
 }
 
 /** Component for showing product name and recycling information. */
-const ProductPageView: React.FC<Props> = ({ product }) => {
+const ProductView: React.FC<Props> = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
 
@@ -152,4 +152,4 @@ const ProductPageView: React.FC<Props> = ({ product }) => {
   )
 }
 
-export default ProductPageView
+export default ProductView
