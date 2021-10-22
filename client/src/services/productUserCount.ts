@@ -25,7 +25,6 @@ const getProductUserCounts = async (productID: number) => {
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
-
 }
 
 const getUserCounts = async () => {
@@ -38,10 +37,22 @@ const getUserCounts = async () => {
     .catch(error => Promise.reject(error.response.data))
 }
 
+const getGraphStatistics = async (numOfDays: number) => {
+  let config = {
+    headers: tokenService.getConfig().headers,
+    params: { numOfDays }
+  }
+  const response = axios.get(`${process.env.PUBLIC_URL}/api/statistics/user/table`, config)
+  return response
+    .then(response => response.data)
+    .catch(error => Promise.reject(error.response.data))
+}
+
 export type ProductUserCountService = {
   updateCount: (updateObject: ProductUserCountUpdate) => Promise<PostRequestResponse>,
   getProductUserCounts: (productID: number) => Promise<ProductUserCount>,
-  getUserCounts: () => Promise<any>
+  getUserCounts: () => Promise<any>,
+  getGraphStatistics: (numOfDays: number) => Promise<number[]>
 }
 
-export const productUserCountService: ProductUserCountService = { updateCount, getProductUserCounts, getUserCounts }
+export const productUserCountService: ProductUserCountService = { updateCount, getProductUserCounts, getUserCounts, getGraphStatistics }
