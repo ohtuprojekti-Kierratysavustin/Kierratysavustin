@@ -1,9 +1,9 @@
 import React from 'react'
-import FavouriteProducts from './FavouriteProducts'
-import SearchBarForm from './SearchBarForm'
-import { useStore } from '../store'
-import InfoBar from './InfoBar'
-import { Product } from '../types'
+import ProductsList from '../ProductsList'
+import SearchBarForm from '../forms/SearchBarForm'
+import { useStore } from '../../store'
+import InfoBar from '../InfoBar'
+import { Product } from '../../types/objects'
 
 type Props = {
   products: Product[],
@@ -30,7 +30,7 @@ const FrontPage: React.FC<Props> = ({ products, setFilteredProducts }) => {
       <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
 
       {user !== null ? (
-        <FavouriteProducts userProducts={favorites} />
+        <ProductsList userProducts={favorites} header='Suosikkituotteet' />
       ) : (
         ''
       )}

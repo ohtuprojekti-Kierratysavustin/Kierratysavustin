@@ -2,25 +2,25 @@ import React, { useEffect } from 'react'
 import {
   Link
 } from 'react-router-dom'
-import InstructionForm from './InstructionForm'
-import FavoritesForm from './FavoritesForm'
-import VoteForm from './VoteForm'
-import DeleteInstructionForm from './DeleteInstructionForm'
-import DeleteProduct from './DeleteProduct'
-import { useStore  } from '../store'
+import InstructionForm from '../forms/InstructionForm'
+import FavoritesForm from '../forms/FavoritesForm'
+import VoteForm from '../forms/VoteForm'
+import DeleteInstructionForm from '../forms/DeleteInstructionForm'
+import DeleteProduct from '../DeleteProduct'
+import { useStore } from '../../store'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
-import '../styles.css'
-import { Product } from '../types'
-import ProductUserCountForm from './ProductUserCountForm'
-import { REQUEST_TYPE as COUNT_REQUEST_TYPE } from '../services/productUserCount'
+import '../../styles.css'
+import { Product } from '../../types/objects'
+import ProductUserCountForm from '../forms/ProductUserCountForm'
+import { productUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/productUserCount'
 
 type Props = {
   product?: Product
 }
 
 /** Component for showing product name and recycling information. */
-const ProductPage: React.FC<Props> = ({ product }) => {
+const ProductView: React.FC<Props> = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
 
@@ -51,10 +51,10 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                 {user !== null ? (
                   <>
                     <Col sm={3}>
-                      <FavoritesForm product = {product}/>
+                      <FavoritesForm product={product} />
                     </Col>
                     <Col sm={3}>
-                      <DeleteProduct product = {product} />
+                      <DeleteProduct product={product} />
                     </Col>
                   </>
                 ) : (
@@ -67,23 +67,25 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                 <Col sm={2} className='product-user-count-form'>
                   <ProductUserCountForm
                     product={product}
-                    countType={COUNT_REQUEST_TYPE.PURCHASE}
+                    countType={PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE}
                     amountText={'Hankittu'}
                     sendUpdateText={'Hanki'}
-                    redoUpdateText={'Poista'}
-                    tooltipAdd={'Lisää hankkimiasi tuotteita tietokantaan.'}
-                    tooltipDelete={'Poista hankkimiasi tuotteita tietokannasta.'}
+                    subtractUpdateText={'Vähennä'}
+                    tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
+                    tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
+                    productUserCountService={productUserCountService}
                   />
                 </Col>
                 <Col sm={2} className='product-user-count-form'>
                   <ProductUserCountForm
                     product={product}
-                    countType={COUNT_REQUEST_TYPE.RECYCLE}
+                    countType={PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE}
                     amountText={'Kierrätetty'}
                     sendUpdateText={'Kierrätä'}
-                    redoUpdateText={'Poista'}
-                    tooltipAdd={'Kierrätä tuotetta.'}
-                    tooltipDelete={'Poista tuotteen kierrätys.'}
+                    subtractUpdateText={'Vähennä'}
+                    tooltipAdd={'Kasvata tuotteen kierrätystilastoa.'}
+                    tooltipDelete={'Vähennä tuotteen kierrätystilastoa.'}
+                    productUserCountService={productUserCountService}
                   />
                 </Col>
               </>
@@ -103,7 +105,7 @@ const ProductPage: React.FC<Props> = ({ product }) => {
           <Col sm={2}>
             <Form.Group>
               {user !== null ? (
-                <InstructionForm product = {product} />
+                <InstructionForm product={product} />
               ) : (
                 ''
               )}
@@ -114,7 +116,7 @@ const ProductPage: React.FC<Props> = ({ product }) => {
           <ListGroup id='instruction-list' as='ul' >
             {product.instructions.map((instruct) =>
               <ListGroup.Item id='instruction-list-item' action as='li' key={instruct.id} >
-                <Link style={{ textDecoration: 'none' }}  to={`/products/${product.id}`}>
+                <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
                   <Container id='vote-form'>
                     <Row >
                       <Col>
@@ -128,8 +130,8 @@ const ProductPage: React.FC<Props> = ({ product }) => {
                       </Col>
                       {user !== null ? (
                         <>
-                          <DeleteInstructionForm product = {product} instruction = {instruct} />
-                          <VoteForm instruction = {instruct} user = {user} product={product} />
+                          <DeleteInstructionForm product={product} instruction={instruct} />
+                          <VoteForm instruction={instruct} user={user} product={product} />
                         </>
                       ) : (
                         ''
@@ -150,4 +152,4 @@ const ProductPage: React.FC<Props> = ({ product }) => {
   )
 }
 
-export default ProductPage
+export default ProductView

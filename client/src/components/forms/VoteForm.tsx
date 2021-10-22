@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import userService from '../services/user'
-import { useStore } from '../store'
+import userService from '../../services/user'
+import { useStore } from '../../store'
 import { Button, Container, Row, Col, ButtonGroup } from 'react-bootstrap'
-import '../styles.css'
-import { Instruction, User, Product } from '../types'
+import '../../styles.css'
+import { Instruction, User, Product } from '../../types/objects'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 

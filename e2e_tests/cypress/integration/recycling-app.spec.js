@@ -1,3 +1,8 @@
+const PRODUCT_USER_COUNT_REQUEST_TYPE = {
+  RECYCLE: 'recycleCount',
+  PURCHASE: 'purchaseCount'
+}
+
 describe("Recycling app", () => {
   beforeEach(() => {
     cy.request("POST", "api/tests/reset")
@@ -132,7 +137,7 @@ describe("Recycling app", () => {
                 cy.contains("Ohje 'Tuotteen voi uudelleenkäyttää roskapussina' poistettiin onnistuneesti!")
               })
             })
-            
+
             /*
             it("recycling information list order changes when liked or disliked", () => {
               cy.get("#instructionButton").click()
@@ -172,6 +177,95 @@ describe("Recycling app", () => {
               cy.contains("Tuote 'Muovipussi' poistettiin onnistuneesti!")
               cy.contains("Haulla ei löytynyt yhtään tuotetta!")
             })
+
+            // Purchase/Recycling stats
+            it("its purchase stat adds 1 by default", () => {
+              cy.contains("Hankittu 0 kpl")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.contains("Hankittu 1 kpl")
+            })
+
+            it("its purchase stat can be added to with a user typed number", () => {
+              cy.contains("Hankittu 0 kpl")
+              cy.get("[id^=countInput][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").focus().clear().type("245")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.contains("Hankittu 245 kpl")
+            })
+
+            it("its purchase stat can be subtracted from", () => {
+              cy.contains("Hankittu 0 kpl")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=subtractCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.contains("Hankittu 1 kpl")
+            })
+
+            it("its purchase stat can be subtracted from with a user typed number", () => {
+              cy.contains("Hankittu 0 kpl")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=countInput][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").focus().clear().type("3")
+              cy.get("[id^=subtractCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.contains("Hankittu 3 kpl")
+            })
+
+            it("its recycling stat can be added to if there is a purchase", () => {
+              cy.contains("Kierrätetty 0 kpl")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").click()
+              cy.contains("Kierrätetty 1 kpl")
+            })
+
+            it("its recycling stat can not be negative", () => {
+              cy.contains("Kierrätetty 0 kpl")
+              cy.get("[id^=subtractCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").click()
+              cy.contains("Kierrätetty 0 kpl")
+            })
+
+            it("its purchase stat can not be negative", () => {
+              cy.contains("Hankittu 0 kpl")
+              cy.get("[id^=subtractCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.contains("Hankittu 0 kpl")
+            })
+
+            it("its recycling stat can be subtracted from", () => {
+              cy.contains("Kierrätetty 0 kpl")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").click()
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").click()
+              cy.contains("Kierrätetty 2 kpl")
+              cy.get("[id^=subtractCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").click()
+              cy.contains("Kierrätetty 1 kpl")
+            })
+
+            it("its recycling stat can not be bigger than purchase stat", () => {
+              cy.contains("Kierrätetty 0 kpl")
+              cy.contains("Hankittu 0 kpl")
+              cy.get("[id^=countInput][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").focus().clear().type("245")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").click()
+              cy.contains("Hankittu 245 kpl")
+              cy.get("[id^=countInput][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").focus().clear().type("246")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").click()
+              cy.contains("Kierrätetty 0 kpl")
+            })
+
+            it("its purchase buttons are disabled if user typed a non-integer", () => {
+              cy.get("[id^=countInput][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").focus().clear().type("gafwaid")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").should("be.disabled")
+              cy.get("[id^=subtractCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE + "]").should("be.disabled")
+            })
+
+            it("its recycle buttons are disabled if user typed a non-integer", () => {
+              cy.get("[id^=countInput][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").focus().clear().type("gafwaid")
+              cy.get("[id^=addCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").should("be.disabled")
+              cy.get("[id^=subtractCountButton][id$=" + PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE + "]").should("be.disabled")
+            })
+
           })
         })
       })
