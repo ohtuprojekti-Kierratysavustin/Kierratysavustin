@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, Container } from 'react-bootstrap'
 import { productUserCountService } from '../../services/productUserCount'
 import { Link } from 'react-router-dom'
@@ -10,6 +10,17 @@ import { useStore } from '../../store'
 
 const RecycleStatisticsView = () => {
   const { productStatistics, user } = useStore()
+
+  const [data, setData] = useState([0])
+  useEffect(() => {
+    const getGraphData = () => {
+      return productUserCountService.getGraphStatistics(30)
+    }
+    getGraphData().then(res => {
+      console.log(res)
+      setData(res)
+    })
+  }, [])
 
   if (productStatistics.length === 0) {
     return (
@@ -62,22 +73,18 @@ const RecycleStatisticsView = () => {
 
   //data kuvaajaan
 
-  const getChartData = async () => {
-    return await productUserCountService.getGraphStatistics(30)
-  }
 
   const chartData: dataValues = {
     labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
     datasets: [
       {
         label: 'Päivittäinen kierrätysaste',
-        data: getChartData(),
+        data: data,
         fill: false,
         borderColor: '#137447'
       }
     ]
   }
-  
 
   let index :number = 1
   return (

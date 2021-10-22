@@ -42,6 +42,7 @@ const getGraphStatistics = async (numOfDays: number) => {
     headers: tokenService.getConfig().headers,
     params: { numOfDays }
   }
+  console.log(config)
   const response = axios.get(`${process.env.PUBLIC_URL}/api/statistics/user/table`, config)
   return response
     .then(response => response.data)
