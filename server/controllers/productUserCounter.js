@@ -54,13 +54,22 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
     }
 
     let amount = tryCastToInteger(body.amount, 'Lisättävän määrän on oltava kokonaisluku! Annettiin {value}', 'amount')
-    let productUserCountSums
-    if(amount < 0) {productUserCountSums = await getProductUserCountSums(user, product)}
+    let productUserCountSums = await getProductUserCountSums(user, product)
+    if (!productUserCountSums) {
+      productUserCountSums = new ProductUserCounter({
+        purchaseCount:0, 
+        recycleCount:0,
+        userID: user.id,
+        productID: product.id
+      })
+    }
 
     let successMessage = 'Tuotteen \'{nimi}\' '
     if (body.type === PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE) {
-      if (productUserCountSums && (productUserCountSums.recycleCount + amount) < 0) {
+      if ((productUserCountSums.recycleCount + amount) < 0) {
         throw new InvalidParameterException('Tuotteen kierrätystilasto ei voi olla pienempi kuin 0!')
+      } else if((productUserCountSums.recycleCount + amount) > productUserCountSums.purchaseCount) {
+        throw new InvalidParameterException('Kierrätettyjen tuotteiden lukumäärä ei voi olla suurempi kuin hankittujen tuotteiden lukumäärä')
       } else {
         productUserCounter.recycleCount += amount
         successMessage += 'Kierrätystilasto päivitetty'
@@ -68,6 +77,8 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
     } else if (body.type === PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE) {
       if (productUserCountSums && (productUserCountSums.purchaseCount + amount) < 0) {
         throw new InvalidParameterException('Hankintatilasto ei voi olla pienempi kuin 0!')
+      } else if(productUserCountSums.recycleCount > (productUserCountSums.purchaseCount + amount)) {
+        throw new InvalidParameterException('Kierrätettyjen tuotteiden lukumäärä ei voi olla suurempi kuin hankittujen tuotteiden lukumäärä')
       } else {
         productUserCounter.purchaseCount += amount
         successMessage += 'Hankintatilasto päivitetty'
