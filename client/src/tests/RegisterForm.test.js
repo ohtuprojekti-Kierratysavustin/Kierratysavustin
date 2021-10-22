@@ -2,7 +2,7 @@ import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { render, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import RegisterForm from '../components/RegisterForm'
+import RegisterForm from '../components/forms/RegisterForm'
 test('<RegisterForm /> register form makes new user onSubmit', async () => {
   //const registerUser = jest.fn()
   const component = render(

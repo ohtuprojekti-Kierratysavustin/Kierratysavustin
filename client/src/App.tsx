@@ -7,14 +7,14 @@ import productService from './services/products'
 import tokenService from './services/token'
 import { productUserCountService } from './services/productUserCount'
 import NavigationBar from './components/NavigationBar'
-import ProductForm from './components/ProductForm'
-import ProductPage from './components/Product'
-import ProductList from './components/ProductList'
-import RegisterForm from './components/RegisterForm'
-import ProductFilterForm from './components/FrontPage'
-import LoginForm from './components/LoginForm'
+import ProductForm from './components/forms/ProductForm'
+import ProductView from './components/views/ProductView'
+import ProductListView from './components/views/ProductListView'
+import RegisterForm from './components/forms/RegisterForm'
+import ProductFilterForm from './components/views/FrontPage'
+import LoginForm from './components/forms/LoginForm'
 import Notification from './components/Notification'
-import RecycleStatistics from './components/RecycleStatistics'
+import RecycleStatisticsView from './components/views/RecycleStatisticsView'
 import { useStore } from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles.css'
@@ -50,7 +50,7 @@ const App = () => {
       <Notification/>
       <Switch >
         <Route path="/products/:id">
-          <ProductPage product={product} />
+          <ProductView product={product} />
         </Route>
         <Route path="/register">
           <RegisterForm />
@@ -62,13 +62,13 @@ const App = () => {
           <ProductForm />
         </Route>
         <Route path="/products">
-          <ProductList products={products} setFilteredProducts={setFilteredProducts} />
+          <ProductListView products={products} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/searchResults">
-          <ProductList products={filteredProducts} setFilteredProducts={setFilteredProducts} />
+          <ProductListView products={filteredProducts} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/statistics">
-          <RecycleStatistics />
+          <RecycleStatisticsView />
         </Route>
         <Route path="/">
           <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />

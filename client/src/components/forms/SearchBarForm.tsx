@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Form, Button, InputGroup, Container, Col, Row } from 'react-bootstrap'
-import { Product } from '../types/objects'
+import { Product } from '../../types/objects'
 
 type Props = {
   products: Product[],

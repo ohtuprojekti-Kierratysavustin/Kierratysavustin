@@ -1,8 +1,8 @@
 import React,{ useState,useEffect } from 'react'
-import userService from '../services/user'
-import { useStore } from '../store'
+import userService from '../../services/user'
+import { useStore } from '../../store'
 import { Button } from 'react-bootstrap'
-import { Product } from '../types/objects'
+import { Product } from '../../types/objects'
 
 type Props = {
   product: Product

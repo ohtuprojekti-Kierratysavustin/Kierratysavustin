@@ -1,10 +1,10 @@
 import React from 'react'
 import { Table, Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import InfoBar from './InfoBar'
-import { useStore } from '../store'
+import InfoBar from '../InfoBar'
+import { useStore } from '../../store'
 
-const RecycleStatistics = () => {
+const RecycleStatisticsView = () => {
   const { productStatistics, user } = useStore()
 
   if (productStatistics.length === 0) {
@@ -64,4 +64,4 @@ const RecycleStatistics = () => {
     </div>
   )
 }
-export default RecycleStatistics
+export default RecycleStatisticsView
