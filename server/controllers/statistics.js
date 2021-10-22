@@ -5,8 +5,9 @@ const STATUS_CODES = require('http-status')
 const { restructureCastAndValidationErrorsFromMongoose } = require('../error/exceptions')
 const ObjectID = require('mongodb').ObjectID
 const { startOfDay, endOfDay } = require('date-fns')
+const { tryCastToInteger } = require('../utils/validation')
 
-statisticsRouter.get('/', async (req, res, next) => {
+statisticsRouter.get('/', async (req, res, next) => { // osoitteeksi '/user/stats'
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
@@ -42,11 +43,22 @@ statisticsRouter.get('/', async (req, res, next) => {
       },
     ]).toArray()
 
+    res.status(STATUS_CODES.OK).json(aggCursor)
+  } catch (error) {
+    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
+    next(handledError)
+  } 
+})
 
+//Palauttaa taulukon, osoiterivillä kyselyssä annetaan päivien määrä
+statisticsRouter.get('/user/table', async (req, res, next) => {
+  try {
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
+    let amount = tryCastToInteger(req.query.numOfDays, 'Päivien lukumäärän on oltava kokonaisluku! Annettiin {value}', 'amount')
 
-    let numOfDays = 30
-    let baselineStart = 365
+    let numOfDays = amount
+    let baselineStart = 365 // Miltä ajalta tilastoja lasketaan lähtöpisteelle
     let today = new Date()
 
     let baselineStartDate = new Date()
@@ -54,10 +66,11 @@ statisticsRouter.get('/', async (req, res, next) => {
     let baselineEndDate = new Date()
     baselineEndDate.setDate(today.getDate() - numOfDays)
 
-    let baseLine = await getCountsFrom(user, baselineStartDate, baselineEndDate)
+    let baselineSums = await getCountsFrom(user, baselineStartDate, baselineEndDate)
 
-    let totalPurchases = baseLine[0].purchaseCount
-    let totalRecycles = baseLine[0].recycleCount
+    let totalPurchases = baselineSums[0].purchaseCount
+    let totalRecycles = baselineSums[0].recycleCount
+    let dailyRecyclingrateTable = new Array
 
     for (let i=1; i<=numOfDays; i++) {
       let day = new Date()
@@ -68,21 +81,20 @@ statisticsRouter.get('/', async (req, res, next) => {
       totalRecycles += dailyValues[0] ? dailyValues[0].recycleCount : 0
 
       let totalRecyclingRate = totalRecycles === 0 ? 0 : totalRecycles / totalPurchases
-      console.log('kokonaiskierrätysaste:', totalRecyclingRate)
+      dailyRecyclingrateTable.push(totalRecyclingRate)
     }
+    console.log('kokonaiskierrätysaste:', dailyRecyclingrateTable.toString())
 
-
-
-    res.status(STATUS_CODES.OK).json(aggCursor)
+    res.status(STATUS_CODES.OK).json(dailyRecyclingrateTable)
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     next(handledError)
   } 
 })
 
+
 async function getCountsFrom(user, startDate, endDate) {
-  console.log('start ', startDate, ' end', endDate)
-  const aggCursor2 = await ProductUserCounter.collection.aggregate([
+  const dailyValues = await ProductUserCounter.collection.aggregate([
     {
       // Rajataan haku kirjautuneen käyttäjän tietoihin
       $match: { 
@@ -103,8 +115,7 @@ async function getCountsFrom(user, startDate, endDate) {
     },
   ]).toArray()
 
-  console.log(aggCursor2)
-  return aggCursor2
+  return dailyValues
 }
 
 module.exports = statisticsRouter
