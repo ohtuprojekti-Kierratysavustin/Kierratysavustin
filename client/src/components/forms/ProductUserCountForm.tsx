@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { ProductUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../services/productUserCount'
+import { ProductUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/productUserCount'
 import { Button, Container, Col, ButtonGroup } from 'react-bootstrap'
-import '../styles.css'
-import { Product } from '../types/objects'
-import { useStore } from '../store'
-import useInput from '../utils/useInput'
-import { isInteger } from '../utils/validation'
+import '../../styles.css'
+import { Product } from '../../types/objects'
+import { useStore } from '../../store'
+import useInput from '../../utils/useInput'
+import { isInteger } from '../../utils/validation'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 
@@ -99,7 +99,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
                   {subtractUpdateText}
                 </Button>
               </OverlayTrigger>
-              <input id={'countInput' + product.id + countType} type='number' value={amountToAdd.value} onChange={onInputChange} className='count-input'></input>
+              <input id={'countInput' + product.id + countType} type='number' value={amountToAdd.value} onChange={onInputChange} className='count-input' onClick={(event: any) => event.preventDefault()}></input>
             </ButtonGroup>
           </Container>
         </Col>

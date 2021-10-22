@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import productService from '../services/products'
+import productService from '../../services/products'
 import { Formik, Form, useField } from 'formik'
 import * as yup from 'yup'
-import { useStore } from '../store'
+import { useStore } from '../../store'
 import {  Form as Formo, Button,  Modal } from 'react-bootstrap'
-import { Product } from '../types/objects'
+import { Product } from '../../types/objects'
 
 type InstructionFormProps = {
   product: Product

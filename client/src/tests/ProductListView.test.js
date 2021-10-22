@@ -1,13 +1,13 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render } from '@testing-library/react'
-import ProductList from '../components/ProductList'
+import ProductListView from '../components/views/ProductListView'
 import {
   BrowserRouter as Router
 } from 'react-router-dom'
 
 
-test('ProductList list products', () => {
+test('ProductListView list products', () => {
   const productA = {
     id: '1',
     name: 'Mustamakkarakastike pullo',
@@ -44,7 +44,7 @@ test('ProductList list products', () => {
 
   const component = render(
     <Router>
-      <ProductList products={productsData} />
+      <ProductListView products={productsData} />
     </Router>
   )
 
@@ -62,14 +62,14 @@ test('ProductList list products', () => {
 
 })
 
-test('ProductList shows message when list is empty', () => {
+test('ProductListView shows message when list is empty', () => {
 
   const productsData = []
 
 
   const component = render(
     <Router>
-      <ProductList products={productsData} />
+      <ProductListView products={productsData} />
     </Router>
   )
 

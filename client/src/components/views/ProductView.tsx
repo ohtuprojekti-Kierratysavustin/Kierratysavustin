@@ -2,25 +2,25 @@ import React, { useEffect } from 'react'
 import {
   Link
 } from 'react-router-dom'
-import InstructionForm from './InstructionForm'
-import FavoritesForm from './FavoritesForm'
-import VoteForm from './VoteForm'
-import DeleteInstructionForm from './DeleteInstructionForm'
-import DeleteProduct from './DeleteProduct'
-import { useStore } from '../store'
+import InstructionForm from '../forms/InstructionForm'
+import FavoritesForm from '../forms/FavoritesForm'
+import VoteForm from '../forms/VoteForm'
+import DeleteInstructionForm from '../forms/DeleteInstructionForm'
+import DeleteProduct from '../DeleteProduct'
+import { useStore } from '../../store'
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
-import '../styles.css'
-import { Product } from '../types/objects'
-import ProductUserCountForm from './ProductUserCountForm'
-import { productUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../services/productUserCount'
+import '../../styles.css'
+import { Product } from '../../types/objects'
+import ProductUserCountForm from '../forms/ProductUserCountForm'
+import { productUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/productUserCount'
 
 type Props = {
   product?: Product
 }
 
 /** Component for showing product name and recycling information. */
-const ProductPage: React.FC<Props> = ({ product }) => {
+const ProductView: React.FC<Props> = ({ product }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
 
@@ -152,4 +152,4 @@ const ProductPage: React.FC<Props> = ({ product }) => {
   )
 }
 
-export default ProductPage
+export default ProductView

@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render } from '@testing-library/react'
-import InstructionForm from '../components/InstructionForm'
+import InstructionForm from '../components/forms/InstructionForm'
 
 test('InstructionForm renders', () => {
 
