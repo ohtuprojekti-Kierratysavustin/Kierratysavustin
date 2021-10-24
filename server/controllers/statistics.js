@@ -10,7 +10,6 @@ const { tryCastToInteger } = require('../utils/validation')
 statisticsRouter.get('/', async (req, res, next) => { // osoitteeksi '/user/stats'
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
-
     let today = new Date()
     const eventsPerProduct = await getRecyclingRatesPerProductUntilDate(user, today)
 
@@ -63,7 +62,11 @@ async function getRecyclingRatesPerProductUntilDate(user, date) {
       // Rajataan haku kirjautuneen käyttäjän tietoihin
       $match: { 
         'userID': new ObjectID(user.id),
-        'createdAt': { $lte: date },
+        // Rajataan viimeisimpiin tapahtumiin, tai niihin joista aikaleima puuttuu
+        $or: [
+          {'createdAt': { $lte: date } },
+          {'createdAt': { $exists: false } }
+        ]
       }
     },
     {
@@ -72,7 +75,7 @@ async function getRecyclingRatesPerProductUntilDate(user, date) {
         _id: '$productID',
         'purchaseCount':  { $last: '$purchaseCount' },
         'recycleCount':  { $last: '$recycleCount' },
-        'createdAt': { $last: '$createdAt' },
+        //'createdAt': { $last: '$createdAt' },
       }
     },
     {
