@@ -13,29 +13,27 @@ const productUserCounterSchema = new mongoose.Schema({
   },
   recycleCount: {
     type: Number,
-    //min: [0, 'Tuotteen kierrätystilasto ei voi olla pienempi kuin 0!'],
-    min: [-1e17, 'Et varmasti ole kierrättänyt noin montaa tuotetta!'],
+    min: [0, 'Tuotteen kierrätystilasto ei voi olla pienempi kuin 0!'],
     max: [1e17, 'Et varmasti ole kierrättänyt noin montaa tuotetta!'],
-    // validate: {
-    //   validator: function() { 
-    //     return this.recycleCount <= this.purchaseCount
-    //   },
-    //   message: 'Kierrätettyjen tuotteiden lukumäärä ei voi olla suurempi kuin hankittujen tuotteiden lukumäärä'
-    // },
+    validate: {
+      validator: function() { 
+        return this.recycleCount <= this.purchaseCount
+      },
+      message: 'Kierrätettyjen tuotteiden lukumäärä ei voi olla suurempi kuin hankittujen tuotteiden lukumäärä'
+    },
     default: 0,
     cast: 'Kierrätystilaston on oltava numeerinen! Annettiin: \'{VALUE}\''
   },
   purchaseCount: {
     type: Number,
-    //min: [0, 'Hankintatilasto ei voi olla pienempi kuin 0!'],
-    min: [-1e17, 'Et varmasti ole kierrättänyt noin montaa tuotetta!'],
+    min: [0, 'Hankintatilasto ei voi olla pienempi kuin 0!'],
     max: [1e17, 'Et varmasti ole hankkinut noin montaa tuotetta!'],
-    // validate: {
-    //   validator: function() { 
-    //     return this.recycleCount <= this.purchaseCount
-    //   },
-    //   message: 'Kierrätettyjen tuotteiden lukumäärä ei voi olla suurempi kuin hankittujen tuotteiden lukumäärä'
-    // },
+    validate: {
+      validator: function() { 
+        return this.recycleCount <= this.purchaseCount
+      },
+      message: 'Kierrätettyjen tuotteiden lukumäärä ei voi olla suurempi kuin hankittujen tuotteiden lukumäärä'
+    },
     default: 0,
     cast: 'Hankintatilaston on oltava numeerinen! Annettiin: \'{VALUE}\''
   }
