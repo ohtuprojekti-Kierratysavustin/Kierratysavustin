@@ -370,7 +370,7 @@ describe('Product Recycling Statistics', () => {
 
     const numberOfDays = 7
     const response = await helper.getUserStatisticsTable(numberOfDays, token)
-    expect(response.body[numberOfDays - 1]).toBeCloseTo(recycled / purchased)
+    expect(response.body[numberOfDays - 1]).toBeCloseTo(recycled / purchased * 100)
   })
 })
   

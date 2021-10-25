@@ -48,7 +48,7 @@ statisticsRouter.get('/user/table', async (req, res, next) => {
         totalRecycles += dailyValuesPerProduct[i].recycleCount
       }
 
-      let totalRecyclingRate = (totalRecycles === 0) ? 0 : totalRecycles / totalPurchases
+      let totalRecyclingRate = (totalRecycles === 0) ? 0 : totalRecycles / totalPurchases * 100
       dailyRecyclingrateTable.push(totalRecyclingRate)
     }
 

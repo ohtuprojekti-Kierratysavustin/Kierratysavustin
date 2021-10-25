@@ -13,14 +13,15 @@ const RecycleStatisticsView = () => {
 
   const [data, setData] = useState([0])
   useEffect(() => {
+    console.log('load data', user)
     const getGraphData = () => {
       return productUserCountService.getGraphStatistics(30)
     }
     getGraphData().then(res => {
-      console.log(res)
+      //console.log(res)
       setData(res)
     })
-  }, [])
+  }, [user])
 
   if (productStatistics.length === 0) {
     return (
@@ -60,10 +61,10 @@ const RecycleStatisticsView = () => {
   // päivämäärät x-akselille
   const today: Date = new Date()
   const dates: string[] = []
-  for (let i = 30; i >= 0; i--) {
+  for (let i = 29; i >= 0; i--) {
     const date: Date = new Date()
     date.setDate(today.getDate() - i)
-    console.log(date.getDay())
+    //console.log(date.getDay())
     dates.push(`${date.getDate()}.${date.getMonth() + 1}.`)
   }
 
@@ -74,10 +75,19 @@ const RecycleStatisticsView = () => {
       {
         label: 'Päivittäinen kierrätysaste',
         data: data,
-        fill: false,
-        borderColor: '#137447'
+        fill: true,
+        borderColor: '#137447',
       }
     ]
+  }
+
+  const options :any = {
+    scales: {
+      y: {
+        suggestedMin: 0,
+        suggestedMax: 100
+      }
+    }
   }
 
   let index :number = 1
@@ -111,9 +121,11 @@ const RecycleStatisticsView = () => {
             )}
           </tbody>
         </Table>
+      </Container>
+      <Container id='stat-chart'>
         <br></br>
         <h5>Kokonaiskerrätysaste viimeisen 30 päivän aikana</h5>
-        <Line data={chartData} />
+        <Line data={chartData} options={options} />
       </Container>
     </div>
   )
