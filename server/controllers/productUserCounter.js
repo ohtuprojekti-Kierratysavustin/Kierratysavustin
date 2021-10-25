@@ -32,11 +32,8 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + body.productID + ' ei löytynyt!')
     }
 
-    let today = new Date()
-    //let timezoneOffset = user.timezone ? user.timezone : 3
-    //let timezoneOffsetMs = timezoneOffset * 3600000
-
     // Haetaan viimeisin tapahtuma
+    let today = new Date()
     let productUserCounter = (await ProductUserCounter.find({ userID: user.id, productID: product.id }).sort({ createdAt: -1 }).limit(1))[0]
 
     if (!productUserCounter) {
@@ -64,7 +61,7 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
     } else if (body.type === PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE) {
       productUserCounter.purchaseCount += amount
       successMessage += 'Hankintatilasto päivitetty'
-    }    
+    }
 
     await productUserCounter.save()
       .then(() => {
