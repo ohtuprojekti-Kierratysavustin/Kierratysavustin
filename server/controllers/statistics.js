@@ -2,7 +2,7 @@ const statisticsRouter = require('express').Router()
 const ProductUserCounter = require('../models/productUserCounter')
 const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')
-const { restructureCastAndValidationErrorsFromMongoose } = require('../error/exceptions')
+const { restructureCastAndValidationErrorsFromMongoose, InvalidParameterException } = require('../error/exceptions')
 const ObjectID = require('mongodb').ObjectID
 const { tryCastToInteger } = require('../utils/validation')
 
@@ -10,7 +10,6 @@ const { tryCastToInteger } = require('../utils/validation')
 statisticsRouter.get('/', async (req, res, next) => { // osoitteeksi '/user/stats'
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
-
     let today = new Date()
     const eventsPerProduct = await getRecyclingRatesPerProductUntilDate(user, today)
 
@@ -27,6 +26,11 @@ statisticsRouter.get('/user/table', async (req, res, next) => {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
     let amount = tryCastToInteger(req.query.numOfDays, 'Päivien lukumäärän on oltava kokonaisluku! Annettiin {value}', 'amount')
+
+    if (amount < 0) {
+      throw new InvalidParameterException(
+        'Kyselyn parametrin on oltava positiivinen kokonaisluku. Annettiin \'' + amount + '\'')
+    }
 
     let numOfDays = amount
     let today = new Date()
@@ -63,7 +67,11 @@ async function getRecyclingRatesPerProductUntilDate(user, date) {
       // Rajataan haku kirjautuneen käyttäjän tietoihin
       $match: { 
         'userID': new ObjectID(user.id),
-        'createdAt': { $lte: date },
+        // Rajataan viimeisimpiin tapahtumiin, tai niihin joista aikaleima puuttuu
+        $or: [
+          {'createdAt': { $lte: date } },
+          {'createdAt': { $exists: false } }
+        ]
       }
     },
     {
@@ -72,7 +80,7 @@ async function getRecyclingRatesPerProductUntilDate(user, date) {
         _id: '$productID',
         'purchaseCount':  { $last: '$purchaseCount' },
         'recycleCount':  { $last: '$recycleCount' },
-        'createdAt': { $last: '$createdAt' },
+        //'createdAt': { $last: '$createdAt' },
       }
     },
     {
