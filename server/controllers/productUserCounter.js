@@ -41,7 +41,7 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
 
     let amount = tryCastToInteger(body.amount, 'Lisättävän määrän on oltava kokonaisluku! Annettiin {value}', 'amount')
 
-    let successMessage = 'Tuotteen \'{nimi}\' '
+    let successMessage = 'Tuotteen \'' + product.name +'\' '
     if (body.type === REQUEST_TYPE.RECYCLE) {
       productUserCounter.recycleCount += amount
       successMessage += 'Kierrätystilasto päivitetty'
@@ -52,7 +52,7 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
 
     await productUserCounter.save()
       .then(() => {
-        return res.status(STATUS_CODES.OK).json({ message: successMessage.replace('{nimi}', product.name), resource: productUserCounter })
+        return res.status(STATUS_CODES.OK).json({ message: successMessage, resource: productUserCounter })
       })
 
   } catch (error) {
