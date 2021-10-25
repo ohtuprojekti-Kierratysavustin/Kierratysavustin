@@ -248,6 +248,12 @@ const getProductUserCounts = async (productID, token) => {
   return result
 }
 
+const getUserStatisticsTable = async (numberOfDays, token) => {
+  const result = await api.get('/api/statistics/user/table?numOfDays=' + numberOfDays)
+    .set('Authorization', `bearer ${token}`)
+  return result
+}
+
 module.exports = {
   clearDatabase,
   usersInDb,
@@ -274,4 +280,5 @@ module.exports = {
   addNewUser,
   getInstructionsOfProduct,
   deleteInstruction,
+  getUserStatisticsTable,
 }

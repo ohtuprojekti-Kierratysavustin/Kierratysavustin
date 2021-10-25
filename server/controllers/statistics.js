@@ -2,7 +2,7 @@ const statisticsRouter = require('express').Router()
 const ProductUserCounter = require('../models/productUserCounter')
 const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')
-const { restructureCastAndValidationErrorsFromMongoose } = require('../error/exceptions')
+const { restructureCastAndValidationErrorsFromMongoose, InvalidParameterException } = require('../error/exceptions')
 const ObjectID = require('mongodb').ObjectID
 const { tryCastToInteger } = require('../utils/validation')
 
@@ -26,6 +26,11 @@ statisticsRouter.get('/user/table', async (req, res, next) => {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
     let amount = tryCastToInteger(req.query.numOfDays, 'Päivien lukumäärän on oltava kokonaisluku! Annettiin {value}', 'amount')
+
+    if (amount < 0) {
+      throw new InvalidParameterException(
+        'Kyselyn parametrin on oltava positiivinen kokonaisluku. Annettiin \'' + amount + '\'')
+    }
 
     let numOfDays = amount
     let today = new Date()
