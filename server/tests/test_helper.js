@@ -7,7 +7,7 @@ const User = require('../models/user')
 const STATUS_CODES = require('http-status')
 const ProductUserCounter = require('../models/productUserCounter')
 
-const { REQUEST_TYPE } = require('../enum/productUserCount')
+const { PRODUCT_USER_COUNT_REQUEST_TYPE } = require('../enum/productUserCount')
 
 const productUserCounterRouter = require('../controllers/productUserCounter')
 const counterURLS = productUserCounterRouter.URLS
@@ -49,6 +49,14 @@ const getInstructionsOfProduct = async (productID) => {
   const result = await api.get(`/api/products/${productID}`)
   return result.body.instructions
 }
+
+const getStatistics = async (token) => {
+  const result = await api
+    .get('/api/statistics')
+    .set('Authorization', `bearer ${token}`)
+  return result
+}
+
 
 const addNewProduct = async (newProduct, token) => {
   const result = await api
@@ -155,7 +163,7 @@ const recycleProductOnce = async (productID, token) => {
   const content = {
     productID: productID,
     amount: 1,
-    type: REQUEST_TYPE.RECYCLE
+    type: PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE
   }
   const result = await api
     .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
@@ -169,7 +177,7 @@ const unrecycleProductOnce = async (productID, token) => {
   const content = {
     productID: productID,
     amount: -1,
-    type: REQUEST_TYPE.RECYCLE
+    type: PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE
   }
   const result = await api
     .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
@@ -183,7 +191,7 @@ const recycleProductFreeAmount = async (productID, amount, token) => {
   const content = {
     productID: productID,
     amount: amount,
-    type: REQUEST_TYPE.RECYCLE
+    type: PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE
   }
   const result = await api
     .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
@@ -196,7 +204,7 @@ const purchaseProductOnce = async (productID, token) => {
   const content = {
     productID: productID,
     amount: 1,
-    type: REQUEST_TYPE.PURCHASE
+    type: PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE
   }
   const result = await api
     .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
@@ -210,7 +218,7 @@ const unPurchaseProductOnce = async (productID, token) => {
   const content = {
     productID: productID,
     amount: -1,
-    type: REQUEST_TYPE.PURCHASE
+    type: PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE
   }
   const result = await api
     .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
@@ -224,7 +232,7 @@ const purchaseProductFreeAmount = async (productID, amount, token) => {
   const content = {
     productID: productID,
     amount: amount,
-    type: REQUEST_TYPE.PURCHASE
+    type: PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE
   }
   const result = await api
     .post('/api' + counterURLS.BASE_URL + counterURLS.UPDATE_PRODUCT_USER_COUNT)
@@ -240,12 +248,19 @@ const getProductUserCounts = async (productID, token) => {
   return result
 }
 
+const getUserStatisticsTable = async (numberOfDays, token) => {
+  const result = await api.get('/api/statistics/user/table?numOfDays=' + numberOfDays)
+    .set('Authorization', `bearer ${token}`)
+  return result
+}
+
 module.exports = {
   clearDatabase,
   usersInDb,
   getToken,
   productsData,
   getProducts,
+  getStatistics,
   addInstruction,
   likeInstruction,
   disLikeInstruction,
@@ -265,4 +280,5 @@ module.exports = {
   addNewUser,
   getInstructionsOfProduct,
   deleteInstruction,
+  getUserStatisticsTable,
 }

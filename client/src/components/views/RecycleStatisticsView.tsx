@@ -1,12 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, Container } from 'react-bootstrap'
+import { productUserCountService } from '../../services/productUserCount'
 import { Link } from 'react-router-dom'
-import InfoBar from './InfoBar'
-import { useStore } from '../store'
 import { Line } from 'react-chartjs-2'
+import InfoBar from '../InfoBar'
+import { useStore } from '../../store'
 
-const RecycleStatistics = () => {
+
+
+const RecycleStatisticsView = () => {
   const { productStatistics, user } = useStore()
+
+  const [data, setData] = useState([0])
+  useEffect(() => {
+    console.log('load data', user)
+    const getGraphData = () => {
+      return productUserCountService.getGraphStatistics(30)
+    }
+    getGraphData().then(res => {
+      //console.log(res)
+      setData(res)
+    })
+  }, [user])
 
   if (productStatistics.length === 0) {
     return (
@@ -30,9 +45,9 @@ const RecycleStatistics = () => {
     }
   ))
 
-  //kuvaajan testaamiseen, koska ei vielä bäkkäriä mistä oikea data
+  // kuvaajan datan tyyppi
   type dataValues = {
-    labels: number[],
+    labels: string[],
     datasets: [
       {
         label: string,
@@ -43,17 +58,36 @@ const RecycleStatistics = () => {
     ]
   }
 
-  //kuvaajan testaamiseen, koska ei vielä bäkkäriä mistä oikea data
-  const chartDataForTesting: dataValues = {
-    labels: [1,2,3,4,5,6,7],
+  // päivämäärät x-akselille
+  const today: Date = new Date()
+  const dates: string[] = []
+  for (let i = 29; i >= 0; i--) {
+    const date: Date = new Date()
+    date.setDate(today.getDate() - i)
+    //console.log(date.getDay())
+    dates.push(`${date.getDate()}.${date.getMonth() + 1}.`)
+  }
+
+  // data kuvaajaan
+  const chartData: dataValues = {
+    labels: dates,
     datasets: [
       {
         label: 'Päivittäinen kierrätysaste',
-        data: [0.3,0.3,0.5,0.6,0.6,0.87,0.6],
-        fill: false,
-        borderColor: '#137447'
+        data: data,
+        fill: true,
+        borderColor: '#137447',
       }
     ]
+  }
+
+  const options :any = {
+    scales: {
+      y: {
+        suggestedMin: 0,
+        suggestedMax: 100
+      }
+    }
   }
 
   let index :number = 1
@@ -87,11 +121,13 @@ const RecycleStatistics = () => {
             )}
           </tbody>
         </Table>
+      </Container>
+      <Container id='stat-chart'>
         <br></br>
         <h5>Kokonaiskerrätysaste viimeisen 30 päivän aikana</h5>
-        <Line data={chartDataForTesting} />
+        <Line data={chartData} options={options} />
       </Container>
     </div>
   )
 }
-export default RecycleStatistics
+export default RecycleStatisticsView

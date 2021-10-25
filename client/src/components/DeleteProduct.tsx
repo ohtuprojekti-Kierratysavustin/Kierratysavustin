@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import productService from '../services/products'
 import { useStore } from '../store'
 import { useHistory } from 'react-router-dom'
-import { Product } from '../types'
+import { Product } from '../types/objects'
 
 type Props = {
   product: Product
@@ -28,7 +28,7 @@ const DeleteProduct: React.FC<Props> = ({ product }) => {
           setNotification(response.message, 'success')
         })
         .catch((error) => {
-          setNotification((error.response.data.message ? error.response.data.message : 'Tuotetta poistettaessa tapahtui odottamaton virhe!')
+          setNotification((error.message ? error.message : 'Tuotetta poistettaessa tapahtui odottamaton virhe!')
             , 'error')
         })
     }

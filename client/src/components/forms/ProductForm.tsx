@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import productService from '../services/products'
-import { useStore } from '../store'
-import InfoBar from './InfoBar'
+import productService from '../../services/products'
+import { useStore } from '../../store'
+import InfoBar from '../InfoBar'
 import { useHistory } from 'react-router-dom'
 import * as yup from 'yup'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -34,7 +34,7 @@ const ProductForm = () => {
         history.push(`products/${newProduct.id}`)
         setNotification(`Tuote ${productName} lisätty!`, 'success')
       }).catch((error) => {
-        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe lisätessä uutta tuotetta!'), 'error')
+        setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe lisätessä uutta tuotetta!'), 'error')
       })
   }
   return (

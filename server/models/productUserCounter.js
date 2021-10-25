@@ -37,7 +37,7 @@ const productUserCounterSchema = new mongoose.Schema({
     default: 0,
     cast: 'Hankintatilaston on oltava numeerinen! Annettiin: \'{VALUE}\''
   }
-})
+},{ timestamps: true })
 
 productUserCounterSchema.set('toJSON', {
   transform: (document, returnedObject) => {
