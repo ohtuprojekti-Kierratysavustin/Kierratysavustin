@@ -7,7 +7,7 @@ const ObjectID = require('mongodb').ObjectID
 const { tryCastToInteger } = require('../utils/validation')
 
 // Palauttaa käyttäjän kierrätystilaston
-statisticsRouter.get('/', async (req, res, next) => { // osoitteeksi '/user/stats'
+statisticsRouter.get('/', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
     let today = new Date()
@@ -35,24 +35,22 @@ statisticsRouter.get('/user/table', async (req, res, next) => {
     let numOfDays = amount
     let today = new Date()
     let dailyRecyclingrateTable = new Array
-
+    
     for (let i=1; i<=numOfDays; i++) {
-      let day = new Date()
-      day.setDate(today.getDate() - (numOfDays - i))
-      let dailyValues = await getRecyclingRatesPerProductUntilDate(user, day)
+      let requestedDay = new Date()
+      requestedDay.setDate(today.getDate() - (numOfDays - i))
+      let dailyValuesPerProduct = await getRecyclingRatesPerProductUntilDate(user, requestedDay)
+
       let totalPurchases = 0
       let totalRecycles = 0
-
-      for (let i=0; i<dailyValues.length; i++) {
-        totalPurchases += dailyValues[i].purchaseCount
-        totalRecycles += dailyValues[i].recycleCount
+      for (let i=0; i<dailyValuesPerProduct.length; i++) {
+        totalPurchases += dailyValuesPerProduct[i].purchaseCount
+        totalRecycles += dailyValuesPerProduct[i].recycleCount
       }
 
       let totalRecyclingRate = (totalRecycles === 0) ? 0 : totalRecycles / totalPurchases
       dailyRecyclingrateTable.push(totalRecyclingRate)
     }
-
-    //console.log('kokonaiskierrätysaste:', dailyRecyclingrateTable.toString())
 
     res.status(STATUS_CODES.OK).json(dailyRecyclingrateTable)
   } catch (error) {
@@ -106,7 +104,6 @@ async function getRecyclingRatesPerProductUntilDate(user, date) {
       $addFields: { productID: { 'id': '$_id'} }
     },
   ]).toArray()
-  //console.log(eventsPerProduct)
   return eventsPerProduct
 }
 
