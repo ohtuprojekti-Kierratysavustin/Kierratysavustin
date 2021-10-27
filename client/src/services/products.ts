@@ -46,6 +46,10 @@ const remove = (id: number) => {
 }
 
 const addImage = (id: number, formData: any) => {
+  //allaolevat pari riviä vain tulostelua varten
+  for (let pair of formData.entries()) {
+    console.log('formData '+ pair[0]+ ', ' + pair[1].name)
+  }
   const request = axios.post(`${baseUrl}/uploadImage`, id, formData )
   return request
     .then(response => response.data)

@@ -21,16 +21,18 @@ const UploadImage: React.FC<Props> = ({ product }) => {
   }
 
   const handleInputChange = (event: any) => {
-    console.log(selectedFile)
     setSelectedFile(event.target.files[0])
+    console.log('target:' +event.target.files[0].name)
+    console.log('kuva: '+selectedFile.toString)
     setIsFilePicked(true)
+    console.log('isfilepicked: '+isFilePicked)
   }
 
   const handleClick: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     const formData = new FormData()
     formData.append('image', selectedFile)
-    if (isFilePicked && window.confirm(`Lisää kuva tuotteelle ${product.name}?`)) {
+    if (isFilePicked && window.confirm(`Lisää kuva ${selectedFile} tuotteelle ${product.name}?`)) {
       await productService.addImage(product.id, formData)
         .then((response) => {
           //setProducts(products.filter(p => p.id !== product.id))
