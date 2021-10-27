@@ -5,20 +5,22 @@ import { Link } from 'react-router-dom'
 import { Line } from 'react-chartjs-2'
 import InfoBar from '../InfoBar'
 import { useStore } from '../../store'
+import { startOfDay, endOfDay, subDays } from 'date-fns'
 
 
 
 const RecycleStatisticsView = () => {
   const { productStatistics, user } = useStore()
-
   const [data, setData] = useState([0])
+  const numberOfDays = 30
+
   useEffect(() => {
-    console.log('load data', user)
     const getGraphData = () => {
-      return productUserCountService.getGraphStatistics(30)
+      const today = new Date()
+      const previousDate = subDays(today, (numberOfDays-2) )
+      return productUserCountService.getGraphStatistics(startOfDay(previousDate).getTime(), endOfDay(today).getTime())
     }
     getGraphData().then(res => {
-      //console.log(res)
       setData(res)
     })
   }, [user])
@@ -61,10 +63,9 @@ const RecycleStatisticsView = () => {
   // päivämäärät x-akselille
   const today: Date = new Date()
   const dates: string[] = []
-  for (let i = 29; i >= 0; i--) {
+  for (let i = numberOfDays-1; i >= 0; i--) {
     const date: Date = new Date()
     date.setDate(today.getDate() - i)
-    //console.log(date.getDay())
     dates.push(`${date.getDate()}.${date.getMonth() + 1}.`)
   }
 
@@ -75,12 +76,13 @@ const RecycleStatisticsView = () => {
       {
         label: 'Päivittäinen kierrätysaste',
         data: data,
-        fill: true,
+        fill: false,
         borderColor: '#137447',
       }
     ]
   }
 
+  // kuvaajan y-akseli välille 0-100
   const options :any = {
     scales: {
       y: {

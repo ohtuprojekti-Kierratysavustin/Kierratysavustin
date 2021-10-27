@@ -4,14 +4,15 @@ const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')
 const { restructureCastAndValidationErrorsFromMongoose, InvalidParameterException } = require('../error/exceptions')
 const ObjectID = require('mongodb').ObjectID
-const { tryCastToInteger } = require('../utils/validation')
+const { isValid, fromUnixTime, addDays, subDays, differenceInCalendarDays, endOfDay, startOfDay } = require('date-fns')
 
 // Palauttaa käyttäjän kierrätystilaston
-statisticsRouter.get('/', async (req, res, next) => {
+statisticsRouter.get('/user/recyclingratesperproduct', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
     let today = new Date()
-    const eventsPerProduct = await getRecyclingRatesPerProductUntilDate(user, today)
+    let aYearAgo = subDays(today, 365) // kuinka kaukaa tietoja haetaan
+    const eventsPerProduct = await getRecyclingRatesPerProductUpToDate(user, startOfDay(aYearAgo), endOfDay(today))
 
     res.status(STATUS_CODES.OK).json(eventsPerProduct)
   } catch (error) {
@@ -20,36 +21,41 @@ statisticsRouter.get('/', async (req, res, next) => {
   }
 })
 
-// Palauttaa taulukon, osoiterivillä kyselyssä annetaan päivien määrä
-statisticsRouter.get('/user/table', async (req, res, next) => {
+// Palauttaa taulukon käyttäjän päivittäisistä kokonaiskierrätysasteista, kyselyn osoiterivillä annettujen päivien väliltä
+statisticsRouter.get('/user/recyclingratesperday', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
-    let amount = tryCastToInteger(req.query.numOfDays, 'Päivien lukumäärän on oltava kokonaisluku! Annettiin {value}', 'amount')
+    let startDate = fromUnixTime(req.query.start/1000)
+    let endDate = fromUnixTime(req.query.end/1000)
 
-    if (amount < 0) {
+    if (!isValid(startDate) || !isValid(endDate) ) {
       throw new InvalidParameterException(
-        'Kyselyn parametrin on oltava positiivinen kokonaisluku. Annettiin \'' + amount + '\'')
+        'Kyselyn parametrit on ilmoitettava unix-aikaleimoina. Annettiin \'' + req.query.start + '\' ja \'' + req.query.end + '\'')
     }
 
-    let numOfDays = amount
-    let today = new Date()
-    let dailyRecyclingrateTable = new Array
-    
-    for (let i=1; i<=numOfDays; i++) {
-      let requestedDay = new Date()
-      requestedDay.setDate(today.getDate() - (numOfDays - i))
-      let dailyValuesPerProduct = await getRecyclingRatesPerProductUntilDate(user, requestedDay)
+    if (startDate > endDate){
+      throw new InvalidParameterException(
+        'Kyselyn alkupäivämäärän on oltava pienempi kun loppupäivämäärän. Annettiin \'' + startDate + '\' ja \'' + endDate + '\'')
+    }
 
+    const period = differenceInCalendarDays(endDate, startDate) + 1 // yksi päivä lisää, jotta saadaan päivien määrä
+    let dailyRecyclingrateTable = new Array
+    let requestedDay = subDays(endDate, period)
+    
+    for (let i=0; i<=period; i++) {
+      let dailyValuesPerProduct = await getRecyclingRatesPerProductUpToDate(user, startOfDay(startDate), endOfDay(requestedDay))
+      
       let totalPurchases = 0
       let totalRecycles = 0
       for (let i=0; i<dailyValuesPerProduct.length; i++) {
         totalPurchases += dailyValuesPerProduct[i].purchaseCount
         totalRecycles += dailyValuesPerProduct[i].recycleCount
       }
-
+      
       let totalRecyclingRate = (totalRecycles === 0) ? 0 : totalRecycles / totalPurchases * 100
       dailyRecyclingrateTable.push(totalRecyclingRate)
+      requestedDay = addDays(requestedDay, 1)
     }
 
     res.status(STATUS_CODES.OK).json(dailyRecyclingrateTable)
@@ -59,7 +65,7 @@ statisticsRouter.get('/user/table', async (req, res, next) => {
   } 
 })
 
-async function getRecyclingRatesPerProductUntilDate(user, date) {
+async function getRecyclingRatesPerProductUpToDate(user, afterDate, beforeDate) {
   const eventsPerProduct = await ProductUserCounter.collection.aggregate([
     {
       // Rajataan haku kirjautuneen käyttäjän tietoihin
@@ -67,7 +73,7 @@ async function getRecyclingRatesPerProductUntilDate(user, date) {
         'userID': new ObjectID(user.id),
         // Rajataan viimeisimpiin tapahtumiin, tai niihin joista aikaleima puuttuu
         $or: [
-          {'createdAt': { $lte: date } },
+          {'createdAt': { $gte: afterDate, $lte: beforeDate } },
           {'createdAt': { $exists: false } }
         ]
       }
@@ -78,7 +84,6 @@ async function getRecyclingRatesPerProductUntilDate(user, date) {
         _id: '$productID',
         'purchaseCount':  { $last: '$purchaseCount' },
         'recycleCount':  { $last: '$recycleCount' },
-        //'createdAt': { $last: '$createdAt' },
       }
     },
     {
