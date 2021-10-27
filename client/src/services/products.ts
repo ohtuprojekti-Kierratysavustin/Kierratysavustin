@@ -45,8 +45,8 @@ const remove = (id: number) => {
     .catch(error => Promise.reject(error.response.data))
 }
 
-const addImage = (id: number) => {
-  const request = axios.post(`${baseUrl}/uploadImage`, { params: { id } })
+const addImage = (id: number, formData: any) => {
+  const request = axios.post(`${baseUrl}/uploadImage`, id, formData )
   return request
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))

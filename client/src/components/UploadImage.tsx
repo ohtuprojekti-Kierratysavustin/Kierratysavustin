@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{ useState } from 'react'
 import { Button } from 'react-bootstrap'
 import productService from '../services/products'
 import { useStore } from '../store'
@@ -13,15 +13,25 @@ const UploadImage: React.FC<Props> = ({ product }) => {
   const productCreatorId = product.user
   const { user, setNotification/*, products, setProducts */ } = useStore()
   //const history = useHistory()
+  const [selectedFile, setSelectedFile] = useState('')
+  const [isFilePicked, setIsFilePicked] = useState(false)
 
   if (!user || !productCreatorId) {
     return (null)
   }
 
+  const handleInputChange = (event: any) => {
+    console.log(selectedFile)
+    setSelectedFile(event.target.files[0])
+    setIsFilePicked(true)
+  }
+
   const handleClick: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
-    if (window.confirm(`Lisää kuva tuotteelle ${product.name}?`)) {
-      await productService.addImage(product.id)
+    const formData = new FormData()
+    formData.append('image', selectedFile)
+    if (isFilePicked && window.confirm(`Lisää kuva tuotteelle ${product.name}?`)) {
+      await productService.addImage(product.id, formData)
         .then((response) => {
           //setProducts(products.filter(p => p.id !== product.id))
           //history.push('/products')
@@ -37,7 +47,7 @@ const UploadImage: React.FC<Props> = ({ product }) => {
   if (user.id === productCreatorId) {
     return (
       <div>
-        <input type="file" />
+        <input type="file" accept="image/*" onChange={handleInputChange}/>
         <Button variant={'outline-success'} id="uploadImage" onClick={handleClick}>
           Lisää kuva
         </Button>
