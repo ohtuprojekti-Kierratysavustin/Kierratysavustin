@@ -14,6 +14,7 @@ import '../../styles.css'
 import { Product } from '../../types/objects'
 import ProductUserCountForm from '../forms/ProductUserCountForm'
 import { productUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/productUserCount'
+import UploadImage from '../UploadImage'
 
 type Props = {
   product?: Product
@@ -55,6 +56,9 @@ const ProductView: React.FC<Props> = ({ product }) => {
                     </Col>
                     <Col sm={3}>
                       <DeleteProduct product={product} />
+                    </Col>
+                    <Col sm={3}>
+                      <UploadImage product={product}/>
                     </Col>
                   </>
                 ) : (

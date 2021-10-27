@@ -45,5 +45,12 @@ const remove = (id: number) => {
     .catch(error => Promise.reject(error.response.data))
 }
 
+const addImage = (id: number) => {
+  const request = axios.post(`${baseUrl}/uploadImage`, { params: { id } })
+  return request
+    .then(response => response.data)
+    .catch(error => Promise.reject(error.response.data))
+}
 
-export default { create, getAll, createInstruction, deleteInstruction, remove, getFavorites, }
+
+export default { create, getAll, createInstruction, deleteInstruction, remove, getFavorites, addImage, }
