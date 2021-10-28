@@ -64,7 +64,6 @@ const RecycleStatisticsView = () => {
   for (let i = 29; i >= 0; i--) {
     const date: Date = new Date()
     date.setDate(today.getDate() - i)
-    //console.log(date.getDay())
     dates.push(`${date.getDate()}.${date.getMonth() + 1}.`)
   }
 
