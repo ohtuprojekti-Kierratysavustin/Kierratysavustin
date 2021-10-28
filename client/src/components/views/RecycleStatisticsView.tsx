@@ -56,6 +56,12 @@ const RecycleStatisticsView = () => {
         data: number[],
         fill: boolean,
         borderColor: string
+      },
+      {
+        label: string,
+        data: number[],
+        pointRadius: number,
+        borderColor: string
       }
     ]
   }
@@ -69,6 +75,12 @@ const RecycleStatisticsView = () => {
     dates.push(`${date.getDate()}.${date.getMonth() + 1}.`)
   }
 
+  // data for the EU's goal precentage
+  let goalPrecentage: number[] = []
+  for (let i=0; i < 30; i++) {
+    goalPrecentage.push(55)
+  }
+
   // data kuvaajaan
   const chartData: dataValues = {
     labels: dates,
@@ -78,6 +90,12 @@ const RecycleStatisticsView = () => {
         data: data,
         fill: false,
         borderColor: '#137447',
+      },
+      {
+        label: '55% - EU:n tavoite kotitalousjätteen kierrätysasteelle vuonna 2025',
+        data: goalPrecentage,
+        pointRadius: 0,
+        borderColor: '#a4c2a6'
       }
     ]
   }
@@ -127,7 +145,7 @@ const RecycleStatisticsView = () => {
       <Container id='stat-chart'>
         <br></br>
         <h5>Kokonaiskerrätysaste viimeisen 30 päivän aikana</h5>
-        <Line data={chartData} options={options} />
+        <Line data={chartData} options={options}/>
       </Container>
     </div>
   )
