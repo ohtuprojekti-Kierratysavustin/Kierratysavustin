@@ -127,7 +127,7 @@ const RecycleStatisticsView = () => {
       <Container id='stat-chart'>
         <br></br>
         <h5>Kokonaiskerrätysaste viimeisen 30 päivän aikana</h5>
-        <Line data={chartData} options={options} />
+        <Line className='RecycleGraph' data={chartData} options={options} />
       </Container>
     </div>
   )
