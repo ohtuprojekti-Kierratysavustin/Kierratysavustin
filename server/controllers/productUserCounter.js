@@ -9,9 +9,9 @@ const { PRODUCT_USER_COUNT_REQUEST_TYPE } = require('../enum/productUserCount')
 const { tryCastToInteger } = require('../utils/validation')
 const { startOfDay } = require('date-fns')
 
-const URLS = { BASE_URL: '/count',
-  UPDATE_PRODUCT_USER_COUNT: '/product/user',
-  GET_PRODUCT_USER_COUNT: '/product/user',
+const URLS = { BASE_URL: '/statistics',
+  UPDATE_PRODUCT_USER_COUNT: '/user/product',
+  GET_PRODUCT_USER_COUNT: '/user/product',
 }
 
 router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
