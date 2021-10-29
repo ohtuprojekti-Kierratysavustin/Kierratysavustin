@@ -6,6 +6,12 @@ const helper = require('./test_helper')
 const STATUS_CODES = require('http-status')
 
 let token = undefined
+const numberOfDays = 15
+let today = new Date()
+let previousDay = new Date() 
+previousDay.setDate(today.getDate() - (numberOfDays - 2))
+today = today.getTime()
+previousDay = previousDay.getTime()
 
 beforeEach(async () => {
   //console.log('Starting to initialize test in product user counters!')
@@ -336,25 +342,27 @@ describe('Product Recycling Statistics', () => {
   })
 
   test('user recycling table query returns correct number of results', async () => {
-    const numberOfDays = 15
-    const response = await helper.getUserStatisticsTable(numberOfDays, token)
+    const response = await helper.getUserStatisticsTable(previousDay, today, token)
     expect(response.body).toHaveLength(numberOfDays)
   })
 
   test('user recycling table cannot be seen without login', async () => {
-    const response = await helper.getUserStatisticsTable(30, 'invalidToken')
+    const numberOfDays = 15
+    const today = new Date()
+    const previousDay = new Date() 
+    previousDay.setDate(today.getDate - numberOfDays)
+    const response = await helper.getUserStatisticsTable(previousDay, today, 'invalidToken')
     expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
   })
   
-  test('user recycling table cannot be seen with negative parameters', async () => {
-    const negativeNumber = '-10'
-    const response = await helper.getUserStatisticsTable(negativeNumber, token)
+  test('user recycling table cannot be seen with parameters in wrong order', async () => {
+    const response = await helper.getUserStatisticsTable(today, previousDay, token)
     expect(response.status).toBe(STATUS_CODES.BAD_REQUEST)
   })
 
   test('user recycling table cannot be seen with invalid parameters', async () => {
     const text = 'iddqd'
-    const response = await helper.getUserStatisticsTable(text, token)
+    const response = await helper.getUserStatisticsTable(previousDay, text, token)
     expect(response.status).toBe(STATUS_CODES.BAD_REQUEST)
   })
 
@@ -368,9 +376,8 @@ describe('Product Recycling Statistics', () => {
     await helper.purchaseProductFreeAmount(product.id, purchased, token)
     await helper.recycleProductFreeAmount(product.id, recycled, token)
 
-    const numberOfDays = 7
-    const response = await helper.getUserStatisticsTable(numberOfDays, token)
-    expect(response.body[numberOfDays - 1]).toBeCloseTo(recycled / purchased)
+    const response = await helper.getUserStatisticsTable(previousDay, today, token)
+    expect(response.body[numberOfDays - 1]).toBeCloseTo(recycled / purchased * 100)
   })
 })
   

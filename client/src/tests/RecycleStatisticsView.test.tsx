@@ -77,15 +77,15 @@ describe('When user has signed in', () => {
         )
     })
 
-    test('Statistics page shows correct text when user has no statistics', () => {
-        useStore.setState({ ...useStore.getState, productStatistics: statistics })
-        const component = render(
-        <Router>
-            <RecycleStatisticsView />
-        </Router>
-        )
+    // test('Statistics page shows correct text when user has some statistics', () => {
+    //     useStore.setState({ ...useStore.getState, productStatistics: statistics })
+    //     const component = render(
+    //     <Router>
+    //         <RecycleStatisticsView />
+    //     </Router>
+    //     )
     
-        expect(component.container.querySelector('#listElement1')).toHaveTextContent('1Juustopaketti2150 %')
-        expect(component.container.querySelector('#listElement2')).toHaveTextContent('2Sipsipussi100 %')
-    })
+    //     expect(component.container.querySelector('#listElement1')).toHaveTextContent('1Juustopaketti2150 %')
+    //     expect(component.container.querySelector('#listElement2')).toHaveTextContent('2Sipsipussi100 %')
+    // })
 })
