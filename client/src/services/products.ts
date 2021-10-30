@@ -45,16 +45,4 @@ const remove = (id: number) => {
     .catch(error => Promise.reject(error.response.data))
 }
 
-const addImage = (id: number, formData: any) => {
-  //allaolevat pari riviä vain tulostelua varten
-  for (let pair of formData.entries()) {
-    console.log('formData '+ pair[0]+ ', ' + pair[1].name)
-  }
-  const request = axios.post(`${baseUrl}/uploadImage`, id, formData )
-  return request
-    .then(response => response.data)
-    .catch(error => Promise.reject(error.response.data))
-}
-
-
-export default { create, getAll, createInstruction, deleteInstruction, remove, getFavorites, addImage, }
+export default { create, getAll, createInstruction, deleteInstruction, remove, getFavorites }

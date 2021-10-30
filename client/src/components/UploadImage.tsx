@@ -1,9 +1,12 @@
 import React,{ useState } from 'react'
-import { Button } from 'react-bootstrap'
-import productService from '../services/products'
+//import { Button } from 'react-bootstrap'
+//import productService from '../services/products'
+import fileService from '../services/files'
 import { useStore } from '../store'
 
 import { Product } from '../types/objects'
+
+//const FormData = require('form-data')
 
 type Props = {
   product: Product
@@ -32,8 +35,10 @@ const UploadImage: React.FC<Props> = ({ product }) => {
     event.preventDefault()
     const formData = new FormData()
     formData.append('image', selectedFile)
+    formData.append('id', product.id.toString())
+    console.log(formData.get('image'))
     if (isFilePicked && window.confirm(`Lisää kuva ${selectedFile} tuotteelle ${product.name}?`)) {
-      await productService.addImage(product.id, formData)
+      await fileService.addProductImage(product.id, formData)
         .then((response) => {
           //setProducts(products.filter(p => p.id !== product.id))
           //history.push('/products')
@@ -49,14 +54,23 @@ const UploadImage: React.FC<Props> = ({ product }) => {
   if (user.id === productCreatorId) {
     return (
       <div>
-        <input type="file" accept="image/*" onChange={handleInputChange}/>
-        <Button variant={'outline-success'} id="uploadImage" onClick={handleClick}>
-          Lisää kuva
-        </Button>
+        <input type="file" name="file" onChange={handleInputChange} />
+        <div>
+          <button onClick={handleClick}>Lisää kuva</button>
+        </div>
       </div>
+
     )
   }
   return (null)
 }
 
 export default UploadImage
+// return (
+//   <div>
+//     <input type="file" accept="image/*" onChange={handleInputChange}/>
+//     <Button variant={'outline-success'} id="uploadImage" onClick={handleClick}>
+//       Lisää kuva
+//     </Button>
+//   </div>
+// )
