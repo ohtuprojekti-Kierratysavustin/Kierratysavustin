@@ -60,6 +60,7 @@ const UploadImage: React.FC<Props> = ({ product }) => {
             variant='success'
             size='sm'
             onClick={handleClick}
+            disabled={!isFilePicked}
           >Lisää kuva
           </Button>
         </div>
