@@ -53,10 +53,10 @@ const UploadImage: React.FC<Props> = ({ product }) => {
   if (user.id === productCreatorId) {
     return (
       <div>
-        <input type="file" name="file" onChange={handleInputChange} />
+        <input type="file" name="file" accept='image/*' onChange={handleInputChange} />
         <div>
           <Button
-            id='addFileButton'
+            id='uploadImage'
             variant='success'
             size='sm'
             onClick={handleClick}
@@ -70,11 +70,3 @@ const UploadImage: React.FC<Props> = ({ product }) => {
 }
 
 export default UploadImage
-// return (
-//   <div>
-//     <input type="file" accept="image/*" onChange={handleInputChange}/>
-//     <Button variant={'outline-success'} id="uploadImage" onClick={handleClick}>
-//       Lisää kuva
-//     </Button>
-//   </div>
-// )
