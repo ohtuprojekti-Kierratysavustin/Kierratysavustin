@@ -15,6 +15,7 @@ import { Product } from '../../types/objects'
 import ProductUserCountForm from '../forms/ProductUserCountForm'
 import { productUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/productUserCount'
 import UploadImage from '../UploadImage'
+import logo from '../../media/logo.png'
 
 type Props = {
   product?: Product
@@ -49,6 +50,15 @@ const ProductView: React.FC<Props> = ({ product }) => {
                 <h2>{product.name}</h2>
               </Row>
               <Row>
+                <Col sm={2}>
+                  <img
+                    width={100}
+                    height={100}
+                    className="mr-3"
+                    src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
+                    alt=""
+                  />
+                </Col>
                 {user !== null ? (
                   <>
                     <Col sm={3}>
