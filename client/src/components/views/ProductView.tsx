@@ -40,7 +40,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
         <Container>
           <Row>
             <Col>
-              <Button onClick={() => routeChange()} id='neutral-button'>Takaisin</Button>
+              <Button onClick={() => routeChange()} id='neutral-button' size='sm'>Takaisin</Button>
             </Col>
           </Row>
           <Row>
@@ -53,8 +53,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
                   <>
                     <Col sm={3}>
                       <FavoritesForm product={product} />
-                    </Col>
-                    <Col sm={3}>
+                      <br></br>
                       <DeleteProduct product={product} />
                     </Col>
                     <Col sm={3}>

@@ -1,5 +1,5 @@
 import React,{ useState } from 'react'
-//import { Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 //import productService from '../services/products'
 import fileService from '../services/files'
 import { useStore } from '../store'
@@ -55,10 +55,15 @@ const UploadImage: React.FC<Props> = ({ product }) => {
       <div>
         <input type="file" name="file" onChange={handleInputChange} />
         <div>
-          <button onClick={handleClick}>Lisää kuva</button>
+          <Button
+            id='addFileButton'
+            variant='success'
+            size='sm'
+            onClick={handleClick}
+          >Lisää kuva
+          </Button>
         </div>
       </div>
-
     )
   }
   return (null)
