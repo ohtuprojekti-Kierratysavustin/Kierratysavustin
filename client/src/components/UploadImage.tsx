@@ -35,7 +35,6 @@ const UploadImage: React.FC<Props> = ({ product }) => {
     event.preventDefault()
     const formData = new FormData()
     formData.append('image', selectedFile)
-    formData.append('id', product.id.toString())
     console.log(formData.get('image'))
     if (isFilePicked && window.confirm(`Lisää kuva ${selectedFile} tuotteelle ${product.name}?`)) {
       await fileService.addProductImage(product.id, formData)

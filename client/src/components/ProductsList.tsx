@@ -32,7 +32,7 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
                     width={64}
                     height={64}
                     className="mr-3"
-                    src={logo}
+                    src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
                     alt=""
                   />
                   <Media.Body>

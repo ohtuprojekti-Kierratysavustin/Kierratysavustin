@@ -10,7 +10,7 @@ export enum PRODUCT_USER_COUNT_REQUEST_TYPE {
 }
 
 const updateCount = async (updateObject: ProductUserCountUpdate): Promise<PostRequestResponse> => {
-  const response = axios.post('hello', updateObject, tokenService.getConfig())
+  const response = axios.post(`${baseUrl}/user/product`, updateObject, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
