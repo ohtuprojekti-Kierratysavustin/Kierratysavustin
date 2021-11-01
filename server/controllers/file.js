@@ -5,6 +5,7 @@ const path = require('path')
 const config = require('../utils/config')
 const { restructureCastAndValidationErrorsFromMongoose, ResourceNotFoundException } = require('../error/exceptions')
 const Product = require('../models/product')
+const STATUS_CODES = require('http-status')
 const { GridFsStorage } = require('multer-gridfs-storage')
 //const Grid = require('gridfs-stream')
 const mongoose = require('mongoose')
@@ -49,7 +50,14 @@ fileRouter.post('/upload/product', upload.single('image'), async (req, res, next
     }
 
     product.productImage = req.file.filename
-    product.save()
+    await product.save()
+    res.status(STATUS_CODES.OK)
+      .json(
+        {
+          message: 'Kuva lisätty onnistuneesti!',
+          resource: product
+        }
+      )
 
     res.json( req.file )
   } catch (error) {
