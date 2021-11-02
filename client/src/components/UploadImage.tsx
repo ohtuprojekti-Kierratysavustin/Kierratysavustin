@@ -1,6 +1,6 @@
 import React,{ useState } from 'react'
 import { Button } from 'react-bootstrap'
-//import productService from '../services/products'
+import productService from '../services/products'
 import fileService from '../services/files'
 import { useStore } from '../store'
 
@@ -14,7 +14,7 @@ type Props = {
 
 const UploadImage: React.FC<Props> = ({ product }) => {
   const productCreatorId = product.user
-  const { user, setNotification/*, products, setProducts */ } = useStore()
+  const { user, setNotification, setProducts } = useStore()
   //const history = useHistory()
   const [selectedFile, setSelectedFile] = useState('')
   const [isFilePicked, setIsFilePicked] = useState(false)
@@ -39,6 +39,7 @@ const UploadImage: React.FC<Props> = ({ product }) => {
     if (isFilePicked && window.confirm(`Lisää kuva ${selectedFile} tuotteelle ${product.name}?`)) {
       await fileService.addProductImage(product.id, formData)
         .then((response) => {
+          productService.getAll().then(p => setProducts(p))
           //setProducts(products.filter(p => p.id !== product.id))
           //history.push('/products')
           setNotification(response.message, 'success')

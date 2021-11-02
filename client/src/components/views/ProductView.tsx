@@ -56,7 +56,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
                     height={100}
                     className="mr-3"
                     src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
-                    alt=""
+                    alt={product.name}
                   />
                 </Col>
                 {user !== null ? (
