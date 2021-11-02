@@ -1,90 +1,53 @@
 # Käyttöohje
 
-![Sovelluksen aloitussivu](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/2b5dc2e341f1fb7313bfacffffee14611f0bda7c/documents/kuvat/kierratysavustinetusivu.png)
-
-## Käyttö ilman kirjautumista
-
-Ohjelmaa voi käyttää rajoitetusti ilman kirjautumista. Tuotteita voi hakea ja
-kierrätysohjeita voi lukea ilman kirjautumista. Luomalla tunnukset ja kirjautumalla
-pääsee lisäämään tuotteita ja kierrätysohjeita.
-
-## Tuotteiden hakeminen
-
-![Tuotteiden hakeminen aloitussivulta](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/89a4dbef0912d9517d485f2a0d79eeda66395fe5/documents/kuvat/kierratysavustinhaku.png)
-
-Sovelluksen aloitussivulta voi hakea tuotteita tuotteen nimellä. Haku palauttaa
-tuloksen, jos hakusana vastaa edes osaa tuotteen nimestä.
-
-![Hakutuloksia](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/8f4bbd81782ffa05d554f0dae17e04bf6e89f61a/documents/kuvat/kierratysavustinhakutulokset.png)
-
-Klikkaamalla tuotteen nimeä, pääsee näkemään tuotteeseen liittyvät kierrätysohjeet, sekä niille annettujen nostavien ja laskevien äänten summan.
-
-![Tuotesivu ilman kirjautumista](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/78986984e6d76960146cd26ff014a772a6a0e65b/documents/kuvat/kierratysavustin-tuote-ilman-kirjautumista.png)
-
-## Tuotelista
-
-Kaikki järjestelmässä olevat tuotteet näkee klikkaamalla ylävalikosta "Tuotteet"
-
-![Tuotelistaus](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/f00770a98e32d5de9bc3ddc075b64be17e7fe597/documents/kuvat/kierratysavustin-tuotteet.png)
-
+Kotitalouden kierrätysavusatin on selainohjelma, jonka tarkoituksena on helpottaa kierrättämistä sekä tätä kautta nostaa kotitalouksien kierrätysasteita. Ohjelma sisältää tuotteita, joille käyttäjät voivat antaa erilaisia kierrätysohjeita. Kotitalouden kierrätysavustinta voi käyttää joko ilman kirjautumista tai kirjautuneena käyttäjänä. Ilman kirjautumista ohjelmaa voi käyttää rajoitetusti: tuotteita voi hakea ja tarkastella sekä kierrätysohjeita voi lukea.
 
 ## Rekisteröityminen
 
-Järjestelmään voi luoda tunnukset ylävalikon kohdasta "Rekisteröidy".
+Järjestelmään voi luoda tunnukset ylävalikon kohdasta "Rekisteröidy" syöttämällä haluttu tunnus ja salasana.
 
-![Tunnusten lisääminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/6f05a2e9d7732c394bbf9199d0d150ead6875575/documents/kuvat/kierratysavustin-rekisteroidy.png)
+![Tunnusten lisääminen](./kuvat/rekisteroityminen.png)
 
 ## Kirjautuminen
 
-Järjestelmään kirjaudutaan ylävalikon kohdasta "Kirjaudu".
+Järjestelmään kirjaudutaan ylävalikon kohdasta "Kirjaudu" syöttämällä olemassa oleva tunnus ja salasana.
 
-![Kirjautuminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/c84a339676bef14f9dab9a27d655343ae21144ac/documents/kuvat/kierratysavustin-kirjaudu.png)
+![Kirjautuminen](./kuvat/kirjautuminen.png)
 
 Uloskirjautuminen onnistuu klikkaamalla ylävalikosta "Kirjaudu ulos".
 
-## Tuotteen lisääminen (Kirjautuneena)
+## Etusivu
+
+Kun käyttäjä on kirjautunut, avautuu hänelle Kotitalouden kierrätysavustimen etusivu. Etusivulta löytyy muun muassa käyttäjän omat suosikkituotteet sekä hakukenttä, josta voi hakea järjestelmästä löytyviä tuotteita. Kirjautumattomalle käyttäjälle etusivulla näkyy ainoastaan hakukenttä.
+
+![Etusivu](./kuvat/etusivu.png)
+
+## Tuotteen lisääminen
 
 Kirjautumisen jälkeen on mahdollista lisätä tuotteita ylävalikon kohdasta
-"Lisää tuote". Tuotteelle lisätään nimi.
+"Lisää tuote". Tuotetta lisätessä vaaditaan ainoastaan tuotteen nimi.
 
-![Tuotteen nimen lisääminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/689991765b31e3ab7aadad1da46f17e2e842d5f9/documents/kuvat/kierratysavustin-lisaa-tuote.png)
+![Tuotteen lisääminen](./kuvat/tuotteen-lisaaminen.png)
 
-## Tuotteen poistaminen (Kirjautuneena)
 
-Kirjautunut käyttäjä voi poistaa lisäämiään tuotteita klikkaamalla tuotelistauksessa tai tuotenäkymässä näkyvää "Poista tuote"-nappia.
+## Tuotelistaus
 
-![Tuotteen poistaminen](./kuvat/tuotteen-poistaminen.png)
+Tuotelistausnäkymässä näkyy kaikki järjestelmässä olevat tuotteet ja käyttäjä voi hakea tuotteita hakukentästä. Kirjautuneelle käyttäjälle jokaisen tuotteen vieressä on pikanäppäimet tuotteen suosikkeihin lisäämiseen sekä hankkimiseen ja kierrättämiseen, jotta kierrätysasteen ylläpitäminen olisi mahdollisimman helppoa. Lisäksi mikäli tuote on käyttäjän itse lisäämä (kuvassa Limsatölkki on käyttäjän maijameikalainen lisäämä), pystyy käyttäjä myös poistamaan tuotteen näkymästä käsin.
 
-## Kierrätysohjeen lisääminen (Kirjautuneena)
+![Tuotelistaus](./kuvat/tuotelistaus.png)
 
-Kirjautumisen jälkeen on mahdollista lisätä tuotteille kierrätysohjeita.
-Kierrätysohjeita voi lisätä avaamalla tuotteen tiedot ja lisäämällä ohjeen lomakkeella.
 
-![Tuotesivu kirjautumisen jälkeen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/4b39f38755d68fdcf164651ee59dc49214cba08e/documents/kuvat/kierratysavustin-uusi-ohje-tuotteelle.png)
+## Yksittäisen tuotteen näkymä
 
-## Kierrätysohjeiden äänestäminen (Kirjautuneena)
+Yksittäisen tuotteen näkymään pääsee valitsemalla tuotteen haku-, tuote- tai suosikkituotelistauksesta. Kirjautunut käyttäjä voi näkymässä lisätä tuotteen suosikkeihinsa, hankkia ja kierrättää kyseistä tuotetta ylläpitääkseen tietoa omasta kierrätysasteestaan sekä lisätä ja äänestää kierrätysohjeita. Mikäli tuote on käyttäjän itse lisäämä, näkyy hänelle myös "Poista tuote"-nappi. Vastaavasti myös käyttäjä voi poistaa itse lisäämiään kierrätysohjeita.
 
-Järjestelmään lisättyjä ohjeita voi kirjautuneena äänestää ylös, mikäli ne ovat käyttäjän mielestä osuvia ja alas, mikäli ne eivät käyttäjän mielestä ole hyviä.
+![Tuotenäkymä](./kuvat/tuotenakyma.png)
 
-![Tuotteen äänestäminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/e116638fc87db396c7e73ff9d3ef43a374eaf461/documents/kuvat/kierratysavustin-aanestaminen.png)
 
-## Kierrätysohjeiden lisääminen suosikeiksi (Kirjautuneena)
+## Kierrätyslaskuri
 
-Kirjautunut käyttäjä voi lisätä tuotteita suosikeiksi. Suosikkituotteet näkyvät järjestelmän etusivulla, kun käyttäjä on kirjautuneena järjestelmään.
+Kirjautunut käyttäjä voi tilastoida, kuinka suuren osuuden hän on kierrättänyt hankkimistaan tuotteistaan. Tilastointi tapahtuu painamalla tuotelistauksessa, suosikkituotelistauksessa tai tuotenäkymässä "Hanki"-nappia aina, kun tuotteita hankitaan talouteen ja vastaavasti painamalla "Kierrätä"-nappia, kun tuotteita kierrätetään. Virheellisten syötteiden välttämiseksi voi hankintoja ja kierrätyksiä poistaa haluamansa määrän.
 
-![Tuotteen suosikoiminen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/c68f88359c0e7b790abebed9cff951ea968e3f80/documents/kuvat/kierratysavustin-lisaa-suosikkeihin.png)
+Siirtymällä navigointipalkista näkymään "Kierrätyslaskuri", pääsee käyttäjä tarkastelemaan omaa kierrätysastettaan kokonaisuudessa sekä tuotekohtaisesti. Kierrätysaste lasketaan suoraan käyttäjän antamien hankintojen ja kierrätysten perusteella. Omaa kokonaiskierrätysastettaan voi myös seurata sivulla näkyvän kuvaajan avulla, jossa esitetään viimeisen 30 päivän aikainen kokonaiskierrätysaste. Kuvaajassa on myös näkyvissä [EU:n asettama tavoite](https://www.europarl.europa.eu/news/fi/headlines/society/20180328STO00751/jatehuolto-eu-ssa) kotitalousjätteen uudelleenkäytölle ja kierrätykselle vuonna 2025.
 
-![Etusivu kirjautumisen jälkeen](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/bcba239dc9238cf6d433c7caf96e84c01ea3fc8d/documents/kuvat/kirjautuneen-etusivu.png)
-
-## Kierrätysohjeiden poistaminen (Kirjautuneena)
-
-Kirjautunut käyttäjä voi poistaa kierrätysohjeita, jotka hän on itse lisännyt. Poista-nappi näkyy yksittäisen tuotteen näkymässä kirjautuneelle käyttäjälle ohjeen vieressä, mikäli kyseinen ohje on käyttäjän itse luoma.
-
-![Kierrätysohjeen poistaminen](./kuvat/deleteInstruction.png)
-
-## Kierrätettyjen tuotteiden tilastointi (Kirjautuneena)
-
-Kirjautunut käyttäjä voi tilastoida kuinka montaa kertaa hän on kierrättänyt järjestelmässä olevan tuotteen. Tilastointi tapahtuu painamalla tuotteen kohdalla olevia nuolia, joiden vieressä näkyy tuotteen kierrätyskerrat. Nuolista painamalla voi joko lisätä tai vähentää yhden kierrätyksen.
-Tilastointinapit ovat nähtävissä jokaisessa tuotteessa tuotelistauksessa, suosikkituotelistauksessa, sekä tuotenäkymässä.
-
-![Kierrätystilaston kasvattaminen tuotteella](./kuvat/recycleCount.png)
+![Statistiikkasivu](./kuvat/statistiikka.png)

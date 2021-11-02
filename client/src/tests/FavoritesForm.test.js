@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
-import FavoritesForm from '../components/FavoritesForm'
+import FavoritesForm from '../components/forms/FavoritesForm'
 
 const user = { id: '123',
   name: 'test'

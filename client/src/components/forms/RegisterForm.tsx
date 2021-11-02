@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import userService from '../services/user'
+import userService from '../../services/user'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import { Container, Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
-import { useStore } from '../store'
+import { useStore } from '../../store'
 
 type RegisterFormValues = {
   username: string,
