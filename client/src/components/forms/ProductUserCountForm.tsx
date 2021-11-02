@@ -42,7 +42,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
     const getCounts = async () => {
       await productUserCountService.getProductUserCounts(product.id)
         .then(counts => setCount(counts[countType]))
-        .catch((error: ErrorResponse) => { //TODO tyypitys?!
+        .catch((error: ErrorResponse) => {
           setNotification(error.message, 'error')
         })
     }
