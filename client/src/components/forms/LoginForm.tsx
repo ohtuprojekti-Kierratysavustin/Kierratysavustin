@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import productService from '../../services/products'
-import userService from '../../services/user'
+import { userService } from '../../services/user'
 import tokenService from '../../services/token'
 import { productUserCountService } from '../../services/productUserCount'
 import { useStore } from '../../store'
@@ -20,13 +20,15 @@ const LoginForm = () => {
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (values) => {
     values.preventDefault()
     await userService.loginUser({ username: username, password: password })
-      .then((user) => {
-        setUser(user)
-        tokenService.setToken(user.token)
+      .then((response) => {
+        setUser(response.resource)
+        tokenService.setToken(response.resource.token)
         window.localStorage.setItem(
-          'loggedUser', JSON.stringify(user)
+          'loggedUser', JSON.stringify(response.resource)
         )
-        productService.getFavorites(user.id)
+
+        //TODO Nämä setit johonkin yhteen initialisointifunktioon.
+        productService.getFavorites(response.resource.id)
           .then(favorites => setFavorites(favorites))
           .catch((error) => {
             setNotification((error.message ? error.message : 'Odottamaton virhe haettaessa suosikkituotteita!'), 'error')
@@ -50,7 +52,7 @@ const LoginForm = () => {
         history.push('/')
       })
       .catch((error) => {
-        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe!'), 'error')
+        setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe!'), 'error')
       })
 
   }

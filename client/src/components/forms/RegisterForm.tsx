@@ -1,17 +1,21 @@
 import React, { useEffect } from 'react'
-import userService from '../../services/user'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import { Container, Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
 import { useStore } from '../../store'
+import { UserService } from '../../services/user'
 
 type RegisterFormValues = {
   username: string,
   password: string
 }
 
-const RegisterForm = () => {
+type Props = {
+  userService: UserService
+}
+
+const RegisterForm: React.FC<Props> = ({ userService }) => {
   const { setNotification, clearNotification } = useStore()
   const history = useHistory()
   useEffect(() => {
@@ -30,7 +34,7 @@ const RegisterForm = () => {
   const onSubmit = async (values: RegisterFormValues, submitProps: FormikHelpers<RegisterFormValues>) => {
     await userService.createUser(values)
       .then((response) => {
-        setNotification(response.data.message, 'success')
+        setNotification(response.message, 'success')
         submitProps.setSubmitting(false)
         submitProps.resetForm()
         setTimeout(() => {
@@ -40,7 +44,7 @@ const RegisterForm = () => {
       .catch((error) => {
         submitProps.setSubmitting(false)
         submitProps.resetForm()
-        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe!'), 'error')
+        setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe!'), 'error')
       })
   }
 
