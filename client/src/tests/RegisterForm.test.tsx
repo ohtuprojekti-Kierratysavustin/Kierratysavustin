@@ -87,7 +87,7 @@ describe('When RegisterForm is rendered', () => {
       it('Does not submit', async () => {
 
         await act(async () => {
-          fireEvent.change(usernameInput, { target: { value: 'mmm' } })
+          fireEvent.change(usernameInput, { target: { value: 'mm' } })
         })
         await act(async () => {
           fireEvent.change(passwordInput, { target: { value: 'myPassword' } })
