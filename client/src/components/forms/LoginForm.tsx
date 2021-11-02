@@ -7,6 +7,7 @@ import { useStore } from '../../store'
 import { useHistory } from 'react-router-dom'
 
 import { Container, Button, Form } from 'react-bootstrap'
+import { ErrorResponse } from '../../types/requestResponses'
 
 const LoginForm = () => {
   const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes, setProductStatistics } = useStore()
@@ -30,28 +31,28 @@ const LoginForm = () => {
         //TODO Nämä setit johonkin yhteen initialisointifunktioon.
         productService.getFavorites(response.resource.id)
           .then(favorites => setFavorites(favorites))
-          .catch((error) => {
+          .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Odottamaton virhe haettaessa suosikkituotteita!'), 'error')
           })
         userService.getLikes()
           .then(likes => setLikes(likes))
-          .catch((error) => {
+          .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
           })
         userService.getDislikes()
           .then(dislikes => setDislikes(dislikes))
-          .catch((error) => {
+          .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
           })
         productUserCountService.getUserCounts()
           .then(counts => setProductStatistics(counts))
-          .catch((error) => {
+          .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa kierrätystatistiikkaa'), 'error')
           })
         setNotification('Kirjautuminen onnistui', 'success')
         history.push('/')
       })
-      .catch((error) => {
+      .catch((error: ErrorResponse) => {
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe!'), 'error')
       })
 

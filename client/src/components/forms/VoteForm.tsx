@@ -6,6 +6,7 @@ import '../../styles.css'
 import { Instruction, User, Product } from '../../types/objects'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import { ErrorResponse } from '../../types/requestResponses'
 
 type Props = {
   instruction: Instruction,
@@ -23,10 +24,8 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
     setDislike(dislikes.some(p => p === instruction.id))
   })
   const [votes, setVotes] = useState(instruction.score)
-  //const labelLike = like ? 'Poista Like' : 'Like'
   const labelLikeVariant = like ? 'success' : 'outline-success'
 
-  //const labelDislike = disLike ? 'Poista Dislike' : 'Dislike'
   const labelDislikeVariant = disLike ? 'danger' : 'outline-danger'
 
   if (!instruction.id) return null
@@ -46,7 +45,7 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
       setLikes(newArray)
       userService.removeLike(instruction.id)
         .then(response => setVotes(response.resource.score))
-        .catch((error) => {
+        .catch((error: ErrorResponse) => {
           setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
         })
     } else {
@@ -54,7 +53,7 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
       userService.addLike(instruction.id)
         .then(() => setLikes(likes.concat(instruction.id)))
         .then(() => setVotes(instruction.score))
-        .catch((error) => {
+        .catch((error: ErrorResponse) => {
           setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
         })
       instruction.score += 1

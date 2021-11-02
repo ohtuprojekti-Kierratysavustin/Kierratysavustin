@@ -4,7 +4,7 @@ import { render, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import RegisterForm from '../components/forms/RegisterForm'
 import { userService } from '../services/user'
-import { PostRequestResponse } from '../types/messages'
+import { PostRequestResponse } from '../types/requestResponses'
 import { User } from '../types/objects'
 
 jest.mock('../services/user')

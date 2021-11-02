@@ -3,6 +3,7 @@ import { userService } from '../../services/user'
 import { useStore } from '../../store'
 import { Button } from 'react-bootstrap'
 import { Product } from '../../types/objects'
+import { ErrorResponse } from '../../types/requestResponses'
 
 type Props = {
   product: Product
@@ -21,14 +22,14 @@ const FavoritesForm: React.FC<Props> = ({ product }) => {
     if(favorite === true){
       userService.removeFavorite(product)
         .then(response => setFavorites(favorites.filter(p => p.id !== response.resource.id)))
-        .catch((error) => {
+        .catch((error: ErrorResponse) => {
           setNotification((error.message ? error.message : 'Poistettaessa tuotetta suosikeista tapahtui odottamaton virhe!'), 'error')
         })
       setFavorite(false)
     } else {
       userService.addFavorite(product)
         .then(response => setFavorites(favorites.concat(response.resource)))
-        .catch((error) => {
+        .catch((error: ErrorResponse) => {
           setNotification((error.message ? error.message : 'Lisättäessä tuotetta suosikkeihin tapahtui odottamaton virhe!'), 'error')
         })
       setFavorite(true)

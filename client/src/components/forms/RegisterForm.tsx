@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import { useHistory } from 'react-router-dom'
 import { useStore } from '../../store'
 import { UserService } from '../../services/user'
+import { ErrorResponse } from '../../types/requestResponses'
 
 type RegisterFormValues = {
   username: string,
@@ -41,7 +42,7 @@ const RegisterForm: React.FC<Props> = ({ userService }) => {
           history.push('/login')
         }, 3000)
       })
-      .catch((error) => {
+      .catch((error: ErrorResponse) => {
         submitProps.setSubmitting(false)
         submitProps.resetForm()
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe!'), 'error')

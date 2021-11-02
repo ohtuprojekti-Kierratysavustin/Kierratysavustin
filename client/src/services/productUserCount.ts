@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { PostRequestResponse } from '../types/messages'
+import { PostRequestResponse } from '../types/requestResponses'
 import { ProductUserCount, ProductUserCountUpdate } from '../types/objects'
 import tokenService from './token'
 const baseUrl = `${process.env.PUBLIC_URL}/api/count`
