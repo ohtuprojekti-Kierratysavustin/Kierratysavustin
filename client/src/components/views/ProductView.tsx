@@ -50,24 +50,23 @@ const ProductView: React.FC<Props> = ({ product }) => {
                 <h2>{product.name}</h2>
               </Row>
               <Row>
-                <Col sm={2}>
+                <Col>
                   <img
-                    width={100}
-                    height={100}
+                    style={{ maxWidth: '300px', maxHeight: '300px', objectFit: 'cover' }}
                     className="mr-3"
                     src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
-                    alt=""
+                    alt={product.name}
                   />
                 </Col>
                 {user !== null ? (
                   <>
-                    <Col sm={3}>
+                    <Col>
+                      <UploadImage product={product} />
+                    </Col>
+                    <Col>
                       <FavoritesForm product={product} />
                       <br></br>
                       <DeleteProduct product={product} />
-                    </Col>
-                    <Col sm={3}>
-                      <UploadImage product={product}/>
                     </Col>
                   </>
                 ) : (

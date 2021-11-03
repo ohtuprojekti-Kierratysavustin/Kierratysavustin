@@ -13,7 +13,7 @@ let connection =  mongoose.createConnection(config.MONGODB_URI, { useNewUrlParse
 let gfs
 
 const SUPPORTED_IMAGETYPES = new RegExp('image/*')
-const IMAGE_SIZE_LIMIT = 1000000 // image size in bytes
+const IMAGE_SIZE_LIMIT = 1000000 // image size limit in bytes
 
 connection.once('open', () => {
   gfs = new mongoose.mongo.GridFSBucket(connection.db, {
@@ -57,7 +57,7 @@ const uploadMiddleware = (req, res, next) => {
       if (err instanceof multer.MulterError) {
         throw new InvalidParameterException('Antamasi tiedosto on liian suuri!. Suurin sallittu koko: ' + IMAGE_SIZE_LIMIT/1000000 + 'Mt')
       } else if (!req.file) {
-        throw new ResourceNotFoundException('Antamasi tiedosto ei ole tuetussa tiedostomuotossa!')
+        throw new InvalidParameterException('Antamasi tiedosto ei ole tuetussa tiedostomuotossa!')
       } else if (err) {
         throw new InvalidParameterException(err.message)
       }
@@ -70,6 +70,17 @@ const uploadMiddleware = (req, res, next) => {
   })
 }
 
+/*
+Kuvan tallentaminen tietokantaan.
+Kuvan tallettaminen etenee ketjussa: uploadMiddleware - store (multer) - storage (GridFsStorage).
+UploadMiddleware nappaa kyselyn käsittelyyn ennen sen siirtymistä routerille. Se lähettää kyselyn storelle eli
+multerille, joka kaivelee form-datasta tarvittavat tiedot, tallettaa ne kyselyn kenttiin, validoi tiedoston 
+ja tallettaa sen käyttäen mongon GridFsStoragea.
+GridFsStorage uudelleennimeää tiedoston, palastelee sen chunkkeihin ja tallettaa palat sekä tiedoston tiedot
+tauluun nimeltä uploads.
+Jos tiedosto on validi ja saadaan talletettua tietotkantaan, jatkuu homma routerin puolella, jossa tuotteen
+tietoihin talletetaan vielä tieto siitä millä nimellä tiedosto löytyy tietokannasta.
+*/
 fileRouter.post('/upload/product', uploadMiddleware, async (req, res, next) => {
   try {
     const productID = req.query.id
@@ -93,14 +104,16 @@ fileRouter.post('/upload/product', uploadMiddleware, async (req, res, next) => {
   }
 })
 
+// Kuvan haku tietokannasta tiedoston nimellä.
 fileRouter.get('/images/:filename', async (req, res, next) => {
   try {
     gfs.find({ filename: req.params.filename }).toArray((err, files) => {
-      if (!files) {
-        throw new ResourceNotFoundException('Kuvaa nimellä' + req.params.filename + 'ei löytynyt!')
+      if (files.length === 0 || !files || !SUPPORTED_IMAGETYPES.test(files[0].contentType)) {
+        return res.status(STATUS_CODES.NOT_FOUND).send('no such file')
+      } else {
+        const _id = files[0]._id
+        gfs.openDownloadStream(_id).pipe(res)
       }
-      const _id = files[0]._id
-      gfs.openDownloadStream(_id).pipe(res)
     })
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
