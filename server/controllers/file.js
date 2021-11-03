@@ -11,7 +11,7 @@ const { GridFsStorage } = require('multer-gridfs-storage')
 const mongoose = require('mongoose')
 
 //let mongoDriver = mongoose.mongo
-let connection =  mongoose.createConnection(config.MONGODB_URI)//mongoose.connection
+let connection =  mongoose.createConnection(config.MONGODB_URI, { useNewUrlParser: true })//mongoose.connection
 let gfs
 connection.once('open', () => {
   console.log('gfs connection open')

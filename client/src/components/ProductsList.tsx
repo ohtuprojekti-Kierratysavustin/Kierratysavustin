@@ -29,8 +29,8 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
 
                 <Media>
                   <img
-                    width={64}
-                    height={64}
+                    width={124}
+                    height={124}
                     className="mr-3"
                     src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
                     alt=""

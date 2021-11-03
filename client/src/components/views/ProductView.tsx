@@ -62,12 +62,12 @@ const ProductView: React.FC<Props> = ({ product }) => {
                 {user !== null ? (
                   <>
                     <Col sm={3}>
+                      <UploadImage product={product} />
+                    </Col>
+                    <Col sm={3}>
                       <FavoritesForm product={product} />
                       <br></br>
                       <DeleteProduct product={product} />
-                    </Col>
-                    <Col sm={3}>
-                      <UploadImage product={product}/>
                     </Col>
                   </>
                 ) : (
