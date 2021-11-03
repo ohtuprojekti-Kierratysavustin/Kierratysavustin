@@ -5,6 +5,7 @@ import fileService from '../services/files'
 import { useStore } from '../store'
 
 import { Product } from '../types/objects'
+import { ErrorResponse } from '../types/messages'
 
 type Props = {
   product: Product
@@ -28,13 +29,12 @@ const UploadImage: React.FC<Props> = ({ product }) => {
     if (selectedFile && window.confirm(`Lisää kuva ${selectedFile.name} tuotteelle ${product.name}?`)) {
       const formData = new FormData()
       formData.append('image', selectedFile)
-      console.log(formData.get('image'))
       await fileService.addProductImage(product.id, formData)
         .then((response) => {
           productService.getAll().then(p => setProducts(p))
           setNotification(response.message, 'success')
         })
-        .catch((error) => {
+        .catch((error: ErrorResponse) => {
           setNotification((error.message ? error.message : 'Kuvan lisäämisessä tapahtui odottamaton virhe!')
             , 'error')
         })
