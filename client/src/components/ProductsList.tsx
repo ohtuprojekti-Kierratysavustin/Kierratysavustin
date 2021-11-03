@@ -29,12 +29,24 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
 
                 <Media>
                   <img
-                    width={124}
-                    height={124}
+                    style={{ maxWidth: '200px', maxHeight: '200px', minWidth: '200px', minHeight: '200px', objectFit: 'cover' }}
                     className="mr-3"
                     src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
                     alt=""
                   />
+                  {/* Toinen tapa */}
+                  {/* <div
+                    style={{
+                      width: '200px',
+                      height: '200px',
+                      backgroundImage: 'url(' + (product.productImage ? `/api/files/images/${product.productImage}` : logo) + ')',
+                      backgroundPosition: 'center',
+                      backgroundSize: 'cover'
+                    }}
+                    className="mr-3"
+                  // src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
+                  // alt=""
+                  /> */}
                   <Media.Body>
                     <Container>
                       <Row>
