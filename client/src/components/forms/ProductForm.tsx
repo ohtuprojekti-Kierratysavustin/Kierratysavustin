@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import productService from '../../services/products'
 import { useStore } from '../../store'
 import InfoBar from '../InfoBar'
