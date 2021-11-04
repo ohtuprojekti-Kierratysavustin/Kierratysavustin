@@ -4,11 +4,11 @@
 
 | URI | Tyyppi | Kuvaus |
 |---|---|---|
-| api/products | GET | Palauttaa kaikki tuotteet | 
-| api/products/user/:id | GET | Palauttaa käyttäjän suosikkituotteet | 
-| api/products/:id | GET | Palauttaa yhden tuotteen | 
-| api/products | POST | Lisää tuotteen | 
-| api/products/:id/instructions | POST | Lisää tuotteelle kierrätysohjeen | 
+| api/products | GET | Palauttaa kaikki tuotteet |
+| api/products/user/:id | GET | Palauttaa käyttäjän suosikkituotteet |
+| api/products/:id | GET | Palauttaa yhden tuotteen |
+| api/products | POST | Lisää tuotteen |
+| api/products/:id/instructions | POST | Lisää tuotteelle kierrätysohjeen |
 | api/users | POST | Lisää käyttäjän |
 | api/users/likes | GET | Palauttaa kierrätysohjeet joista käyttäjä on tykännyt |
 | api/users/likes/:id | POST | Lisää id:tä vastaavan kierrätysohjeen käyttäjän tykkäyksiin |
@@ -27,9 +27,9 @@
 
 ### Käynnistysohjeet
 
-Tietokanta (mongodb) käynnistetään server kansiossa komennolla `npm run start:mongo` (docker ja docker-compose tulee olla asennettuna)
+Tietokanta (mongodb) käynnistetään *server*-kansiossa komennolla `npm run start:mongo` (docker ja docker-compose tulee olla asennettuna)
 
-Backend käynnistetään server kansiossa seuraavin komennoin:
+Backend käynnistetään *server*-kansiossa seuraavin komennoin:
 
 `npm start` kun devataan
 
@@ -41,4 +41,3 @@ Tuotantoversio käynnistetään komennolla `npm run start:prod`
 ## Tietokantakaavio
 
 ![Tietokantakaavio](./kuvat/db-20211004.png)
-
