@@ -52,8 +52,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
               <Row>
                 <Col>
                   <img
-                    style={{ maxWidth: '300px', maxHeight: '300px', objectFit: 'cover' }}
-                    className="mr-3"
+                    className="product-image"
                     src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
                     alt={product.name}
                   />
