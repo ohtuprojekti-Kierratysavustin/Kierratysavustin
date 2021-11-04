@@ -37,7 +37,7 @@ const login = async (props) => {
     .post('/api/login')
     .send(props)
 
-  return login.body
+  return login.body.resource
 }
 
 const getProducts = async () => {
