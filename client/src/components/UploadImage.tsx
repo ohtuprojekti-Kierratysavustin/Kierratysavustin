@@ -20,8 +20,10 @@ const UploadImage: React.FC<Props> = ({ product }) => {
     return (null)
   }
 
-  const handleInputChange = (event: any) => {
-    setSelectedFile(event.target.files[0])
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (event.target.files) {
+      setSelectedFile(event.target.files[0])
+    }
   }
 
   const handleClick: React.MouseEventHandler<HTMLElement> = async (event) => {
