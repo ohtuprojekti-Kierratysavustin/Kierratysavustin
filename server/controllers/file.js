@@ -3,11 +3,12 @@ const multer  = require('multer')
 const crypto = require('crypto')
 const path = require('path')
 const config = require('../utils/config')
-const { restructureCastAndValidationErrorsFromMongoose, ResourceNotFoundException, InvalidParameterException } = require('../error/exceptions')
+const { restructureCastAndValidationErrorsFromMongoose, ResourceNotFoundException, InvalidParameterException, UnauthorizedException } = require('../error/exceptions')
 const Product = require('../models/product')
 const STATUS_CODES = require('http-status')
 const { GridFsStorage } = require('multer-gridfs-storage')
 const mongoose = require('mongoose')
+const authUtils = require('../utils/auth')
 
 let connection =  mongoose.createConnection(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 let gfs
@@ -70,6 +71,16 @@ const uploadMiddleware = (req, res, next) => {
   })
 }
 
+const deleteImage = (filename) => {
+  gfs.find({ filename: filename }).toArray((err, files) => {
+    if (!files.length === 0 || files) {
+      gfs.delete(files[0]._id, (err) => {
+        if (err) console.log(err)
+      })
+    }
+  })
+}
+
 /*
 Kuvan tallentaminen tietokantaan.
 Kuvan tallettaminen etenee ketjussa: uploadMiddleware - store (multer) - storage (GridFsStorage).
@@ -81,15 +92,26 @@ tauluun nimeltä uploads.
 Jos tiedosto on validi ja saadaan talletettua tietotkantaan, jatkuu homma routerin puolella, jossa tuotteen
 tietoihin talletetaan vielä tieto siitä millä nimellä tiedosto löytyy tietokannasta.
 */
-fileRouter.post('/upload/product', uploadMiddleware, async (req, res, next) => {
+fileRouter.post('/upload/product', uploadMiddleware, async (req, res, next) => { 
   try {
+    let user = await authUtils.authenticateRequestReturnUser(req)
     const productID = req.query.id
     const product = await Product.findById(productID).exec()
     if (!product) {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + productID + ' ei löytynyt!')
     }
+    if (product.user.toString() !== user.id.toString()) {
+      deleteImage(req.file.filename)
+      throw new UnauthorizedException('Vain tuotteen luoja voi lisätä tuotteelle kuvan!')
+    }
+
+    const oldImage = product.productImage
+    
     product.productImage = req.file.filename
     await product.save()
+    
+    deleteImage(oldImage)
+    
     res.status(STATUS_CODES.OK)
       .json(
         {
