@@ -27,6 +27,12 @@ html {
     background-color: var(--background-color);
 }
 
+.product-image {
+    max-width: 300px;
+    max-height: 300px;
+    object-fit: cover;
+}
+
 h2 {
     padding-left: 13px;
     padding-bottom: 20px;
