@@ -12,7 +12,7 @@ type Props = {
 }
 
 const UploadImage: React.FC<Props> = ({ product }) => {
-  const productCreatorId = product.user
+  const productCreatorId = product ? product.user : undefined
   const { user, setNotification, setProducts } = useStore()
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
 
