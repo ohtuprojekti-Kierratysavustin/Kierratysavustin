@@ -6,6 +6,7 @@ import { useStore } from '../store'
 
 import { Product } from '../types/objects'
 import { ErrorResponse } from '../types/messages'
+import FileInput from './FileInput'
 
 type Props = {
   product: Product
@@ -46,19 +47,15 @@ const UploadImage: React.FC<Props> = ({ product }) => {
   if (user.id === productCreatorId) {
     return (
       <div>
-        <label htmlFor='imageSelect' className='btn btn-outline-dark btn-sm'>{(selectedFile ? 'Vaihda tiedostoa' : 'Valitse tiedosto')}</label>
-        <p className=''>{(selectedFile ? selectedFile.name : 'Kuvaa ei valittu')}</p>
-        <input id='imageSelect' type="file" name="file" style={{ display: 'none' }} accept='image/*' onChange={handleInputChange} />
-        <div>
-          <Button
-            id='uploadImage'
-            variant='success'
-            size='sm'
-            onClick={handleClick}
-            disabled={selectedFile === undefined}
-          >Lisää kuva
-          </Button>
-        </div>
+        <FileInput selectedFile={selectedFile} handleInputChange={handleInputChange}/>
+        <Button
+          id='uploadImage'
+          variant='success'
+          size='sm'
+          onClick={handleClick}
+          disabled={selectedFile === undefined}
+        >Lisää kuva
+        </Button>
       </div>
     )
   }
