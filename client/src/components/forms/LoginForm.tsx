@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import productService from '../../services/products'
-import userService from '../../services/user'
+import { userService } from '../../services/user'
 import tokenService from '../../services/token'
 import { productUserCountService } from '../../services/productUserCount'
 import { useStore } from '../../store'
 import { useHistory } from 'react-router-dom'
 
 import { Container, Button, Form } from 'react-bootstrap'
+import { ErrorResponse } from '../../types/requestResponses'
 
 const LoginForm = () => {
   const { setUser, setNotification, clearNotification, setFavorites, setLikes, setDislikes, setProductStatistics } = useStore()
@@ -20,37 +21,37 @@ const LoginForm = () => {
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (values) => {
     values.preventDefault()
     await userService.loginUser({ username: username, password: password })
-      .then((user) => {
-        setUser(user)
-        tokenService.setToken(user.token)
+      .then((response) => {
+        setUser(response.resource)
+        tokenService.setToken(response.resource.token)
         window.localStorage.setItem(
-          'loggedUser', JSON.stringify(user)
+          'loggedUser', JSON.stringify(response.resource)
         )
         productService.getFavorites()
           .then(favorites => setFavorites(favorites))
-          .catch((error) => {
+          .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Odottamaton virhe haettaessa suosikkituotteita!'), 'error')
           })
         userService.getLikes()
           .then(likes => setLikes(likes))
-          .catch((error) => {
+          .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
           })
         userService.getDislikes()
           .then(dislikes => setDislikes(dislikes))
-          .catch((error) => {
+          .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
           })
         productUserCountService.getUserCounts()
           .then(counts => setProductStatistics(counts))
-          .catch((error) => {
+          .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa kierrätystatistiikkaa'), 'error')
           })
         setNotification('Kirjautuminen onnistui', 'success')
         history.push('/')
       })
-      .catch((error) => {
-        setNotification((error.response.data.message ? error.response.data.message : 'Tapahtui odottamaton virhe!'), 'error')
+      .catch((error: ErrorResponse) => {
+        setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe!'), 'error')
       })
 
   }

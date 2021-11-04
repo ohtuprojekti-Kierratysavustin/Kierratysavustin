@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import {
   Switch, Route, useRouteMatch
 } from 'react-router-dom'
-import userService from './services/user'
+import { userService } from './services/user'
 import productService from './services/products'
 import tokenService from './services/token'
 import { productUserCountService } from './services/productUserCount'
@@ -53,7 +53,7 @@ const App = () => {
           <ProductView product={product} />
         </Route>
         <Route path="/register">
-          <RegisterForm />
+          <RegisterForm userService={userService}/>
         </Route>
         <Route path="/login">
           <LoginForm />

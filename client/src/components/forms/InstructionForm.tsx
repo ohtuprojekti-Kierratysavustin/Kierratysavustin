@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import { useStore } from '../../store'
 import {  Form as Formo, Button,  Modal } from 'react-bootstrap'
 import { Product } from '../../types/objects'
+import { ErrorResponse } from '../../types/requestResponses'
 
 type InstructionFormProps = {
   product: Product
@@ -99,7 +100,7 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
         values.instructionText = ''
         props.handleClose()
         setNotification(response.message, 'success')
-      }).catch((error) => {
+      }).catch((error: ErrorResponse) => {
         notify((error.message ? error.message : 'Ohjetta lisättäessä tapahtui odottamaton virhe!'), 'error')
       })
   }

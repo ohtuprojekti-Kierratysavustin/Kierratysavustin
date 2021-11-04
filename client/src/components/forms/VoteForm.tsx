@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import userService from '../../services/user'
+import { userService } from '../../services/user'
 import { useStore } from '../../store'
 import { Button, Container, Row, Col, ButtonGroup } from 'react-bootstrap'
 import '../../styles.css'
 import { Instruction, User, Product } from '../../types/objects'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import { ErrorResponse } from '../../types/requestResponses'
 
 type Props = {
   instruction: Instruction,
@@ -15,7 +16,7 @@ type Props = {
 
 const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
   const { likes, setLikes } = useStore()
-  const { dislikes, setDislikes } = useStore()
+  const { dislikes, setDislikes, setNotification } = useStore()
   const [like, setLike] = useState(likes.some(p => p === instruction.id))
   const [disLike, setDislike] = useState(dislikes.some(p => p === instruction.id))
   useEffect(() => {
@@ -23,10 +24,8 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
     setDislike(dislikes.some(p => p === instruction.id))
   })
   const [votes, setVotes] = useState(instruction.score)
-  //const labelLike = like ? 'Poista Like' : 'Like'
   const labelLikeVariant = like ? 'success' : 'outline-success'
 
-  //const labelDislike = disLike ? 'Poista Dislike' : 'Dislike'
   const labelDislikeVariant = disLike ? 'danger' : 'outline-danger'
 
   if (!instruction.id) return null
@@ -44,10 +43,19 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
       instruction.score += -1
       setLikes(newArray)
-      userService.removeLike(instruction.id).then(instruction => setVotes(instruction.score))
+      userService.removeLike(instruction.id)
+        .then(response => setVotes(response.resource.score))
+        .catch((error: ErrorResponse) => {
+          setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
+        })
     } else {
       setLike(true)
-      userService.addLike(instruction.id).then(() => setLikes(likes.concat(instruction.id))).then(() => setVotes(instruction.score))
+      userService.addLike(instruction.id)
+        .then(() => setLikes(likes.concat(instruction.id)))
+        .then(() => setVotes(instruction.score))
+        .catch((error: ErrorResponse) => {
+          setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
+        })
       instruction.score += 1
       if (disLike) {
         instruction.score += 1
@@ -80,7 +88,11 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
       }
 
       setDislikes(newArray)
-      userService.removeDislike(instruction.id).then(instruction => setVotes(instruction.score))
+      userService.removeDislike(instruction.id)
+        .then(response => setVotes(response.resource.score))
+        .catch((error) => {
+          setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
+        })
 
     } else {
       setDislike(true)
@@ -97,7 +109,12 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
         setLikes(newArray)
       }
-      userService.addDislike(instruction.id).then(() => setDislikes(dislikes.concat(instruction.id))).then(() => setVotes(instruction.score))
+      userService.addDislike(instruction.id)
+        .then(() => setDislikes(dislikes.concat(instruction.id)))
+        .then(() => setVotes(instruction.score))
+        .catch((error) => {
+          setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
+        })
     }
 
     product.instructions.sort((a, b) => b.score - a.score)
