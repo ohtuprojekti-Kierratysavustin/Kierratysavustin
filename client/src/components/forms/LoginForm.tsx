@@ -26,7 +26,7 @@ const LoginForm = () => {
         window.localStorage.setItem(
           'loggedUser', JSON.stringify(user)
         )
-        productService.getFavorites(user.id)
+        productService.getFavorites()
           .then(favorites => setFavorites(favorites))
           .catch((error) => {
             setNotification((error.message ? error.message : 'Odottamaton virhe haettaessa suosikkituotteita!'), 'error')

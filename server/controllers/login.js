@@ -17,7 +17,7 @@ loginRouter.post('/', async (req, res, next) => {
       throw new NoUserFoundException('Väärä nimi tai salasana', null, [{header: 'WWW-Authenticate', value: 'Bearer'}])
     }
     const token = jwt.sign( {username: user.username, id: user.id}, config.SECRET)
-    res.status(STATUS_CODES.OK).send({ token, username: user.username, id: user.id})
+    res.status(STATUS_CODES.OK).send({ token: token, username: user.username, id: user.id})
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     // To the errorhandler in app.js

@@ -2,8 +2,7 @@ export type Product = {
   id: number,
   name: string,
   instructions: Instruction[],
-  users: number[],
-  user: number
+  creator: number
 }
 
 export type Instruction = {
@@ -11,7 +10,7 @@ export type Instruction = {
   score: number,
   information: string,
   product_id: number,
-  user: number
+  creator: number
 }
 
 export type User = {
@@ -21,7 +20,7 @@ export type User = {
   token: string,
   likes: number[],
   dislikes: number[],
-  products: number[]
+  favoriteProducts: number[]
 }
 
 export type ProductUserCount = {

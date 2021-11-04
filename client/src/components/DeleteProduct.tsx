@@ -10,7 +10,7 @@ type Props = {
 }
 
 const DeleteProduct: React.FC<Props> = ({ product }) => {
-  const productCreatorId = product.user
+  const productCreatorId = product.creator
   const { user, setNotification, products, setProducts } = useStore()
   const history = useHistory()
 
