@@ -26,12 +26,12 @@ const UploadImage: React.FC<Props> = ({ product }) => {
     }
   }
 
-  const handleClick: React.MouseEventHandler<HTMLElement> = async (event) => {
+  const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault()
     if (selectedFile && window.confirm(`Lisää kuva ${selectedFile.name} tuotteelle ${product.name}?`)) {
       const formData = new FormData()
       formData.append('image', selectedFile)
-      await fileService.addProductImage(product.id, formData)
+      fileService.addProductImage(product.id, formData)
         .then((response) => {
           productService.getAll().then(p => setProducts(p))
           setNotification(response.message, 'success')
