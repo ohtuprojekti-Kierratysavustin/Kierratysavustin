@@ -15,7 +15,7 @@ type Props = {
 /** Component for showing list of products and a link to product page */
 const ProductListView: React.FC<Props> = ({ products, setFilteredProducts }) => {
   return (
-    <div>
+    <div id='product-list-view'>
       <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Hae tai selaa kierrätysavustimeen jo lisättyjä tuotteita.'} />
       <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
       {products.length === 0

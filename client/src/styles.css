@@ -28,9 +28,18 @@ html {
 }
 
 .product-image {
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 150px;
+    max-height: 150px;
     object-fit: cover;
+}
+
+.product-image-list-view {
+    max-width: 200px;
+    max-height: 200px;
+    min-width: 100px;
+    min-height: 100px;
+    object-fit: cover;
+    padding-right: 10px;  
 }
 
 h2 {
@@ -127,6 +136,11 @@ h2 {
 }
 #instruction-list a {
     color: black;
+}
+
+/* Product view bottom padding */
+#product-view-container, #product-list-view {
+    padding-bottom: 30px;
 }
 
 /* Buttons */
