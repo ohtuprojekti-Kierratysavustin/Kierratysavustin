@@ -8,6 +8,7 @@ import useInput from '../../utils/useInput'
 import { isInteger } from '../../utils/validation'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
+import { ErrorResponse } from '../../types/requestResponses'
 
 type Props = {
   product: Product,
@@ -41,7 +42,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
     const getCounts = async () => {
       await productUserCountService.getProductUserCounts(product.id)
         .then(counts => setCount(counts[countType]))
-        .catch((error) => { //TODO tyypitys?!
+        .catch((error: ErrorResponse) => {
           setNotification(error.message, 'error')
         })
     }
@@ -64,7 +65,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
         setCount(count + Number(amountToAdd.value))
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
       })
-      .catch((error) => {
+      .catch((error: ErrorResponse) => {
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe!'), 'error')
       })
   }
@@ -77,7 +78,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
         setCount(count - Number(amountToAdd.value))
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
       })
-      .catch((error) => {
+      .catch((error: ErrorResponse) => {
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe'), 'error')
       })
   }

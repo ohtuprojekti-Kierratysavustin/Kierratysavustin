@@ -33,6 +33,8 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 
 - [Arkkitehtuurista ja koodeista](documents/arkkitehtuurista.md)
 
+- [Npm-komennoista](documents/npm_komennoista.md)
+
 ## Projektin edistyminen
 
 - [Product Backlog](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/projects/1)

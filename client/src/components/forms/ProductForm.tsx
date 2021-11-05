@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 import * as yup from 'yup'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Form as Formo, Button, Container } from 'react-bootstrap'
+import { ErrorResponse } from '../../types/requestResponses'
 
 type ProductFormValues = {
   productName: string
@@ -33,7 +34,7 @@ const ProductForm = () => {
         setProducts(products.concat(newProduct))
         history.push(`products/${newProduct.id}`)
         setNotification(`Tuote ${productName} lisätty!`, 'success')
-      }).catch((error) => {
+      }).catch((error: ErrorResponse) => {
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe lisätessä uutta tuotetta!'), 'error')
       })
   }
