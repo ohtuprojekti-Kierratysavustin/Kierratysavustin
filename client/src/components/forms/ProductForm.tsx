@@ -3,12 +3,12 @@ import productService from '../../services/products'
 import fileService from '../../services/files'
 import { useStore } from '../../store'
 import InfoBar from '../InfoBar'
+import FileInput from '../FileInput'
 import { useHistory } from 'react-router-dom'
 import * as yup from 'yup'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Form as Formo, Button, Container } from 'react-bootstrap'
-import FileInput from '../FileInput'
-import { ErrorResponse } from '../../types/messages'
+import { ErrorResponse } from '../../types/requestResponses'
 
 type ProductFormValues = {
   productName: string

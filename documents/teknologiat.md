@@ -6,6 +6,7 @@
 |axios|Mahdollistaa tiedon hakemisen serveriltä|
 |formik/yup |Käyttäjän syötteen validointi|
 |react|Javascipt kirjasto käyttöliittymän tekoon|
+|chart.js/react-chartjs-2|Kirjastot kokonaiskierrätysastetta visualisoivan kuvaajan esittämiseen|
 |@testing-library/user-event|Simuloi vuorovaikutusta selaimen kanssa testeissä|
 |Zustand|React sovelluksen Tilan hallintaan helpottamaan valittu kirjasto|
 |Eslint|Avulla noudatetaan tiettyä koodityylin standardeja|
@@ -25,7 +26,7 @@
 ## Tietokanta
 mongoDB dockerissa
 
-## Testit 
+## Testit
 **Jest** - Yksikkötestausta, jonka avulla voidaan testata toiminnallisuuksia, ilman että ne ovat riippuvaisia toisistaan
 
 **Cypress** - End 2 End testaus, jonka avulla voidaan simuloida oikean käyttäjän toimintaa sivustolla
