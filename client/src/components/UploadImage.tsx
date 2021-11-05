@@ -5,7 +5,7 @@ import fileService from '../services/files'
 import { useStore } from '../store'
 
 import { Product } from '../types/objects'
-import { ErrorResponse } from '../types/messages'
+import { ErrorResponse } from '../types/requestResponses'
 
 type Props = {
   product: Product
