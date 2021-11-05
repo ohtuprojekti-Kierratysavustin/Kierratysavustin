@@ -75,7 +75,7 @@ const uploadMiddleware = (req, res, next) => {
 
 const deleteImage = (filename) => {
   gfs.find({ filename: filename }).toArray((err, files) => {
-    if (!files.length === 0 && files) {
+    if (files.length !== 0) {
       gfs.delete(files[0]._id, (err) => {
         if (err) console.log(err)
       })
@@ -108,7 +108,6 @@ fileRouter.post('/upload/product', uploadMiddleware, async (req, res, next) => {
     }
 
     const oldImage = product.productImage
-    console.log(req.file)
     product.productImage = req.file.filename
     await product.save()
     
