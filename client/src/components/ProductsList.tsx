@@ -8,7 +8,7 @@ import { Container, Media, ListGroup, Row, Col } from 'react-bootstrap'
 import { Product } from '../types/objects'
 import ProductUserCountForm from './forms/ProductUserCountForm'
 import { PRODUCT_USER_COUNT_REQUEST_TYPE, productUserCountService } from '../services/productUserCount'
-import DeleteProduct from './DeleteProduct'
+import DeleteProduct from './forms/DeleteProduct'
 import { useStore } from '../store'
 
 type Props = {
