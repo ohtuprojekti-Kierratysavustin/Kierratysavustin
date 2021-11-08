@@ -49,5 +49,4 @@ const remove = (id: number) => {
     .catch(error => Promise.reject(error.response.data))
 }
 
-
-export default { create, getAll, createInstruction, deleteInstruction, remove, getFavorites, }
+export default { create, getAll, createInstruction, deleteInstruction, remove, getFavorites }

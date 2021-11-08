@@ -11,6 +11,9 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'Tuote on yhdistettävä käyttäjään! Käyttäjän ID:tä ei annettu!'],
+  },
+  productImage: {
+    type: mongoose.Schema.Types.String
   }
 }, { timestamps: true })
 

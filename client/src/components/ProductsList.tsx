@@ -29,12 +29,20 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
 
                 <Media>
                   <img
-                    width={64}
-                    height={64}
-                    className="mr-3"
-                    src={logo}
+                    className="product-image-list-view"
+                    src={product.productImage ? `${process.env.PUBLIC_URL}/api/files/images/${product.productImage}` : logo}
                     alt=""
                   />
+                  {/* Toinen tapa kuvan croppaamiseen keskitetysti tietyyn kokoon */}
+                  {/* <div
+                    style={{
+                      width: '200px',
+                      height: '200px',
+                      backgroundImage: 'url(' + (product.productImage ? `/api/files/images/${product.productImage}` : logo) + ')',
+                      backgroundPosition: 'center',
+                      backgroundSize: 'cover'
+                    }}
+                  /> */}
                   <Media.Body>
                     <Container>
                       <Row>
