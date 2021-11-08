@@ -30,7 +30,7 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
                 <Media>
                   <img
                     className="product-image-list-view"
-                    src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
+                    src={product.productImage ? `${process.env.PUBLIC_URL}/api/files/images/${product.productImage}` : logo}
                     alt=""
                   />
                   {/* Toinen tapa kuvan croppaamiseen keskitetysti tietyyn kokoon */}
