@@ -14,6 +14,8 @@ import '../../styles.css'
 import { Product } from '../../types/objects'
 import ProductUserCountForm from '../forms/ProductUserCountForm'
 import { productUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/productUserCount'
+import UploadImage from '../UploadImage'
+import logo from '../../media/logo.png'
 
 type Props = {
   product?: Product
@@ -39,7 +41,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
         <Container>
           <Row>
             <Col>
-              <Button onClick={() => routeChange()} id='neutral-button'>Takaisin</Button>
+              <Button onClick={() => routeChange()} id='neutral-button' size='sm'>Takaisin</Button>
             </Col>
           </Row>
           <Row>
@@ -48,12 +50,21 @@ const ProductView: React.FC<Props> = ({ product }) => {
                 <h2>{product.name}</h2>
               </Row>
               <Row>
+                <Col>
+                  <img
+                    className="product-image"
+                    src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
+                    alt={product.name}
+                  />
+                </Col>
                 {user !== null ? (
                   <>
-                    <Col sm={3}>
-                      <FavoritesForm product={product} />
+                    <Col>
+                      <UploadImage product={product} />
                     </Col>
-                    <Col sm={3}>
+                    <Col>
+                      <FavoritesForm product={product} />
+                      <br></br>
                       <DeleteProduct product={product} />
                     </Col>
                   </>
@@ -95,7 +106,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
           </Row>
         </Container>
       </Jumbotron>
-      <Container>
+      <Container id='product-view-container'>
         <Row>
           <Col sm={10}>
             <h3>
