@@ -15,7 +15,7 @@ const UploadImage: React.FC<Props> = ({ product }) => {
   const { user, setNotification, setProducts } = useStore()
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
 
-  if (!user || !productCreatorId) {
+  if (!user || user.id !== productCreatorId) {
     return (null)
   }
 
@@ -40,26 +40,23 @@ const UploadImage: React.FC<Props> = ({ product }) => {
     }
   }
 
-  if (user.id === productCreatorId) {
-    return (
+  return (
+    <div>
+      <label htmlFor='imageSelect' className='btn btn-outline-dark btn-sm'>{(selectedFile ? 'Vaihda tiedostoa' : 'Valitse tiedosto')}</label>
+      <p className=''>{(selectedFile ? selectedFile.name : 'Kuvaa ei valittu')}</p>
+      <input id='imageSelect' type="file" name="file" style={{ display: 'none' }} accept='image/*' onChange={handleInputChange} />
       <div>
-        <label htmlFor='imageSelect' className='btn btn-outline-dark btn-sm'>{(selectedFile ? 'Vaihda tiedostoa' : 'Valitse tiedosto')}</label>
-        <p className=''>{(selectedFile ? selectedFile.name : 'Kuvaa ei valittu')}</p>
-        <input id='imageSelect' type="file" name="file" style={{ display: 'none' }} accept='image/*' onChange={handleInputChange} />
-        <div>
-          <Button
-            id='uploadImage'
-            variant='success'
-            size='sm'
-            onClick={handleClick}
-            disabled={selectedFile === undefined}
-          >Lisää kuva
-          </Button>
-        </div>
+        <Button
+          id='uploadImage'
+          variant='success'
+          size='sm'
+          onClick={handleClick}
+          disabled={selectedFile === undefined}
+        >Lisää kuva
+        </Button>
       </div>
-    )
-  }
-  return (null)
+    </div>
+  )
 }
 
 export default UploadImage
