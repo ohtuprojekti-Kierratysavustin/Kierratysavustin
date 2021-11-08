@@ -53,7 +53,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
                 <Col>
                   <img
                     className="product-image"
-                    src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
+                    src={product.productImage ? `${process.env.PUBLIC_URL}/api/files/images/${product.productImage}` : logo}
                     alt={product.name}
                   />
                 </Col>
