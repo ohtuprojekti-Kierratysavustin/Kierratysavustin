@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
     ref: 'User',
     required: [true, 'Tuote on yhdistettävä käyttäjään! Käyttäjän ID:tä ei annettu!'],
   }
-})
+}, { timestamps: true })
 
 //https://mongoosejs.com/docs/populate.html#populate-virtuals
 productSchema.virtual('instructions', {

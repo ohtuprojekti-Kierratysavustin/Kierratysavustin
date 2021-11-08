@@ -21,7 +21,7 @@ const instructionSchema = new mongoose.Schema({
     ref: 'User',
     required: [true, 'Ohje on yhdistettävä käyttäjään! Käyttäjän ID:tä ei annettu!'],
   }
-})
+}, { timestamps: true })
 
 instructionSchema.set('toJSON', {
   transform: (document, returnedObject) => {
