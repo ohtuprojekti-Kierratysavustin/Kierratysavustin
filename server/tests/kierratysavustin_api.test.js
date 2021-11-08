@@ -82,7 +82,7 @@ test('all products instructions are ordered by score', async () => {
   await helper.likeInstruction(allProducts.body[1].instructions[2].id, loginData.token)
   await helper.disLikeInstruction(allProducts.body[1].instructions[0].id, loginData.token)
   allProducts = await helper.getProducts()
-  console.log(allProducts.body[1])
+  
   expect(allProducts.body[1].instructions[0].id).toBe(thirdInstructionAtStart)
   expect(allProducts.body[1].instructions[1].id).toBe(secondInstructionAtStart)
   expect(allProducts.body[1].instructions[2].id).toBe(firstInstructionAtStart)

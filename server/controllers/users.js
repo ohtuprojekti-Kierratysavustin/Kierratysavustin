@@ -166,10 +166,16 @@ userRouter.post('/products/:id/', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
-    const product = await Product.findById(req.params.id)
+    const product = await Product
+      .findById(req.params.id)
+      .populate({
+        path: 'instructions'
+      }).exec()
     if (!product) {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
+
+    product.instructions.sort((a, b) => b.score - a.score)
 
     if (user.favoriteProducts.includes(user.id)) {
       throw new ResourceNotFoundException('Tuote löytyy jo suosikeista!')
@@ -189,10 +195,16 @@ userRouter.put('/products/:id', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
-    const product = await Product.findById(req.params.id)
+    const product = await Product
+      .findById(req.params.id)
+      .populate({
+        path: 'instructions'
+      }).exec()
     if (!product) {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
+
+    product.instructions.sort((a, b) => b.score - a.score)
 
     if (!user.favoriteProducts.includes(product.id)) {
       throw new ResourceNotFoundException('Tuote ei löydy suosikeista!')
