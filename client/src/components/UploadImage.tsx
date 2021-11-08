@@ -5,6 +5,7 @@ import fileService from '../services/files'
 import { useStore } from '../store'
 import { Product } from '../types/objects'
 import { ErrorResponse } from '../types/requestResponses'
+import FileInput from './FileInput'
 
 type Props = {
   product: Product
@@ -19,16 +20,18 @@ const UploadImage: React.FC<Props> = ({ product }) => {
     return (null)
   }
 
-  const handleInputChange = (event: any) => {
-    setSelectedFile(event.target.files[0])
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (event.target.files) {
+      setSelectedFile(event.target.files[0])
+    }
   }
 
-  const handleClick: React.MouseEventHandler<HTMLElement> = async (event) => {
+  const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault()
     if (selectedFile && window.confirm(`Lisää kuva ${selectedFile.name} tuotteelle ${product.name}?`)) {
       const formData = new FormData()
       formData.append('image', selectedFile)
-      await fileService.addProductImage(product.id, formData)
+      fileService.addProductImage(product.id, formData)
         .then((response) => {
           productService.getAll().then(p => setProducts(p))
           setNotification(response.message, 'success')
@@ -42,19 +45,15 @@ const UploadImage: React.FC<Props> = ({ product }) => {
 
   return (
     <div>
-      <label htmlFor='imageSelect' className='btn btn-outline-dark btn-sm'>{(selectedFile ? 'Vaihda tiedostoa' : 'Valitse tiedosto')}</label>
-      <p className=''>{(selectedFile ? selectedFile.name : 'Kuvaa ei valittu')}</p>
-      <input id='imageSelect' type="file" name="file" style={{ display: 'none' }} accept='image/*' onChange={handleInputChange} />
-      <div>
-        <Button
-          id='uploadImage'
-          variant='success'
-          size='sm'
-          onClick={handleClick}
-          disabled={selectedFile === undefined}
-        >Lisää kuva
-        </Button>
-      </div>
+      <FileInput selectedFile={selectedFile} handleInputChange={handleInputChange} />
+      <Button
+        id='uploadImage'
+        variant='success'
+        size='sm'
+        onClick={handleClick}
+        disabled={selectedFile === undefined}
+      >Lisää kuva
+      </Button>
     </div>
   )
 }
