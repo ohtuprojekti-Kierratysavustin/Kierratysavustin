@@ -3,7 +3,8 @@ export type Product = {
   name: string,
   instructions: Instruction[],
   users: number[],
-  user: number
+  user: number,
+  productImage: string
 }
 
 export type Instruction = {
