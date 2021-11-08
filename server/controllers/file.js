@@ -1,55 +1,58 @@
 const fileRouter = require('express').Router()
+const mongoose = require('mongoose')
 const multer  = require('multer')
+const { GridFsStorage } = require('multer-gridfs-storage')
 const crypto = require('crypto')
 const path = require('path')
-const config = require('../utils/config')
-const { restructureCastAndValidationErrorsFromMongoose, ResourceNotFoundException, InvalidParameterException } = require('../error/exceptions')
 const Product = require('../models/product')
+const { restructureCastAndValidationErrorsFromMongoose, ResourceNotFoundException, InvalidParameterException, UnauthorizedException } = require('../error/exceptions')
 const STATUS_CODES = require('http-status')
-const { GridFsStorage } = require('multer-gridfs-storage')
-const mongoose = require('mongoose')
-
-let connection =  mongoose.createConnection(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-let gfs
+const authUtils = require('../utils/auth')
 
 const SUPPORTED_IMAGETYPES = new RegExp('image/*')
 const IMAGE_SIZE_LIMIT = 1000000 // image size limit in bytes
 
+let gfs
+let storage
+let store
+
+const connection = mongoose.connection
+// init storage and store, once db connection is open
 connection.once('open', () => {
   gfs = new mongoose.mongo.GridFSBucket(connection.db, {
     bucketName: 'uploads'
   })
-})
 
-const storage = new GridFsStorage({
-  url: config.MONGODB_URI,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err)
-        }
-        const filename = buf.toString('hex') + path.extname(file.originalname)
-        const fileInfo = {
-          filename: filename,
-          bucketName: 'uploads'
-        }
-        resolve(fileInfo)
+  storage = new GridFsStorage({
+    db: mongoose.connection,
+    file: (req, file) => {
+      return new Promise((resolve, reject) => {
+        crypto.randomBytes(16, (err, buf) => {
+          if (err) {
+            return reject(err)
+          }
+          const filename = buf.toString('hex') + path.extname(file.originalname)
+          const fileInfo = {
+            filename: filename,
+            bucketName: 'uploads'
+          }
+          resolve(fileInfo)
+        })
       })
-    })
-  }
-})
-
-const store = multer({
-  storage,
-  limits: {fileSize: IMAGE_SIZE_LIMIT},
-  fileFilter: function(req, file, cb){
-    if (!SUPPORTED_IMAGETYPES.test(file.mimetype)) {
-      return cb(null, false)
     }
-    cb(null, true)
-  }
-}).single('image')
+  })
+
+  store = multer({
+    storage,
+    limits: {fileSize: IMAGE_SIZE_LIMIT},
+    fileFilter: function(req, file, cb){
+      if (!SUPPORTED_IMAGETYPES.test(file.mimetype)) {
+        return cb(null, false)
+      }
+      cb(null, true)
+    }
+  }).single('image')
+})
 
 const uploadMiddleware = (req, res, next) => {
   store(req, res, function(err) {
@@ -70,6 +73,16 @@ const uploadMiddleware = (req, res, next) => {
   })
 }
 
+const deleteImage = (filename) => {
+  gfs.find({ filename: filename }).toArray((err, files) => {
+    if (files.length !== 0) {
+      gfs.delete(files[0]._id, (err) => {
+        if (err) console.log(err)
+      })
+    }
+  })
+}
+
 /*
 Kuvan tallentaminen tietokantaan.
 Kuvan tallettaminen etenee ketjussa: uploadMiddleware - store (multer) - storage (GridFsStorage).
@@ -81,15 +94,25 @@ tauluun nimeltä uploads.
 Jos tiedosto on validi ja saadaan talletettua tietotkantaan, jatkuu homma routerin puolella, jossa tuotteen
 tietoihin talletetaan vielä tieto siitä millä nimellä tiedosto löytyy tietokannasta.
 */
-fileRouter.post('/upload/product', uploadMiddleware, async (req, res, next) => {
+fileRouter.post('/upload/product', uploadMiddleware, async (req, res, next) => { 
   try {
+    let user = await authUtils.authenticateRequestReturnUser(req)
     const productID = req.query.id
     const product = await Product.findById(productID).exec()
     if (!product) {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + productID + ' ei löytynyt!')
     }
+    if (product.user.toString() !== user.id.toString()) {
+      deleteImage(req.file.filename)
+      throw new UnauthorizedException('Vain tuotteen luoja voi lisätä tuotteelle kuvan!')
+    }
+
+    const oldImage = product.productImage
     product.productImage = req.file.filename
     await product.save()
+    
+    deleteImage(oldImage)
+    
     res.status(STATUS_CODES.OK)
       .json(
         {

@@ -29,12 +29,11 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
 
                 <Media>
                   <img
-                    style={{ maxWidth: '200px', maxHeight: '200px', minWidth: '200px', minHeight: '200px', objectFit: 'cover' }}
-                    className="mr-3"
+                    className="product-image-list-view"
                     src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
                     alt=""
                   />
-                  {/* Toinen tapa */}
+                  {/* Toinen tapa kuvan croppaamiseen keskitetysti tietyyn kokoon */}
                   {/* <div
                     style={{
                       width: '200px',
@@ -43,9 +42,6 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
                       backgroundPosition: 'center',
                       backgroundSize: 'cover'
                     }}
-                    className="mr-3"
-                  // src={product.productImage ? `/api/files/images/${product.productImage}` : logo}
-                  // alt=""
                   /> */}
                   <Media.Body>
                     <Container>

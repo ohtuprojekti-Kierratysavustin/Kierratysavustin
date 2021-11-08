@@ -106,7 +106,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
           </Row>
         </Container>
       </Jumbotron>
-      <Container>
+      <Container id='product-view-container'>
         <Row>
           <Col sm={10}>
             <h3>

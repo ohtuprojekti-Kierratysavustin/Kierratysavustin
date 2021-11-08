@@ -83,7 +83,7 @@ const ProductForm = () => {
             <Container>
               <Formo as={Form}  >
                 <Formo.Group>
-                  <Formo.Label htmlFor="productName">Tuotteen nimi: </Formo.Label >
+                  <Formo.Label htmlFor="productName">Tuotteen nimi:</Formo.Label >
                   <Formo.Control as={Field}
                     type="text"
                     name="productName"

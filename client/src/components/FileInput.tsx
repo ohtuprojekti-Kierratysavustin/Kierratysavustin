@@ -8,9 +8,9 @@ type Props = {
 const FileInput: React.FC<Props> = ({ selectedFile, handleInputChange }) => {
   return (
     <div>
-      <label htmlFor='imageSelect' className='btn btn-outline-dark btn-sm'>{(selectedFile ? 'Vaihda tiedostoa' : 'Valitse tiedosto')}</label>
+      <label htmlFor='fileSelect' className='btn btn-outline-dark btn-sm'>{(selectedFile ? 'Vaihda tiedostoa' : 'Valitse tiedosto')}</label>
       <p className=''>{(selectedFile ? selectedFile.name : 'Kuvaa ei valittu')}</p>
-      <input id='imageSelect' type="file" name="file" style={{ display: 'none' }} accept='image/*' onChange={handleInputChange} />
+      <input id='fileSelect' type="file" name="file" style={{ display: 'none' }} accept='image/*' onChange={handleInputChange} />
     </div>
   )
 }

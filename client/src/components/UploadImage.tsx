@@ -3,7 +3,6 @@ import { Button } from 'react-bootstrap'
 import productService from '../services/products'
 import fileService from '../services/files'
 import { useStore } from '../store'
-
 import { Product } from '../types/objects'
 import { ErrorResponse } from '../types/requestResponses'
 import FileInput from './FileInput'
@@ -17,7 +16,7 @@ const UploadImage: React.FC<Props> = ({ product }) => {
   const { user, setNotification, setProducts } = useStore()
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
 
-  if (!user || !productCreatorId) {
+  if (!user || user.id !== productCreatorId) {
     return (null)
   }
 
@@ -44,22 +43,19 @@ const UploadImage: React.FC<Props> = ({ product }) => {
     }
   }
 
-  if (user.id === productCreatorId) {
-    return (
-      <div>
-        <FileInput selectedFile={selectedFile} handleInputChange={handleInputChange}/>
-        <Button
-          id='uploadImage'
-          variant='success'
-          size='sm'
-          onClick={handleClick}
-          disabled={selectedFile === undefined}
-        >Lisää kuva
-        </Button>
-      </div>
-    )
-  }
-  return (null)
+  return (
+    <div>
+      <FileInput selectedFile={selectedFile} handleInputChange={handleInputChange} />
+      <Button
+        id='uploadImage'
+        variant='success'
+        size='sm'
+        onClick={handleClick}
+        disabled={selectedFile === undefined}
+      >Lisää kuva
+      </Button>
+    </div>
+  )
 }
 
 export default UploadImage
