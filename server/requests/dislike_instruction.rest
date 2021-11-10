@@ -1,2 +1,2 @@
-post http://localhost:3001/api/users/dislikes/lisää-instrucion-id-tähän
+post http://localhost:3001/api/users/instructions/dislike/lisää-instrucion-id-tähän
 Authorization: bearer lisää-token-tähän

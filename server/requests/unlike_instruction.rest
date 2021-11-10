@@ -1,2 +1,0 @@
-put http://localhost:3001/api/users/likes/lisää-instrucion-id-tähän
-Authorization: bearer lisää-token-tähän

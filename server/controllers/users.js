@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const mongoose = require('mongoose')
 const userRouter = require('express').Router()
 const User = require('../models/user')
 const Product = require('../models/product')
@@ -26,30 +27,36 @@ userRouter.post('/', async (req, res, next) => {
   }
 })
 
-userRouter.post('/likes/:id/', async (req, res, next) => {
+userRouter.post('/instructions/like/:id/', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
-    const instruction = await Instruction.findById(req.params.id)
-    if (!instruction) {
-      throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
-    }
+    const session = await mongoose.startSession()
 
-    if (user.likes.includes(instruction.id)) {
-      throw new ResourceNotFoundException('Ohje on jo tykätyissä!')
-    }
+    const instruction = await session.withTransaction(async () => {
 
-    if (user.dislikes.includes(instruction.id)) {
-      user.dislikes = user.dislikes.pull({ _id: instruction.id })
-      instruction.score = instruction.score + 1
-    }
+      const instruction = await Instruction.findById(req.params.id)
+      if (!instruction) {
+        throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
+      }
 
-    user.likes = user.likes.concat(instruction.id)
-    instruction.score = instruction.score + 1
+      if (user.likes.includes(instruction.id)) {
+        user.likes = user.likes.pull({ _id: instruction.id })
+        instruction.score = instruction.score - 1
+      } else if (user.dislikes.includes(instruction.id)) {
+        user.dislikes = user.dislikes.pull({ _id: instruction.id })
+        user.likes = user.likes.concat(instruction.id)
+        instruction.score = instruction.score + 2
+      } else {
+        user.likes = user.likes.concat(instruction.id)
+        instruction.score = instruction.score + 1
+      }
 
-    // ToDO Transaktio
-    await instruction.save()
-    await user.save()
+      await instruction.save()
+      await user.save()
+      return Promise.resolve(instruction)
+    })
+
     res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta tykätty!', resource: instruction })
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
@@ -58,32 +65,7 @@ userRouter.post('/likes/:id/', async (req, res, next) => {
   }
 })
 
-userRouter.put('/likes/:id', async (req, res, next) => {
-  try {
-    let user = await authUtils.authenticateRequestReturnUser(req, res)
-
-    const instruction = await Instruction.findById(req.params.id)
-    if (!instruction) {
-      throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
-    }
-
-    if (!user.likes.includes(instruction.id)) {
-      throw new ResourceNotFoundException('Ohjetta ei löytynyt tykätyistä!')
-    }
-
-    user.likes = user.likes.pull({ _id: instruction.id })
-    instruction.score = instruction.score - 1
-    await instruction.save()
-    await user.save()
-    res.status(STATUS_CODES.OK).json({ message: 'Ohjeen tykkäys peruttu!', resource: instruction })
-  } catch (error) {
-    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
-    // To the errorhandler in app.js
-    next(handledError)
-  }
-})
-
-userRouter.get('/likes/', async (req, res, next) => {
+userRouter.get('/instructions/likes/', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
@@ -95,29 +77,37 @@ userRouter.get('/likes/', async (req, res, next) => {
   }
 })
 
-userRouter.post('/dislikes/:id/', async (req, res, next) => {
+userRouter.post('/instructions/dislike/:id/', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
-    const instruction = await Instruction.findById(req.params.id)
-    if (!instruction) {
-      throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
-    }
+    const session = mongoose.startSession()
 
-    if (user.dislikes.includes(instruction.id)) {
-      throw new ResourceNotFoundException('Ohjetta on jo ei-tykätyissä!')
-    }
+    const instruction = await session.withTransaction(async () => {
 
-    if (user.likes.includes(instruction.id)) {
-      user.likes = user.likes.pull({ _id: instruction.id })
-      instruction.score = instruction.score - 1
-    }
+      const instruction = await Instruction.findById(req.params.id)
+      if (!instruction) {
+        throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
+      }
 
-    user.dislikes = user.dislikes.concat(instruction.id)
-    instruction.score = instruction.score - 1
-    await instruction.save()
-    await user.save()
-    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta ei-tykätty!', resource: instruction })
+      if (user.likes.includes(instruction.id)) {
+        user.likes = user.likes.pull({ _id: instruction.id })
+        user.dislikes = user.dislikes.concat(instruction.id)
+        instruction.score = instruction.score - 2
+      } else if (user.dislikes.includes(instruction.id)) {
+        user.dislikes = user.dislikes.pull({ _id: instruction.id })
+        instruction.score = instruction.score + 1
+      } else {
+        user.dislikes = user.dislikes.concat(instruction.id)
+        instruction.score = instruction.score - 1
+      }
+
+      await instruction.save()
+      await user.save()
+      return instruction
+    })
+
+    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta tykätty!', resource: instruction })
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     // To the errorhandler in app.js
@@ -125,32 +115,7 @@ userRouter.post('/dislikes/:id/', async (req, res, next) => {
   }
 })
 
-userRouter.put('/dislikes/:id', async (req, res, next) => {
-  try {
-    let user = await authUtils.authenticateRequestReturnUser(req)
-
-    const instruction = await Instruction.findById(req.params.id)
-    if (!instruction) {
-      throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
-    }
-
-    if (!user.dislikes.includes(instruction.id)) {
-      throw new ResourceNotFoundException('Ohjetta ei löytynyt ei-tykätyistä!')
-    }
-
-    user.dislikes = user.dislikes.pull({ _id: instruction.id })
-    instruction.score = instruction.score + 1
-    await instruction.save()
-    await user.save()
-    res.status(STATUS_CODES.OK).json({ message: 'Ohjeen ei-tykkäys peruttu!', resource: instruction })
-  } catch (error) {
-    let handledError = restructureCastAndValidationErrorsFromMongoose(error)
-    // To the errorhandler in app.js
-    next(handledError)
-  }
-})
-
-userRouter.get('/dislikes/', async (req, res, next) => {
+userRouter.get('/instructions/dislikes/', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
