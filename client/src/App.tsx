@@ -18,6 +18,7 @@ import RecycleStatisticsView from './components/views/RecycleStatisticsView'
 import { useStore } from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles.css'
+import RecycleLocationsView from './components/views/RecycleLocationsView'
 
 const App = () => {
   const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites, setLikes, setDislikes, setProductStatistics } = useStore()
@@ -69,6 +70,9 @@ const App = () => {
         </Route>
         <Route path="/statistics">
           <RecycleStatisticsView />
+        </Route>
+        <Route path="/recycleLocations">
+          <RecycleLocationsView />
         </Route>
         <Route path="/">
           <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />

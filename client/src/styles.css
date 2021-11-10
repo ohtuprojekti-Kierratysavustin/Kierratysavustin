@@ -1,7 +1,7 @@
 :root {
     --background-color: #F1F2EB;
-    --infobar-color: #A4C2A5;
-    --navbar-color: #137547;
+    --infobar-color: #cbe6cc;
+    --navbar-color: #F1F2EB;
 
     --neutral-button-color: #31ac3d;
     --neutral-button-color-hover: #23792c;
@@ -80,12 +80,15 @@ h2 {
     background-color: var(--navbar-color);
 }
 #navbar a {
-    color:white;
-    font-size: 24px;
+    color:#137547;
+    font-size: 17px;
+    
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 #navbar b {
-    color:#DAD7CD;
-    font-size: 24px;
+    color:#939393;
+    font-size: 17px;
 }
 
 /* Infobar */
