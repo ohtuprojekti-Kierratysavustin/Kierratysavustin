@@ -25,7 +25,7 @@ Kun käyttäjä on kirjautunut, avautuu hänelle Kotitalouden kierrätysavustime
 ## Tuotteen lisääminen
 
 Kirjautumisen jälkeen on mahdollista lisätä tuotteita ylävalikon kohdasta
-"Lisää tuote". Tuotetta lisätessä vaaditaan ainoastaan tuotteen nimi.
+"Lisää tuote". Tuotetta lisätessä vaaditaan ainoastaan tuotteen nimi, mutta halutessaan voi käyttäjä myös lisätä tuotteesta kuvan tuotteen nimen alla olevalla tiedostovalitsimella. Käyttäjä voi lisätä omalle tuotteelleen kuvan myös jälkikäteen tuotenäkymässä.
 
 ![Tuotteen lisääminen](./kuvat/tuotteen-lisaaminen.png)
 
@@ -39,7 +39,9 @@ Tuotelistausnäkymässä näkyy kaikki järjestelmässä olevat tuotteet ja käy
 
 ## Yksittäisen tuotteen näkymä
 
-Yksittäisen tuotteen näkymään pääsee valitsemalla tuotteen haku-, tuote- tai suosikkituotelistauksesta. Kirjautunut käyttäjä voi näkymässä lisätä tuotteen suosikkeihinsa, hankkia ja kierrättää kyseistä tuotetta ylläpitääkseen tietoa omasta kierrätysasteestaan sekä lisätä ja äänestää kierrätysohjeita. Mikäli tuote on käyttäjän itse lisäämä, näkyy hänelle myös "Poista tuote"-nappi. Vastaavasti myös käyttäjä voi poistaa itse lisäämiään kierrätysohjeita.
+Yksittäisen tuotteen näkymään pääsee valitsemalla tuotteen haku-, tuote- tai suosikkituotelistauksesta. Kirjautunut käyttäjä voi näkymässä lisätä tuotteen suosikkeihinsa, hankkia ja kierrättää kyseistä tuotetta ylläpitääkseen tietoa omasta kierrätysasteestaan sekä lisätä ja äänestää kierrätysohjeita. Kierrätysohjeista ylimpänä näkyy eniten käyttäjä-ääniä saanut ohje.
+
+Mikäli tuote on käyttäjän itse lisäämä, voi hän lisätä tuotteelle kuvan sekä poistaa kyseisen tuotteen kokonaan. Vastaavasti myös käyttäjä voi poistaa itse lisäämiään kierrätysohjeita.
 
 ![Tuotenäkymä](./kuvat/tuotenakyma.png)
 
