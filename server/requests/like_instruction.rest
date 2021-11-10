@@ -1,2 +1,6 @@
-post http://localhost:3001/api/users/instructions/like/lisää-instrucion-id-tähän
+post http://localhost:3001/api/users/instructions/like/
 Authorization: bearer lisää-token-tähän
+
+{
+    "instructionID": "618be27ed9d7047326e53095"
+}

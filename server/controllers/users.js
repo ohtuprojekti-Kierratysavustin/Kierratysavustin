@@ -27,17 +27,20 @@ userRouter.post('/', async (req, res, next) => {
   }
 })
 
-userRouter.post('/instructions/like/:id/', async (req, res, next) => {
+userRouter.post('/instructions/like', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
     const session = await mongoose.startSession()
 
-    const instruction = await session.withTransaction(async () => {
+    let userLikes      // withTransaction does not return a value for some reason: https://jira.mongodb.org/browse/NODE-2014
+    let userDislikes   // so using these to return values
+    let instructionRet
+    await session.withTransaction(async () => {
 
-      const instruction = await Instruction.findById(req.params.id)
+      const instruction = await Instruction.findById(req.body.instructionID).select('score')
       if (!instruction) {
-        throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
+        throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.body.instructionID + ' ei löytynyt!')
       }
 
       if (user.likes.includes(instruction.id)) {
@@ -54,10 +57,13 @@ userRouter.post('/instructions/like/:id/', async (req, res, next) => {
 
       await instruction.save()
       await user.save()
-      return Promise.resolve(instruction)
+      userLikes = user.likes
+      userDislikes = user.dislikes
+      instructionRet = instruction
+      return Promise.resolve()
     })
 
-    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta tykätty!', resource: instruction })
+    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta tykätty!', resource: { likes: userLikes, dislikes: userDislikes, instruction: instructionRet } })
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     // To the errorhandler in app.js
@@ -77,17 +83,20 @@ userRouter.get('/instructions/likes/', async (req, res, next) => {
   }
 })
 
-userRouter.post('/instructions/dislike/:id/', async (req, res, next) => {
+userRouter.post('/instructions/dislike', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
-    const session = mongoose.startSession()
+    const session = await mongoose.startSession()
 
-    const instruction = await session.withTransaction(async () => {
+    let userLikes      // withTransaction does not return a value for some reason: https://jira.mongodb.org/browse/NODE-2014
+    let userDislikes   // so using these to return values
+    let instructionRet
+    await session.withTransaction(async () => {
 
-      const instruction = await Instruction.findById(req.params.id)
+      const instruction = await Instruction.findById(req.body.instructionID).select('score')
       if (!instruction) {
-        throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.id + ' ei löytynyt!')
+        throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.body.instructionID + ' ei löytynyt!')
       }
 
       if (user.likes.includes(instruction.id)) {
@@ -104,10 +113,13 @@ userRouter.post('/instructions/dislike/:id/', async (req, res, next) => {
 
       await instruction.save()
       await user.save()
-      return instruction
-    })
+      userLikes = user.likes
+      userDislikes = user.dislikes
+      instructionRet = instruction
+      return Promise.resolve()
+    }).then((instruction) => { return instruction })
 
-    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta tykätty!', resource: instruction })
+    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta tykätty!', resource: { likes: userLikes, dislikes: userDislikes, instruction: instructionRet } })
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     // To the errorhandler in app.js
