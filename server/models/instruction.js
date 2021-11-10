@@ -6,7 +6,7 @@ const instructionSchema = new mongoose.Schema({
     default: 0,
     cast: 'Tykkäysten määrän on oltava numeerinen. Annettiin: {VALUE}.'
   },
-  information: { 
+  information: {
     type: String,
     required: [true, 'Ohjetta ei annettu!'],
     minlength: [3, 'Ohjeen on oltava vähintään 3 merkkiä pitkä!']
@@ -16,12 +16,12 @@ const instructionSchema = new mongoose.Schema({
     ref: 'Product',
     required: [true, 'Ohje on yhdistettävä tuotteeseen! Tuotteen ID:tä ei annettu!'],
   },
-  user: {
+  creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'Ohje on yhdistettävä käyttäjään! Käyttäjän ID:tä ei annettu!'],
   }
-})
+}, { timestamps: true })
 
 instructionSchema.set('toJSON', {
   transform: (document, returnedObject) => {

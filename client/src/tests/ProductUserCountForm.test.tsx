@@ -75,7 +75,7 @@ const product: Product = {
   name: 'Juustoportti suklaamaito',
   instructions: [],
   users: [],
-  user: 1
+   creator:1
 }
 
 describe('When ProductUserCountForm is rendered', () => {

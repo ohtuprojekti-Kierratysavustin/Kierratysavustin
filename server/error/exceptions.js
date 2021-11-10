@@ -110,7 +110,7 @@ DuplicateResourceException.prototype.defaultHttpStatusCode = STATUS_CODES.BAD_RE
 /**
  * Error for if user is unauthorized to resource.
  * @example 
- * if (instruction.user.toString() !== user.id.toString()) {
+ * if (instruction.creator.toString() !== user.id.toString()) {
       throw new UnauthorizedException('Vain ohjeen luoja voi poistaa ohjeen!')
     }
  * @param {*} message - Should be augmented according to the resource 
@@ -132,7 +132,7 @@ UnauthorizedException.prototype.defaultHttpStatusCode = STATUS_CODES.FORBIDDEN
 /**
  * Error for if user is unauthorized to resource.
  * @example 
- * if (instruction.user.toString() !== user.id.toString()) {
+ * if (instruction.creator.toString() !== user.id.toString()) {
       throw new UnauthorizedException('Vain ohjeen luoja voi poistaa ohjeen!')
     }
  * @param {*} message - Should be augmented according to the resource 

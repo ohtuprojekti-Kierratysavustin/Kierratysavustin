@@ -31,8 +31,12 @@ const getAll = () => {
     .catch(error => Promise.reject(error.response.data))
 }
 
-const getFavorites = (id: number) => {
-  const request = axios.get(`${baseUrl}/user`, { params: { id } })
+const getFavorites = () => {
+  let config = {
+    headers: tokenService.getConfig().headers
+  }
+
+  const request = axios.get(`${baseUrl}/favorites`, config)
   return request
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))

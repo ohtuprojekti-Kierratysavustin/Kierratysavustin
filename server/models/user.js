@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     minlength: [3, 'Käyttäjänimen on oltava vähintään 3 merkkiä pitkä!']
   },
   passwordHash: String,
-  products: [
+  favoriteProducts: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
       ref: 'Instruction'
     }
   ],
-})
+}, { timestamps: true })
 
 userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimi \'{VALUE}\' on jo käytössä!' })
 userSchema.set('toJSON', {

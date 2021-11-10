@@ -11,7 +11,7 @@ type Props = {
 }
 
 const DeleteInstructionForm: React.FC<Props> = ({ product, instruction }) => {
-  const creatorId = instruction.user
+  const creatorId = instruction.creator
   const { user, updateProduct, setNotification } = useStore()
 
   //ohjeen voi poistaa vain ohjeen luoja
