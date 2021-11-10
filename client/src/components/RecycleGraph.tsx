@@ -17,7 +17,7 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
     const getGraphData = () => {
       const today = new Date()
       const previousDate = subDays(today, (numberOfDays-2) )
-      return productUserCountService.getGraphStatistics(startOfDay(previousDate).getTime(), endOfDay(today).getTime())
+      return productUserCountService.getRecyclingRatesPerDay(startOfDay(previousDate).getTime(), endOfDay(today).getTime())
     }
     getGraphData().then(res => {
       setData(res)

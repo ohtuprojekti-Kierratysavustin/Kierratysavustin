@@ -232,7 +232,7 @@ const purchaseProductFreeAmount = async (productID, amount, token) => {
 }
 
 const getProductUserCounts = async (productID, token) => {
-  const result = await api.get('/api' + counterURLS.BASE_URL + counterURLS.GET_PRODUCT_USER_COUNT + '/?productID=' + productID)
+  const result = await api.get('/api' + counterURLS.BASE_URL + counterURLS.GET_PRODUCT_USER_COUNT + productID)
     .set('Authorization', `bearer ${token}`)
   return result
 }
