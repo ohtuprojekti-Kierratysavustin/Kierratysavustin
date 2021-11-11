@@ -36,6 +36,8 @@ userRouter.post('/instructions/like', async (req, res, next) => {
     let userLikes      // withTransaction does not return a value for some reason: https://jira.mongodb.org/browse/NODE-2014
     let userDislikes   // so using these to return values
     let instructionRet
+    let responseMessage = 'Ohjeesta tykätty!'
+
     await session.withTransaction(async () => {
 
       const instruction = await Instruction.findById(req.body.instructionID).select('score')
@@ -46,6 +48,7 @@ userRouter.post('/instructions/like', async (req, res, next) => {
       if (user.likes.includes(instruction.id)) {
         user.likes = user.likes.pull({ _id: instruction.id })
         instruction.score = instruction.score - 1
+        responseMessage = 'Ohjeen tykkäys poistettu!'
       } else if (user.dislikes.includes(instruction.id)) {
         user.dislikes = user.dislikes.pull({ _id: instruction.id })
         user.likes = user.likes.concat(instruction.id)
@@ -63,7 +66,7 @@ userRouter.post('/instructions/like', async (req, res, next) => {
       return Promise.resolve()
     })
 
-    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta tykätty!', resource: { likes: userLikes, dislikes: userDislikes, instruction: instructionRet } })
+    res.status(STATUS_CODES.OK).json({ message: responseMessage, resource: { likes: userLikes, dislikes: userDislikes, instruction: instructionRet } })
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     // To the errorhandler in app.js
@@ -92,6 +95,9 @@ userRouter.post('/instructions/dislike', async (req, res, next) => {
     let userLikes      // withTransaction does not return a value for some reason: https://jira.mongodb.org/browse/NODE-2014
     let userDislikes   // so using these to return values
     let instructionRet
+    let responseMessage = 'Ohjeesta ei-tykätty!'
+
+
     await session.withTransaction(async () => {
 
       const instruction = await Instruction.findById(req.body.instructionID).select('score')
@@ -106,6 +112,7 @@ userRouter.post('/instructions/dislike', async (req, res, next) => {
       } else if (user.dislikes.includes(instruction.id)) {
         user.dislikes = user.dislikes.pull({ _id: instruction.id })
         instruction.score = instruction.score + 1
+        responseMessage = 'Ohjeen ei-tykkäys poistettu!'
       } else {
         user.dislikes = user.dislikes.concat(instruction.id)
         instruction.score = instruction.score - 1
@@ -119,7 +126,7 @@ userRouter.post('/instructions/dislike', async (req, res, next) => {
       return Promise.resolve()
     }).then((instruction) => { return instruction })
 
-    res.status(STATUS_CODES.OK).json({ message: 'Ohjeesta tykätty!', resource: { likes: userLikes, dislikes: userDislikes, instruction: instructionRet } })
+    res.status(STATUS_CODES.OK).json({ message: responseMessage, resource: { likes: userLikes, dislikes: userDislikes, instruction: instructionRet } })
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     // To the errorhandler in app.js
