@@ -5,6 +5,7 @@ import {
 import { userService } from './services/user'
 import productService from './services/products'
 import tokenService from './services/token'
+import kierratysInfoService from './services/kierratysInfo'
 import { productUserCountService } from './services/productUserCount'
 import NavigationBar from './components/NavigationBar'
 import ProductForm from './components/forms/ProductForm'
@@ -33,6 +34,7 @@ const App = () => {
       const userlogin = JSON.parse(loggedUserJSON)
       setUser(userlogin)
       tokenService.setToken(userlogin.token)
+      kierratysInfoService.setKey(userlogin.KInfoKey)
       productService.getFavorites().then(favorites => setFavorites(favorites))
       userService.getLikes().then(likes => setLikes(likes))
       userService.getDislikes().then(dislikes => setDislikes(dislikes))

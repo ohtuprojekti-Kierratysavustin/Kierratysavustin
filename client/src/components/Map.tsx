@@ -8,19 +8,31 @@ type Props = {
 }
 
 const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
-  // nää pitäisi jotenkin parsia
-  console.log(recyclingSpots.length)
+  const Markers = () => {
+    if (!recyclingSpots || recyclingSpots.length === 0) {
+      return null
+    }
+    return (
+      <>
+        {recyclingSpots.map(spot => (
+          <Marker position={[spot.geometry.coordinates[1],spot.geometry.coordinates[0]]} key={spot.spot_id}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        ))}
+        )
+      </>
+    )
+  }
+
   return (
     <MapContainer center={mapCenter} zoom={13} scrollWheelZoom={true}>
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[51.505, -0.09]}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
+      <Markers />
     </MapContainer>
   )
 }

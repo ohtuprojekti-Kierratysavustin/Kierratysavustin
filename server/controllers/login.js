@@ -5,11 +5,13 @@ const User = require('../models/user')
 const config = require('../utils/config')
 const STATUS_CODES = require('http-status')
 const { NoUserFoundException, restructureCastAndValidationErrorsFromMongoose } = require('../error/exceptions')
+require('dotenv').config()
 
 loginRouter.post('/', async (req, res, next) => {
   try {
     const body = req.body
     const user = await User.findOne({ username: body.username }).exec()
+    const kierratysInfoApiKey = process.env.KIERRATYS_INFO_API_KEY || ''
 
     const correctPswrd = (user === null ? false : await bcrypt.compare(body.password, user.passwordHash))
 
@@ -17,7 +19,7 @@ loginRouter.post('/', async (req, res, next) => {
       throw new NoUserFoundException('Väärä nimi tai salasana', null, [{ header: 'WWW-Authenticate', value: 'Bearer' }])
     }
     const token = jwt.sign({ username: user.username, id: user.id }, config.SECRET)
-    res.status(STATUS_CODES.OK).send({ message: 'Kirjautuminen onnistui!', resource: { token, username: user.username, id: user.id } })
+    res.status(STATUS_CODES.OK).send({ message: 'Kirjautuminen onnistui!', resource: { token, username: user.username, id: user.id, KInfoKey: kierratysInfoApiKey } })
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     // To the errorhandler in app.js

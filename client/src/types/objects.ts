@@ -57,8 +57,11 @@ export type RecyclingSpot = {
   contact_info: string,
   address: string,
   postal_code: string,
-  muncipaniy: string,
-  geometry: JSON,
+  municipality: string,
+  geometry: {
+    coordinates: [number, number],
+    type: string,
+  },
   materials: RecyclingMaterial[],
   opening_hours_fi: string,
   opening_hours_sv: string,
