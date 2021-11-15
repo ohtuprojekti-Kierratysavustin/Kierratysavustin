@@ -1,10 +1,14 @@
-import React from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from '@monsonjeremy/react-leaflet'
+import React, { useEffect } from 'react'
+import { MapContainer, TileLayer, Marker, Popup, useMap } from '@monsonjeremy/react-leaflet'
 import { RecyclingSpot } from '../types/objects'
 
 type Props = {
   mapCenter: [number, number],
-  recyclingSpots: RecyclingSpot[]
+  recyclingSpots: RecyclingSpot[],
+}
+
+type CentererProps = {
+  center: [number, number]
 }
 
 const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
@@ -26,14 +30,31 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
     )
   }
 
+  //kartan uudelleenkeskittäminen haun yhteydessä
+  const Centerer: React.FC<CentererProps> = ({ center }) => {
+    const map = useMap()
+    useEffect(() => {
+      map.setView(center)
+    }, [center, map])
+
+    return null
+  }
+
+  const RecycleLocationsMap: React.FC<CentererProps> = ({ center }) => {
+    return (
+      <MapContainer zoom={13} scrollWheelZoom={true}>
+        <Centerer center={center} />
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Markers />
+      </MapContainer>
+    )
+  }
+
   return (
-    <MapContainer center={mapCenter} zoom={13} scrollWheelZoom={true}>
-      <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <Markers />
-    </MapContainer>
+    <RecycleLocationsMap center={mapCenter}></RecycleLocationsMap>
   )
 }
 

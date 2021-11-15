@@ -14,4 +14,11 @@ const getCollectionSpotsByMunicipality = (municipality: string) => {
     .catch(error => Promise.reject(error.response.data))
 }
 
-export default { setKey, getCollectionSpotsByMunicipality }
+const getCollectionSpotsByPostalCode = (postalcode: string) => {
+  const request = axios.get(baseUrl + '/collectionspots?api_key=' + apiKey + '&postal_code=' + postalcode)
+  return request
+    .then(response => response.data)
+    .catch(error => Promise.reject(error.response.data))
+}
+
+export default { setKey, getCollectionSpotsByMunicipality, getCollectionSpotsByPostalCode }
