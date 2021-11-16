@@ -22,9 +22,17 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
           return (
             <Marker position={[spot.geometry.coordinates[1],spot.geometry.coordinates[0]]} key={spot.spot_id}>
               <Popup>
-                <b>{spot.name}</b> <br />
+                <b><h6>{spot.name}</h6></b>
                 {spot.operator} <br />
                 {spot.address} <br /> <br />
+                <b>Kohteessa kierrätettävät materiaalit:</b>
+                {spot.materials.map(material => {
+                  return (
+                    <div key={1}>
+                      {material.name} <br />
+                    </div>
+                  )
+                })} <br />
                 {spot.contact_info}
               </Popup>
             </Marker>
