@@ -41,6 +41,7 @@ const RecycleLocationsView = () => {
       await kierratysInfoService.getCollectionSpotsByMunicipality(input)
         .then(result => {
           setRecyclingSpots(result.results)
+          console.log(result.results[0].geometry.coordinates)
           coordinates = [result.results[0].geometry.coordinates[1], result.results[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
@@ -49,8 +50,6 @@ const RecycleLocationsView = () => {
           console.log(error.message)
         })
     }
-
-    setInput('')
     setMapCenter(coordinates)
   }
 

@@ -10,7 +10,6 @@ type Props = {
 type CentererProps = {
   center: [number, number]
 }
-
 const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
   const Markers = () => {
     if (!recyclingSpots || recyclingSpots.length === 0) {
@@ -18,13 +17,19 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
     }
     return (
       <>
-        {recyclingSpots.map(spot => (
-          <Marker position={[spot.geometry.coordinates[1],spot.geometry.coordinates[0]]} key={spot.spot_id}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-        ))}
+        {recyclingSpots.map(spot => {
+          console.log(spot)
+          return (
+            <Marker position={[spot.geometry.coordinates[1],spot.geometry.coordinates[0]]} key={spot.spot_id}>
+              <Popup>
+                <b>{spot.name}</b> <br />
+                {spot.operator} <br />
+                {spot.address} <br /> <br />
+                {spot.contact_info}
+              </Popup>
+            </Marker>
+          )
+        })}
         )
       </>
     )
