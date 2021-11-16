@@ -53,20 +53,6 @@ const RecycleLocationsView = () => {
     setMapCenter(coordinates)
   }
 
-  /*
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    var input = event.target.value
-
-    // hakusanana postinumero
-    if (Number.isInteger(input) && input.length===5) {
-      setPostalCode(input)
-      setMunicipality('')
-    } else {  //hakusanana paikkakunta (tai mitä tahansa muuta)
-      setMunicipality(input)
-    }
-  }
-  */
-
   return (
     <div>
       <InfoBar header={'Kierrätyspisteet'} text={'Tällä sivulla voit hakea kierrätyspisteitä paikkakunnan tai postinumeron perusteella.'} />
