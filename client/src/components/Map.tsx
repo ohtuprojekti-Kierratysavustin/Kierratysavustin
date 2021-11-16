@@ -18,7 +18,6 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
     return (
       <>
         {recyclingSpots.map(spot => {
-          console.log(spot)
           return (
             <Marker position={[spot.geometry.coordinates[1],spot.geometry.coordinates[0]]} key={spot.spot_id}>
               <Popup>

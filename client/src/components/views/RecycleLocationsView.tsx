@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import InfoBar from '../InfoBar'
 import Map from '../Map'
+import CheckboxGroup from 'react-checkbox-group'
 import { useStore } from '../../store'
 import kierratysInfoService from '../../services/kierratysInfo'
 import { Container, Button, Form, Row, Col } from 'react-bootstrap'
@@ -14,10 +15,22 @@ import { ErrorResponse } from '../../types/requestResponses'
 
 const RecycleLocationsView = () => {
   var defaultCoordinates: [number, number] = [60.150, 24.96]
-  const { setNotification } = useStore()
-  const [input, setInput] = useState('')
+  const { setNotification, user } = useStore()
   const [recyclingSpots, setRecyclingSpots] = useState([])
   const [mapCenter, setMapCenter] = useState(defaultCoordinates)
+  const [materials, setMaterials] = useState<any[]>([])
+  const [selectedMaterials, setSelectedMaterials] = useState<any[]>([])
+  let input = ''
+
+
+  useEffect(() => {
+    const getRecyclingMaterials = () => {
+      return kierratysInfoService.getAllRecyclingMaterials()
+    }
+    getRecyclingMaterials().then(res => {
+      setMaterials(res.results)
+    })
+  },[user])
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
@@ -25,10 +38,9 @@ const RecycleLocationsView = () => {
     var isPostalCode = /[0-9]{5}/
 
     if (isPostalCode.test(input)) {    // jos hakusanana postinumero
-      await kierratysInfoService.getCollectionSpotsByPostalCode(input)
+      await kierratysInfoService.getCollectionSpotsByPostalCode(input, selectedMaterials)
         .then(result => {
           setRecyclingSpots(result.results)
-          console.log(result.results)
           coordinates = [result.results[0].geometry.coordinates[1], result.results[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
@@ -38,10 +50,9 @@ const RecycleLocationsView = () => {
         })
 
     } else {  // hakusanana paikkakunta tai joku muu
-      await kierratysInfoService.getCollectionSpotsByMunicipality(input)
+      await kierratysInfoService.getCollectionSpotsByMunicipality(input, selectedMaterials)
         .then(result => {
           setRecyclingSpots(result.results)
-          console.log(result.results[0].geometry.coordinates)
           coordinates = [result.results[0].geometry.coordinates[1], result.results[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
@@ -65,7 +76,7 @@ const RecycleLocationsView = () => {
                   type="text"
                   placeholder="Kirjoita paikkakunnan nimi tai postinumero..."
                   id="hakusanaInput"
-                  onChange={({ target }) => setInput(target.value)} />
+                  onChange={({ target }) => {input = target.value}} />
               </Col>
               <Col>
                 <Button id='hakusanaSubmit' type="submit">
@@ -74,6 +85,19 @@ const RecycleLocationsView = () => {
               </Col>
             </Form.Group>
           </Form>
+          <CheckboxGroup name='materiaalit' value={selectedMaterials} onChange={setSelectedMaterials}>
+            {(Checkbox: any) => (
+              <>
+                {materials.map(material => {
+                  return (
+                    <label key={material.code}>
+                      <Checkbox value={material} /> {material.name}
+                    </label>
+                  )
+                })}
+              </>
+            )}
+          </CheckboxGroup>
         </Container>
       </div>
       <Map mapCenter={mapCenter} recyclingSpots={recyclingSpots} />
