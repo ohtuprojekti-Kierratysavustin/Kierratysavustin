@@ -20,7 +20,7 @@ const RecycleLocationsView = () => {
   const [mapCenter, setMapCenter] = useState(defaultCoordinates)
   const [materials, setMaterials] = useState<any[]>([])
   const [selectedMaterials, setSelectedMaterials] = useState<any[]>([])
-  let input = ''
+  const [input, setInput] = useState('')
 
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const RecycleLocationsView = () => {
                   type="text"
                   placeholder="Kirjoita paikkakunnan nimi tai postinumero..."
                   id="hakusanaInput"
-                  onChange={({ target }) => {input = target.value}} />
+                  onChange={({ target }) => setInput(target.value)} />
               </Col>
               <Col>
                 <Button id='hakusanaSubmit' type="submit">
