@@ -85,22 +85,24 @@ const RecycleLocationsView = () => {
               </Col>
             </Form.Group>
           </Form>
-          <CheckboxGroup name='materiaalit' value={selectedMaterials} onChange={setSelectedMaterials}>
+          <CheckboxGroup className='checkboxgroup' name='materiaalit' value={selectedMaterials} onChange={setSelectedMaterials}>
             {(Checkbox: any) => (
               <>
                 {materials.map(material => {
                   return (
-                    <label key={material.code}>
-                      <Checkbox value={material} /> {material.name}
+                    <label className='checkbox-label' key={material.code}>
+                      <Checkbox checked='true' className="checkbox" value={material} /> {material.name}
                     </label>
                   )
                 })}
               </>
             )}
           </CheckboxGroup>
+          <Row>
+            <Map mapCenter={mapCenter} recyclingSpots={recyclingSpots} />
+          </Row>
         </Container>
       </div>
-      <Map mapCenter={mapCenter} recyclingSpots={recyclingSpots} />
     </div>
   )
 }
