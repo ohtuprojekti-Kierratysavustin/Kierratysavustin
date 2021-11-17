@@ -28,7 +28,9 @@ const RecycleLocationsView = () => {
       return kierratysInfoService.getAllRecyclingMaterials()
     }
     getRecyclingMaterials().then(res => {
-      setMaterials(res.results)
+      setMaterials(res.results.sort((first: any, second: any) => {
+        return ((first.name > second.name) ? 1 : -1)
+      }))
     })
   },[user])
 
@@ -44,7 +46,7 @@ const RecycleLocationsView = () => {
           coordinates = [result.results[0].geometry.coordinates[1], result.results[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
-          setNotification((`Postinumerolla ${input} haettaessa tapahtui virhe!`)
+          setNotification((`Postinumerolla ${input} haettaessa ei löytynyt hakutuloksia!`)
             , 'error')
           console.log(error.message)
         })
@@ -56,7 +58,7 @@ const RecycleLocationsView = () => {
           coordinates = [result.results[0].geometry.coordinates[1], result.results[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
-          setNotification((`Hakusanalla ${input} haettaessa tapahtui virhe!`)
+          setNotification((`Hakusanalla ${input} haettaessa ei löytynyt hakutuloksia!`)
             , 'error')
           console.log(error.message)
         })
@@ -90,8 +92,8 @@ const RecycleLocationsView = () => {
               <>
                 {materials.map(material => {
                   return (
-                    <label key={material.code}>
-                      <Checkbox value={material} /> {material.name}
+                    <label className='checkboxcontainer' key={material.code}>
+                      <Checkbox value={material} className='checkbox'/> {material.name}
                     </label>
                   )
                 })}
