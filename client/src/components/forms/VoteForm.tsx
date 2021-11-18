@@ -16,8 +16,7 @@ type Props = {
 }
 
 const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
-  const { likes, setLikes } = useStore()
-  const { dislikes, setDislikes, setNotification, setProducts } = useStore()
+  const { likes, setLikes, dislikes, setDislikes, setNotification, setProducts } = useStore()
   const [like, setLike] = useState(likes.some(p => p === instruction.id))
   const [disLike, setDislike] = useState(dislikes.some(p => p === instruction.id))
   useEffect(() => {
