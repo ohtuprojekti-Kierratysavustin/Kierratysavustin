@@ -41,13 +41,13 @@ const removeFavorite = async (newObject: Product): Promise<PostRequestResponse> 
     .catch(error => Promise.reject(error.response.data))
 }
 const editLike = async (id: number): Promise<PostRequestResponse> => {
-  const response = axios.post(`${userUrl}/instructions/like/${id}`, id, tokenService.getConfig())
+  const response = axios.post(`${userUrl}/instructions/like`, { instructionID: id }, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
 }
 const editDislike = async (id: number): Promise<PostRequestResponse> => {
-  const response = axios.post(`${userUrl}/instructions/dislike/${id}`, id, tokenService.getConfig())
+  const response = axios.post(`${userUrl}/instructions/dislike`, { instructionID: id }, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
