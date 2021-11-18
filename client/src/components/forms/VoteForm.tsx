@@ -42,12 +42,12 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
       }
 
       instruction.score += -1
-      setLikes(newArray)
       userService.editLike(instruction.id)
-        .then(response => setVotes(response.resource.score))
+        .then(() => setVotes(instruction.score))
         .catch((error: ErrorResponse) => {
           setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
         })
+      setLikes(newArray)
     } else {
       setLike(true)
       userService.editLike(instruction.id)
@@ -89,7 +89,7 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
       setDislikes(newArray)
       userService.editDislike(instruction.id)
-        .then(response => setVotes(response.resource.score))
+        .then(() => setVotes(instruction.score))
         .catch((error) => {
           setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
         })
