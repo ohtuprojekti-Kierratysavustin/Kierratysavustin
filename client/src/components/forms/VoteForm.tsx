@@ -33,7 +33,6 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
   const handleLike: React.MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault()
     if (like) {
-      console.log('like', like)
       setLike(false)
       const newArray = likes
       for (var i = 0; i < Object.keys(likes).length; i++) {
