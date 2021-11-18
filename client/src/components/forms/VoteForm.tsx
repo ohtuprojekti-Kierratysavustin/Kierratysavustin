@@ -45,8 +45,8 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
       })
   }
-
   if (!instruction.id) return null
+
   const handleLike: React.MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault()
     if (like) {
@@ -57,7 +57,6 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
           newArray.splice(i)
         }
       }
-
       instruction.score += -1
       likeInstruction(instruction)
       setLikes(newArray)
@@ -77,11 +76,8 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
         setDislikes(newArray)
         setDislike(false)
       }
-
     }
-
     product.instructions.sort((a, b) => b.score - a.score)
-
   }
 
   const handleDislike: React.MouseEventHandler<HTMLElement> = (event) => {
@@ -95,7 +91,6 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
           newArray.splice(i)
         }
       }
-
       setDislikes(newArray)
       dislikeInstruction(instruction)
     } else {
@@ -110,13 +105,11 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
             newArray.splice(k)
           }
         }
-
         setLikes(newArray)
       }
       dislikeInstruction(instruction)
       setDislikes(dislikes.concat(instruction.id))
     }
-
     product.instructions.sort((a, b) => b.score - a.score)
   }
   return (
@@ -158,9 +151,7 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
           </Row>
         </Container>
       )}
-
     </div>
-
   )
 }
 
