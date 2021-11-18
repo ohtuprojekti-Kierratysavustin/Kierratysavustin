@@ -32,7 +32,7 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
   const handleLike: React.MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault()
     if (like) {
-
+      console.log('like', like)
       setLike(false)
       const newArray = likes
       for (var i = 0; i < Object.keys(likes).length; i++) {
@@ -43,14 +43,14 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
       instruction.score += -1
       setLikes(newArray)
-      // userService.removeLike(instruction.id)
-      //   .then(response => setVotes(response.resource.score))
-      //   .catch((error: ErrorResponse) => {
-      //     setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
-      //   })
+      userService.editLike(instruction.id)
+        .then(response => setVotes(response.resource.score))
+        .catch((error: ErrorResponse) => {
+          setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
+        })
     } else {
       setLike(true)
-      userService.like(instruction.id)
+      userService.editLike(instruction.id)
         .then(() => setLikes(likes.concat(instruction.id)))
         .then(() => setVotes(instruction.score))
         .catch((error: ErrorResponse) => {
@@ -88,11 +88,11 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
       }
 
       setDislikes(newArray)
-      // userService.removeDislike(instruction.id)
-      //   .then(response => setVotes(response.resource.score))
-      //   .catch((error) => {
-      //     setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
-      //   })
+      userService.editDislike(instruction.id)
+        .then(response => setVotes(response.resource.score))
+        .catch((error) => {
+          setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
+        })
 
     } else {
       setDislike(true)
@@ -109,7 +109,7 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
         setLikes(newArray)
       }
-      userService.dislike(instruction.id)
+      userService.editDislike(instruction.id)
         .then(() => setDislikes(dislikes.concat(instruction.id)))
         .then(() => setVotes(instruction.score))
         .catch((error) => {
