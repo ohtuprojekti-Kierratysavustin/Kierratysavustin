@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from '@monsonjeremy/react-leaflet'
 import { RecyclingSpot } from '../types/objects'
+import { useStore } from '../store'
 
 type Props = {
   mapCenter: [number, number],
@@ -11,6 +12,8 @@ type CentererProps = {
   center: [number, number]
 }
 const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
+  const { setNotification } = useStore()
+
   const Markers = () => {
     if (!recyclingSpots || recyclingSpots.length === 0) {
       return null
@@ -18,8 +21,16 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
     return (
       <>
         {recyclingSpots.map(spot => {
+          var coordinates
+          try {
+            coordinates = spot.geometry.coordinates
+          } catch {
+            setNotification(('Kohteen koordinaattien haussa tapahtui virhe.')
+              , 'error')
+            return null
+          }
           return (
-            <Marker position={[spot.geometry.coordinates[1],spot.geometry.coordinates[0]]} key={spot.spot_id}>
+            <Marker position={[coordinates[1],coordinates[0]]} key={spot.spot_id}>
               <Popup>
                 <b><h6>{spot.name}</h6></b>
                 {spot.operator} <br />
