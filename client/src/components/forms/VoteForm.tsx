@@ -42,10 +42,8 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
       instruction.score += -1
       userService.editLike(instruction.id)
-        .then(() => {
-          setVotes(instruction.score)
-          productService.getAll().then(p => setProducts(p))
-        })
+        .then(() => setVotes(instruction.score))
+        .then(() => productService.getAll().then(p => setProducts(p)))
         .catch((error: ErrorResponse) => {
           setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
         })
@@ -54,10 +52,8 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
       setLike(true)
       userService.editLike(instruction.id)
         .then(() => setLikes(likes.concat(instruction.id)))
-        .then(() => {
-          setVotes(instruction.score)
-          productService.getAll().then(p => setProducts(p))
-        })
+        .then(() => setVotes(instruction.score))
+        .then(() => productService.getAll().then(p => setProducts(p)))
         .catch((error: ErrorResponse) => {
           setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
         })
@@ -94,10 +90,8 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
       setDislikes(newArray)
       userService.editDislike(instruction.id)
-        .then(() => {
-          setVotes(instruction.score)
-          productService.getAll().then(p => setProducts(p))
-        })
+        .then(() => setVotes(instruction.score))
+        .then(() => productService.getAll().then(p => setProducts(p)))
         .catch((error) => {
           setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
         })
@@ -119,10 +113,8 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
       }
       userService.editDislike(instruction.id)
         .then(() => setDislikes(dislikes.concat(instruction.id)))
-        .then(() => {
-          setVotes(instruction.score)
-          productService.getAll().then(p => setProducts(p))
-        })
+        .then(() => setVotes(instruction.score))
+        .then(() => productService.getAll().then(p => setProducts(p)))
         .catch((error) => {
           setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
         })
