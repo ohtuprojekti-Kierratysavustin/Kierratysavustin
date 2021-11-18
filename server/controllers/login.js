@@ -16,7 +16,7 @@ loginRouter.post('/', async (req, res, next) => {
     if (!(user && correctPswrd)) {
       throw new NoUserFoundException('Väärä nimi tai salasana', null, [{ header: 'WWW-Authenticate', value: 'Bearer' }])
     }
-    const token = jwt.sign({ username: user.username, id: user.id }, config.SECRET)
+    const token = jwt.sign({ username: user.username, id: user.id }, config.SECRET, { expiresIn: '24h' })
     res.status(STATUS_CODES.OK).send({ message: 'Kirjautuminen onnistui!', resource: { token, username: user.username, id: user.id } })
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)

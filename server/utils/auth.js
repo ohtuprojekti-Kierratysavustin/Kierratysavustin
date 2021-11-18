@@ -1,7 +1,9 @@
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
-const { TokenMissingException, InvalidTokenException, NoUserFoundException } = require('../error/exceptions')
+const { TokenMissingException, InvalidTokenException, NoUserFoundException, InvalidParameterException, UnauthorizedException } = require('../error/exceptions')
+const { USER_ROLES } = require('../enum/roles')
+const { roleExists, roleIsEqualOrHigher } = require('./roles')
 
 const getTokenFromRequest = (req) => {
   const authorization = req.get('authorization')
@@ -57,5 +59,27 @@ const authenticateRequestReturnUser = async (req) => {
   return user
 }
 
+/**
+ * Authorizes the user based on the users role, or throws error if user does not have the right role
+ * @param {*} user object
+ * @param {*} minimumAcceptedRole role Object
+ * @returns user
+ */
+const authorizeUser = (user, minimumAcceptedRole) => {
+  if (!roleExists(user.role)) {
+    throw new InvalidParameterException('Given role: ' + user.role + ' is not a valid role!')
+  }
+  if (!roleExists(minimumAcceptedRole.name)) {
+    throw new InvalidParameterException('Given minimum accepted role: ' + minimumAcceptedRole.name + ' is not a valid role!')
+  }
+
+  if (!roleIsEqualOrHigher(user.role, minimumAcceptedRole.name)) {
+    throw new UnauthorizedException()
+  }
+
+  return user
+}
+
 module.exports.authenticateRequestReturnUser = authenticateRequestReturnUser
 module.exports.authenticateRequest = authenticateRequest
+module.exports.authorizeUser = authorizeUser
