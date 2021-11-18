@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { userService } from '../../services/user'
+import productService from '../../services/products'
 import { useStore } from '../../store'
 import { Button, Container, Row, Col, ButtonGroup } from 'react-bootstrap'
 import '../../styles.css'
@@ -16,7 +17,7 @@ type Props = {
 
 const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
   const { likes, setLikes } = useStore()
-  const { dislikes, setDislikes, setNotification } = useStore()
+  const { dislikes, setDislikes, setNotification, setProducts } = useStore()
   const [like, setLike] = useState(likes.some(p => p === instruction.id))
   const [disLike, setDislike] = useState(dislikes.some(p => p === instruction.id))
   useEffect(() => {
@@ -43,7 +44,10 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
       instruction.score += -1
       userService.editLike(instruction.id)
-        .then(() => setVotes(instruction.score))
+        .then(() => {
+          setVotes(instruction.score)
+          productService.getAll().then(p => setProducts(p))
+        })
         .catch((error: ErrorResponse) => {
           setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
         })
