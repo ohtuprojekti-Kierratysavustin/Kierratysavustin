@@ -55,13 +55,13 @@ const dislike = async (id: number): Promise<PostRequestResponse> => {
 }
 
 const getLikes = async (): Promise<number[]> => {
-  const response = axios.get(`${userUrl}/likes`, tokenService.getConfig())
+  const response = axios.get(`${userUrl}/instructions/likes`, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
 }
 const getDislikes = async (): Promise<number[]> => {
-  const response = axios.get(`${userUrl}/dislikes`, tokenService.getConfig())
+  const response = axios.get(`${userUrl}/instructions/dislikes`, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
