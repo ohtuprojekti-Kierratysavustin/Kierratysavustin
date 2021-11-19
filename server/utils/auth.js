@@ -2,7 +2,6 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { TokenMissingException, InvalidTokenException, NoUserFoundException, InvalidParameterException, UnauthorizedException } = require('../error/exceptions')
-const { USER_ROLES } = require('../enum/roles')
 const { roleExists, roleIsEqualOrHigher } = require('./roles')
 
 const getTokenFromRequest = (req) => {
@@ -31,7 +30,13 @@ const authenticateRequest = async (req) => {
   }
 }
 
-// Has to be called with await! Otherwise authentication will be passed!
+/**
+ * Authenticate user from the JWT bearer token given in the request. 
+ * Has to be called with await! Otherwise authentication will be passed!
+ * @param {*} req the request object
+ * @returns user object
+ * @throws error if authentication does not succeed
+ */
 const authenticateRequestReturnUser = async (req) => {
   const token = getTokenFromRequest(req)
   if (!token) {
@@ -61,6 +66,7 @@ const authenticateRequestReturnUser = async (req) => {
 
 /**
  * Authorizes the user based on the users role, or throws error if user does not have the right role
+ * If not used in a resource, anyone can access. Same as auhtorizing for role 'User'
  * @param {*} user object
  * @param {*} minimumAcceptedRole role Object
  * @returns user

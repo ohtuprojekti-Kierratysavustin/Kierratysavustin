@@ -120,7 +120,15 @@ productRouter.delete('/:productId/instructions/:instructionId', async (req, res,
 
     let product = await Product.findById(req.params.productId)
 
+    if (!product) {
+      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.productId + ' ei löytynyt!')
+    }
+
     let instruction = await Instruction.findById(req.params.instructionId)
+
+    if (!instruction) {
+      throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.instructionId + ' ei löytynyt!')
+    }
 
     //verrataan, vastaako pyynnön tehnyt käyttäjä ohjeen lisännyttä käyttäjää
     if (instruction.creator.toString() !== user.id.toString()) {

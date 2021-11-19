@@ -261,6 +261,24 @@ const getUserRecyclingratesPerDay = async (start, end, token) => {
   return result
 }
 
+// Admin
+
+const getAllUsers = async (token) => {
+  const users = await api.get('/api/admin/users')
+    .set('Authorization', `bearer ${token}`)
+  return users
+}
+
+// Moderator
+
+const modDeleteInstruction = async (productID, instructionID, token) => {
+  const result = await api
+    .delete(`/api/moderator/products/${productID}/instructions/${instructionID}`)
+    .set('Authorization', 'bearer ' + token)
+    .expect('Content-Type', /application\/json/)
+  return result
+}
+
 module.exports = {
   clearDatabase,
   usersInDb,
@@ -289,4 +307,6 @@ module.exports = {
   getInstructionsOfProduct,
   deleteInstruction,
   getUserStatisticsTable: getUserRecyclingratesPerDay,
+  getAllUsers: getAllUsers,
+  modDeleteInstruction: modDeleteInstruction
 }
