@@ -54,8 +54,9 @@ const RecycleLocationsView = () => {
     } else {  // hakusanana paikkakunta tai joku muu
       await kierratysInfoService.getCollectionSpotsByMunicipality(input, selectedMaterials)
         .then(result => {
-          setRecyclingSpots(result.results)
-          coordinates = [result.results[0].geometry.coordinates[1], result.results[0].geometry.coordinates[0]]
+          let filteredResults = result.results.filter((n: { geometry: null }) => n.geometry!==null)
+          setRecyclingSpots(filteredResults)
+          coordinates = [filteredResults[0].geometry.coordinates[1], filteredResults[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
           setNotification((`Hakusanalla ${input} haettaessa ei löytynyt hakutuloksia!`)
