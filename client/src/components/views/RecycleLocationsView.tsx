@@ -32,10 +32,10 @@ const RecycleLocationsView = () => {
         return ((first.name > second.name) ? 1 : -1)
       }))
     })
-  },[user])
+  }, [user])
 
   const filterRecyclingSpotsByMaterials = (data: any[]) => {
-    let spots = data.filter((spot: { geometry: null }) => spot.geometry!==null)
+    let spots = data.filter((spot: { geometry: null }) => spot.geometry !== null)
 
     console.log(spots)
 
@@ -118,13 +118,13 @@ const RecycleLocationsView = () => {
               </Col>
             </Form.Group>
           </Form>
-          <CheckboxGroup className='checkboxgroup' name='materiaalit' value={selectedMaterials} onChange={setSelectedMaterials}>
+          <CheckboxGroup name='materiaalit' value={selectedMaterials} onChange={setSelectedMaterials}>
             {(Checkbox: any) => (
               <>
                 {materials.map(material => {
                   return (
                     <label className='checkboxcontainer' key={material.code}>
-                      <Checkbox value={material} className='checkbox'/> {material.name}
+                      <Checkbox value={material} className='checkbox' /> {material.name}
                     </label>
                   )
                 })}
