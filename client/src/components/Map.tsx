@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from '@monsonjeremy/react-leaflet'
 import { RecyclingSpot } from '../types/objects'
 import { useStore } from '../store'
+import { ErrorResponse } from '../types/requestResponses'
 
 type Props = {
   mapCenter: [number, number],
@@ -24,7 +25,7 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
           var coordinates
           try {
             coordinates = spot.geometry.coordinates
-          } catch {
+          } catch (error: any) {
             setNotification(('Kohteen koordinaattien haussa tapahtui virhe.')
               , 'error')
             return null
