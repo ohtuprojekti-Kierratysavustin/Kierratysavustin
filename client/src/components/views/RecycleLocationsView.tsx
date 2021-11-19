@@ -3,7 +3,7 @@ import InfoBar from '../InfoBar'
 import Map from '../Map'
 import CheckboxGroup from 'react-checkbox-group'
 import { useStore } from '../../store'
-import kierratysInfoService from '../../services/kierratysInfo'
+import { KierratysInfoService } from '../../services/kierratysInfo'
 import { Container, Button, Form, Row, Col } from 'react-bootstrap'
 import { ErrorResponse } from '../../types/requestResponses'
 
@@ -13,7 +13,12 @@ import { ErrorResponse } from '../../types/requestResponses'
 //})
 
 
-const RecycleLocationsView = () => {
+type Props = {
+  kierratysInfoService: KierratysInfoService
+}
+
+
+const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
   var defaultCoordinates: [number, number] = [60.150, 24.96]
   const { setNotification, user } = useStore()
   const [recyclingSpots, setRecyclingSpots] = useState<any[]>([])

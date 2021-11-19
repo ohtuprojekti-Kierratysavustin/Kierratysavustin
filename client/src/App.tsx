@@ -5,7 +5,7 @@ import {
 import { userService } from './services/user'
 import productService from './services/products'
 import tokenService from './services/token'
-import kierratysInfoService from './services/kierratysInfo'
+import { kierratysInfoService } from './services/kierratysInfo'
 import { productUserCountService } from './services/productUserCount'
 import NavigationBar from './components/NavigationBar'
 import ProductForm from './components/forms/ProductForm'
@@ -42,21 +42,21 @@ const App = () => {
     }
   }, [])
 
-  const match = useRouteMatch<{id: string}>('/products/:id')
+  const match = useRouteMatch<{ id: string }>('/products/:id')
   const product = match
     ? products.find(p => p.id.toString() === match.params.id)
     : undefined
 
   return (
     <div id='background'>
-      <NavigationBar/>
-      <Notification/>
+      <NavigationBar />
+      <Notification />
       <Switch >
         <Route path="/products/:id">
           <ProductView product={product} />
         </Route>
         <Route path="/register">
-          <RegisterForm userService={userService}/>
+          <RegisterForm userService={userService} />
         </Route>
         <Route path="/login">
           <LoginForm />
@@ -74,7 +74,7 @@ const App = () => {
           <RecycleStatisticsView />
         </Route>
         <Route path="/recycleLocations">
-          <RecycleLocationsView />
+          <RecycleLocationsView kierratysInfoService={kierratysInfoService} />
         </Route>
         <Route path="/">
           <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />
