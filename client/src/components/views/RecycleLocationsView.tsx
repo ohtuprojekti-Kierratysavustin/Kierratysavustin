@@ -34,7 +34,11 @@ const RecycleLocationsView = () => {
     })
   },[user])
 
-  const filterRecyclingSpotsByMaterials = (spots: any[]) => {
+  const filterRecyclingSpotsByMaterials = (data: any[]) => {
+    let spots = data.filter((spot: { geometry: null }) => spot.geometry!==null)
+
+    console.log(spots)
+
     if (selectedMaterials.length === 0) {
       return (spots)
     }
