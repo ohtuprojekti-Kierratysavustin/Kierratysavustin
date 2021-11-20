@@ -5,11 +5,15 @@ import { ErrorResponse, PostRequestResponse } from '../types/requestResponses'
 import { waitFor } from '@testing-library/dom'
 import { kierratysInfoService } from '../services/kierratysInfo'
 import RecycleLocationsView from '../components/views/RecycleLocationsView'
+import { recycleMaterials, validLocation1, validLocation2 } from './data/recycleLocations'
 
-/**
- * ProductUserCount service has been mocked with jest. The return values of nth calls to the service functions are set manually
- * with mockResolvedValueOnce and mockResolvedValue.
- */
+// https://stackoverflow.com/questions/49263429/jest-gives-an-error-syntaxerror-unexpected-token-export
+// fixed in package.json with:
+  // "jest": {
+  //   "transformIgnorePatterns": [
+  //     "node_modules/(?!react-checkbox-group|CheckboxGroup)"
+  //   ]
+  // }
 
 
 jest.mock('../services/kierratysInfo')
@@ -17,8 +21,8 @@ const kierratysInfoServiceMock = kierratysInfoService as jest.Mocked<typeof kier
 
 describe('When RecycleLocationsView is rendered', () => {
 
-  // let searchButton: any;
-  // let component: any;
+  let searchButton: any;
+  let component: any;
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -26,15 +30,17 @@ describe('When RecycleLocationsView is rendered', () => {
 
   beforeEach(() => {
 
-    // component = render(
-    //   <RecycleLocationsView kierratysInfoService={kierratysInfoServiceMock} />
-    // )
+    kierratysInfoServiceMock.getAllRecyclingMaterials.mockResolvedValue(recycleMaterials)
 
-    // searchButton = component.container.querySelector('button[type="submit"]')
+    component = render(
+      <RecycleLocationsView kierratysInfoService={kierratysInfoServiceMock} />
+    )
 
-    // if (searchButton === null) {
-    //   throw new Error("Search Button is null!")
-    // }
+    searchButton = component.container.querySelector('button[type="submit"]')
+
+    if (searchButton === null) {
+      throw new Error("Search Button is null!")
+    }
   })
 
   describe('', () => {

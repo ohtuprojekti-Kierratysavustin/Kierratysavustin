@@ -29,14 +29,12 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
 
 
   useEffect(() => {
-    const getRecyclingMaterials = () => {
-      return kierratysInfoService.getAllRecyclingMaterials()
-    }
-    getRecyclingMaterials().then(res => {
-      setMaterials(res.results.sort((first: any, second: any) => {
-        return ((first.name > second.name) ? 1 : -1)
-      }))
-    })
+    kierratysInfoService.getAllRecyclingMaterials()
+      .then(res => {
+        setMaterials(res.results.sort((first: any, second: any) => {
+          return ((first.name > second.name) ? 1 : -1)
+        }))
+      })
   }, [user])
 
   const filterRecyclingSpotsByMaterials = (data: any[]) => {
