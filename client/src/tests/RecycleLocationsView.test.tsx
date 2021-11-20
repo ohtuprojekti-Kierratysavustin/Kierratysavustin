@@ -5,7 +5,7 @@ import { ErrorResponse, PostRequestResponse } from '../types/requestResponses'
 import { waitFor } from '@testing-library/dom'
 import { kierratysInfoService } from '../services/kierratysInfo'
 import RecycleLocationsView from '../components/views/RecycleLocationsView'
-import { recycleMaterials, validLocation1, validLocation2 } from './data/recycleLocations'
+import { recycleMaterials, validLocation1, validLocation2 } from './testdata/recycleLocations'
 
 // https://stackoverflow.com/questions/49263429/jest-gives-an-error-syntaxerror-unexpected-token-export
 // fixed in package.json with:
