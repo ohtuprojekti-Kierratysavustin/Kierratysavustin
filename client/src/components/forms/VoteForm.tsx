@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { userService } from '../../services/user'
+import productService from '../../services/products'
 import { useStore } from '../../store'
 import { Button, Container, Row, Col, ButtonGroup } from 'react-bootstrap'
 import '../../styles.css'
@@ -15,7 +16,7 @@ type Props = {
 }
 
 const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
-  const { likes, setLikes, dislikes, setDislikes, setNotification, updateProduct } = useStore()
+  const { likes, setLikes, dislikes, setDislikes, setNotification, updateProduct, setProducts } = useStore()
   const [like, setLike] = useState(likes.some(p => p === instruction.id))
   const [disLike, setDislike] = useState(dislikes.some(p => p === instruction.id))
   useEffect(() => {
@@ -37,11 +38,12 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
         product.instructions.forEach(function (productInstruction, i) {
           if (productInstruction.id === instruction.id) product.instructions[i].score = response.resource.instruction.score
+          updateProduct(product)
         })
 
         product.instructions.sort((a, b) => b.score - a.score)
-        updateProduct(product)
       })
+      .then(() => productService.getAll().then(p => setProducts(p)))
       .catch((error: ErrorResponse) => {
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
       })
@@ -58,11 +60,12 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
 
         product.instructions.forEach(function (productInstruction, i) {
           if (productInstruction.id === instruction.id) product.instructions[i].score = response.resource.instruction.score
+          updateProduct(product)
         })
 
         product.instructions.sort((a, b) => b.score - a.score)
-        updateProduct(product)
       })
+      .then(() => productService.getAll().then(p => setProducts(p)))
       .catch((error) => {
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
       })
@@ -96,7 +99,6 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
                 </OverlayTrigger>
               </ButtonGroup>
             </Container>
-
           </Row>
         </Container>
       ) : (
