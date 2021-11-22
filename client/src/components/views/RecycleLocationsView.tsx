@@ -6,36 +6,34 @@ import { useStore } from '../../store'
 import { KierratysInfoService } from '../../services/kierratysInfo'
 import { Container, Button, Form, Row, Col } from 'react-bootstrap'
 import { ErrorResponse } from '../../types/requestResponses'
-
-// käyttäjän paikan haku:
-//navigator.geolocation.getCurrentPosition((position) => {
-//  console.log(position.coords.latitude, position.coords.longitude)
-//})
-
+import credentialService from '../../services/credentials'
 
 type Props = {
   kierratysInfoService: KierratysInfoService
 }
 
-
 const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
   var defaultCoordinates: [number, number] = [60.150, 24.96]
-  const { setNotification, user } = useStore()
+  const { setNotification } = useStore()
   const [recyclingSpots, setRecyclingSpots] = useState<any[]>([])
   const [mapCenter, setMapCenter] = useState(defaultCoordinates)
   const [materials, setMaterials] = useState<any[]>([])
   const [selectedMaterials, setSelectedMaterials] = useState<any[]>([])
   const [input, setInput] = useState('')
 
-
   useEffect(() => {
-    kierratysInfoService.getAllRecyclingMaterials()
-      .then(res => {
-        setMaterials(res.results.sort((first: any, second: any) => {
-          return ((first.name > second.name) ? 1 : -1)
-        }))
-      })
-  }, [user])
+    const getCredentialsAndLoadMaterials = async () => {
+      const key = await credentialService.getCredentialsFor('KInfo')
+      kierratysInfoService.setKey(key)
+      kierratysInfoService.getAllRecyclingMaterials()
+        .then(res => {
+          setMaterials(res.results.sort((first: any, second: any) => {
+            return ((first.name > second.name) ? 1 : -1)
+          }))
+        })
+    }
+    getCredentialsAndLoadMaterials()
+  }, [])
 
   const filterRecyclingSpotsByMaterials = (data: any[]) => {
     let spots = data.filter((spot: { geometry: null }) => spot.geometry !== null)

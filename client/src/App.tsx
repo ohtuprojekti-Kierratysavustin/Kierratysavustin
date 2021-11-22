@@ -34,7 +34,6 @@ const App = () => {
       const userlogin = JSON.parse(loggedUserJSON)
       setUser(userlogin)
       tokenService.setToken(userlogin.token)
-      kierratysInfoService.setKey(userlogin.KInfoKey)
       productService.getFavorites().then(favorites => setFavorites(favorites))
       userService.getLikes().then(likes => setLikes(likes))
       userService.getDislikes().then(dislikes => setDislikes(dislikes))
