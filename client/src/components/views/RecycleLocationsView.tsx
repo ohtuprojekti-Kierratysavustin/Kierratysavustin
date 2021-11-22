@@ -16,6 +16,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
   var defaultCoordinates: [number, number] = [60.150, 24.96]
   const { setNotification } = useStore()
   const [recyclingSpots, setRecyclingSpots] = useState<any[]>([])
+  const [filteredRecyclingSpots, setFilteredRecyclingSpots] = useState<any[]>([])
   const [mapCenter, setMapCenter] = useState(defaultCoordinates)
   const [materials, setMaterials] = useState<any[]>([])
   const [selectedMaterials, setSelectedMaterials] = useState<any[]>([])
@@ -35,10 +36,14 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
     getCredentialsAndLoadMaterials()
   }, [])
 
+  useEffect(() => {
+    if (recyclingSpots.length !== 0) {
+      setFilteredRecyclingSpots(filterRecyclingSpotsByMaterials(recyclingSpots))
+    }
+  }, [selectedMaterials])
+
   const filterRecyclingSpotsByMaterials = (data: any[]) => {
     let spots = data.filter((spot: { geometry: null }) => spot.geometry !== null)
-
-    console.log(spots)
 
     if (selectedMaterials.length === 0) {
       return (spots)
@@ -72,8 +77,9 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
     if (isPostalCode.test(input)) {    // jos hakusanana postinumero
       await kierratysInfoService.getCollectionSpotsByPostalCode(input)
         .then(result => {
+          setRecyclingSpots(result.results)
           const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
-          setRecyclingSpots(filteredSpots)
+          setFilteredRecyclingSpots(filteredSpots)
           coordinates = [filteredSpots[0].geometry.coordinates[1], filteredSpots[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
@@ -85,8 +91,9 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
     } else {  // hakusanana paikkakunta tai joku muu
       await kierratysInfoService.getCollectionSpotsByMunicipality(input)
         .then(result => {
+          setRecyclingSpots(result.results)
           const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
-          setRecyclingSpots(filteredSpots)
+          setFilteredRecyclingSpots(filteredSpots)
           coordinates = [filteredSpots[0].geometry.coordinates[1], filteredSpots[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
@@ -133,7 +140,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
             )}
           </CheckboxGroup>
           <Row>
-            <Map mapCenter={mapCenter} recyclingSpots={recyclingSpots} />
+            <Map mapCenter={mapCenter} recyclingSpots={filteredRecyclingSpots} />
           </Row>
         </Container>
       </div>
