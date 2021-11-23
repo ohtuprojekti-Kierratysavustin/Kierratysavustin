@@ -266,7 +266,7 @@ h2 {
 
 /* Forms */
 .form-control {
-    background-color: black;
+    background-color: rgb(255, 255, 255);
 }
 #searchInput {
     background-color: var(--form-background-color) !important;
