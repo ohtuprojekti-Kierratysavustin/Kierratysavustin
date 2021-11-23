@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import InfoBar from '../InfoBar'
 import Map from '../Map'
-import CheckboxGroup from 'react-checkbox-group'
+import MaterialsCheckboxGroup from '../MaterialsCheckboxGroup'
 import { useStore } from '../../store'
 import { KierratysInfoService } from '../../services/kierratysInfo'
 import { Container, Button, Form, Row, Col } from 'react-bootstrap'
@@ -14,12 +14,11 @@ type Props = {
 
 const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
   var defaultCoordinates: [number, number] = [60.150, 24.96]
-  const { setNotification } = useStore()
+  const { setNotification, selectedMaterials } = useStore()
   const [recyclingSpots, setRecyclingSpots] = useState<any[]>([])
   const [filteredRecyclingSpots, setFilteredRecyclingSpots] = useState<any[]>([])
   const [mapCenter, setMapCenter] = useState(defaultCoordinates)
   const [materials, setMaterials] = useState<any[]>([])
-  const [selectedMaterials, setSelectedMaterials] = useState<any[]>([])
   const [input, setInput] = useState('')
 
   useEffect(() => {
@@ -126,19 +125,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
               </Col>
             </Form.Group>
           </Form>
-          <CheckboxGroup name='materiaalit' value={selectedMaterials} onChange={setSelectedMaterials}>
-            {(Checkbox: any) => (
-              <>
-                {materials.map(material => {
-                  return (
-                    <label className='checkboxcontainer' key={material.code}>
-                      <Checkbox value={material} className='checkbox' /> {material.name}
-                    </label>
-                  )
-                })}
-              </>
-            )}
-          </CheckboxGroup>
+          <MaterialsCheckboxGroup materials={materials}/>
           <Row>
             <Map mapCenter={mapCenter} recyclingSpots={filteredRecyclingSpots} />
           </Row>
