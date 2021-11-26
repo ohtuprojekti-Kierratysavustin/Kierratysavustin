@@ -5,6 +5,7 @@ import {
 import { userService } from './services/user'
 import productService from './services/products'
 import tokenService from './services/token'
+import { kierratysInfoService } from './services/kierratysInfo'
 import { productUserCountService } from './services/productUserCount'
 import NavigationBar from './components/NavigationBar'
 import ProductForm from './components/forms/ProductForm'
@@ -18,6 +19,7 @@ import RecycleStatisticsView from './components/views/RecycleStatisticsView'
 import { useStore } from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles.css'
+import RecycleLocationsView from './components/views/RecycleLocationsView'
 
 const App = () => {
   const { products, setProducts, filteredProducts, setFilteredProducts, setUser, setFavorites, setLikes, setDislikes, setProductStatistics } = useStore()
@@ -32,28 +34,28 @@ const App = () => {
       const userlogin = JSON.parse(loggedUserJSON)
       setUser(userlogin)
       tokenService.setToken(userlogin.token)
-      productService.getFavorites(userlogin.id).then(favorites => setFavorites(favorites))
+      productService.getFavorites().then(favorites => setFavorites(favorites))
       userService.getLikes().then(likes => setLikes(likes))
       userService.getDislikes().then(dislikes => setDislikes(dislikes))
       productUserCountService.getUserCounts().then(stats => setProductStatistics(stats))
     }
   }, [])
 
-  const match = useRouteMatch<{id: string}>('/products/:id')
+  const match = useRouteMatch<{ id: string }>('/products/:id')
   const product = match
     ? products.find(p => p.id.toString() === match.params.id)
     : undefined
 
   return (
     <div id='background'>
-      <NavigationBar/>
-      <Notification/>
+      <NavigationBar />
+      <Notification />
       <Switch >
         <Route path="/products/:id">
           <ProductView product={product} />
         </Route>
         <Route path="/register">
-          <RegisterForm userService={userService}/>
+          <RegisterForm userService={userService} />
         </Route>
         <Route path="/login">
           <LoginForm />
@@ -69,6 +71,9 @@ const App = () => {
         </Route>
         <Route path="/statistics">
           <RecycleStatisticsView />
+        </Route>
+        <Route path="/recycleLocations">
+          <RecycleLocationsView kierratysInfoService={kierratysInfoService} />
         </Route>
         <Route path="/">
           <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />

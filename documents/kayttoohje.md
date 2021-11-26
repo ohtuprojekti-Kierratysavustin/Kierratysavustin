@@ -25,7 +25,7 @@ Kun käyttäjä on kirjautunut, avautuu hänelle Kotitalouden kierrätysavustime
 ## Tuotteen lisääminen
 
 Kirjautumisen jälkeen on mahdollista lisätä tuotteita ylävalikon kohdasta
-"Lisää tuote". Tuotetta lisätessä vaaditaan ainoastaan tuotteen nimi.
+"Lisää tuote". Tuotetta lisätessä vaaditaan ainoastaan tuotteen nimi, mutta halutessaan voi käyttäjä myös lisätä tuotteesta kuvan tuotteen nimen alla olevalla tiedostovalitsimella. Käyttäjä voi lisätä omalle tuotteelleen kuvan myös jälkikäteen tuotenäkymässä.
 
 ![Tuotteen lisääminen](./kuvat/tuotteen-lisaaminen.png)
 
@@ -39,7 +39,9 @@ Tuotelistausnäkymässä näkyy kaikki järjestelmässä olevat tuotteet ja käy
 
 ## Yksittäisen tuotteen näkymä
 
-Yksittäisen tuotteen näkymään pääsee valitsemalla tuotteen haku-, tuote- tai suosikkituotelistauksesta. Kirjautunut käyttäjä voi näkymässä lisätä tuotteen suosikkeihinsa, hankkia ja kierrättää kyseistä tuotetta ylläpitääkseen tietoa omasta kierrätysasteestaan sekä lisätä ja äänestää kierrätysohjeita. Mikäli tuote on käyttäjän itse lisäämä, näkyy hänelle myös "Poista tuote"-nappi. Vastaavasti myös käyttäjä voi poistaa itse lisäämiään kierrätysohjeita.
+Yksittäisen tuotteen näkymään pääsee valitsemalla tuotteen haku-, tuote- tai suosikkituotelistauksesta. Kirjautunut käyttäjä voi näkymässä lisätä tuotteen suosikkeihinsa, hankkia ja kierrättää kyseistä tuotetta ylläpitääkseen tietoa omasta kierrätysasteestaan sekä lisätä ja äänestää kierrätysohjeita. Kierrätysohjeista ylimpänä näkyy eniten käyttäjä-ääniä saanut ohje.
+
+Mikäli tuote on käyttäjän itse lisäämä, voi hän lisätä tuotteelle kuvan sekä poistaa kyseisen tuotteen kokonaan. Vastaavasti myös käyttäjä voi poistaa itse lisäämiään kierrätysohjeita.
 
 ![Tuotenäkymä](./kuvat/tuotenakyma.png)
 
@@ -51,3 +53,10 @@ Kirjautunut käyttäjä voi tilastoida, kuinka suuren osuuden hän on kierrätt�
 Siirtymällä navigointipalkista näkymään "Kierrätyslaskuri", pääsee käyttäjä tarkastelemaan omaa kierrätysastettaan kokonaisuudessa sekä tuotekohtaisesti. Kierrätysaste lasketaan suoraan käyttäjän antamien hankintojen ja kierrätysten perusteella. Omaa kokonaiskierrätysastettaan voi myös seurata sivulla näkyvän kuvaajan avulla, jossa esitetään viimeisen 30 päivän aikainen kokonaiskierrätysaste. Kuvaajassa on myös näkyvissä [EU:n asettama tavoite](https://www.europarl.europa.eu/news/fi/headlines/society/20180328STO00751/jatehuolto-eu-ssa) kotitalousjätteen uudelleenkäytölle ja kierrätykselle vuonna 2025.
 
 ![Statistiikkasivu](./kuvat/statistiikka.png)
+
+
+## Kierrätyspisteet
+
+Sekä kirjautunut että kirjautumaton käyttäjä voi hakea ja tarkastella Suomen kierrätyspisteitä yläpalkista löytyvällä Kierrätyspisteet-sivulla. Käyttäjä voi hakea kierrätyspisteitä alueittain joko paikkakunnan tai postinumeron perusteella sekä rajata hakua kierrätettävien materiaalien perusteella.
+
+![Kierrätyspisteet](./kuvat/kierratyspisteet.png)

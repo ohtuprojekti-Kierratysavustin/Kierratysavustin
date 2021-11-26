@@ -166,18 +166,22 @@ userRouter.post('/products/:id/', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
-    const product = await Product.findById(req.params.id)
+    const product = await Product
+      .findById(req.params.id)
+      .populate({
+        path: 'instructions'
+      }).exec()
     if (!product) {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
 
-    if (product.users.indexOf(user.id) > -1) {
+    product.instructions.sort((a, b) => b.score - a.score)
+
+    if (user.favoriteProducts.includes(user.id)) {
       throw new ResourceNotFoundException('Tuote löytyy jo suosikeista!')
     }
 
-    product.users = product.users.concat(user.id)
-    user.products = user.products.concat(product.id)
-    await product.save()
+    user.favoriteProducts = user.favoriteProducts.concat(product.id)
     await user.save()
     res.status(STATUS_CODES.OK).json({ message: 'Tuote \'' + product.name + ' \' lisätty suosikkeihin!', resource: product })
   } catch (error) {
@@ -191,18 +195,22 @@ userRouter.put('/products/:id', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
 
-    const product = await Product.findByIdAndUpdate(req.params.id)
+    const product = await Product
+      .findById(req.params.id)
+      .populate({
+        path: 'instructions'
+      }).exec()
     if (!product) {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
 
-    if (product.users.indexOf(user.id) === -1) {
+    product.instructions.sort((a, b) => b.score - a.score)
+
+    if (!user.favoriteProducts.includes(product.id)) {
       throw new ResourceNotFoundException('Tuote ei löydy suosikeista!')
     }
 
-    product.users = product.users.pull({ _id: user.id })
-    user.products = user.products.pull({ _id: product.id })
-    await product.save()
+    user.favoriteProducts = user.favoriteProducts.pull({ _id: product.id })
     await user.save()
     res.status(STATUS_CODES.OK).json({ message: 'Tuote \'' + product.name + ' \' poistettu suosikeista!', resource: product })
   } catch (error) {

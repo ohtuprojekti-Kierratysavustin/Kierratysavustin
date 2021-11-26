@@ -1,6 +1,8 @@
+require('dotenv').config()
 let PORT = process.env.PORT || 3001
 let MONGODB_URI = 'mongodb://localhost:27017/dev_db'
 let SECRET = process.env.SECRET || 'salainendevaus'
+let KIERRATYS_INFO_API_KEY = process.env.KIERRATYS_INFO_API_KEY || ''
 
 if (process.env.NODE_ENV === 'test') {
   MONGODB_URI = 'mongodb://localhost:27017/test_db'
@@ -15,5 +17,6 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   MONGODB_URI,
   SECRET,
-  PORT
+  PORT,
+  KIERRATYS_INFO_API_KEY
 }

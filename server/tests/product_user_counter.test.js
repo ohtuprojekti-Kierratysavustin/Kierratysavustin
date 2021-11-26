@@ -5,7 +5,7 @@ const User = require('../models/user')
 const helper = require('./test_helper')
 const STATUS_CODES = require('http-status')
 
-let token = undefined
+let loginData = undefined
 const numberOfDays = 15
 let today = new Date()
 let previousDay = new Date() 
@@ -20,11 +20,11 @@ beforeEach(async () => {
   const passwordHash = await bcrypt.hash('salasana', 10)
   const userObject = new User({ username: 'root', passwordHash })
   let user = await userObject.save()
-  token = await helper.getToken({ username: 'root', password: 'salasana' })
+  loginData = await helper.login({ username: 'root', password: 'salasana' })
 
-  let productObject = new Product({ name: helper.productsData[0].name, user: user.id })
+  let productObject = new Product({ name: helper.productsData[0].name, creator: user.id })
   await productObject.save()
-  productObject = new Product({ name: helper.productsData[1].name, user: user.id })
+  productObject = new Product({ name: helper.productsData[1].name, creator: user.id })
   await productObject.save()
   //console.log('Product 1 initialized for test', productObject) 
 })
@@ -37,10 +37,10 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
     
-    const response = await helper.getProductUserCounts(product.id, token)
+    const response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.recycleCount).toBe(1)
 
   })
@@ -49,14 +49,14 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 4, token)
+    await helper.purchaseProductFreeAmount(product.id, 4, loginData.token)
 
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
 
-    const response = await helper.getProductUserCounts(product.id, token)
+    const response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.recycleCount).toBe(4)
   })
 
@@ -64,15 +64,15 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 3, token)
+    await helper.purchaseProductFreeAmount(product.id, 3, loginData.token)
 
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.unrecycleProductOnce(product.id, token)
-    await helper.unrecycleProductOnce(product.id, token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.unrecycleProductOnce(product.id, loginData.token)
+    await helper.unrecycleProductOnce(product.id, loginData.token)
 
-    const response = await helper.getProductUserCounts(product.id, token)
+    const response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.recycleCount).toBe(1)
   })
 
@@ -80,14 +80,14 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 3, token)
+    await helper.purchaseProductFreeAmount(product.id, 3, loginData.token)
 
-    await helper.recycleProductOnce(product.id, token)
-    await helper.unrecycleProductOnce(product.id, token)
-    await helper.unrecycleProductOnce(product.id, token)
-    await helper.unrecycleProductOnce(product.id, token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.unrecycleProductOnce(product.id, loginData.token)
+    await helper.unrecycleProductOnce(product.id, loginData.token)
+    await helper.unrecycleProductOnce(product.id, loginData.token)
 
-    const response = await helper.getProductUserCounts(product.id, token)
+    const response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.recycleCount).toBe(0)
   })
 
@@ -95,13 +95,13 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 3, token)
+    await helper.purchaseProductFreeAmount(product.id, 3, loginData.token)
 
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.purchaseProductFreeAmount(product.id, -5, token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.purchaseProductFreeAmount(product.id, -5, loginData.token)
 
-    const response = await helper.getProductUserCounts(product.id, token)
+    const response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.recycleCount).toBe(2)
   })
 
@@ -109,20 +109,20 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
 
-    let response = await helper.getProductUserCounts(product.id, token)
+    let response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.recycleCount).toBe(2)
     expect(response.body.purchaseCount).toBe(3)
 
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
 
-    response = await helper.getProductUserCounts(product.id, token)
+    response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.recycleCount).toBe(3)
     expect(response.body.purchaseCount).toBe(3)
 
@@ -131,16 +131,16 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    let response = await helper.purchaseProductFreeAmount(product.id, 'sff24', token)
+    let response = await helper.purchaseProductFreeAmount(product.id, 'sff24', loginData.token)
     expect(response.status).toBeGreaterThanOrEqual(400)
-    response = await helper.purchaseProductFreeAmount(product.id, 1.57, token)
+    response = await helper.purchaseProductFreeAmount(product.id, 1.57, loginData.token)
     expect(response.status).toBeGreaterThanOrEqual(400)
 
   })
 
   test('recycling nonexistent product responds with product not found', async () => {
 
-    const response = await helper.recycleProductOnce('111111111111111111111111', token)
+    const response = await helper.recycleProductOnce('111111111111111111111111', loginData.token)
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
   })
 
@@ -155,7 +155,7 @@ describe('Product Recycling Statistics', () => {
 
   test('count stats of nonexistent product responds with product not found', async () => {
 
-    const response = await helper.getProductUserCounts('111111111111111111111111', token)
+    const response = await helper.getProductUserCounts('111111111111111111111111', loginData.token)
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
 
   })
@@ -165,8 +165,8 @@ describe('Product Recycling Statistics', () => {
   test('user can purchase an existing product', async () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
-    await helper.purchaseProductOnce(product.id, token)        
-    const response = await helper.getProductUserCounts(product.id, token)
+    await helper.purchaseProductOnce(product.id, loginData.token)        
+    const response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.purchaseCount).toBe(1)
 
   })
@@ -175,13 +175,13 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 4, token)
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.purchaseProductOnce(product.id, token)
+    await helper.purchaseProductFreeAmount(product.id, 4, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
     
 
-    const response = await helper.getProductUserCounts(product.id, token)
+    const response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.purchaseCount).toBe(7)
   })
 
@@ -189,11 +189,11 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 3, token)        
-    await helper.unPurchaseProductOnce(product.id, token)
-    await helper.unPurchaseProductOnce(product.id, token)
+    await helper.purchaseProductFreeAmount(product.id, 3, loginData.token)        
+    await helper.unPurchaseProductOnce(product.id, loginData.token)
+    await helper.unPurchaseProductOnce(product.id, loginData.token)
     
-    const response = await helper.getProductUserCounts(product.id, token)
+    const response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.purchaseCount).toBe(1)
   })
 
@@ -201,8 +201,8 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.unPurchaseProductOnce(product.id, token)
-    let response = await helper.getProductUserCounts(product.id, token)
+    await helper.unPurchaseProductOnce(product.id, loginData.token)
+    let response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.purchaseCount).toBe(0)
   })
   
@@ -210,11 +210,11 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 3, token)
+    await helper.purchaseProductFreeAmount(product.id, 3, loginData.token)
 
-    await helper.purchaseProductFreeAmount(product.id, -53, token)
+    await helper.purchaseProductFreeAmount(product.id, -53, loginData.token)
 
-    const response = await helper.getProductUserCounts(product.id, token)
+    const response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.purchaseCount).toBe(3)
   })
 
@@ -222,20 +222,20 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
 
-    let response = await helper.getProductUserCounts(product.id, token)
+    let response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.recycleCount).toBe(3)
     expect(response.body.purchaseCount).toBe(3)
 
-    await helper.unPurchaseProductOnce(product.id, token)
+    await helper.unPurchaseProductOnce(product.id, loginData.token)
 
-    response = await helper.getProductUserCounts(product.id, token)
+    response = await helper.getProductUserCounts(product.id, loginData.token)
     expect(response.body.recycleCount).toBe(3)
     expect(response.body.purchaseCount).toBe(3)
 
@@ -243,7 +243,7 @@ describe('Product Recycling Statistics', () => {
 
   test('purchasing nonexistent product responds with product not found', async () => {
 
-    const response = await helper.purchaseProductOnce('111111111111111111111111', token)
+    const response = await helper.purchaseProductOnce('111111111111111111111111', loginData.token)
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
   })
 
@@ -260,7 +260,7 @@ describe('Product Recycling Statistics', () => {
   })
 
   test('count stats of nonexistent product responds with product not found', async () => {
-    const response = await helper.getProductUserCounts('111111111111111111111111', token)
+    const response = await helper.getProductUserCounts('111111111111111111111111', loginData.token)
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
   })
 
@@ -273,7 +273,7 @@ describe('Product Recycling Statistics', () => {
   })
 
   test('user purchase and recycle stats are empty by default', async () => {
-    const response = await helper.getStatistics(token)
+    const response = await helper.getStatistics(loginData.token)
 
     expect(response.body[0]).toBe(undefined)
   })
@@ -282,11 +282,11 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 4, token)
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.purchaseProductOnce(product.id, token)
-    const response = await helper.getStatistics(token)
+    await helper.purchaseProductFreeAmount(product.id, 4, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    const response = await helper.getStatistics(loginData.token)
 
     expect(response.body[0].purchaseCount).toBe(7)
   })
@@ -295,9 +295,9 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    const response = await helper.getStatistics(token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    const response = await helper.getStatistics(loginData.token)
 
     expect(response.body[0].recycleCount).toBe(1)
   })
@@ -306,10 +306,10 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 2, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.unPurchaseProductOnce(product.id, token)
-    const response = await helper.getStatistics(token)
+    await helper.purchaseProductFreeAmount(product.id, 2, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.unPurchaseProductOnce(product.id, loginData.token)
+    const response = await helper.getStatistics(loginData.token)
 
     expect(response.body[0].purchaseCount).toBe(1)
   })
@@ -318,10 +318,10 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductFreeAmount(product.id, 2, token)
-    await helper.recycleProductOnce(product.id, token)
-    await helper.unrecycleProductOnce(product.id, token)
-    const response = await helper.getStatistics(token)
+    await helper.purchaseProductFreeAmount(product.id, 2, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    await helper.unrecycleProductOnce(product.id, loginData.token)
+    const response = await helper.getStatistics(loginData.token)
 
     expect(response.body[0].recycleCount).toBe(0)
   })
@@ -330,9 +330,9 @@ describe('Product Recycling Statistics', () => {
     const allProducts = await helper.getProducts()
     const product = allProducts.body[0]
 
-    await helper.purchaseProductOnce(product.id, token)
-    await helper.recycleProductOnce(product.id, token)
-    const response = await helper.getStatistics(token)
+    await helper.purchaseProductOnce(product.id, loginData.token)
+    await helper.recycleProductOnce(product.id, loginData.token)
+    const response = await helper.getStatistics(loginData.token)
     expect(response.body[0].productID.name).toBe('Mustamakkarakastike pullo')
   })
 
@@ -342,7 +342,7 @@ describe('Product Recycling Statistics', () => {
   })
 
   test('user recycling table query returns correct number of results', async () => {
-    const response = await helper.getUserStatisticsTable(previousDay, today, token)
+    const response = await helper.getUserStatisticsTable(previousDay, today, loginData.token)
     expect(response.body).toHaveLength(numberOfDays)
   })
 
@@ -356,13 +356,13 @@ describe('Product Recycling Statistics', () => {
   })
   
   test('user recycling table cannot be seen with parameters in wrong order', async () => {
-    const response = await helper.getUserStatisticsTable(today, previousDay, token)
+    const response = await helper.getUserStatisticsTable(today, previousDay, loginData.token)
     expect(response.status).toBe(STATUS_CODES.BAD_REQUEST)
   })
 
   test('user recycling table cannot be seen with invalid parameters', async () => {
     const text = 'iddqd'
-    const response = await helper.getUserStatisticsTable(previousDay, text, token)
+    const response = await helper.getUserStatisticsTable(previousDay, text, loginData.token)
     expect(response.status).toBe(STATUS_CODES.BAD_REQUEST)
   })
 
@@ -373,10 +373,10 @@ describe('Product Recycling Statistics', () => {
     const purchased = 53
     const recycled = 22
 
-    await helper.purchaseProductFreeAmount(product.id, purchased, token)
-    await helper.recycleProductFreeAmount(product.id, recycled, token)
+    await helper.purchaseProductFreeAmount(product.id, purchased, loginData.token)
+    await helper.recycleProductFreeAmount(product.id, recycled, loginData.token)
 
-    const response = await helper.getUserStatisticsTable(previousDay, today, token)
+    const response = await helper.getUserStatisticsTable(previousDay, today, loginData.token)
     expect(response.body[numberOfDays - 1]).toBeCloseTo(recycled / purchased * 100)
   })
 })

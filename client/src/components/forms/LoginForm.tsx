@@ -27,9 +27,7 @@ const LoginForm = () => {
         window.localStorage.setItem(
           'loggedUser', JSON.stringify(response.resource)
         )
-
-        //TODO Nämä setit johonkin yhteen initialisointifunktioon.
-        productService.getFavorites(response.resource.id)
+        productService.getFavorites()
           .then(favorites => setFavorites(favorites))
           .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Odottamaton virhe haettaessa suosikkituotteita!'), 'error')

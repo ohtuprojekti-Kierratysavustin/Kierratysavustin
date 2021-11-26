@@ -32,12 +32,12 @@ const usersInDb = async () => {
   return users.map((u) => u.toJSON())
 }
 
-const getToken = async (props) => {
+const login = async (props) => {
   const login = await api
     .post('/api/login')
     .send(props)
 
-  return login.body.resource.token
+  return login.body.resource
 }
 
 const getProducts = async () => {
@@ -96,6 +96,13 @@ const removeFavourite = async (productId, token) => {
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
     .expect('Content-Type', /application\/json/)
+  return result
+}
+
+const getFavorites = async (token) => {
+  const result = await api
+    .get('/api/products/favorites')
+    .set('Authorization', `bearer ${token}`)
   return result
 }
 
@@ -257,7 +264,7 @@ const getUserRecyclingratesPerDay = async (start, end, token) => {
 module.exports = {
   clearDatabase,
   usersInDb,
-  getToken,
+  login,
   productsData,
   getProducts,
   getStatistics,
@@ -268,6 +275,7 @@ module.exports = {
   unDisLikeInstruction,
   addFavourite,
   removeFavourite,
+  getFavorites,
   addNewProduct,
   removeProduct,
   recycleProductOnce,

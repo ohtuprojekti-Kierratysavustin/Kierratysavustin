@@ -102,7 +102,7 @@ fileRouter.post('/upload/product', uploadMiddleware, async (req, res, next) => {
     if (!product) {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + productID + ' ei löytynyt!')
     }
-    if (product.user.toString() !== user.id.toString()) {
+    if (product.creator.toString() !== user.id.toString()) {
       deleteImage(req.file.filename)
       throw new UnauthorizedException('Vain tuotteen luoja voi lisätä tuotteelle kuvan!')
     }
