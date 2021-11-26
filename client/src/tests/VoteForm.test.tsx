@@ -92,7 +92,7 @@ describe('When RegisterForm is rendered', () => {
     fireEvent.click(likeButton)
     fireEvent.click(dislikeButton)
 
-    expect(likeButton.textContent === 'Like')
+    expect(votes.textContent === '0')
   })
 
   test('InstructionList order changes when score changes', () => {
