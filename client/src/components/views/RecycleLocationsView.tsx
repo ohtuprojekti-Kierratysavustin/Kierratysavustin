@@ -43,7 +43,6 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
 
   const filterRecyclingSpotsByMaterials = (data: any[]) => {
     let spots = data.filter((spot: { geometry: null }) => spot.geometry !== null)
-
     if (selectedMaterials.length === 0) {
       return (spots)
     }
@@ -60,7 +59,6 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
         }
       }
     }
-
     let filteredSpots: any[] = spots
       .filter(spot => spot.goodness > 0)
       .sort((first, second) => second.goodness - first.goodness)
