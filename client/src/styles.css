@@ -1,7 +1,7 @@
 :root {
     --background-color: #F1F2EB;
-    --infobar-color: #A4C2A5;
-    --navbar-color: #137547;
+    --infobar-color: #cbe6cc;
+    --navbar-color: #F1F2EB;
 
     --neutral-button-color: #31ac3d;
     --neutral-button-color-hover: #23792c;
@@ -25,6 +25,38 @@
 
 html {
     background-color: var(--background-color);
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: rgb(255, 255, 255);
+  margin: 0;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid var(--neutral-button-color-hover);
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+
+  display: inline-grid;
+  place-content: center;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--positive-button-color-hover);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.checkboxcontainer {
+  margin-right: 1em;
 }
 
 .product-image {
@@ -80,12 +112,15 @@ h2 {
     background-color: var(--navbar-color);
 }
 #navbar a {
-    color:white;
-    font-size: 24px;
+    color:#137547;
+    font-size: 17px;
+    
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 #navbar b {
-    color:#DAD7CD;
-    font-size: 24px;
+    color:#939393;
+    font-size: 17px;
 }
 
 /* Infobar */
@@ -245,3 +280,13 @@ h2 {
 #passwordInput {
     background-color: var(--form-background-color);
 }
+
+.leaflet-container {
+    height: 100vh;
+    width: 100vw;
+}
+
+input {
+    color: #137547;
+}
+

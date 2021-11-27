@@ -15,7 +15,7 @@ const user: User = {
   id: 1,
   likes: [],
   passwordHash: 'SCIOJGSDKIEF',
-  products: [],
+  favoriteProducts: [],
   token: 'TOKEN',
   username: 'test'
 }

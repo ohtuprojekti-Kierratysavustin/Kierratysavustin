@@ -10,6 +10,7 @@ const productUserCounterRouter = require('./controllers/productUserCounter')
 const fileRouter = require('./controllers/file')
 const adminRouter = require('./controllers/admin')
 const moderatorRouter = require('./controllers/moderator')
+const credentialRouter = require('./controllers/credentials')
 const path = require('path')
 const { devErrorHandler, productionErrorHandler } = require('./error/errorHandler')
 
@@ -22,6 +23,7 @@ app.use('/api' + productUserCounterRouter.URLS.BASE_URL, productUserCounterRoute
 app.use('/api/files', fileRouter)
 app.use('/api/admin', adminRouter)
 app.use('/api/moderator', moderatorRouter)
+app.use('/api/credentials', credentialRouter)
 
 app.use(express.static('build'))
 app.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')))
