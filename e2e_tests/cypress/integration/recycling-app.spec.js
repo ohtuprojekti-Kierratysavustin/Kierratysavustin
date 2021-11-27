@@ -127,13 +127,13 @@ describe("Recycling app", () => {
               })
 
               it("recycling information can be liked", () => {
-                cy.get("#likeButton").click()
+                cy.get("[id^=likeButton]").click()
               })
               it("recycling information can be disliked", () => {
-                cy.get("#dislikeButton").click()
+                cy.get("[id^=dislikeButton]").click()
               })
               it("recycling information can be deleted by the user", () => {
-                cy.get("#deleteInstructionButton").click()
+                cy.get("[id^=deleteInstructionButton]").click()
                 cy.contains("Ohje 'Tuotteen voi uudelleenkäyttää roskapussina' poistettiin onnistuneesti!")
               })
             })
