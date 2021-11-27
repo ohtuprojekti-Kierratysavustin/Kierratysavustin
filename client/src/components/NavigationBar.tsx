@@ -6,12 +6,21 @@ import {
 import tokenService from '../services/token'
 import { useStore } from '../store'
 import '../styles.css'
+import logo from '../media/logo.png'
 
 const NavigationBar = () => {
   const { user, setUser, setProductStatistics } = useStore()
   return(
     <Navbar id = 'navbar'  expand='sm'>
-      <Navbar.Brand as={Link} to="/"> Etusivu </Navbar.Brand>
+      <Navbar.Brand as={Link} to="/">
+        <img
+          src={logo}
+          width="40"
+          height="40"
+          className="d-inline-block align-top"
+          alt="React Bootstrap logo"
+        />
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className='mr-auto'>
@@ -20,6 +29,7 @@ const NavigationBar = () => {
             : ('')}
           <Nav.Link id='productList' as={Link} to="/products">Tuotteet</Nav.Link>
           <Nav.Link id='recyclingStats' as={Link} to="/statistics">Kierrätyslaskuri</Nav.Link>
+          <Nav.Link id='recycleLocations' as={Link} to="/recycleLocations">Kierrätyspisteet</Nav.Link>
         </Nav>
 
         {user !== null ? (

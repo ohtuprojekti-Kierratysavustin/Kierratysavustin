@@ -91,7 +91,7 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
     <div>
       <Container id='stat-chart'>
         <br></br>
-        <h5>Kokonaiskerrätysaste viimeisen {numberOfDays} päivän aikana</h5>
+        <h5>Kokonaiskierrätysaste viimeisen {numberOfDays} päivän aikana</h5>
         <Line className='RecycleGraph' data={chartData} options={options} />
       </Container>
     </div>

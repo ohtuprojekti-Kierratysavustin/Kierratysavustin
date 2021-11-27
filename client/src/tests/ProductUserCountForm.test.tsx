@@ -74,7 +74,7 @@ const product: Product = {
   id: 1,
   name: 'Juustoportti suklaamaito',
   instructions: [],
-  creator:1,
+  creator: 1,
   productImage: ''
 }
 
