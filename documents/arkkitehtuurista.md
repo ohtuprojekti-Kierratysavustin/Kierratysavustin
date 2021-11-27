@@ -56,7 +56,7 @@ await authUtils.authenticateRequest(req)
 
 ### Backend
 
-Jos käytetään vain autentikointitarkastusta, voi kuka tahansa kirjautunut käyttäjä käyttää käyttää resurssia. Jos halutaan rajata resurssi tietyille rooleille, tulee autentikoinnin jälkeen tarkastaa käyttäjän rooli kutsumalla:
+Jos käytetään vain autentikointitarkastusta, voi kuka tahansa kirjautunut käyttäjä käyttää resurssia. Jos halutaan rajata resurssi tietyille rooleille, tulee autentikoinnin jälkeen tarkastaa käyttäjän rooli kutsumalla:
 
 ```
 let user = await authUtils.authenticateRequestReturnUser(req)
@@ -71,3 +71,11 @@ Roolit on määritelty enumina tiedostossa [roles.js](https://github.com/ohtupro
 let user = await authUtils.authenticateRequestReturnUser(req)
 authUtils.authorizeUser(user, USER_ROLES.User)
 ```
+
+Resurssiin kohdistuvan operaation autorisoiminen tapahtuu kutsumalla *authorizeOperationOnResource*. Esim ohjeen poistamisen yhteydessä on tarkistus:
+
+```
+authUtils.authorizeOperationOnResource(instruction._doc, user, USER_ROLES.Moderator, 'Vain ohjeen luoja voi poistaa ohjeen!')
+```
+
+Tässä tapauksessa ohjeen voi poistaa vain ohjeen luoja, tai vähintään Moderator-roolin omaava käyttäjä. 

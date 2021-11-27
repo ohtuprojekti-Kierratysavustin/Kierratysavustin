@@ -106,7 +106,7 @@ const getFavorites = async (token) => {
   return result
 }
 
-const addInstruction = async (productID, token, instruction) => {
+const addInstruction = async (productID, instruction, token) => {
   const result = await api.
     post(`/api/products/${productID}/instructions`)
     .set('Authorization', 'bearer ' + token)
@@ -117,7 +117,7 @@ const addInstruction = async (productID, token, instruction) => {
 }
 
 
-const deleteInstruction = async (productID, token, instructionID) => {
+const deleteInstruction = async (productID, instructionID, token) => {
   const result = await api
     .delete(`/api/products/${productID}/instructions/${instructionID}`)
     .set('Authorization', 'bearer ' + token)
@@ -271,13 +271,6 @@ const getAllUsers = async (token) => {
 
 // Moderator
 
-const modDeleteInstruction = async (productID, instructionID, token) => {
-  const result = await api
-    .delete(`/api/moderator/products/${productID}/instructions/${instructionID}`)
-    .set('Authorization', 'bearer ' + token)
-    .expect('Content-Type', /application\/json/)
-  return result
-}
 
 module.exports = {
   clearDatabase,
@@ -307,6 +300,5 @@ module.exports = {
   getInstructionsOfProduct,
   deleteInstruction,
   getUserStatisticsTable: getUserRecyclingratesPerDay,
-  getAllUsers: getAllUsers,
-  modDeleteInstruction: modDeleteInstruction
+  getAllUsers: getAllUsers
 }

@@ -1,5 +1,5 @@
 // role key and name should be equal
-// inherit should exactly as role name
+// inherit should be exactly as role name
 const USER_ROLES = {
   Admin: {
     name: 'Admin',

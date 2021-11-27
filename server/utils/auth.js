@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const { TokenMissingException, InvalidTokenException, NoUserFoundException, InvalidParameterException, UnauthorizedException } = require('../error/exceptions')
 const { roleExists, roleIsEqualOrHigher } = require('./roles')
+const { KierratysavustinError } = require('../error/errorBase')
 
 const getTokenFromRequest = (req) => {
   const authorization = req.get('authorization')
@@ -12,21 +13,26 @@ const getTokenFromRequest = (req) => {
   return null
 }
 
-// Has to be called with await! Otherwise authentication will be passed!
+/**
+ * Authenticate user from the JWT bearer token given in the request. 
+ * Has to be called with await! Otherwise authentication will be passed!
+ * @param {*} req the request object
+ * @throws error if authentication does not succeed
+ */
 const authenticateRequest = async (req) => {
   const token = getTokenFromRequest(req)
   if (!token) {
-    throw new TokenMissingException(null, null, [{header: 'WWW-Authenticate', value: 'Bearer'}])
+    throw new TokenMissingException(null, null, [{ header: 'WWW-Authenticate', value: 'Bearer' }])
   }
 
   let decodedToken
   try {
     decodedToken = jwt.verify(token, config.SECRET)
   } catch (error) {
-    throw new InvalidTokenException(null, null, [{header: 'WWW-Authenticate', value: 'Bearer'}])
+    throw new InvalidTokenException(null, null, [{ header: 'WWW-Authenticate', value: 'Bearer' }])
   }
   if (!decodedToken) {
-    throw new InvalidTokenException(null, null, [{header: 'WWW-Authenticate', value: 'Bearer'}])
+    throw new InvalidTokenException(null, null, [{ header: 'WWW-Authenticate', value: 'Bearer' }])
   }
 }
 
@@ -40,7 +46,7 @@ const authenticateRequest = async (req) => {
 const authenticateRequestReturnUser = async (req) => {
   const token = getTokenFromRequest(req)
   if (!token) {
-    throw new TokenMissingException(null, null, [{header: 'WWW-Authenticate', value: 'Bearer'}])
+    throw new TokenMissingException(null, null, [{ header: 'WWW-Authenticate', value: 'Bearer' }])
   }
 
   let decodedToken
@@ -48,17 +54,17 @@ const authenticateRequestReturnUser = async (req) => {
     decodedToken = jwt.verify(token, config.SECRET)
   } catch (error) {
     if (error.name === 'JsonWebTokenError' && (error.message === 'invalid signature' || error.message === 'jwt malformed')) {
-      throw new InvalidTokenException(null, null, [{header: 'WWW-Authenticate', value: 'Bearer'}])
+      throw new InvalidTokenException(null, null, [{ header: 'WWW-Authenticate', value: 'Bearer' }])
     }
     throw error
   }
   if (!decodedToken) {
-    throw new InvalidTokenException(null, null, [{header: 'WWW-Authenticate', value: 'Bearer'}])
+    throw new InvalidTokenException(null, null, [{ header: 'WWW-Authenticate', value: 'Bearer' }])
   }
 
   const user = await User.findById(decodedToken.id)
   if (!user) {
-    throw new NoUserFoundException(null, null, [{header: 'WWW-Authenticate', value: 'Bearer'}])
+    throw new NoUserFoundException(null, null, [{ header: 'WWW-Authenticate', value: 'Bearer' }])
   }
 
   return user
@@ -66,7 +72,7 @@ const authenticateRequestReturnUser = async (req) => {
 
 /**
  * Authorizes the user based on the users role, or throws error if user does not have the right role
- * If not used in a resource, anyone can access. Same as auhtorizing for role 'User'
+ * If not used in a resource, anyone can access. Same as authorizing for role 'User'
  * @param {*} user object
  * @param {*} minimumAcceptedRole role Object
  * @returns user
@@ -86,6 +92,27 @@ const authorizeUser = (user, minimumAcceptedRole) => {
   return user
 }
 
+/**
+ * Checks if user requesting operation on given resource is the creator of the resource or has given role to bypass the check.
+ * @param {*} resource that has to have a field named creator
+ * @param {*} user  user object
+ * @param {*} minimumRoleToBypassCheck User role
+ * @param {*} errorMessage The error message to throw if authorization fails
+ * @throws UnauthorizedException, KierratysavustinError
+ */
+const authorizeOperationOnResource = (resource, user, minimumRoleToBypassCheck, errorMessage) => {
+  if (!Object.prototype.hasOwnProperty.call(resource, 'creator')) {
+    throw new KierratysavustinError('The resource object does not have a key named "creator"!')
+  }
+
+  if (user.id.toString() !== resource.creator.toString()) {
+    if (!roleIsEqualOrHigher(user.role, minimumRoleToBypassCheck.name)) {
+      throw new UnauthorizedException(errorMessage)
+    }
+  }
+}
+
 module.exports.authenticateRequestReturnUser = authenticateRequestReturnUser
 module.exports.authenticateRequest = authenticateRequest
 module.exports.authorizeUser = authorizeUser
+module.exports.authorizeOperationOnResource = authorizeOperationOnResource

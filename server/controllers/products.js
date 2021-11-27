@@ -5,6 +5,7 @@ const User = require('../models/user')
 const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')
 const { ResourceNotFoundException, restructureCastAndValidationErrorsFromMongoose, UnauthorizedException, DuplicateResourceException } = require('../error/exceptions')
+const { USER_ROLES } = require('../enum/roles')
 
 productRouter.get('/', async (req, res, next) => {
   try {
@@ -124,16 +125,14 @@ productRouter.delete('/:productId/instructions/:instructionId', async (req, res,
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.productId + ' ei löytynyt!')
     }
 
-    let instruction = await Instruction.findById(req.params.instructionId)
+    let instruction = await Instruction.findById(req.params.instructionId).exec()
 
     if (!instruction) {
       throw new ResourceNotFoundException('Ohjetta ID:llä: ' + req.params.instructionId + ' ei löytynyt!')
     }
 
-    //verrataan, vastaako pyynnön tehnyt käyttäjä ohjeen lisännyttä käyttäjää
-    if (instruction.creator.toString() !== user.id.toString()) {
-      throw new UnauthorizedException('Vain ohjeen luoja voi poistaa ohjeen!')
-    }
+    // Kutsujan oltava ohjeen luoja tai moderaattori.
+    authUtils.authorizeOperationOnResource(instruction._doc, user, USER_ROLES.Moderator, 'Vain ohjeen luoja voi poistaa ohjeen!')
 
     let deletedInstructionText = instruction.information
 
