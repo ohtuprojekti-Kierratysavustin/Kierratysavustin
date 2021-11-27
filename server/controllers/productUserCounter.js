@@ -8,7 +8,7 @@ const STATUS_CODES = require('http-status')
 const { PRODUCT_USER_COUNT_REQUEST_TYPE } = require('../enum/productUserCount')
 const { tryCastToInteger } = require('../utils/validation')
 const ObjectID = require('mongodb').ObjectID
-const { isValid, fromUnixTime, addDays, subDays, differenceInCalendarDays, endOfDay, startOfDay } = require('date-fns')
+const { isValid, fromUnixTime, addDays, subDays, endOfDay, startOfDay } = require('date-fns')
 
 const URLS = {
   BASE_URL: '/statistics',
@@ -79,7 +79,7 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
   }
 })
 
-// Yksittäisen tuotteen kierrätystilastojen haku
+// Yksittäisen tuotteen hankinta/kierrätysmäärien haku
 router.get(URLS.GET_PRODUCT_USER_COUNT, async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req).catch((error) => { throw error })
@@ -121,68 +121,109 @@ router.get(URLS.GET_USER_RECYCLINGRATES_PER_PRODUCT, async (req, res, next) => {
   }
 })
 
-// Palauttaa taulukon käyttäjän päivittäisistä kokonaiskierrätysasteista, kyselyn osoiterivillä annettujen päivien väliltä
+// Palauttaa taulukon käyttäjän päivittäisistä kokonaiskierrätysasteista.
+// Kyselyn parametreina annetaan mihin päivään asti tietoja haetaan, kuinka pitkältä ajanjaksolta tätä päivää ennen
+// ja mahdollisesti mihin tuotteeseen kysely kohdistetaan. Jos tuotetta ei ole määritetty, palautetaan
+// kaikkien tuotteitten kokonaiskierrätysasteet.
 router.get(URLS.GET_USER_RECYCLINGRATES_PER_DAY, async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
+    const endDate = fromUnixTime(req.query.end / 1000)
+    const numDays = tryCastToInteger(req.query.days)
+    const productID = req.query.product
 
-    let startDate = fromUnixTime(req.query.start / 1000)
-    let endDate = fromUnixTime(req.query.end / 1000)
-
-    if (!isValid(startDate) || !isValid(endDate)) {
+    if (numDays <= 0) {
       throw new InvalidParameterException(
-        'Kyselyn parametrit on ilmoitettava unix-aikaleimoina. Annettiin \'' + req.query.start + '\' ja \'' + req.query.end + '\'')
+        'Kyselyn päivien lukumäärän on oltava positiivinen kokonaisluku. Annettiin \'' + req.query.days + '\'')
     }
 
-    if (startDate > endDate) {
+    if (!isValid(endDate)) {
       throw new InvalidParameterException(
-        'Kyselyn alkupäivämäärän on oltava pienempi kun loppupäivämäärän. Annettiin \'' + startDate + '\' ja \'' + endDate + '\'')
+        'Kyselyn päivämäärä on ilmoitettava unix-aikaleimana. Annettiin \'' + req.query.end + '\'')
     }
 
-    const period = differenceInCalendarDays(endDate, startDate) + 1 // yksi päivä lisää, jotta saadaan kaikkien päivien määrä
-    let dailyRecyclingrateTable = new Array
-    let requestedDay = subDays(endDate, period)
-
-    for (let i = 0; i <= period; i++) {
-      let dailyValuesPerProduct = await getRecyclingRatesPerProductUpToDate(user, endOfDay(requestedDay))
-
-      let totalPurchases = 0
-      let totalRecycles = 0
-      for (let i = 0; i < dailyValuesPerProduct.length; i++) {
-        totalPurchases += dailyValuesPerProduct[i].purchaseCount
-        totalRecycles += dailyValuesPerProduct[i].recycleCount
-      }
-
-      let totalRecyclingRate = (totalRecycles === 0) ? 0 : totalRecycles / totalPurchases * 100
-      dailyRecyclingrateTable.push(totalRecyclingRate)
-      requestedDay = addDays(requestedDay, 1)
+    let stats
+    if (productID) {
+      stats = await getRecyclingrateStatsForSingleProduct(user, endDate, numDays, productID)
+    } else {
+      stats = await getRecyclingrateStatsForAllProducts(user, endDate, numDays)
     }
 
-    res.status(STATUS_CODES.OK).json(dailyRecyclingrateTable)
+    res.status(STATUS_CODES.OK).json(stats)
   } catch (error) {
     let handledError = restructureCastAndValidationErrorsFromMongoose(error)
     next(handledError)
   }
 })
 
-// Hakee annetun käyttäjän viimeisimmät kierrätystilastot tuotteittain annetulta päivältä
-async function getRecyclingRatesPerProductUpToDate(user, beforeDate) {
+// Palauttaa taulukon kokonaiskierrätysasteista
+async function getRecyclingrateStatsForAllProducts(user, endDate, numDays) {
+  let dailyRecyclingrateTable = new Array
+  let requestedDay = subDays(endOfDay(endDate), numDays-1)
+
+  for (let i = 0; i < numDays; i++) {
+    let totalPurchases = 0
+    let totalRecycles = 0
+    
+    let dailyValuesPerProduct = await getRecyclingRatesPerProductUpToDate(user, requestedDay)
+    for (let i = 0; i < dailyValuesPerProduct.length; i++) {
+      totalPurchases += dailyValuesPerProduct[i].purchaseCount
+      totalRecycles += dailyValuesPerProduct[i].recycleCount
+    }
+
+    let totalRecyclingRate = (totalRecycles === 0) ? 0 : totalRecycles / totalPurchases * 100
+    dailyRecyclingrateTable.push(totalRecyclingRate)
+    requestedDay = addDays(requestedDay, 1)
+  }
+  return dailyRecyclingrateTable
+}
+
+// Palauttaa taulukon yksittäisen tuotteen kierrätysasteista
+async function getRecyclingrateStatsForSingleProduct(user, endDate, numDays, productID) {
+  let dailyRecyclingrateTable = new Array
+  let requestedDay = subDays(endOfDay(endDate), numDays-1)
+
+  for (let i = 0; i < numDays; i++) {     
+    let dailyValuesPerProduct = await getRecyclingRatesPerProductUpToDate(user, requestedDay, productID)
+    if (dailyValuesPerProduct.length > 0) {
+      let recyclingRate = (dailyValuesPerProduct[0].recycleCount === 0)
+        ? 0 
+        : dailyValuesPerProduct[0].recycleCount / dailyValuesPerProduct[0].purchaseCount * 100
+      dailyRecyclingrateTable.push(recyclingRate)
+    } else {
+      dailyRecyclingrateTable.push(0)
+    }
+    requestedDay = addDays(requestedDay, 1)
+  }
+  return dailyRecyclingrateTable
+}
+
+// Hakee käyttäjän viimeisimmät kierrätystilastot annetulta päivältä.
+async function getRecyclingRatesPerProductUpToDate(user, beforeDate, productID) {
   let today = new Date()
   let afterDate = subDays(today, 365) // kuinka kaukaa tietoja haetaan
+
+  let filter = {
+    // Rajataan haku kirjautuneen käyttäjän tietoihin.
+    'userID': new ObjectID(user.id),
+    // Rajataan viimeisimpiin tapahtumiin, tai niihin joista aikaleima puuttuu.
+    $or: [
+      { 'createdAt': { $gte: afterDate, $lte: endOfDay(beforeDate) } },
+      { 'createdAt': { $exists: false } }
+    ],
+  }
+  
+  // Jos funktille on annettu tuotteen ID, lisätään se rajausehtoihin.
+  if (productID) {
+    filter = { 'productID': new ObjectID(productID), ...filter }
+  }
+
   const eventsPerProduct = await ProductUserCounter.collection.aggregate([
     {
-      // Rajataan haku kirjautuneen käyttäjän tietoihin
-      $match: {
-        'userID': new ObjectID(user.id),
-        // Rajataan viimeisimpiin tapahtumiin, tai niihin joista aikaleima puuttuu
-        $or: [
-          { 'createdAt': { $gte: afterDate, $lte: beforeDate } },
-          { 'createdAt': { $exists: false } }
-        ]
-      }
+      $match: filter
     },
     {
-      // Ryhmitellään tuotteittain ja haetaan viimeisimmät tiedot hankinnoille ja kierrätyksille
+      // Ryhmitellään tuotteittain ja haetaan viimeisimmät tiedot hankinnoille ja kierrätyksille.
       $group: {
         _id: '$productID',
         'purchaseCount': { $last: '$purchaseCount' },
@@ -195,7 +236,7 @@ async function getRecyclingRatesPerProductUpToDate(user, beforeDate) {
       }
     },
     {
-      // Haetaan tuotteen tiedot taulusta products
+      // Haetaan tuotteen tiedot taulusta products.
       $lookup: {
         from: 'products',
         localField: '_id',

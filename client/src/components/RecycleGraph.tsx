@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap'
 import { productUserCountService } from '../services/productUserCount'
 import { Line } from 'react-chartjs-2'
 import { useStore } from '../store'
-import { startOfDay, endOfDay, subDays } from 'date-fns'
+import { endOfDay } from 'date-fns'
 
 type Props = {
   numberOfDays: number
@@ -16,8 +16,7 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
   useEffect(() => {
     const getGraphData = () => {
       const today = new Date()
-      const previousDate = subDays(today, (numberOfDays-2) )
-      return productUserCountService.getGraphStatistics(startOfDay(previousDate).getTime(), endOfDay(today).getTime())
+      return productUserCountService.getGraphStatistics(endOfDay(today).getTime(), numberOfDays)
     }
     getGraphData().then(res => {
       setData(res)
