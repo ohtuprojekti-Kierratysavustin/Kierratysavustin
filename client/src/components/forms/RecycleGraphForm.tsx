@@ -31,7 +31,7 @@ const RecycleGraphForm: React.FC<Props> = ({ products }) => {
   return (
     <div>
       <Container>
-        <DropdownButton className="RecycleDropdown" onSelect={handleSelect} id="graafi-dropdown" title="Valitse näytettävä tilasto">
+        <DropdownButton onSelect={handleSelect} id="graafi-dropdown" title="Valitse näytettävä tilasto">
           <Dropdown.Item as="button">Kokonaiskierrätysaste</Dropdown.Item>
           <Dropdown.Divider />
           {products.map(stat =>

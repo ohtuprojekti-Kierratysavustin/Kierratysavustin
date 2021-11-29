@@ -159,10 +159,6 @@ h2 {
     text-shadow: #262525;
 }
 
-.RecycleDropdown {
-    margin-left: 6px;
-}
-
 /* Instruction List */
 #instruction-list-item {
     background-color: var(--list-color);
