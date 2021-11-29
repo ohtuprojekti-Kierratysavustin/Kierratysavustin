@@ -106,7 +106,7 @@ const getFavorites = async (token) => {
   return result
 }
 
-const addInstruction = async (productID, token, instruction) => {
+const addInstruction = async (productID, instruction, token) => {
   const result = await api.
     post(`/api/products/${productID}/instructions`)
     .set('Authorization', 'bearer ' + token)
@@ -117,7 +117,7 @@ const addInstruction = async (productID, token, instruction) => {
 }
 
 
-const deleteInstruction = async (productID, token, instructionID) => {
+const deleteInstruction = async (productID, instructionID, token) => {
   const result = await api
     .delete(`/api/products/${productID}/instructions/${instructionID}`)
     .set('Authorization', 'bearer ' + token)
@@ -261,6 +261,17 @@ const getUserRecyclingratesPerDay = async (start, end, token) => {
   return result
 }
 
+// Admin
+
+const getAllUsers = async (token) => {
+  const users = await api.get('/api/admin/users')
+    .set('Authorization', `bearer ${token}`)
+  return users
+}
+
+// Moderator
+
+
 module.exports = {
   clearDatabase,
   usersInDb,
@@ -289,4 +300,5 @@ module.exports = {
   getInstructionsOfProduct,
   deleteInstruction,
   getUserStatisticsTable: getUserRecyclingratesPerDay,
+  getAllUsers: getAllUsers
 }

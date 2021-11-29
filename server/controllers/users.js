@@ -60,7 +60,7 @@ userRouter.post('/likes/:id/', async (req, res, next) => {
 
 userRouter.put('/likes/:id', async (req, res, next) => {
   try {
-    let user = await authUtils.authenticateRequestReturnUser(req, res)
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
     const instruction = await Instruction.findById(req.params.id)
     if (!instruction) {

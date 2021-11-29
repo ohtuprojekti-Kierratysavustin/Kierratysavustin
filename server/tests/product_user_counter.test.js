@@ -381,6 +381,11 @@ describe('Product Recycling Statistics', () => {
   })
 })
   
-afterAll(() => {
+afterAll(async () => {
+  await helper.clearDatabase()
+  await helper.addNewUser({
+    username: 'test',
+    password: 'testtest',
+  })
   mongoose.connection.close()
 })
