@@ -15,7 +15,10 @@ const URLS = {
   GET_PRODUCT_USER_COUNT: '/user/product'
 }
 
-// Yksittäisen tuotteen kirrätys- tai ostotapahtumien päivitys
+/*
+* Yksittäisen tuotteen kierrätys, tai ostotilaston päivitys.
+* Kumulatiivinen päivitys. Siis uudessa tapahtumassa on lisättynä uusi määrä vanhaan määrään.
+*/
 router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req).catch((error) => { throw error })

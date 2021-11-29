@@ -17,7 +17,7 @@ const RecycleGraphForm: React.FC<Props> = ({ products }) => {
 
   useEffect(() => {
     const getGraphData = () => {
-      return statisticsService.getUserRecyclingRatesPerDay(endOfDay(date).getTime(), numberOfDays, productID)
+      return statisticsService.getUserCumulativeRecyclingRatesPerDay(endOfDay(date).getTime(), numberOfDays, productID)
     }
     getGraphData().then(res => {
       setData(res)

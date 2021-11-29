@@ -255,16 +255,16 @@ const getProductUserCounts = async (productID, token) => {
 
 // Statistics
 
-const getUserRecyclingRatesPerProduct = async (token) => {
+const getUserCumulativeRecyclingRatesPerProduct = async (token) => {
   const result = await api
-    .get('/api' + statisticsURLS.BASE_URL + statisticsURLS.GET_USER_RECYCLINGRATES_PER_PRODUCT)
+    .get('/api' + statisticsURLS.BASE_URL + statisticsURLS.GET_USER_CUMULATIVE_RECYCLINGRATES_PER_PRODUCT)
     .set('Authorization', `bearer ${token}`)
   return result
 }
 
 
 const getUserRecyclingratesPerDay = async (end, days, productID, token) => {
-  const result = await api.get('/api' + statisticsURLS.BASE_URL + statisticsURLS.GET_USER_RECYCLINGRATES_PER_DAY + '?end=' + end + '&days=' + days + '&product=' + productID)
+  const result = await api.get('/api' + statisticsURLS.BASE_URL + statisticsURLS.GET_USER_CUMULATIVE_RECYCLINGRATES_PER_DAY + '?end=' + end + '&days=' + days + (productID ? '&product=' + productID : ''))
     .set('Authorization', `bearer ${token}`)
   return result
 }
@@ -275,7 +275,7 @@ module.exports = {
   login,
   productsData,
   getProducts,
-  getUserRecyclingRatesPerProduct,
+  getUserCumulativeRecyclingRatesPerProduct,
   addInstruction,
   likeInstruction,
   disLikeInstruction,
@@ -296,5 +296,5 @@ module.exports = {
   addNewUser,
   getInstructionsOfProduct,
   deleteInstruction,
-  getUserStatisticsTable: getUserRecyclingratesPerDay,
+  getUserRecyclingratesPerDay: getUserRecyclingratesPerDay,
 }

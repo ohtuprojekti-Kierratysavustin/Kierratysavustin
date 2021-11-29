@@ -37,7 +37,7 @@ const App = () => {
       productService.getFavorites().then(favorites => setFavorites(favorites))
       userService.getLikes().then(likes => setLikes(likes))
       userService.getDislikes().then(dislikes => setDislikes(dislikes))
-      statisticsService.getUserRecyclingRatesPerProduct().then(stats => setProductStatistics(stats))
+      statisticsService.getUserCumulativeRecyclingRatesPerProduct().then(stats => setProductStatistics(stats))
     }
   }, [])
 
