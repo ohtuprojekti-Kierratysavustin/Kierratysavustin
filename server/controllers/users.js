@@ -30,7 +30,7 @@ userRouter.post('/', async (req, res, next) => {
 userRouter.post('/instructions/like', async (req, res, next) => {
   try {
     let user = await authUtils.authenticateRequestReturnUser(req)
-
+    
     const session = await mongoose.startSession()
 
     let userLikes      // withTransaction does not return a value for some reason: https://jira.mongodb.org/browse/NODE-2014

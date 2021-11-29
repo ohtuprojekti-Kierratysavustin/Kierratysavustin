@@ -69,9 +69,9 @@ test('all products instructions are ordered by score', async () => {
     information: 'third',
   }
   const product = allProducts.body[1]
-  await helper.addInstruction(product.id, loginData.token, newInstruction1)
-  await helper.addInstruction(product.id, loginData.token, newInstruction2)
-  await helper.addInstruction(product.id, loginData.token, newInstruction3)
+  await helper.addInstruction(product.id, newInstruction1, loginData.token)
+  await helper.addInstruction(product.id, newInstruction2, loginData.token)
+  await helper.addInstruction(product.id, newInstruction3, loginData.token)
 
   allProducts = await helper.getProducts()
 
@@ -265,7 +265,7 @@ describe('One account already in database', () => {
       }
       const allProducts = await helper.getProducts()
       const product = allProducts.body[0]
-      const response = await helper.addInstruction(product.id, loginData.token, newInstruction)
+      const response = await helper.addInstruction(product.id, newInstruction, loginData.token)
       expect(response.body.resource.information).toBe(newInstruction.information)
 
     })
@@ -403,10 +403,10 @@ describe('One account already in database', () => {
         let anotherLoginData = await helper.login(user)
 
         //toinen käyttäjä lisää ohjeen
-        let instruction = await helper.addInstruction(product.id, anotherLoginData.token, { information: 'toisen ohje' })
+        let instruction = await helper.addInstruction(product.id, { information: 'toisen ohje' }, anotherLoginData.token)
 
         //ensimmäinen käyttäjä yrittää poistaa ohjeen
-        let response = await helper.deleteInstruction(product.id, loginData.token, instruction.body.resource.id)
+        let response = await helper.deleteInstruction(product.id, instruction.body.resource.id, loginData.token)
         expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
 
         //tarkastetaan, että ohje ei ole poistunut
@@ -417,10 +417,10 @@ describe('One account already in database', () => {
 
       test('user can delete an instruction they have created', async () => {
         //luodaan uusi ohje 
-        let instruction = await helper.addInstruction(product.id, loginData.token, { information: 'uusi ohje' })
+        let instruction = await helper.addInstruction(product.id, { information: 'uusi ohje' }, loginData.token)
 
         //poistetaan ohje
-        let response = await helper.deleteInstruction(product.id, loginData.token, instruction.body.resource.id)
+        let response = await helper.deleteInstruction(product.id, instruction.body.resource.id, loginData.token)
         expect(response.status).toBe(STATUS_CODES.OK)
 
         //tarkastetaan, että ohje on poistettu 
@@ -431,6 +431,11 @@ describe('One account already in database', () => {
   })
 })
 
-afterAll(() => {
+afterAll(async () => {
+  await helper.clearDatabase()
+  await helper.addNewUser({
+    username: 'test',
+    password: 'testtest',
+  })
   mongoose.connection.close()
 })

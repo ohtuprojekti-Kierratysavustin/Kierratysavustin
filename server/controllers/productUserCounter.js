@@ -21,7 +21,7 @@ const URLS = {
 // Yksittäisen tuotteen kirrätys- tai ostotapahtumien päivitys
 router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
   try {
-    let user = await authUtils.authenticateRequestReturnUser(req).catch((error) => { throw error })
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
     const body = req.body
 
@@ -82,7 +82,7 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
 // Yksittäisen tuotteen kierrätystilastojen haku
 router.get(URLS.GET_PRODUCT_USER_COUNT + ':productID', async (req, res, next) => {
   try {
-    let user = await authUtils.authenticateRequestReturnUser(req).catch((error) => { throw error })
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
     const product = await Product.findById(req.params.productID).exec()
     if (!product) {
