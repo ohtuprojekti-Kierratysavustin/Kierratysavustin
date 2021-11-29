@@ -1,27 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Container } from 'react-bootstrap'
-import { productUserCountService } from '../services/productUserCount'
 import { Line } from 'react-chartjs-2'
-import { useStore } from '../store'
-import { endOfDay } from 'date-fns'
 
 type Props = {
-  numberOfDays: number
+  data: number[]
 }
 
-const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
-  const { user } = useStore()
-  const [data, setData] = useState([0])
-
-  useEffect(() => {
-    const getGraphData = () => {
-      const today = new Date()
-      return productUserCountService.getGraphStatistics(endOfDay(today).getTime(), numberOfDays)
-    }
-    getGraphData().then(res => {
-      setData(res)
-    })
-  }, [user])
+const RecycleGraph: React.FC<Props> = ({ data }) => {
 
   // kuvaajan datan tyyppi
   type dataValues = {
@@ -43,6 +28,7 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
   }
 
   // päivämäärät x-akselille
+  const numberOfDays = data.length
   const today: Date = new Date()
   const dates: string[] = []
   for (let i = numberOfDays-1; i >= 0; i--) {

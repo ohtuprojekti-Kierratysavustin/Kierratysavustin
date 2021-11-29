@@ -37,18 +37,7 @@ const getUserCounts = async () => {
     .catch(error => Promise.reject(error.response.data))
 }
 
-const getGraphStatistics = async ( end: number, days: number ) => {
-  let config = {
-    headers: tokenService.getConfig().headers,
-    params: { end, days }
-  }
-  const response = axios.get(`${baseUrl}/user/recyclingratesperday`, config)
-  return response
-    .then(response => response.data)
-    .catch(error => Promise.reject(error.response.data))
-}
-
-const getProductGraphStatistics = async ( end: number, days: number, product: number ) => {
+const getGraphStatistics = async ( end: number, days: number, product: number | undefined ) => {
   let config = {
     headers: tokenService.getConfig().headers,
     params: { end, days, product }
@@ -63,8 +52,7 @@ export type ProductUserCountService = {
   updateCount: (updateObject: ProductUserCountUpdate) => Promise<PostRequestResponse>,
   getProductUserCounts: (productID: number) => Promise<ProductUserCount>,
   getUserCounts: () => Promise<any>,
-  getGraphStatistics: (end: number, days: number) => Promise<number[]>,
-  getProductGraphStatistics: (end: number, days: number, product: number) => Promise<number[]>
+  getGraphStatistics: (end: number, days: number, product: number | undefined) => Promise<number[]>,
 }
 
-export const productUserCountService: ProductUserCountService = { updateCount, getProductUserCounts, getUserCounts, getGraphStatistics, getProductGraphStatistics }
+export const productUserCountService: ProductUserCountService = { updateCount, getProductUserCounts, getUserCounts, getGraphStatistics }

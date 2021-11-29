@@ -3,12 +3,11 @@ import { Table, Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import InfoBar from '../InfoBar'
 import { useStore } from '../../store'
-import RecycleGraph from '../RecycleGraph'
+import RecycleGraphForm from '../forms/RecycleGraphForm'
 
 
 const RecycleStatisticsView = () => {
   const { productStatistics, user } = useStore()
-  const numberOfDays = 30
 
   if (productStatistics.length === 0) {
     return (
@@ -24,6 +23,7 @@ const RecycleStatisticsView = () => {
       </div>
     )
   }
+
   let totalPurchased = productStatistics.reduce((a, b) => (
     {
       purchaseCount: a.purchaseCount + b.purchaseCount,
@@ -64,7 +64,7 @@ const RecycleStatisticsView = () => {
           </tbody>
         </Table>
       </Container>
-      <RecycleGraph numberOfDays={numberOfDays}></RecycleGraph>
+      <RecycleGraphForm products={productStatistics} />
     </div>
   )
 }
