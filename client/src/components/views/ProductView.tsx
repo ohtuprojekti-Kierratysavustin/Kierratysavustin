@@ -13,7 +13,7 @@ import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-b
 import '../../styles.css'
 import { Product } from '../../types/objects'
 import ProductUserCountForm from '../forms/ProductUserCountForm'
-import { productUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/productUserCount'
+import { counterService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/counters'
 import UploadImage from '../UploadImage'
 import logo from '../../media/logo.png'
 
@@ -84,7 +84,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
                     subtractUpdateText={'Vähennä'}
                     tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
                     tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
-                    productUserCountService={productUserCountService}
+                    counterService={counterService}
                   />
                 </Col>
                 <Col sm={2} className='product-user-count-form'>
@@ -96,7 +96,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
                     subtractUpdateText={'Vähennä'}
                     tooltipAdd={'Kasvata tuotteen kierrätystilastoa.'}
                     tooltipDelete={'Vähennä tuotteen kierrätystilastoa.'}
-                    productUserCountService={productUserCountService}
+                    counterService={counterService}
                   />
                 </Col>
               </>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import RecycleGraph from '../RecycleGraph'
-import { productUserCountService } from '../../services/productUserCount'
+import { statisticsService } from '../../services/statistics'
 import { endOfDay } from 'date-fns'
 import { ProductStatistic } from '../../types/objects'
 import { DropdownButton, Dropdown } from 'react-bootstrap'
@@ -17,7 +17,7 @@ const RecycleGraphForm: React.FC<Props> = ({ products }) => {
 
   useEffect(() => {
     const getGraphData = () => {
-      return productUserCountService.getGraphStatistics(endOfDay(date).getTime(), numberOfDays, productID)
+      return statisticsService.getUserRecyclingRatesPerDay(endOfDay(date).getTime(), numberOfDays, productID)
     }
     getGraphData().then(res => {
       setData(res)

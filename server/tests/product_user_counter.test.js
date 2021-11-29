@@ -273,7 +273,7 @@ describe('Product Recycling Statistics', () => {
   })
 
   test('user purchase and recycle stats are empty by default', async () => {
-    const response = await helper.getStatistics(loginData.token)
+    const response = await helper.getUserRecyclingRatesPerProduct(loginData.token)
 
     expect(response.body[0]).toBe(undefined)
   })
@@ -286,7 +286,7 @@ describe('Product Recycling Statistics', () => {
     await helper.purchaseProductOnce(product.id, loginData.token)
     await helper.purchaseProductOnce(product.id, loginData.token)
     await helper.purchaseProductOnce(product.id, loginData.token)
-    const response = await helper.getStatistics(loginData.token)
+    const response = await helper.getUserRecyclingRatesPerProduct(loginData.token)
 
     expect(response.body[0].purchaseCount).toBe(7)
   })
@@ -297,7 +297,7 @@ describe('Product Recycling Statistics', () => {
 
     await helper.purchaseProductOnce(product.id, loginData.token)
     await helper.recycleProductOnce(product.id, loginData.token)
-    const response = await helper.getStatistics(loginData.token)
+    const response = await helper.getUserRecyclingRatesPerProduct(loginData.token)
 
     expect(response.body[0].recycleCount).toBe(1)
   })
@@ -309,7 +309,7 @@ describe('Product Recycling Statistics', () => {
     await helper.purchaseProductFreeAmount(product.id, 2, loginData.token)
     await helper.recycleProductOnce(product.id, loginData.token)
     await helper.unPurchaseProductOnce(product.id, loginData.token)
-    const response = await helper.getStatistics(loginData.token)
+    const response = await helper.getUserRecyclingRatesPerProduct(loginData.token)
 
     expect(response.body[0].purchaseCount).toBe(1)
   })
@@ -321,7 +321,7 @@ describe('Product Recycling Statistics', () => {
     await helper.purchaseProductFreeAmount(product.id, 2, loginData.token)
     await helper.recycleProductOnce(product.id, loginData.token)
     await helper.unrecycleProductOnce(product.id, loginData.token)
-    const response = await helper.getStatistics(loginData.token)
+    const response = await helper.getUserRecyclingRatesPerProduct(loginData.token)
 
     expect(response.body[0].recycleCount).toBe(0)
   })
@@ -332,12 +332,12 @@ describe('Product Recycling Statistics', () => {
 
     await helper.purchaseProductOnce(product.id, loginData.token)
     await helper.recycleProductOnce(product.id, loginData.token)
-    const response = await helper.getStatistics(loginData.token)
+    const response = await helper.getUserRecyclingRatesPerProduct(loginData.token)
     expect(response.body[0].productID.name).toBe('Mustamakkarakastike pullo')
   })
 
   test('user recycle and purchase stats cannot be seen without login', async () => {
-    const response = await helper.getStatistics('INVALID_TOKEN')
+    const response = await helper.getUserRecyclingRatesPerProduct('INVALID_TOKEN')
     expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
   })
 

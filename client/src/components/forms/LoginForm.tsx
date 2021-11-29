@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import productService from '../../services/products'
 import { userService } from '../../services/user'
 import tokenService from '../../services/token'
-import { productUserCountService } from '../../services/productUserCount'
+import { statisticsService } from '../../services/statistics'
 import { useStore } from '../../store'
 import { useHistory } from 'react-router-dom'
 
@@ -42,7 +42,7 @@ const LoginForm = () => {
           .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
           })
-        productUserCountService.getUserCounts()
+        statisticsService.getUserRecyclingRatesPerProduct()
           .then(counts => setProductStatistics(counts))
           .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa kierrätystatistiikkaa'), 'error')

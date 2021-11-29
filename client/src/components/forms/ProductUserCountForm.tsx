@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ProductUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/productUserCount'
+import { CounterService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/counters'
 import { Button, Container, Col, ButtonGroup } from 'react-bootstrap'
 import '../../styles.css'
 import { Product } from '../../types/objects'
@@ -18,10 +18,10 @@ type Props = {
   subtractUpdateText: string,
   tooltipAdd: string,
   tooltipDelete: string,
-  productUserCountService: ProductUserCountService
+  counterService: CounterService
 }
 
-const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, subtractUpdateText, tooltipAdd, tooltipDelete, productUserCountService }) => {
+const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, subtractUpdateText, tooltipAdd, tooltipDelete, counterService }) => {
   const [count, setCount] = useState<number>(0)
   const amountToAdd = useInput<number>(1, 1)
   const [inputInvalid, setInputInvalid] = useState<boolean>(false)
@@ -40,7 +40,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
 
   useEffect(() => {
     const getCounts = async () => {
-      await productUserCountService.getProductUserCounts(product.id)
+      await counterService.getProductUserCounts(product.id)
         .then(counts => setCount(counts[countType]))
         .catch((error: ErrorResponse) => {
           setNotification(error.message, 'error')
@@ -60,7 +60,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
   const handleAddCount: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     clearNotification()
-    await productUserCountService.updateCount({ productID: product.id, amount: amountToAdd.value, type: countType })
+    await counterService.updateProductUserCount({ productID: product.id, amount: amountToAdd.value, type: countType })
       .then((result) => {
         setCount(count + Number(amountToAdd.value))
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
@@ -73,7 +73,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
   const handleSubtractCount: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     clearNotification()
-    await productUserCountService.updateCount({ productID: product.id, amount: -amountToAdd.value, type: countType })
+    await counterService.updateProductUserCount({ productID: product.id, amount: -amountToAdd.value, type: countType })
       .then((result) => {
         setCount(count - Number(amountToAdd.value))
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
