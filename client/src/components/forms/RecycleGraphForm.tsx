@@ -3,7 +3,7 @@ import RecycleGraph from '../RecycleGraph'
 import { statisticsService } from '../../services/statistics'
 import { endOfDay } from 'date-fns'
 import { ProductStatistic } from '../../types/objects'
-import { DropdownButton, Dropdown } from 'react-bootstrap'
+import { DropdownButton, Dropdown, Container } from 'react-bootstrap'
 
 type Props = {
   products: ProductStatistic[]
@@ -30,13 +30,15 @@ const RecycleGraphForm: React.FC<Props> = ({ products }) => {
 
   return (
     <div>
-      <DropdownButton className="RecycleDropdown" onSelect={handleSelect} id="graafi-dropdown" title="Valitse näytettävä tilasto">
-        <Dropdown.Item as="button">Kokonaiskierrätysaste</Dropdown.Item>
-        <Dropdown.Divider />
-        {products.map(stat =>
-          <Dropdown.Item key={stat.productID.id} as="button" eventKey={stat.productID.id.toString()}>{stat.productID.name}</Dropdown.Item>
-        )}
-      </DropdownButton>
+      <Container>
+        <DropdownButton className="RecycleDropdown" onSelect={handleSelect} id="graafi-dropdown" title="Valitse näytettävä tilasto">
+          <Dropdown.Item as="button">Kokonaiskierrätysaste</Dropdown.Item>
+          <Dropdown.Divider />
+          {products.map(stat =>
+            <Dropdown.Item key={stat.productID.id} as="button" eventKey={stat.productID.id.toString()}>{stat.productID.name}</Dropdown.Item>
+          )}
+        </DropdownButton>
+      </Container>
       <RecycleGraph data={data}></RecycleGraph>
     </div>
   )
