@@ -63,8 +63,8 @@ const RecycleStatisticsView = () => {
             )}
           </tbody>
         </Table>
+        <RecycleGraphForm products={productStatistics} />
       </Container>
-      <RecycleGraphForm products={productStatistics} />
     </div>
   )
 }

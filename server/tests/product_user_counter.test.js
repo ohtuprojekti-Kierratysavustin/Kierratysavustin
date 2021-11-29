@@ -1,7 +1,4 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
-const Product = require('../models/product')
-const User = require('../models/user')
 const helper = require('./test_helper')
 const STATUS_CODES = require('http-status')
 
