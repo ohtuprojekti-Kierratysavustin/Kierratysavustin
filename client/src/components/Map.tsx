@@ -21,7 +21,7 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
         {recyclingSpots.map(spot => {
           return (
             <Marker position={[spot.geometry.coordinates[1], spot.geometry.coordinates[0]]} key={spot.spot_id}>
-              <Tooltip direction="right" offset={[0, 0]} opacity={spot.goodness === undefined ? 0 : 1} permanent>{spot.goodness}</Tooltip>
+              <Tooltip offset={[0, 0]} opacity={spot.goodness === undefined ? 0 : 0.85} permanent><b>{spot.goodness}</b></Tooltip>
               <Popup>
                 <b><h6>{spot.name}</h6></b>
                 {spot.operator} <br />
