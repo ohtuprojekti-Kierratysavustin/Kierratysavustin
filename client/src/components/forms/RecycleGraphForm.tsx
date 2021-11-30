@@ -18,7 +18,6 @@ const RecycleGraphForm: React.FC<Props> = ({ products, product }) => {
 
   const [data, setData] = useState([0])
   const [productID, setProductID] = useState(product?.id)
-  // const [productName, setProductName] = useState('Kokonaiskierrätysaste')
   const [date,] = useState(new Date())
   const numberOfDays = 30
 
@@ -39,10 +38,12 @@ const RecycleGraphForm: React.FC<Props> = ({ products, product }) => {
       setProductID(event)
     }
 
+    const selectedProduct = productID ? products.filter(productToCheck => productToCheck.product.id === productID)[0].product.name : 'Kokonaiskierrätysaste'
+
     return (
       <div>
         <Container>
-          <DropdownButton onSelect={handleSelect} id="graafi-dropdown" title="Valitse näytettävä tilasto">
+          <DropdownButton onSelect={handleSelect} id="graafi-dropdown" title={!selectedProduct ? 'Valitse näytettävä tilasto' : selectedProduct}>
             <Dropdown.Item as="button">Kokonaiskierrätysaste</Dropdown.Item>
             <Dropdown.Divider />
             {products.map(stat =>
