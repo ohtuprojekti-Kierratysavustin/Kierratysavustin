@@ -10,7 +10,7 @@ export enum PRODUCT_USER_COUNT_REQUEST_TYPE {
 }
 
 const updateCount = async (updateObject: ProductUserCountUpdate): Promise<PostRequestResponse> => {
-  const response = axios.post(`${baseUrl}/user/product`, updateObject, tokenService.getConfig())
+  const response = axios.post(`${baseUrl}/user/counts/product/`, updateObject, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
@@ -18,31 +18,30 @@ const updateCount = async (updateObject: ProductUserCountUpdate): Promise<PostRe
 
 const getProductUserCounts = async (productID: number) => {
   let config = {
-    headers: tokenService.getConfig().headers,
-    params: { productID }
+    headers: tokenService.getConfig().headers
   }
-  const response = axios.get(`${baseUrl}/user/product`, config)
+  const response = axios.get(`${baseUrl}/user/counts/product/` + productID, config)
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
 }
 
-const getUserCounts = async () => {
+const getRecyclingRatesPerProduct = async () => {
   let config = {
     headers: tokenService.getConfig().headers
   }
-  const response = axios.get(`${baseUrl}/user/recyclingratesperproduct`, config)
+  const response = axios.get(`${baseUrl}/user/recycle/rates/products/`, config)
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
 }
 
-const getGraphStatistics = async ( start: number, end: number ) => {
+const getRecyclingRatesPerDay = async ( start: number, end: number ) => {
   let config = {
     headers: tokenService.getConfig().headers,
     params: { start, end }
   }
-  const response = axios.get(`${baseUrl}/user/recyclingratesperday`, config)
+  const response = axios.get(`${baseUrl}/user/recycle/rates/days/`, config)
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
@@ -51,8 +50,8 @@ const getGraphStatistics = async ( start: number, end: number ) => {
 export type ProductUserCountService = {
   updateCount: (updateObject: ProductUserCountUpdate) => Promise<PostRequestResponse>,
   getProductUserCounts: (productID: number) => Promise<ProductUserCount>,
-  getUserCounts: () => Promise<any>,
-  getGraphStatistics: (start: number, end: number) => Promise<number[]>
+  getRecyclingRatesPerProduct: () => Promise<any>,
+  getRecyclingRatesPerDay: (start: number, end: number) => Promise<number[]>
 }
 
-export const productUserCountService: ProductUserCountService = { updateCount, getProductUserCounts, getUserCounts, getGraphStatistics }
+export const productUserCountService: ProductUserCountService = { updateCount, getProductUserCounts, getRecyclingRatesPerProduct, getRecyclingRatesPerDay }

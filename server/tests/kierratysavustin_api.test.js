@@ -279,7 +279,7 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       const user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(1)
+      expect(response.body.resource.instruction.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
     })
 
@@ -291,7 +291,7 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       const user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(-1)
+      expect(response.body.resource.instruction.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
     })
 
@@ -304,14 +304,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(1)
+      expect(response.body.resource.instruction.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
 
       //poistetaan
-      response = await helper.unLikeInstruction(instruction.id, loginData.token)
+      response = await helper.likeInstruction(instruction.id, loginData.token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(0)
+      expect(response.body.resource.instruction.score).toBe(0)
       expect(JSON.stringify(user.likes[0])).not.toBe(JSON.stringify(instruction.id))
     })
 
@@ -324,14 +324,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(-1)
+      expect(response.body.resource.instruction.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
 
       //poistetaan
-      response = await helper.unDisLikeInstruction(instruction.id, loginData.token)
+      response = await helper.disLikeInstruction(instruction.id, loginData.token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(0)
+      expect(response.body.resource.instruction.score).toBe(0)
       expect(JSON.stringify(user.dislikes[0])).not.toBe(JSON.stringify(instruction.id))
     })
 
@@ -344,14 +344,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(-1)
+      expect(response.body.resource.instruction.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
 
       //tykätään
       response = await helper.likeInstruction(instruction.id, loginData.token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(1)
+      expect(response.body.resource.instruction.score).toBe(1)
       expect(JSON.stringify(user.dislikes[0])).not.toBe(JSON.stringify(instruction.id))
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
     })
@@ -365,14 +365,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(1)
+      expect(response.body.resource.instruction.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
 
       //eitykätään
       response = await helper.disLikeInstruction(instruction.id, loginData.token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(-1)
+      expect(response.body.resource.instruction.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
       expect(JSON.stringify(user.likes[0])).not.toBe(JSON.stringify(instruction.id))
     })

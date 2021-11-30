@@ -40,7 +40,7 @@ const DeleteInstructionForm: React.FC<Props> = ({ product, instruction }) => {
     return (
       <div>
         <Button
-          id='deleteInstructionButton'
+          id={'deleteInstructionButton' + instruction.id}
           variant='outline-danger'
           onClick={handleDelete}
         >Poista

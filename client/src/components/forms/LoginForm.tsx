@@ -42,7 +42,7 @@ const LoginForm = () => {
           .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa tykkäyksiä!'), 'error')
           })
-        productUserCountService.getUserCounts()
+        productUserCountService.getRecyclingRatesPerProduct()
           .then(counts => setProductStatistics(counts))
           .catch((error: ErrorResponse) => {
             setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa kierrätystatistiikkaa'), 'error')

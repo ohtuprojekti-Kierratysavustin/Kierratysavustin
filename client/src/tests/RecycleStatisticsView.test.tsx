@@ -12,14 +12,16 @@ const juustopaketti: Product = {
   id: 1,
   name: 'Juustopaketti',
   instructions: [],
-  creator: 1
+  creator: 1,
+  productImage: ''
 }
 
 const sipsipussi: Product = {
   id: 2,
   name: 'Sipsipussi',
   instructions: [],
-  creator: 1
+  creator: 1,
+  productImage: ''
 }
 
 const user: User = {
