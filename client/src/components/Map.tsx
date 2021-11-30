@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMap } from '@monsonjeremy/react-leaflet'
+import L from 'leaflet'
 import { RecyclingSpot } from '../types/objects'
 
 type Props = {
@@ -10,17 +11,28 @@ type Props = {
 type CentererProps = {
   center: [number, number]
 }
+
 const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
 
   const Markers = () => {
     if (!recyclingSpots || recyclingSpots.length === 0) {
       return null
     }
+
+    var greenMarker = new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    })
+
     return (
       <>
         {recyclingSpots.map(spot => {
           return (
-            <Marker position={[spot.geometry.coordinates[1], spot.geometry.coordinates[0]]} key={spot.spot_id}>
+            <Marker position={[spot.geometry.coordinates[1], spot.geometry.coordinates[0]]} key={spot.spot_id} icon={greenMarker}>
               <Tooltip offset={[0, 0]} opacity={spot.goodness === undefined ? 0 : 0.85} permanent><b>{spot.goodness}</b></Tooltip>
               <Popup>
                 <b><h6>{spot.name}</h6></b>
