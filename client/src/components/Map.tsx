@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
+import { useStore } from '../store'
 import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMap } from '@monsonjeremy/react-leaflet'
 import L from 'leaflet'
 import { RecyclingSpot } from '../types/objects'
 
 type Props = {
   mapCenter: [number, number],
-  recyclingSpots: RecyclingSpot[],
+  recyclingSpots: RecyclingSpot[]
 }
 
 type CentererProps = {
@@ -13,6 +14,7 @@ type CentererProps = {
 }
 
 const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
+  const { selectedMaterials } = useStore()
 
   const Markers = () => {
     if (!recyclingSpots || recyclingSpots.length === 0) {
@@ -40,11 +42,19 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
                 {spot.address} <br /> <br />
                 <b>Kohteessa kierrätettävät materiaalit:</b>
                 {spot.materials.map(material => {
-                  return (
-                    <div key={1}>
-                      {material.name} <br />
-                    </div>
-                  )
+                  if (selectedMaterials.map(m => m.code).includes(material.code)) {
+                    return (
+                      <div key={1} className='selected-materials'>
+                        <b>{material.name}</b> <br />
+                      </div>
+                    )
+                  } else {
+                    return (
+                      <div key={1}>
+                        {material.name} <br />
+                      </div>
+                    )
+                  }
                 })} <br />
                 {spot.contact_info}
               </Popup>

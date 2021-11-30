@@ -298,6 +298,10 @@ h2 {
   margin-left: -18px;
 }
 
+.selected-materials {
+  color: #137547;
+}
+
 input {
     color: #137547;
 }
