@@ -24,11 +24,11 @@ beforeEach(async () => {
     username: 'kayttaja'
   })
   let user = await userObject.save()
-  let productObject = new Product({ name: helper.productsData[0].name,  creator:user.id })
+  let productObject = new Product({ name: helper.productsData[0].name, creator: user.id })
   let instructionObject = new Instruction({
     information: 'Muovi',
     product: productObject.id,
-    creator:user.id
+    creator: user.id
   })
   await productObject.save()
   //console.log('Product 1 initialized for test', productObject)
@@ -36,7 +36,7 @@ beforeEach(async () => {
   //console.log('Instruction 1 initialized for test', instructionObject)
 
 
-  productObject = new Product({ name: helper.productsData[1].name,  creator:user.id })
+  productObject = new Product({ name: helper.productsData[1].name, creator: user.id })
   await productObject.save()
   //console.log('Product 1 initialized for test', productObject)
 })
@@ -69,9 +69,9 @@ test('all products instructions are ordered by score', async () => {
     information: 'third',
   }
   const product = allProducts.body[1]
-  await helper.addInstruction(product.id, loginData.token, newInstruction1)
-  await helper.addInstruction(product.id, loginData.token, newInstruction2)
-  await helper.addInstruction(product.id, loginData.token, newInstruction3)
+  await helper.addInstruction(product.id, newInstruction1, loginData.token)
+  await helper.addInstruction(product.id, newInstruction2, loginData.token)
+  await helper.addInstruction(product.id, newInstruction3, loginData.token)
 
   allProducts = await helper.getProducts()
 
@@ -82,7 +82,7 @@ test('all products instructions are ordered by score', async () => {
   await helper.likeInstruction(allProducts.body[1].instructions[2].id, loginData.token)
   await helper.disLikeInstruction(allProducts.body[1].instructions[0].id, loginData.token)
   allProducts = await helper.getProducts()
-  
+
   expect(allProducts.body[1].instructions[0].id).toBe(thirdInstructionAtStart)
   expect(allProducts.body[1].instructions[1].id).toBe(secondInstructionAtStart)
   expect(allProducts.body[1].instructions[2].id).toBe(firstInstructionAtStart)
@@ -129,7 +129,7 @@ describe('Schema is validated correctly', () => {
 
     // nimi puuttuu
     try {
-      const product = new Product({  creator: user.id, })
+      const product = new Product({ creator: user.id, })
       await product.validate()
     } catch (e) {
       error = e
@@ -139,7 +139,7 @@ describe('Schema is validated correctly', () => {
     // tämän pitäisi mennä läpi
     error = null
     try {
-      const product = new Product({ name: 'name field',  creator: user.id })
+      const product = new Product({ name: 'name field', creator: user.id })
       await product.validate()
     } catch (e) {
       error = e
@@ -229,7 +229,7 @@ describe('One account already in database', () => {
 
       const response = await helper.addFavourite(product.id, loginData.token)
       expect(response.status).toBe(STATUS_CODES.OK)
-      
+
       expect(response.body.resource.id).toBe(product.id)
 
       const favoritesResponse = await helper.getFavorites(loginData.token)
@@ -265,7 +265,7 @@ describe('One account already in database', () => {
       }
       const allProducts = await helper.getProducts()
       const product = allProducts.body[0]
-      const response = await helper.addInstruction(product.id, loginData.token, newInstruction)
+      const response = await helper.addInstruction(product.id, newInstruction, loginData.token)
       expect(response.body.resource.information).toBe(newInstruction.information)
 
     })
@@ -279,7 +279,7 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       const user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(1)
+      expect(response.body.resource.instruction.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
     })
 
@@ -291,7 +291,7 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       const user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(-1)
+      expect(response.body.resource.instruction.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
     })
 
@@ -304,14 +304,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(1)
+      expect(response.body.resource.instruction.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
 
       //poistetaan
-      response = await helper.unLikeInstruction(instruction.id, loginData.token)
+      response = await helper.likeInstruction(instruction.id, loginData.token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(0)
+      expect(response.body.resource.instruction.score).toBe(0)
       expect(JSON.stringify(user.likes[0])).not.toBe(JSON.stringify(instruction.id))
     })
 
@@ -324,14 +324,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(-1)
+      expect(response.body.resource.instruction.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
 
       //poistetaan
-      response = await helper.unDisLikeInstruction(instruction.id, loginData.token)
+      response = await helper.disLikeInstruction(instruction.id, loginData.token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(0)
+      expect(response.body.resource.instruction.score).toBe(0)
       expect(JSON.stringify(user.dislikes[0])).not.toBe(JSON.stringify(instruction.id))
     })
 
@@ -344,14 +344,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(-1)
+      expect(response.body.resource.instruction.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
 
       //tykätään
       response = await helper.likeInstruction(instruction.id, loginData.token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(1)
+      expect(response.body.resource.instruction.score).toBe(1)
       expect(JSON.stringify(user.dislikes[0])).not.toBe(JSON.stringify(instruction.id))
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
     })
@@ -365,14 +365,14 @@ describe('One account already in database', () => {
 
       const decodedToken = jwt.verify(loginData.token, config.SECRET)
       let user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(1)
+      expect(response.body.resource.instruction.score).toBe(1)
       expect(JSON.stringify(user.likes[0])).toBe(JSON.stringify(instruction.id))
 
       //eitykätään
       response = await helper.disLikeInstruction(instruction.id, loginData.token)
 
       user = await User.findById(decodedToken.id)
-      expect(response.body.resource.score).toBe(-1)
+      expect(response.body.resource.instruction.score).toBe(-1)
       expect(JSON.stringify(user.dislikes[0])).toBe(JSON.stringify(instruction.id))
       expect(JSON.stringify(user.likes[0])).not.toBe(JSON.stringify(instruction.id))
     })
@@ -403,10 +403,10 @@ describe('One account already in database', () => {
         let anotherLoginData = await helper.login(user)
 
         //toinen käyttäjä lisää ohjeen
-        let instruction = await helper.addInstruction(product.id, anotherLoginData.token, { information: 'toisen ohje' })
+        let instruction = await helper.addInstruction(product.id, { information: 'toisen ohje' }, anotherLoginData.token)
 
         //ensimmäinen käyttäjä yrittää poistaa ohjeen
-        let response = await helper.deleteInstruction(product.id, loginData.token, instruction.body.resource.id)
+        let response = await helper.deleteInstruction(product.id, instruction.body.resource.id, loginData.token)
         expect(response.status).toBe(STATUS_CODES.FORBIDDEN)
 
         //tarkastetaan, että ohje ei ole poistunut
@@ -417,10 +417,10 @@ describe('One account already in database', () => {
 
       test('user can delete an instruction they have created', async () => {
         //luodaan uusi ohje 
-        let instruction = await helper.addInstruction(product.id, loginData.token, { information: 'uusi ohje' })
+        let instruction = await helper.addInstruction(product.id, { information: 'uusi ohje' }, loginData.token)
 
         //poistetaan ohje
-        let response = await helper.deleteInstruction(product.id, loginData.token, instruction.body.resource.id)
+        let response = await helper.deleteInstruction(product.id, instruction.body.resource.id, loginData.token)
         expect(response.status).toBe(STATUS_CODES.OK)
 
         //tarkastetaan, että ohje on poistettu 
@@ -431,6 +431,11 @@ describe('One account already in database', () => {
   })
 })
 
-afterAll(() => {
+afterAll(async () => {
+  await helper.clearDatabase()
+  await helper.addNewUser({
+    username: 'test',
+    password: 'testtest',
+  })
   mongoose.connection.close()
 })

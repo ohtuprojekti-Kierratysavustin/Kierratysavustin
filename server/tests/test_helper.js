@@ -106,7 +106,7 @@ const getFavorites = async (token) => {
   return result
 }
 
-const addInstruction = async (productID, token, instruction) => {
+const addInstruction = async (productID, instruction, token) => {
   const result = await api.
     post(`/api/products/${productID}/instructions`)
     .set('Authorization', 'bearer ' + token)
@@ -117,7 +117,7 @@ const addInstruction = async (productID, token, instruction) => {
 }
 
 
-const deleteInstruction = async (productID, token, instructionID) => {
+const deleteInstruction = async (productID, instructionID, token) => {
   const result = await api
     .delete(`/api/products/${productID}/instructions/${instructionID}`)
     .set('Authorization', 'bearer ' + token)
@@ -126,41 +126,23 @@ const deleteInstruction = async (productID, token, instructionID) => {
 }
 
 
-const likeInstruction = async (instructionId, token) => {
+const likeInstruction = async (instructionID, token) => {
   const result = await api
-    .post('/api/users/likes/' + instructionId)
+    .post('/api/users/instructions/like')
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
+    .send({instructionID: instructionID})
     .expect(STATUS_CODES.OK)
     .expect('Content-Type', /application\/json/)
   return result
 }
 
-const unLikeInstruction = async (instructionId, token) => {
+const disLikeInstruction = async (instructionID, token) => {
   const result = await api
-    .put('/api/users/likes/' + instructionId)
+    .post('/api/users/instructions/dislike')
     .set('Authorization', `bearer ${token}`)
     .set('Content-Type', 'application/json')
-    .expect(STATUS_CODES.OK)
-    .expect('Content-Type', /application\/json/)
-  return result
-}
-
-const disLikeInstruction = async (instructionId, token) => {
-  const result = await api
-    .post('/api/users/dislikes/' + instructionId)
-    .set('Authorization', `bearer ${token}`)
-    .set('Content-Type', 'application/json')
-    .expect(STATUS_CODES.OK)
-    .expect('Content-Type', /application\/json/)
-  return result
-}
-
-const unDisLikeInstruction = async (instructionId, token) => {
-  const result = await api
-    .put('/api/users/dislikes/' + instructionId)
-    .set('Authorization', `bearer ${token}`)
-    .set('Content-Type', 'application/json')
+    .send({instructionID: instructionID})
     .expect(STATUS_CODES.OK)
     .expect('Content-Type', /application\/json/)
   return result
@@ -250,7 +232,7 @@ const purchaseProductFreeAmount = async (productID, amount, token) => {
 }
 
 const getProductUserCounts = async (productID, token) => {
-  const result = await api.get('/api' + counterURLS.BASE_URL + counterURLS.GET_PRODUCT_USER_COUNT + '/?productID=' + productID)
+  const result = await api.get('/api' + counterURLS.BASE_URL + counterURLS.GET_PRODUCT_USER_COUNT + productID)
     .set('Authorization', `bearer ${token}`)
   return result
 }
@@ -260,6 +242,17 @@ const getUserRecyclingratesPerDay = async (start, end, token) => {
     .set('Authorization', `bearer ${token}`)
   return result
 }
+
+// Admin
+
+const getAllUsers = async (token) => {
+  const users = await api.get('/api/admin/users')
+    .set('Authorization', `bearer ${token}`)
+  return users
+}
+
+// Moderator
+
 
 module.exports = {
   clearDatabase,
@@ -271,8 +264,6 @@ module.exports = {
   addInstruction,
   likeInstruction,
   disLikeInstruction,
-  unLikeInstruction,
-  unDisLikeInstruction,
   addFavourite,
   removeFavourite,
   getFavorites,
@@ -289,4 +280,5 @@ module.exports = {
   getInstructionsOfProduct,
   deleteInstruction,
   getUserStatisticsTable: getUserRecyclingratesPerDay,
+  getAllUsers: getAllUsers
 }

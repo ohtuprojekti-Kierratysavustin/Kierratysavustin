@@ -12,16 +12,16 @@ const { isValid, fromUnixTime, addDays, subDays, differenceInCalendarDays, endOf
 
 const URLS = {
   BASE_URL: '/statistics',
-  UPDATE_PRODUCT_USER_COUNT: '/user/product',
-  GET_PRODUCT_USER_COUNT: '/user/product',
-  GET_USER_RECYCLINGRATES_PER_PRODUCT: '/user/recyclingratesperproduct',
-  GET_USER_RECYCLINGRATES_PER_DAY: '/user/recyclingratesperday',
+  UPDATE_PRODUCT_USER_COUNT: '/user/counts/product/',
+  GET_PRODUCT_USER_COUNT: '/user/counts/product/',
+  GET_USER_RECYCLINGRATES_PER_PRODUCT: '/user/recycle/rates/products/',
+  GET_USER_RECYCLINGRATES_PER_DAY: '/user/recycle/rates/days/',
 }
 
 // Yksittäisen tuotteen kirrätys- tai ostotapahtumien päivitys
 router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
   try {
-    let user = await authUtils.authenticateRequestReturnUser(req).catch((error) => { throw error })
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
     const body = req.body
 
@@ -80,13 +80,13 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
 })
 
 // Yksittäisen tuotteen kierrätystilastojen haku
-router.get(URLS.GET_PRODUCT_USER_COUNT, async (req, res, next) => {
+router.get(URLS.GET_PRODUCT_USER_COUNT + ':productID', async (req, res, next) => {
   try {
-    let user = await authUtils.authenticateRequestReturnUser(req).catch((error) => { throw error })
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
-    const product = await Product.findById(req.query.productID).exec()
+    const product = await Product.findById(req.params.productID).exec()
     if (!product) {
-      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.query.productID + ' ei löytynyt!')
+      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.productID + ' ei löytynyt!')
     }
 
     const productUserCounter = (await ProductUserCounter.find({ userID: user.id, productID: product.id }).sort({ createdAt: -1 }).limit(1))[0]

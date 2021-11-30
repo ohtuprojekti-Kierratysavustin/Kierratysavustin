@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
+const { USER_ROLES } = require('../enum/roles')
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -27,6 +28,11 @@ const userSchema = new mongoose.Schema({
       ref: 'Instruction'
     }
   ],
+  role: {
+    type: mongoose.Schema.Types.String,
+    enum: Object.keys(USER_ROLES),
+    default: USER_ROLES.User.name
+  }
 }, { timestamps: true })
 
 userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimi \'{VALUE}\' on jo käytössä!' })

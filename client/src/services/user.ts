@@ -40,38 +40,26 @@ const removeFavorite = async (newObject: Product): Promise<PostRequestResponse> 
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
 }
-const addLike = async (id: number): Promise<PostRequestResponse> => {
-  const response = axios.post(`${userUrl}/likes/${id}`, id, tokenService.getConfig())
+const editLike = async (id: number): Promise<PostRequestResponse> => {
+  const response = axios.post(`${userUrl}/instructions/like`, { instructionID: id }, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
 }
-const removeLike = async (id: number): Promise<PostRequestResponse> => {
-  const response = axios.put(`${userUrl}/likes/${id}`, id, tokenService.getConfig())
-  return response
-    .then(response => response.data)
-    .catch(error => Promise.reject(error.response.data))
-}
-const addDislike = async (id: number): Promise<PostRequestResponse> => {
-  const response = axios.post(`${userUrl}/dislikes/${id}`, id, tokenService.getConfig())
-  return response
-    .then(response => response.data)
-    .catch(error => Promise.reject(error.response.data))
-}
-const removeDislike = async (id: number): Promise<PostRequestResponse> => {
-  const response = axios.put(`${userUrl}/dislikes/${id}`, id, tokenService.getConfig())
+const editDislike = async (id: number): Promise<PostRequestResponse> => {
+  const response = axios.post(`${userUrl}/instructions/dislike`, { instructionID: id }, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
 }
 const getLikes = async (): Promise<number[]> => {
-  const response = axios.get(`${userUrl}/likes`, tokenService.getConfig())
+  const response = axios.get(`${userUrl}/instructions/likes`, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
 }
 const getDislikes = async (): Promise<number[]> => {
-  const response = axios.get(`${userUrl}/dislikes`, tokenService.getConfig())
+  const response = axios.get(`${userUrl}/instructions/dislikes`, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))
@@ -88,15 +76,13 @@ export type UserService = {
   }) => Promise<PostRequestResponse>,
   addFavorite: (newObject: Product) => Promise<PostRequestResponse>,
   removeFavorite: (newObject: Product) => Promise<PostRequestResponse>,
-  addLike: (id: number) => Promise<PostRequestResponse>,
-  removeLike: (id: number) => Promise<PostRequestResponse>,
-  addDislike: (id: number) => Promise<PostRequestResponse>,
-  removeDislike: (id: number) => Promise<PostRequestResponse>,
+  editLike: (id: number) => Promise<PostRequestResponse>,
+  editDislike: (id: number) => Promise<PostRequestResponse>,
   getLikes: () => Promise<number[]>,
   getDislikes: () => Promise<number[]>
 }
 
 export const userService = {
   createUser, loginUser, addFavorite, removeFavorite,
-  addDislike, addLike, removeDislike, removeLike, getLikes, getDislikes
+  editDislike, editLike, getLikes, getDislikes
 }
