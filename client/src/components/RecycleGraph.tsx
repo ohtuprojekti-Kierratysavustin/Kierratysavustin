@@ -6,7 +6,20 @@ type Props = {
   data: number[]
 }
 
-const RecycleGraph: React.FC<Props> = ({ data }) => {
+const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
+  const { user } = useStore()
+  const [data, setData] = useState([0])
+
+  useEffect(() => {
+    const getGraphData = () => {
+      const today = new Date()
+      const previousDate = subDays(today, (numberOfDays-2) )
+      return productUserCountService.getRecyclingRatesPerDay(startOfDay(previousDate).getTime(), endOfDay(today).getTime())
+    }
+    getGraphData().then(res => {
+      setData(res)
+    })
+  }, [user])
 
   // kuvaajan datan tyyppi
   type dataValues = {

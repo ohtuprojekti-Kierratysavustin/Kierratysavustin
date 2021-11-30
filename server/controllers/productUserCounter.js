@@ -21,7 +21,7 @@ const URLS = {
 */
 router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
   try {
-    let user = await authUtils.authenticateRequestReturnUser(req).catch((error) => { throw error })
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
     const body = req.body
 
@@ -82,11 +82,11 @@ router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
 // Yksittäisen tuotteen hankinta/kierrätysmäärien haku
 router.get(URLS.GET_PRODUCT_USER_COUNT, async (req, res, next) => {
   try {
-    let user = await authUtils.authenticateRequestReturnUser(req).catch((error) => { throw error })
+    let user = await authUtils.authenticateRequestReturnUser(req)
 
-    const product = await Product.findById(req.query.productID).exec()
+    const product = await Product.findById(req.params.productID).exec()
     if (!product) {
-      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.query.productID + ' ei löytynyt!')
+      throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.productID + ' ei löytynyt!')
     }
 
     const productUserCounter = (await ProductUserCounter.find({ userID: user.id, productID: product.id }).sort({ createdAt: -1 }).limit(1))[0]

@@ -130,11 +130,7 @@ UnauthorizedException.prototype.isOperationalError = true
 UnauthorizedException.prototype.defaultHttpStatusCode = STATUS_CODES.FORBIDDEN
 
 /**
- * Error for if user is unauthorized to resource.
- * @example 
- * if (instruction.creator.toString() !== user.id.toString()) {
-      throw new UnauthorizedException('Vain ohjeen luoja voi poistaa ohjeen!')
-    }
+ * Error for if an invalid parameter has been given.
  * @param {*} message - Should be augmented according to the resource 
  * @param {*} httpStatusCode 
  * @class
