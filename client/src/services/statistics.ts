@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ProductStatistic } from '../types/objects'
 import tokenService from './token'
 const baseUrl = `${process.env.PUBLIC_URL}/api/statistics`
 
@@ -24,7 +25,7 @@ const getUserCumulativeRecyclingRatesPerDay = async ( end: number, days: number,
 }
 
 export type StatisticsService = {
-  getUserCumulativeRecyclingRatesPerProduct: () => Promise<any>,
+  getUserCumulativeRecyclingRatesPerProduct: () => Promise<ProductStatistic[]>,
   getUserCumulativeRecyclingRatesPerDay: (end: number, days: number, product: number | undefined) => Promise<number[]>,
 }
 

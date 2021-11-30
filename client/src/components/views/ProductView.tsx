@@ -17,13 +17,15 @@ import { counterService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/
 import UploadImage from '../UploadImage'
 import logo from '../../media/logo.png'
 import RecycleGraphForm from '../forms/RecycleGraphForm'
+import { StatisticsService } from '../../services/statistics'
 
 type Props = {
-  product?: Product
+  product?: Product,
+  statisticsService: StatisticsService
 }
 
 /** Component for showing product name and recycling information. */
-const ProductView: React.FC<Props> = ({ product }) => {
+const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
 
@@ -107,7 +109,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
           </Row>
         </Container>
       </Jumbotron>
-      <RecycleGraphForm products={null} product={product}/>
+      <RecycleGraphForm products={null} product={product} statisticsService={statisticsService}/>
       <Container id='product-view-container'>
         <Row>
           <Col sm={10}>

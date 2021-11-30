@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import InfoBar from '../InfoBar'
 import { useStore } from '../../store'
 import RecycleGraphForm from '../forms/RecycleGraphForm'
+import { statisticsService } from '../../services/statistics'
 
 
 const RecycleStatisticsView = () => {
@@ -63,7 +64,7 @@ const RecycleStatisticsView = () => {
             )}
           </tbody>
         </Table>
-        <RecycleGraphForm products={productStatistics} product={null}/>
+        <RecycleGraphForm products={productStatistics} product={null} statisticsService={statisticsService}/>
       </Container>
     </div>
   )

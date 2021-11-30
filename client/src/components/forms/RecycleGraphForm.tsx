@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import RecycleGraph from '../RecycleGraph'
-import { statisticsService } from '../../services/statistics'
+import { StatisticsService } from '../../services/statistics'
 import { endOfDay } from 'date-fns'
 import { Product, ProductStatistic } from '../../types/objects'
 import { DropdownButton, Dropdown, Container } from 'react-bootstrap'
 
 type Props = {
   products: ProductStatistic[] | null | undefined,
-  product: Product | null | undefined
+  product: Product | null | undefined,
+  statisticsService: StatisticsService
 }
 
-const RecycleGraphForm: React.FC<Props> = ({ products, product }) => {
+const RecycleGraphForm: React.FC<Props> = ({ products, product, statisticsService }) => {
 
   if (products && product) {
     return (<p>{'Both products list and single product given! Give only one!'}</p>)
@@ -24,10 +25,7 @@ const RecycleGraphForm: React.FC<Props> = ({ products, product }) => {
 
 
   useEffect(() => {
-    const getGraphData = () => {
-      return statisticsService.getUserCumulativeRecyclingRatesPerDay(endOfDay(date).getTime(), numberOfDays, productID)
-    }
-    getGraphData().then(res => {
+    statisticsService.getUserCumulativeRecyclingRatesPerDay(endOfDay(date).getTime(), numberOfDays, productID).then(res => {
       setData(res)
     })
   }, [productID])
@@ -35,7 +33,6 @@ const RecycleGraphForm: React.FC<Props> = ({ products, product }) => {
   if (products) {
 
     const handleSelect = (event: any) => {
-      console.log(event)
       setProductID(event)
     }
 

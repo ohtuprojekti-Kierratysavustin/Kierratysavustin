@@ -52,7 +52,7 @@ const App = () => {
       <Notification />
       <Switch >
         <Route path="/products/:id">
-          <ProductView product={product} />
+          <ProductView product={product} statisticsService={statisticsService}/>
         </Route>
         <Route path="/register">
           <RegisterForm userService={userService} />
