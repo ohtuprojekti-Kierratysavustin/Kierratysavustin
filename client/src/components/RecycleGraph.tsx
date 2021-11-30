@@ -1,25 +1,11 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
 import { Line } from 'react-chartjs-2'
-
 type Props = {
   data: number[]
 }
 
-const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
-  const { user } = useStore()
-  const [data, setData] = useState([0])
-
-  useEffect(() => {
-    const getGraphData = () => {
-      const today = new Date()
-      const previousDate = subDays(today, (numberOfDays-2) )
-      return productUserCountService.getRecyclingRatesPerDay(startOfDay(previousDate).getTime(), endOfDay(today).getTime())
-    }
-    getGraphData().then(res => {
-      setData(res)
-    })
-  }, [user])
+const RecycleGraph: React.FC<Props> = ({ data }) => {
 
   // kuvaajan datan tyyppi
   type dataValues = {
@@ -39,7 +25,6 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
       }
     ]
   }
-
   // päivämäärät x-akselille
   const numberOfDays = data.length
   const today: Date = new Date()
@@ -49,13 +34,11 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
     date.setDate(today.getDate() - i)
     dates.push(`${date.getDate()}.${date.getMonth() + 1}.`)
   }
-
   // data for the EU's goal precentage
   let goalPrecentage: number[] = []
   for (let i=0; i < numberOfDays; i++) {
     goalPrecentage.push(55)
   }
-
   // data kuvaajaan
   const chartData: dataValues = {
     labels: dates,
@@ -74,7 +57,6 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
       }
     ]
   }
-
   // kuvaajan y-akseli välille 0-100
   const options :any = {
     scales: {
@@ -84,7 +66,6 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
       }
     }
   }
-
   return (
     <div>
       <Container id='stat-chart'>
@@ -95,5 +76,4 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
     </div>
   )
 }
-
 export default RecycleGraph

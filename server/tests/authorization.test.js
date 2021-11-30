@@ -13,7 +13,6 @@ let otherUser = undefined
 let otherUserLoginData = undefined
 let otherUserInstruction = undefined
 let product = undefined
-let instruction = undefined
 
 beforeAll(async () => {
   await helper.clearDatabase()
