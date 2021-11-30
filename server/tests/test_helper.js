@@ -9,7 +9,7 @@ const ProductUserCounter = require('../models/productUserCounter')
 
 const { PRODUCT_USER_COUNT_REQUEST_TYPE } = require('../enum/productUserCount')
 
-const productUserCounterRouter = require('../controllers/productUserCounter')
+const productUserCounterRouter = require('../controllers/counters')
 const counterURLS = productUserCounterRouter.URLS
 const statisticsRouter = require('../controllers/statistics')
 const statisticsURLS = statisticsRouter.URLS
@@ -230,7 +230,8 @@ const purchaseProductFreeAmount = async (productID, amount, token) => {
 }
 
 const getProductUserCounts = async (productID, token) => {
-  const result = await api.get('/api' + counterURLS.BASE_URL + counterURLS.GET_PRODUCT_USER_COUNT + productID)
+  console.log('/api' + counterURLS.BASE_URL + counterURLS.GET_PRODUCT_USER_COUNT + '?productID=' + productID)
+  const result = await api.get('/api' + counterURLS.BASE_URL + counterURLS.GET_PRODUCT_USER_COUNT + '?productID=' + productID)
     .set('Authorization', `bearer ${token}`)
   return result
 }

@@ -13,7 +13,7 @@ import { waitFor } from '@testing-library/dom'
  */
 
 
-jest.mock('../services/productUserCount')
+jest.mock('../services/counters')
 const counterServiceMock = counterService as jest.Mocked<typeof counterService>
 
 /**

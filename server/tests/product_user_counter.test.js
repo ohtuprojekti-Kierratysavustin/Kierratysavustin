@@ -187,6 +187,7 @@ describe('Product Recycling Counters', () => {
     await helper.unPurchaseProductOnce(product.id, loginData.token)
 
     const response = await helper.getProductUserCounts(product.id, loginData.token)
+    console.log(response)
     expect(response.body.purchaseCount).toBe(1)
   })
 
