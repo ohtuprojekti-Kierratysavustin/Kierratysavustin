@@ -1,6 +1,7 @@
 const router = require('express').Router()
-const { restructureCastAndValidationErrorsFromMongoose, InvalidParameterException } = require('../error/exceptions')
+const { restructureCastAndValidationErrorsFromMongoose, InvalidParameterException, ResourceNotFoundException } = require('../error/exceptions')
 const ProductUserCounter = require('../models/productUserCounter')
+const Product = require('../models/product')
 const authUtils = require('../utils/auth')
 const STATUS_CODES = require('http-status')
 
@@ -39,6 +40,17 @@ router.get(URLS.GET_USER_CUMULATIVE_RECYCLINGRATES_PER_DAY, async (req, res, nex
     const numDays = tryCastToInteger(req.query.days)
     const productID = req.query.product
 
+    if (productID) {
+      if (!ObjectID.isValid(productID)) {
+        throw new InvalidParameterException(
+          'Virheellinen tuote ID! Annettiin \'' + productID + '\'')
+      }
+  
+      if (!await Product.exists({ _id: productID })) {
+        throw new ResourceNotFoundException('Tuotetta ID:llä: ' + productID + ' ei löytynyt!')
+      }
+    }
+
     if (numDays <= 0) {
       throw new InvalidParameterException(
         'Kyselyn päivien lukumäärän on oltava positiivinen kokonaisluku. Annettiin \'' + req.query.days + '\'')
@@ -66,12 +78,12 @@ router.get(URLS.GET_USER_CUMULATIVE_RECYCLINGRATES_PER_DAY, async (req, res, nex
 // Palauttaa taulukon kokonaiskierrätysasteista
 async function getCumulativeRecyclingrateForAllProductsPerDays(user, endDate, numDays) {
   let dailyRecyclingrateArray = new Array
-  let requestedDay = subDays(endOfDay(endDate), numDays-1)
+  let requestedDay = subDays(endOfDay(endDate), numDays - 1)
 
   for (let i = 0; i < numDays; i++) {
     let totalPurchases = 0
     let totalRecycles = 0
-    
+
     let dailyValuesPerProduct = await getUserRecyclingRatesPerProductUpToDate(user, requestedDay)
     for (let i = 0; i < dailyValuesPerProduct.length; i++) {
       totalPurchases += dailyValuesPerProduct[i].purchaseCount
@@ -88,13 +100,13 @@ async function getCumulativeRecyclingrateForAllProductsPerDays(user, endDate, nu
 // Palauttaa taulukon yksittäisen tuotteen kierrätysasteista
 async function getCumulativeRecyclingrateForSingleProductPerDays(user, endDate, numDays, productID) {
   let dailyRecyclingrateArray = new Array
-  let requestedDay = subDays(endOfDay(endDate), numDays-1)
+  let requestedDay = subDays(endOfDay(endDate), numDays - 1)
 
-  for (let i = 0; i < numDays; i++) {     
+  for (let i = 0; i < numDays; i++) {
     let dailyValuesPerProduct = await getUserRecyclingRatesPerProductUpToDate(user, requestedDay, productID)
     if (dailyValuesPerProduct.length > 0) {
       let recyclingRate = (dailyValuesPerProduct[0].recycleCount === 0)
-        ? 0 
+        ? 0
         : dailyValuesPerProduct[0].recycleCount / dailyValuesPerProduct[0].purchaseCount * 100
       dailyRecyclingrateArray.push(recyclingRate)
     } else {
@@ -119,7 +131,7 @@ async function getUserRecyclingRatesPerProductUpToDate(user, beforeDate, product
       { 'createdAt': { $exists: false } }
     ],
   }
-  
+
   // Jos funktille on annettu tuotteen ID, lisätään se rajausehtoihin.
   if (productID) {
     filter = { 'productID': new ObjectID(productID), ...filter }

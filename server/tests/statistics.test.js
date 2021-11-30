@@ -9,6 +9,8 @@ let previousDay = new Date()
 previousDay.setDate(today.getDate() - (numberOfDays - 2))
 today = today.getTime()
 previousDay = previousDay.getTime()
+let product1 = undefined
+let product2 = undefined
 
 beforeEach(async () => {
   //console.log('Starting to initialize test in product user counters!')
@@ -17,8 +19,11 @@ beforeEach(async () => {
   await helper.addNewUser({ username: 'root', password: 'salasana' })
   loginData = await helper.login({ username: 'root', password: 'salasana' })
 
-  await helper.addNewProduct({ name: helper.productsData[0].name }, loginData.token)
-  await helper.addNewProduct({ name: helper.productsData[1].name }, loginData.token)
+  let res1 = await helper.addNewProduct({ name: helper.productsData[0].name }, loginData.token)
+  let res2 = await helper.addNewProduct({ name: helper.productsData[1].name }, loginData.token)
+
+  product1 = res1.body.resource
+  product2 = res2.body.resource
   //console.log('Product 1 initialized for test', productObject) 
 })
 
@@ -135,22 +140,107 @@ describe('Product Recycling Statistics', () => {
         expect(response.status).toBe(STATUS_CODES.BAD_REQUEST)
       })
 
-      test('Returns correct results', async () => {
-        const allProducts = await helper.getProducts()
-        const product = allProducts.body[0]
+      test('Returns correct results when there are no stats on one product', async () => {
+        const purchased = 53
+        const recycled = 22
+
+        await helper.purchaseProductFreeAmount(product1.id, purchased, loginData.token)
+        await helper.recycleProductFreeAmount(product1.id, recycled, loginData.token)
+
+        const response = await helper.getUserRecyclingratesPerDay(today, numberOfDays, null, loginData.token)
+        expect(response.body[numberOfDays - 1]).toBeCloseTo(recycled / purchased * 100)
+      })
+
+      test('Returns correct results when there are stats on many products', async () => {
+        const otherPurchased = 199
+        const otherRecycled = 24
 
         const purchased = 53
         const recycled = 22
 
-        await helper.purchaseProductFreeAmount(product.id, purchased, loginData.token)
-        await helper.recycleProductFreeAmount(product.id, recycled, loginData.token)
+        await helper.purchaseProductFreeAmount(product1.id, purchased, loginData.token)
+        await helper.recycleProductFreeAmount(product1.id, recycled, loginData.token)
+
+        await helper.purchaseProductFreeAmount(product2.id, otherPurchased, loginData.token)
+        await helper.recycleProductFreeAmount(product2.id, otherRecycled, loginData.token)
 
         const response = await helper.getUserRecyclingratesPerDay(today, numberOfDays, null, loginData.token)
+        expect(response.body[numberOfDays - 1]).toBeCloseTo((recycled + otherRecycled) / (purchased + otherPurchased) * 100)
+      })
+    })
+
+    describe('For specific product', () => {
+
+      test('Returns correct number of results', async () => {
+        const response = await helper.getUserRecyclingratesPerDay(today, numberOfDays, product1.id, loginData.token)
+        expect(response.status).toBe(STATUS_CODES.OK)
+        expect(response.body).toHaveLength(numberOfDays)
+      })
+
+      test('Cannot be accessed without login', async () => {
+        const response = await helper.getUserRecyclingratesPerDay(today, numberOfDays, product1.id, 'invalidToken')
+        expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED)
+      })
+
+      test('Error with invalid end-param', async () => {
+        const text = 'iddqd'
+        const response = await helper.getUserRecyclingratesPerDay(text, numberOfDays, product1.id, loginData.token)
+        expect(response.status).toBe(STATUS_CODES.BAD_REQUEST)
+      })
+
+      test('Error with invalid Product ID', async () => {
+        const text = 'iddqd'
+        const response = await helper.getUserRecyclingratesPerDay(text, numberOfDays, 'INV507b836d5a', loginData.token)
+        expect(response.status).toBe(STATUS_CODES.BAD_REQUEST)
+      })
+
+      test('Error with not existing product ID', async () => {
+        const response = await helper.getUserRecyclingratesPerDay(today, numberOfDays, '9d6ede6a0ba62570afcedd3a', loginData.token)
+        expect(response.status).toBe(STATUS_CODES.NOT_FOUND)
+      })
+
+      test('Error with not integer days-param', async () => {
+        let end = 'iddqd'
+        let response = await helper.getUserRecyclingratesPerDay(today, end, product1.id, loginData.token)
+        expect(response.status).toBe(STATUS_CODES.BAD_REQUEST)
+        end = 1.48
+
+        response = await helper.getUserRecyclingratesPerDay(today, end, null, loginData.token)
+        expect(response.status).toBe(STATUS_CODES.BAD_REQUEST)
+      })
+
+      test('Returns correct results when there are no stats on other products', async () => {
+        const purchased = 53
+        const recycled = 22
+
+        await helper.purchaseProductFreeAmount(product1.id, purchased, loginData.token)
+        await helper.recycleProductFreeAmount(product1.id, recycled, loginData.token)
+
+        const response = await helper.getUserRecyclingratesPerDay(today, numberOfDays, product1.id, loginData.token)
+        expect(response.body[numberOfDays - 1]).toBeCloseTo(recycled / purchased * 100)
+      })
+
+      test('Returns correct results when there are stats on other products', async () => {
+        const otherPurchased = 199
+        const otherRecycled = 24
+
+        const purchased = 53
+        const recycled = 22
+
+        await helper.purchaseProductFreeAmount(product1.id, purchased, loginData.token)
+        await helper.recycleProductFreeAmount(product1.id, recycled, loginData.token)
+
+        await helper.purchaseProductFreeAmount(product2.id, otherPurchased, loginData.token)
+        await helper.recycleProductFreeAmount(product2.id, otherRecycled, loginData.token)
+
+        const response = await helper.getUserRecyclingratesPerDay(today, numberOfDays, product1.id, loginData.token)
         expect(response.body[numberOfDays - 1]).toBeCloseTo(recycled / purchased * 100)
       })
     })
 
   })
+
+
 })
 
 afterAll(async () => {
