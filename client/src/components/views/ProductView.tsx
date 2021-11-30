@@ -16,6 +16,7 @@ import ProductUserCountForm from '../forms/ProductUserCountForm'
 import { counterService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/counters'
 import UploadImage from '../UploadImage'
 import logo from '../../media/logo.png'
+import RecycleGraphForm from '../forms/RecycleGraphForm'
 
 type Props = {
   product?: Product
@@ -106,6 +107,7 @@ const ProductView: React.FC<Props> = ({ product }) => {
           </Row>
         </Container>
       </Jumbotron>
+      <RecycleGraphForm products={null} product={product}/>
       <Container id='product-view-container'>
         <Row>
           <Col sm={10}>

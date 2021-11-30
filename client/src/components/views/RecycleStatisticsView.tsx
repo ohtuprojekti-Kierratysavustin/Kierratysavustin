@@ -28,7 +28,7 @@ const RecycleStatisticsView = () => {
     {
       purchaseCount: a.purchaseCount + b.purchaseCount,
       recycleCount: a.recycleCount + b.recycleCount,
-      productID: a.productID
+      product: a.product
     }
   ))
 
@@ -51,10 +51,10 @@ const RecycleStatisticsView = () => {
           </thead>
           <tbody>
             {productStatistics.map(stat =>
-              <tr key={stat.productID.id} id={`listElement${index}`}>
+              <tr key={stat.product.id} id={`listElement${index}`}>
                 <td>{index++}</td>
                 <td>
-                  <Link to={`/products/${stat.productID.id}`}>{stat.productID.name}</Link>
+                  <Link to={`/products/${stat.product.id}`}>{stat.product.name}</Link>
                 </td>
                 <td>{stat.purchaseCount}</td>
                 <td>{stat.recycleCount}</td>
@@ -63,7 +63,7 @@ const RecycleStatisticsView = () => {
             )}
           </tbody>
         </Table>
-        <RecycleGraphForm products={productStatistics} />
+        <RecycleGraphForm products={productStatistics} product={null}/>
       </Container>
     </div>
   )

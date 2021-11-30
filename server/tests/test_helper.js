@@ -246,7 +246,7 @@ const getUserCumulativeRecyclingRatesPerProduct = async (token) => {
 
 
 const getUserRecyclingratesPerDay = async (end, days, productID, token) => {
-  const result = await api.get('/api' + statisticsURLS.BASE_URL + statisticsURLS.GET_USER_CUMULATIVE_RECYCLINGRATES_PER_DAY + '?end=' + end + '&days=' + days + (productID ? '&product=' + productID : ''))
+  const result = await api.get('/api' + statisticsURLS.BASE_URL + statisticsURLS.GET_USER_CUMULATIVE_RECYCLINGRATES_PER_DAY + '?end=' + end + '&days=' + days + (productID ? '&productID=' + productID : ''))
     .set('Authorization', `bearer ${token}`)
   return result
 }

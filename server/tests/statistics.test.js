@@ -94,7 +94,7 @@ describe('Product Recycling Statistics', () => {
       await helper.purchaseProductOnce(product.id, loginData.token)
       await helper.recycleProductOnce(product.id, loginData.token)
       const response = await helper.getUserCumulativeRecyclingRatesPerProduct(loginData.token)
-      expect(response.body[0].productID.name).toBe('Mustamakkarakastike pullo')
+      expect(response.body[0].product.name).toBe('Mustamakkarakastike pullo')
     })
 
     test('Cannot be accessed without login', async () => {

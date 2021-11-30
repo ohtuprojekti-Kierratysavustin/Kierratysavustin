@@ -41,7 +41,7 @@ export type ProductUserCountUpdate = {
 }
 
 export type ProductStatistic = {
-  productID: Product,
+  product: Product,
   purchaseCount: number,
   recycleCount: number
 }

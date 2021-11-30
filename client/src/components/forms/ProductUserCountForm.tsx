@@ -51,7 +51,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
 
   const updateStatsInStore = (purchases: number, recycles: number) => {
     updateProductStatistics({
-      productID: product,
+      product: product,
       purchaseCount: purchases,
       recycleCount: recycles,
     })

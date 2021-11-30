@@ -12,10 +12,10 @@ const getUserCumulativeRecyclingRatesPerProduct = async () => {
     .catch(error => Promise.reject(error.response.data))
 }
 
-const getUserCumulativeRecyclingRatesPerDay = async ( end: number, days: number, product: number | undefined ) => {
+const getUserCumulativeRecyclingRatesPerDay = async ( end: number, days: number, productID: number | undefined ) => {
   let config = {
     headers: tokenService.getConfig().headers,
-    params: { end, days, product }
+    params: { end, days, productID }
   }
   const response = axios.get(`${baseUrl}/user/recyclingratesperday`, config)
   return response

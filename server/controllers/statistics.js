@@ -38,7 +38,7 @@ router.get(URLS.GET_USER_CUMULATIVE_RECYCLINGRATES_PER_DAY, async (req, res, nex
     let user = await authUtils.authenticateRequestReturnUser(req)
     const endDate = fromUnixTime(tryCastToInteger(req.query.end) / 1000)
     const numDays = tryCastToInteger(req.query.days)
-    const productID = req.query.product
+    const productID = req.query.productID
 
     if (productID) {
       if (!ObjectID.isValid(productID)) {
@@ -170,9 +170,10 @@ async function getUserRecyclingRatesPerProductUpToDate(user, beforeDate, product
     {
       // Karsitaan turhat tiedot pois
       $project: {
+        _id: 0,
         purchaseCount: '$purchaseCount',
         recycleCount: '$recycleCount',
-        productID: {
+        product: {
           id: '$_id',
           name: '$productID.name'
         }
