@@ -59,7 +59,8 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.1.8",
     "eslint": "^7.32.0",
-    "eslint-plugin-cypress": "^2.12.1"
+    "eslint-plugin-cypress": "^2.12.1",
+    "jest-canvas-mock": "^2.3.1"
   },
   "jest": {
     "transformIgnorePatterns": [
