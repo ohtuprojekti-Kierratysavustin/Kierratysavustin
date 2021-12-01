@@ -9,6 +9,8 @@ import { isInteger } from '../../utils/validation'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import { ErrorResponse } from '../../types/requestResponses'
+import { StatisticsService } from '../../services/statistics'
+import { endOfDay } from 'date-fns'
 
 type Props = {
   product: Product,
@@ -18,10 +20,12 @@ type Props = {
   subtractUpdateText: string,
   tooltipAdd: string,
   tooltipDelete: string,
-  counterService: CounterService
+  counterService: CounterService,
+  statisticsService: StatisticsService | null | undefined,
+  setChartData: React.Dispatch<React.SetStateAction<number[]>> | null | undefined
 }
 
-const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, subtractUpdateText, tooltipAdd, tooltipDelete, counterService }) => {
+const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, subtractUpdateText, tooltipAdd, tooltipDelete, counterService, statisticsService, setChartData }) => {
   const [count, setCount] = useState<number>(0)
   const amountToAdd = useInput<number>(1, 1)
   const [inputInvalid, setInputInvalid] = useState<boolean>(false)
@@ -39,14 +43,24 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
   }
 
   useEffect(() => {
-    const getCounts = async () => {
-      await counterService.getProductUserCounts(product.id)
-        .then(counts => setCount(counts[countType]))
-        .catch((error: ErrorResponse) => {
-          setNotification(error.message, 'error')
-        })
-    }
-    getCounts()
+    counterService.getProductUserCounts(product.id)
+      .then(counts => setCount(counts[countType]))
+      .then(() => {
+        if (setChartData && statisticsService) {
+          let numberOfDays = 30
+          //TODO, ladataan liian monta kertaa
+          statisticsService.getUserCumulativeRecyclingRatesPerDay(endOfDay(new Date()).getTime(), numberOfDays, product.id).then((res) => {
+            setChartData(res)
+          })
+            .catch((error) => {
+              setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa dataa kierrätysastekuvaajalle!'), 'error')
+            })
+        }
+      })
+      .catch((error: ErrorResponse) => {
+        setNotification(error.message, 'error')
+      })
+
   }, [count])
 
   const updateStatsInStore = (purchases: number, recycles: number) => {

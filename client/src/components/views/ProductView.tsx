@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Link
 } from 'react-router-dom'
@@ -16,8 +16,10 @@ import ProductUserCountForm from '../forms/ProductUserCountForm'
 import { counterService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/counters'
 import UploadImage from '../UploadImage'
 import logo from '../../media/logo.png'
-import RecycleGraphForm from '../forms/RecycleGraphForm'
 import { StatisticsService } from '../../services/statistics'
+import RecycleGraph from '../RecycleGraph'
+import Collapse from 'react-bootstrap/Collapse'
+
 
 type Props = {
   product?: Product,
@@ -28,6 +30,8 @@ type Props = {
 const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
+  const [chartData, setChartData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+  const [open, setOpen] = useState(false)
 
   const routeChange = () => {
     history.goBack()
@@ -88,6 +92,8 @@ const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
                     tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
                     tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
                     counterService={counterService}
+                    statisticsService={statisticsService}
+                    setChartData={setChartData}
                   />
                 </Col>
                 <Col sm={2} className='product-user-count-form'>
@@ -100,6 +106,8 @@ const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
                     tooltipAdd={'Kasvata tuotteen kierrätystilastoa.'}
                     tooltipDelete={'Vähennä tuotteen kierrätystilastoa.'}
                     counterService={counterService}
+                    statisticsService={statisticsService}
+                    setChartData={setChartData}
                   />
                 </Col>
               </>
@@ -109,7 +117,29 @@ const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
           </Row>
         </Container>
       </Jumbotron>
-      <RecycleGraphForm products={null} product={product} statisticsService={statisticsService}/>
+      <Container>
+        <Row>
+          <Button
+            onClick={() => setOpen(!open)}
+            aria-controls="example-collapse-text"
+            aria-expanded={open}
+          >
+            Katso tuotteen tilastot
+          </Button>
+        </Row>
+      </Container>
+      <Container id='collapse-container'>
+        <Row>
+          <Col sm={10}>
+            <Collapse in={open}>
+              <div id="example-collapse-text">
+                <RecycleGraph data={chartData} graphTargetHeader={'Tuotteen \'' + product.name + '\' kierrätysaste'} />
+              </div>
+            </Collapse>
+          </Col>
+
+        </Row>
+      </Container>
       <Container id='product-view-container'>
         <Row>
           <Col sm={10}>
