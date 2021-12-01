@@ -2,23 +2,18 @@ import React, { useState, useEffect } from 'react'
 import RecycleGraph from '../RecycleGraph'
 import { StatisticsService } from '../../services/statistics'
 import { endOfDay } from 'date-fns'
-import { Product, ProductStatistic } from '../../types/objects'
+import { ProductStatistic } from '../../types/objects'
 import { DropdownButton, Dropdown, Container } from 'react-bootstrap'
 
 type Props = {
-  products: ProductStatistic[] | null | undefined,
-  product: Product | null | undefined,
+  products: ProductStatistic[],
   statisticsService: StatisticsService
 }
 
-const RecycleGraphForm: React.FC<Props> = ({ products, product, statisticsService }) => {
-
-  if (products && product) {
-    return (<p>{'Both products list and single product given! Give only one!'}</p>)
-  }
+const RecycleGraphForm: React.FC<Props> = ({ products, statisticsService }) => {
 
   const [data, setData] = useState([0])
-  const [productID, setProductID] = useState(product?.id)
+  const [productID, setProductID] = useState(undefined)
   const [date,] = useState(new Date())
   const numberOfDays = 30
 
@@ -29,38 +24,27 @@ const RecycleGraphForm: React.FC<Props> = ({ products, product, statisticsServic
     })
   }, [productID])
 
-  if (products) {
 
-    const handleSelect = (event: any) => {
-      setProductID(event)
-    }
-
-    const selectedProduct = productID ? products.filter(productToCheck => productToCheck.product.id === productID)[0].product.name : 'Kokonaiskierrätysaste'
-
-    return (
-      <div>
-        <Container>
-          <DropdownButton onSelect={handleSelect} id="graafi-dropdown" title={!selectedProduct ? 'Valitse näytettävä tilasto' : selectedProduct}>
-            <Dropdown.Item as="button">Kokonaiskierrätysaste</Dropdown.Item>
-            <Dropdown.Divider />
-            {products.map(stat =>
-              <Dropdown.Item key={stat.product.id} as="button" eventKey={stat.product.id.toString()}>{stat.product.name}</Dropdown.Item>
-            )}
-          </DropdownButton>
-        </Container>
-        <RecycleGraph data={data}></RecycleGraph>
-      </div>
-    )
-  } else if (product) {
-    return (
-      <div>
-        <RecycleGraph data={data}></RecycleGraph>
-      </div>
-    )
-  } else {
-    return (<p>{'Products and product are null! Give atleast one!'}</p>)
+  const handleSelect = (event: any) => {
+    setProductID(event)
   }
 
+  const selectedProduct = productID ? products.filter(productToCheck => productToCheck.product.id === productID)[0].product.name : 'Kokonaiskierrätysaste'
+
+  return (
+    <div>
+      <Container>
+        <DropdownButton onSelect={handleSelect} id="graafi-dropdown" title={!selectedProduct ? 'Valitse näytettävä tilasto' : selectedProduct}>
+          <Dropdown.Item as="button">Kokonaiskierrätysaste</Dropdown.Item>
+          <Dropdown.Divider />
+          {products.map(stat =>
+            <Dropdown.Item key={stat.product.id} as="button" eventKey={stat.product.id.toString()}>{stat.product.name}</Dropdown.Item>
+          )}
+        </DropdownButton>
+      </Container>
+      <RecycleGraph data={data} graphTargetHeader={(productID ? 'Tuotteen \'' + selectedProduct + '\' kierrätysaste' : 'Kokonaiskierrätysaste')}></RecycleGraph>
+    </div>
+  )
 
 }
 

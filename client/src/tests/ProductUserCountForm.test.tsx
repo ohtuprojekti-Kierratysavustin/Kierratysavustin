@@ -98,6 +98,8 @@ describe('When ProductUserCountForm is rendered', () => {
         tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
         tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
         counterService={counterServiceMock}
+        statisticsService={undefined}
+        setChartData={undefined}
       />)
       const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -120,6 +122,8 @@ describe('When ProductUserCountForm is rendered', () => {
           tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
           tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
           counterService={counterServiceMock}
+          statisticsService={undefined}
+          setChartData={undefined}
         />)
         const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -150,6 +154,8 @@ describe('When ProductUserCountForm is rendered', () => {
           tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
           tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
           counterService={counterServiceMock}
+          statisticsService={undefined}
+          setChartData={undefined}
         />)
         const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -190,6 +196,8 @@ describe('When ProductUserCountForm is rendered', () => {
           tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
           tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
           counterService={counterServiceMock}
+          statisticsService={undefined}
+          setChartData={undefined}
         />)
         const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -220,6 +228,8 @@ describe('When ProductUserCountForm is rendered', () => {
           tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
           tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
           counterService={counterServiceMock}
+          statisticsService={undefined}
+          setChartData={undefined}
         />)
         const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -257,6 +267,8 @@ describe('When ProductUserCountForm is rendered', () => {
             tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
             tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
             counterService={counterServiceMock}
+            statisticsService={undefined}
+            setChartData={undefined}
           />)
           const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 

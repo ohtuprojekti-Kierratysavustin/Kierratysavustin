@@ -88,6 +88,8 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
                                 tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
                                 tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
                                 counterService={counterService}
+                                statisticsService={undefined}
+                                setChartData={undefined}
                               />
                             </Col>
                             <Col sm={2}>
@@ -100,6 +102,8 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
                                 tooltipAdd={'Kasvata tuotteen kierrätystilastoa.'}
                                 tooltipDelete={'Vähennä tuotteen kierrätystilastoa.'}
                                 counterService={counterService}
+                                statisticsService={undefined}
+                                setChartData={undefined}
                               />
                             </Col>
                           </>

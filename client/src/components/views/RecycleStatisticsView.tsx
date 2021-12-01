@@ -16,7 +16,7 @@ const RecycleStatisticsView = () => {
         <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Seuraa kierrättämiesi tuotteiden lukumääriä.'} />
         <Container id='nostats' >
           {user
-            ? <div><p>Voit kirjata tuotteita sovellukseen niitä hankkittuasi, ja merkitä niitä myöhemmin kierrätetyiksi.<br/>
+            ? <div><p>Voit kirjata tuotteita sovellukseen niitä hankkittuasi, ja merkitä niitä myöhemmin kierrätetyiksi.<br />
               Näin tehdessäsi, näet tältä sivulta tietoja kierrättämiesi tuotteiden määristä ja kierrätysasteestasi.</p></div>
             : <h5><Link to={'/login'}>Kirjaudu sisään</Link> nähdäksesi tietoja kierrätyksestäsi</h5>
           }
@@ -33,7 +33,7 @@ const RecycleStatisticsView = () => {
     }
   ))
 
-  let index :number = 1
+  let index: number = 1
   return (
     <div>
       <InfoBar header={'Kotitalouden kierrätysavustin'} text={'Seuraa kierrättämiesi tuotteiden lukumääriä.'} />
@@ -64,7 +64,7 @@ const RecycleStatisticsView = () => {
             )}
           </tbody>
         </Table>
-        <RecycleGraphForm products={productStatistics} product={null} statisticsService={statisticsService}/>
+        <RecycleGraphForm products={productStatistics} statisticsService={statisticsService} />
       </Container>
     </div>
   )
