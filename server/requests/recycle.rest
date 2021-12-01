@@ -1,4 +1,4 @@
-post http://localhost:3001/api/count/product/user
+post http://localhost:3001/api/counters/user/product
 Authorization: bearer lisää-token-tähän
 
 {

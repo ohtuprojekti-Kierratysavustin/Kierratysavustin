@@ -3,12 +3,12 @@ import { Table, Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import InfoBar from '../InfoBar'
 import { useStore } from '../../store'
-import RecycleGraph from '../RecycleGraph'
+import RecycleGraphForm from '../forms/RecycleGraphForm'
+import { statisticsService } from '../../services/statistics'
 
 
 const RecycleStatisticsView = () => {
   const { productStatistics, user } = useStore()
-  const numberOfDays = 30
 
   if (productStatistics.length === 0) {
     return (
@@ -24,11 +24,12 @@ const RecycleStatisticsView = () => {
       </div>
     )
   }
+
   let totalPurchased = productStatistics.reduce((a, b) => (
     {
       purchaseCount: a.purchaseCount + b.purchaseCount,
       recycleCount: a.recycleCount + b.recycleCount,
-      productID: a.productID
+      product: a.product
     }
   ))
 
@@ -51,10 +52,10 @@ const RecycleStatisticsView = () => {
           </thead>
           <tbody>
             {productStatistics.map(stat =>
-              <tr key={stat.productID.id} id={`listElement${index}`}>
+              <tr key={stat.product.id} id={`listElement${index}`}>
                 <td>{index++}</td>
                 <td>
-                  <Link to={`/products/${stat.productID.id}`}>{stat.productID.name}</Link>
+                  <Link to={`/products/${stat.product.id}`}>{stat.product.name}</Link>
                 </td>
                 <td>{stat.purchaseCount}</td>
                 <td>{stat.recycleCount}</td>
@@ -63,8 +64,8 @@ const RecycleStatisticsView = () => {
             )}
           </tbody>
         </Table>
+        <RecycleGraphForm products={productStatistics} product={null} statisticsService={statisticsService}/>
       </Container>
-      <RecycleGraph numberOfDays={numberOfDays}></RecycleGraph>
     </div>
   )
 }

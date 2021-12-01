@@ -23,7 +23,8 @@ export type User = {
   token: string,
   likes: number[],
   dislikes: number[],
-  favoriteProducts: number[]
+  favoriteProducts: number[],
+  role: string
 }
 
 export type ProductUserCount = {
@@ -40,7 +41,7 @@ export type ProductUserCountUpdate = {
 }
 
 export type ProductStatistic = {
-  productID: Product,
+  product: Product,
   purchaseCount: number,
   recycleCount: number
 }

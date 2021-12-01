@@ -1,4 +1,4 @@
-get http://localhost:3001/api/count/product/user
+get http://localhost:3001/api/counters/user/product
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlcnVuYSIsImlkIjoiNjE1MWE2OWJmMWJjZTE0NDBjZTE3NmUxIiwiaWF0IjoxNjMzMDczNjM5fQ.lrrxEhenmuNTyxEzChREhqnf4-OA1xT4z576ERRfes4
 
 {

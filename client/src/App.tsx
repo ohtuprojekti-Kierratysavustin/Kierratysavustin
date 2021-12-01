@@ -6,7 +6,7 @@ import { userService } from './services/user'
 import productService from './services/products'
 import tokenService from './services/token'
 import { kierratysInfoService } from './services/kierratysInfo'
-import { productUserCountService } from './services/productUserCount'
+import { statisticsService } from './services/statistics'
 import NavigationBar from './components/NavigationBar'
 import ProductForm from './components/forms/ProductForm'
 import ProductView from './components/views/ProductView'
@@ -37,7 +37,7 @@ const App = () => {
       productService.getFavorites().then(favorites => setFavorites(favorites))
       userService.getLikes().then(likes => setLikes(likes))
       userService.getDislikes().then(dislikes => setDislikes(dislikes))
-      productUserCountService.getUserCounts().then(stats => setProductStatistics(stats))
+      statisticsService.getUserCumulativeRecyclingRatesPerProduct().then(stats => setProductStatistics(stats))
     }
   }, [])
 
@@ -52,7 +52,7 @@ const App = () => {
       <Notification />
       <Switch >
         <Route path="/products/:id">
-          <ProductView product={product} />
+          <ProductView product={product} statisticsService={statisticsService}/>
         </Route>
         <Route path="/register">
           <RegisterForm userService={userService} />

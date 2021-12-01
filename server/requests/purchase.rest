@@ -1,4 +1,8 @@
-post http://localhost:3001/api/count/product/user
+<<<<<<< HEAD
+post http://localhost:3001/api/counters/user/product
+=======
+post http://localhost:3001/api/statistics/user/counts/product/
+>>>>>>> staging
 Authorization: bearer lisää-token-tähän
 
 {

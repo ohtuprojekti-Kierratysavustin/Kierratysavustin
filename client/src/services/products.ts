@@ -17,8 +17,8 @@ const createInstruction = async (id: number, newObject: { information: string })
     .catch(error => Promise.reject(error.response.data))
 }
 
-const deleteInstruction = async (productId: number, instructionId: number) => {
-  const response = axios.delete(`${baseUrl}/${productId}/instructions/${instructionId}`, tokenService.getConfig())
+const deleteInstruction = async (productID: number, instructionId: number) => {
+  const response = axios.delete(`${baseUrl}/${productID}/instructions/${instructionId}`, tokenService.getConfig())
   return response
     .then(response => response.data)
     .catch(error => Promise.reject(error.response.data))

@@ -1,28 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Container } from 'react-bootstrap'
-import { productUserCountService } from '../services/productUserCount'
 import { Line } from 'react-chartjs-2'
-import { useStore } from '../store'
-import { startOfDay, endOfDay, subDays } from 'date-fns'
-
 type Props = {
-  numberOfDays: number
+  data: number[]
 }
 
-const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
-  const { user } = useStore()
-  const [data, setData] = useState([0])
-
-  useEffect(() => {
-    const getGraphData = () => {
-      const today = new Date()
-      const previousDate = subDays(today, (numberOfDays-2) )
-      return productUserCountService.getGraphStatistics(startOfDay(previousDate).getTime(), endOfDay(today).getTime())
-    }
-    getGraphData().then(res => {
-      setData(res)
-    })
-  }, [user])
+const RecycleGraph: React.FC<Props> = ({ data }) => {
 
   // kuvaajan datan tyyppi
   type dataValues = {
@@ -42,8 +25,8 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
       }
     ]
   }
-
   // päivämäärät x-akselille
+  const numberOfDays = data.length
   const today: Date = new Date()
   const dates: string[] = []
   for (let i = numberOfDays-1; i >= 0; i--) {
@@ -51,13 +34,11 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
     date.setDate(today.getDate() - i)
     dates.push(`${date.getDate()}.${date.getMonth() + 1}.`)
   }
-
   // data for the EU's goal precentage
   let goalPrecentage: number[] = []
   for (let i=0; i < numberOfDays; i++) {
     goalPrecentage.push(55)
   }
-
   // data kuvaajaan
   const chartData: dataValues = {
     labels: dates,
@@ -76,7 +57,6 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
       }
     ]
   }
-
   // kuvaajan y-akseli välille 0-100
   const options :any = {
     scales: {
@@ -86,7 +66,6 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
       }
     }
   }
-
   return (
     <div>
       <Container id='stat-chart'>
@@ -97,5 +76,4 @@ const RecycleGraph: React.FC<Props> = ({ numberOfDays }) => {
     </div>
   )
 }
-
 export default RecycleGraph

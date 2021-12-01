@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
 import ProductUserCountForm from '../components/forms/ProductUserCountForm'
 import { Product, ProductUserCount } from '../types/objects'
-import { PRODUCT_USER_COUNT_REQUEST_TYPE, productUserCountService } from '../services/productUserCount'
+import { PRODUCT_USER_COUNT_REQUEST_TYPE, counterService } from '../services/counters'
 import { ErrorResponse, PostRequestResponse } from '../types/requestResponses'
 import { waitFor } from '@testing-library/dom'
 
@@ -13,8 +13,8 @@ import { waitFor } from '@testing-library/dom'
  */
 
 
-jest.mock('../services/productUserCount')
-const productUserCountServiceMock = productUserCountService as jest.Mocked<typeof productUserCountService>
+jest.mock('../services/counters')
+const counterServiceMock = counterService as jest.Mocked<typeof counterService>
 
 /**
  * 
@@ -26,7 +26,7 @@ const productUserCountServiceMock = productUserCountService as jest.Mocked<typeo
  * Example 2.: Button click order: add, add, subtract, add. Test lifetime count values are: [0, 1, 2, 1, 2]
  * Example 3.: Subtract 1. Update should reject. Values are: [0, -1]
  */
-function setProductUserCountServiceReturnValues(values: number[]) {
+function setCounterServiceReturnValues(values: number[]) {
   if (values === null || values.length === 0) {
     throw new Error('Values can not be empty or null!')
   }
@@ -36,7 +36,7 @@ function setProductUserCountServiceReturnValues(values: number[]) {
     recycleCount: 0,
     userID: 1
   }
-  productUserCountServiceMock.getProductUserCounts.mockResolvedValueOnce(productUserCount)
+  counterServiceMock.getProductUserCounts.mockResolvedValueOnce(productUserCount)
   for (let i = 1; i < values.length; i++) {
     if (values[i] < 0) {
       productUserCount.purchaseCount = values[i - 1]
@@ -48,16 +48,16 @@ function setProductUserCountServiceReturnValues(values: number[]) {
       resource: productUserCount,
       error: undefined
     }
-    productUserCountServiceMock.getProductUserCounts.mockResolvedValueOnce(productUserCount)
+    counterServiceMock.getProductUserCounts.mockResolvedValueOnce(productUserCount)
     if (values[i] < 0) {
       let errorResponse: ErrorResponse = {
         error: 'ValidationError',
         message: 'Ei voi olla negatiivinen',
         validationErrorObject: undefined
       }
-      productUserCountServiceMock.updateCount.mockRejectedValueOnce(errorResponse)
+      counterServiceMock.updateProductUserCount.mockRejectedValueOnce(errorResponse)
     } else {
-      productUserCountServiceMock.updateCount.mockResolvedValueOnce(addResponseData)
+      counterServiceMock.updateProductUserCount.mockResolvedValueOnce(addResponseData)
     }
   }
 
@@ -66,8 +66,8 @@ function setProductUserCountServiceReturnValues(values: number[]) {
     resource: productUserCount,
     error: undefined
   }
-  productUserCountServiceMock.updateCount.mockResolvedValueOnce(addResponseData)
-  productUserCountServiceMock.getProductUserCounts.mockResolvedValue(productUserCount)
+  counterServiceMock.updateProductUserCount.mockResolvedValueOnce(addResponseData)
+  counterServiceMock.getProductUserCounts.mockResolvedValue(productUserCount)
 }
 
 const product: Product = {
@@ -87,7 +87,7 @@ describe('When ProductUserCountForm is rendered', () => {
   describe('For the first time', () => {
     it('Counts should be 0', async () => {
 
-      setProductUserCountServiceReturnValues([0])
+      setCounterServiceReturnValues([0])
 
       const component = render(<ProductUserCountForm
         product={product}
@@ -97,7 +97,7 @@ describe('When ProductUserCountForm is rendered', () => {
         subtractUpdateText={'Poista'}
         tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
         tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
-        productUserCountService={productUserCountServiceMock}
+        counterService={counterServiceMock}
       />)
       const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -109,7 +109,7 @@ describe('When ProductUserCountForm is rendered', () => {
     describe('With default input', () => {
       it('should grow the count by 1', async () => {
 
-        setProductUserCountServiceReturnValues([0, 1])
+        setCounterServiceReturnValues([0, 1])
 
         const component = render(<ProductUserCountForm
           product={product}
@@ -119,7 +119,7 @@ describe('When ProductUserCountForm is rendered', () => {
           subtractUpdateText={'Poista'}
           tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
           tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
-          productUserCountService={productUserCountServiceMock}
+          counterService={counterServiceMock}
         />)
         const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -139,7 +139,7 @@ describe('When ProductUserCountForm is rendered', () => {
     describe('With user typed input', () => {
       it('should grow the count by user typed num', async () => {
 
-        setProductUserCountServiceReturnValues([0, 6])
+        setCounterServiceReturnValues([0, 6])
 
         const component = render(<ProductUserCountForm
           product={product}
@@ -149,7 +149,7 @@ describe('When ProductUserCountForm is rendered', () => {
           subtractUpdateText={'Poista'}
           tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
           tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
-          productUserCountService={productUserCountServiceMock}
+          counterService={counterServiceMock}
         />)
         const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -179,7 +179,7 @@ describe('When ProductUserCountForm is rendered', () => {
     describe('When counter is 0', () => {
       it('should not reduce the count', async () => {
 
-        setProductUserCountServiceReturnValues([0, -1])
+        setCounterServiceReturnValues([0, -1])
 
         const component = render(<ProductUserCountForm
           product={product}
@@ -189,7 +189,7 @@ describe('When ProductUserCountForm is rendered', () => {
           subtractUpdateText={'Poista'}
           tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
           tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
-          productUserCountService={productUserCountServiceMock}
+          counterService={counterServiceMock}
         />)
         const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -209,7 +209,7 @@ describe('When ProductUserCountForm is rendered', () => {
     describe('When counter is > 0', () => {
       it('should reduce the count', async () => {
 
-        setProductUserCountServiceReturnValues([0, 1, 2, 1])
+        setCounterServiceReturnValues([0, 1, 2, 1])
 
         const component = render(<ProductUserCountForm
           product={product}
@@ -219,7 +219,7 @@ describe('When ProductUserCountForm is rendered', () => {
           subtractUpdateText={'Poista'}
           tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
           tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
-          productUserCountService={productUserCountServiceMock}
+          counterService={counterServiceMock}
         />)
         const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
@@ -246,7 +246,7 @@ describe('When ProductUserCountForm is rendered', () => {
       describe('When trying to subtract more than counted', () => {
         it('should not change the count', async () => {
 
-          setProductUserCountServiceReturnValues([0, 1, 2, 3, -1])
+          setCounterServiceReturnValues([0, 1, 2, 3, -1])
 
           const component = render(<ProductUserCountForm
             product={product}
@@ -256,7 +256,7 @@ describe('When ProductUserCountForm is rendered', () => {
             subtractUpdateText={'Poista'}
             tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
             tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
-            productUserCountService={productUserCountServiceMock}
+            counterService={counterServiceMock}
           />)
           const productuserCountContainer = component.container.querySelector('#productUserCountContainer')
 
