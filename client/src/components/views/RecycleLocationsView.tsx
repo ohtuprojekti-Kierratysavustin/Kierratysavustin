@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import InfoBar from '../InfoBar'
 import Map from '../Map'
 import MaterialsCheckboxGroup from '../MaterialsCheckboxGroup'
@@ -19,7 +19,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
   const [filteredRecyclingSpots, setFilteredRecyclingSpots] = useState<any[]>([])
   const [mapCenter, setMapCenter] = useState(defaultCoordinates)
   const [materials, setMaterials] = useState<any[]>([])
-  const [input, setInput] = useState('')
+  const input = useRef('')
 
   useEffect(() => {
     const getCredentialsAndLoadMaterials = async () => {
@@ -68,11 +68,12 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
+
     var coordinates: [number, number] = defaultCoordinates
     var isPostalCode = /[0-9]{5}/
 
-    if (isPostalCode.test(input)) {    // jos hakusanana postinumero
-      await kierratysInfoService.getCollectionSpotsByPostalCode(input)
+    if (isPostalCode.test(input.current)) {    // jos hakusanana postinumero
+      await kierratysInfoService.getCollectionSpotsByPostalCode(input.current)
         .then(result => {
           setRecyclingSpots(result.results)
           const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
@@ -86,7 +87,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
         })
 
     } else {  // hakusanana paikkakunta tai joku muu
-      await kierratysInfoService.getCollectionSpotsByMunicipality(input)
+      await kierratysInfoService.getCollectionSpotsByMunicipality(input.current)
         .then(result => {
           setRecyclingSpots(result.results)
           const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
@@ -94,7 +95,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
           coordinates = [filteredSpots[0].geometry.coordinates[1], filteredSpots[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
-          setNotification((`Hakusanalla ${input} haettaessa ei löytynyt hakutuloksia!`)
+          setNotification((`Hakusanalla ${input.current} haettaessa ei löytynyt hakutuloksia!`)
             , 'error')
           console.log(error.message)
         })
@@ -114,7 +115,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
                   type="text"
                   placeholder="Kirjoita paikkakunnan nimi tai postinumero..."
                   id="hakusanaInput"
-                  onChange={({ target }) => setInput(target.value)} />
+                  onChange={(event) => input.current = event.target.value} />
               </Col>
               <Col>
                 <Button id='hakusanaSubmit' type="submit">
@@ -123,7 +124,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
               </Col>
             </Form.Group>
           </Form>
-          <MaterialsCheckboxGroup materials={materials}/>
+          <MaterialsCheckboxGroup materials={materials} />
           <Row>
             <Map mapCenter={mapCenter} recyclingSpots={filteredRecyclingSpots} />
           </Row>
