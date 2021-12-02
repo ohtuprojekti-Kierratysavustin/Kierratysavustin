@@ -30,7 +30,7 @@ type Props = {
 const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
   const history = useHistory()
   const { user, clearNotification } = useStore()
-  const [chartData, setChartData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+  const [chartData, setChartData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
   const [open, setOpen] = useState(false)
 
   const routeChange = () => {
@@ -131,7 +131,7 @@ const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
       <Container id='collapse-container'>
         <Row>
           <Col sm={10}>
-            <Collapse in={open}>
+            <Collapse in={open} >
               <div id="example-collapse-text">
                 <RecycleGraph data={chartData} graphTargetHeader={'Tuotteen \'' + product.name + '\' kierrätysaste'} />
               </div>
