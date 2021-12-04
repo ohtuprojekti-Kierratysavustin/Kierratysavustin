@@ -7,6 +7,8 @@ import { KierratysInfoService } from '../../services/kierratysInfo'
 import { Container, Button, Form, Row, Col } from 'react-bootstrap'
 import { ErrorResponse } from '../../types/requestResponses'
 import credentialService from '../../services/credentials'
+import { RecyclingSpot } from '../../types/objects'
+import { RecyclingMaterial } from '../../types/objects'
 
 type Props = {
   kierratysInfoService: KierratysInfoService
@@ -15,10 +17,10 @@ type Props = {
 const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
   var defaultCoordinates: [number, number] = [60.150, 24.96]
   const { setNotification, selectedMaterials } = useStore()
-  const [recyclingSpots, setRecyclingSpots] = useState<any[]>([])
-  const [filteredRecyclingSpots, setFilteredRecyclingSpots] = useState<any[]>([])
+  const [recyclingSpots, setRecyclingSpots] = useState<RecyclingSpot[]>([])
+  const [filteredRecyclingSpots, setFilteredRecyclingSpots] = useState<RecyclingSpot[]>([])
   const [mapCenter, setMapCenter] = useState(defaultCoordinates)
-  const [materials, setMaterials] = useState<any[]>([])
+  const [materials, setMaterials] = useState<RecyclingMaterial[]>([])
   const input = useRef('')
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
       kierratysInfoService.setKey(key)
       kierratysInfoService.getAllRecyclingMaterials()
         .then(res => {
-          setMaterials(res.results.sort((first: any, second: any) => {
+          setMaterials(res.results.sort((first: RecyclingMaterial, second: RecyclingMaterial) => {
             return ((first.name > second.name) ? 1 : -1)
           }))
         })
@@ -42,9 +44,9 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
     }
   }, [selectedMaterials])
 
-  const filterRecyclingSpotsByMaterials = (data: any[]) => {
-    let spots = data.filter((spot: { geometry: null }) => spot.geometry !== null)
-    let filteredSpots: any[]
+  const filterRecyclingSpotsByMaterials = (data: RecyclingSpot[]) => {
+    let spots = data.filter(spot => spot.geometry !== null)
+    let filteredSpots: RecyclingSpot[]
 
     if (selectedMaterials.length === 0) {
       spots.map(spot => {
@@ -54,19 +56,19 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
     } else {
       for (var i = 0; i < spots.length; i++) {
         spots[i].goodness = 0
-        const spotMaterials: any[] = spots[i].materials
+        const spotMaterials: RecyclingMaterial[] = spots[i].materials
         for (var j = 0; j < spotMaterials.length; j++) {
           for (var k = 0; k < selectedMaterials.length; k++) {
             if (selectedMaterials[k].code === spotMaterials[j].code) {
-              spots[i].goodness += 1
+              spots[i].goodness = (spots[i].goodness || 0) + 1
               break
             }
           }
         }
       }
       filteredSpots = spots
-        .filter(spot => spot.goodness > 0)
-        .sort((first, second) => second.goodness - first.goodness)
+        .filter(spot => (spot.goodness || 0) > 0)
+        .sort((first, second) => (second.goodness || 0) - (first.goodness || 0))
     }
 
     if (filteredSpots.length > 0) {
@@ -88,7 +90,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
       await kierratysInfoService.getCollectionSpotsByPostalCode(input.current)
         .then(result => {
           setRecyclingSpots(result.results)
-          const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
+          const filteredSpots: RecyclingSpot[] = filterRecyclingSpotsByMaterials(result.results)
           setFilteredRecyclingSpots(filteredSpots)
         })
         .catch((error: ErrorResponse) => {
@@ -101,7 +103,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
       await kierratysInfoService.getCollectionSpotsByMunicipality(input.current)
         .then(result => {
           setRecyclingSpots(result.results)
-          const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
+          const filteredSpots: RecyclingSpot[] = filterRecyclingSpotsByMaterials(result.results)
           setFilteredRecyclingSpots(filteredSpots)
         })
         .catch((error: ErrorResponse) => {
