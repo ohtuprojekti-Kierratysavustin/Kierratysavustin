@@ -44,6 +44,9 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
   const filterRecyclingSpotsByMaterials = (data: any[]) => {
     let spots = data.filter((spot: { geometry: null }) => spot.geometry !== null)
     if (selectedMaterials.length === 0) {
+      spots.map(spot => {
+        spot.goodness = undefined
+      })
       return (spots)
     }
 
@@ -63,13 +66,19 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
       .filter(spot => spot.goodness > 0)
       .sort((first, second) => second.goodness - first.goodness)
 
+    if (filteredSpots.length > 0) {
+      var coordinates: [number, number]
+      coordinates = [filteredSpots[0].geometry.coordinates[1], filteredSpots[0].geometry.coordinates[0]]
+      setMapCenter(coordinates)
+    } else {
+      setMapCenter(defaultCoordinates)
+    }
     return (filteredSpots)
   }
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
 
-    var coordinates: [number, number] = defaultCoordinates
     var isPostalCode = /[0-9]{5}/
 
     if (isPostalCode.test(input.current)) {    // jos hakusanana postinumero
@@ -78,7 +87,6 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
           setRecyclingSpots(result.results)
           const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
           setFilteredRecyclingSpots(filteredSpots)
-          coordinates = [filteredSpots[0].geometry.coordinates[1], filteredSpots[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
           setNotification((`Postinumerolla ${input} haettaessa ei löytynyt hakutuloksia!`)
@@ -92,7 +100,6 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
           setRecyclingSpots(result.results)
           const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
           setFilteredRecyclingSpots(filteredSpots)
-          coordinates = [filteredSpots[0].geometry.coordinates[1], filteredSpots[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
           setNotification((`Hakusanalla ${input.current} haettaessa ei löytynyt hakutuloksia!`)
@@ -100,7 +107,6 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
           console.log(error.message)
         })
     }
-    setMapCenter(coordinates)
   }
 
   return (
