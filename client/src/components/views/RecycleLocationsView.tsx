@@ -22,6 +22,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
   const input = useRef('')
 
   useEffect(() => {
+    console.log('reload')
     const getCredentialsAndLoadMaterials = async () => {
       const key = await credentialService.getCredentialsFor('KInfo')
       kierratysInfoService.setKey(key)
@@ -43,28 +44,30 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
 
   const filterRecyclingSpotsByMaterials = (data: any[]) => {
     let spots = data.filter((spot: { geometry: null }) => spot.geometry !== null)
+    let filteredSpots: any[]
+
     if (selectedMaterials.length === 0) {
       spots.map(spot => {
         spot.goodness = undefined
       })
-      return (spots)
-    }
-
-    for (var i = 0; i < spots.length; i++) {
-      spots[i].goodness = 0
-      const spotMaterials: any[] = spots[i].materials
-      for (var j = 0; j < spotMaterials.length; j++) {
-        for (var k = 0; k < selectedMaterials.length; k++) {
-          if (selectedMaterials[k].code === spotMaterials[j].code) {
-            spots[i].goodness += 1
-            break
+      filteredSpots = spots
+    } else {
+      for (var i = 0; i < spots.length; i++) {
+        spots[i].goodness = 0
+        const spotMaterials: any[] = spots[i].materials
+        for (var j = 0; j < spotMaterials.length; j++) {
+          for (var k = 0; k < selectedMaterials.length; k++) {
+            if (selectedMaterials[k].code === spotMaterials[j].code) {
+              spots[i].goodness += 1
+              break
+            }
           }
         }
       }
+      filteredSpots = spots
+        .filter(spot => spot.goodness > 0)
+        .sort((first, second) => second.goodness - first.goodness)
     }
-    let filteredSpots: any[] = spots
-      .filter(spot => spot.goodness > 0)
-      .sort((first, second) => second.goodness - first.goodness)
 
     if (filteredSpots.length > 0) {
       var coordinates: [number, number]
