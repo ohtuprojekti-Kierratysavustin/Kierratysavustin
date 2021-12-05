@@ -24,7 +24,6 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
   const input = useRef('')
 
   useEffect(() => {
-    console.log('reload')
     const getCredentialsAndLoadMaterials = async () => {
       const key = await credentialService.getCredentialsFor('KInfo')
       kierratysInfoService.setKey(key)
