@@ -6,15 +6,16 @@ import { useStore } from '../../store'
 import { KierratysInfoService } from '../../services/kierratysInfo'
 import { Container, Button, Form, Row, Col } from 'react-bootstrap'
 import { ErrorResponse } from '../../types/requestResponses'
-import credentialService from '../../services/credentials'
+import { CredentialService } from '../../services/credentials'
 import { RecyclingSpot } from '../../types/objects'
 import { RecyclingMaterial } from '../../types/objects'
 
 type Props = {
-  kierratysInfoService: KierratysInfoService
+  kierratysInfoService: KierratysInfoService,
+  credentialService: CredentialService
 }
 
-const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
+const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService, credentialService }) => {
   var defaultCoordinates: [number, number] = [60.150, 24.96]
   const { setNotification, selectedMaterials } = useStore()
   const [recyclingSpots, setRecyclingSpots] = useState<RecyclingSpot[]>([])
