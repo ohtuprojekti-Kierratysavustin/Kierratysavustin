@@ -1,12 +1,13 @@
 import React from 'react'
-import { useStore } from '../store'
 import CheckboxGroup from 'react-checkbox-group'
+import { RecyclingMaterial } from '../types/objects'
 
 type Props = {
-  materials: any[]
+  materials: any[],
+  selectedMaterials: RecyclingMaterial[],
+  setSelectedMaterials: React.Dispatch<React.SetStateAction<RecyclingMaterial[]>>
 }
-const MaterialsCheckboxGroup: React.FC<Props> = ({ materials }) => {
-  const { selectedMaterials, setSelectedMaterials } = useStore()
+const MaterialsCheckboxGroup: React.FC<Props> = ({ materials, selectedMaterials, setSelectedMaterials }) => {
 
   return (
     <div>

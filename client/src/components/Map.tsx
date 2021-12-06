@@ -1,20 +1,19 @@
 import React, { useEffect } from 'react'
-import { useStore } from '../store'
 import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMap } from '@monsonjeremy/react-leaflet'
 import L from 'leaflet'
-import { RecyclingSpot } from '../types/objects'
+import { RecyclingSpot, RecyclingMaterial } from '../types/objects'
 
 type Props = {
   mapCenter: [number, number],
-  recyclingSpots: RecyclingSpot[]
+  recyclingSpots: RecyclingSpot[],
+  selectedMaterials: RecyclingMaterial[]
 }
 
 type CentererProps = {
   center: [number, number]
 }
 
-const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
-  const { selectedMaterials } = useStore()
+const Map: React.FC<Props> = ({ mapCenter, recyclingSpots, selectedMaterials }) => {
 
   const Markers = () => {
     if (!recyclingSpots || recyclingSpots.length === 0) {
@@ -35,7 +34,7 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
         {recyclingSpots.map(spot => {
           return (
             <Marker position={[spot.geometry.coordinates[1], spot.geometry.coordinates[0]]} key={spot.spot_id} icon={greenMarker}>
-              <Tooltip offset={[0, 0]} opacity={spot.goodness === undefined ? 0 : 0.85} permanent><b>{spot.goodness}</b></Tooltip>
+              {selectedMaterials.length > 0 && <Tooltip offset={[0, 0]} opacity={spot.goodness === undefined ? 0 : 0.85} permanent><b>{spot.goodness}</b></Tooltip>}
               <Popup>
                 <b><h6>{spot.name}</h6></b>
                 {spot.operator} <br />
@@ -44,13 +43,13 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
                 {spot.materials.map(material => {
                   if (selectedMaterials.map(m => m.code).includes(material.code)) {
                     return (
-                      <div key={1} className='selected-materials'>
+                      <div key={material.code} className='selected-materials'>
                         <b>{material.name}</b> <br />
                       </div>
                     )
                   } else {
                     return (
-                      <div key={1}>
+                      <div key={material.code}>
                         {material.name} <br />
                       </div>
                     )
@@ -78,7 +77,7 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots }) => {
 
   const RecycleLocationsMap: React.FC<CentererProps> = ({ center }) => {
     return (
-      <MapContainer zoom={13} scrollWheelZoom={true}>
+      <MapContainer zoom={12} scrollWheelZoom={true}>
         <Centerer center={center} />
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

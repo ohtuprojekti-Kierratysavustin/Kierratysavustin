@@ -8,7 +8,6 @@ export const useStore = create<{
   setFavorites: (param: Product[]) => void,
   setLikes: (param: number[]) => void,
   setDislikes: (param: number[]) => void,
-  setSelectedMaterials: (param: any[]) => void,
   setFilteredProducts: (param: Product[]) => void,
   setProducts: (param: Product[]) => void,
   updateProduct: (param: Product) => void,
@@ -19,10 +18,9 @@ export const useStore = create<{
   favorites: Product[],
   likes: number[],
   dislikes: number[],
-  selectedMaterials: any[],
   filteredProducts: Product[],
   productStatistics: ProductStatistic[],
-  notification: { message: string | null, condition: string | null},
+  notification: { message: string | null, condition: string | null },
   timer: any
     }>(set => ({
       products: [],
@@ -30,7 +28,6 @@ export const useStore = create<{
       favorites: [],
       likes: [],
       dislikes: [],
-      selectedMaterials: [],
       productStatistics: [],
       user: null,
       notification: { message: null, condition: null },
@@ -40,7 +37,6 @@ export const useStore = create<{
       setFavorites: (param) => set(() => ({ favorites: param })),
       setLikes: (param) => set(() => ({ likes: param })),
       setDislikes: (param) => set(() => ({ dislikes: param })),
-      setSelectedMaterials: (param) => set(() => ({ selectedMaterials: param })),
       setFilteredProducts: (param) => set(() => ({ filteredProducts: param })),
       clearNotification: () => set(() => ({ notification: { message: null, condition: null } })),
 
@@ -49,7 +45,8 @@ export const useStore = create<{
         clearTimer: clearTimeout(state.timer),
         notification: { message, condition },
         timer: setTimeout(() => {
-          state.clearNotification() }, 5000)
+          state.clearNotification()
+        }, 5000)
       })),
 
       updateProduct: (param) => set(state => ({
@@ -66,9 +63,9 @@ export const useStore = create<{
       setProductStatistics: (stats) => set(() => ({ productStatistics: stats })),
     }))
 
-const addOrUpdateRecyclingStat = (stats :ProductStatistic[], newStat :ProductStatistic) :ProductStatistic[] => {
-  if (stats.some(stat => stat.productID.id === newStat.productID.id )) {
-    const newStats :ProductStatistic[] = stats.map(stat => ({
+const addOrUpdateRecyclingStat = (stats: ProductStatistic[], newStat: ProductStatistic): ProductStatistic[] => {
+  if (stats.some(stat => stat.productID.id === newStat.productID.id)) {
+    const newStats: ProductStatistic[] = stats.map(stat => ({
       ...stat,
       recycleCount: stat.productID.id === newStat.productID.id ? newStat.recycleCount : stat.recycleCount,
       purchaseCount: stat.productID.id === newStat.productID.id ? newStat.purchaseCount : stat.purchaseCount
