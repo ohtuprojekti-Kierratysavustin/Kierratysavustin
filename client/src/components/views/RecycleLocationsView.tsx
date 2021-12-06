@@ -7,8 +7,7 @@ import { KierratysInfoService } from '../../services/kierratysInfo'
 import { Container, Button, Form, Row, Col } from 'react-bootstrap'
 import { ErrorResponse } from '../../types/requestResponses'
 import { CredentialService } from '../../services/credentials'
-import { RecyclingSpot } from '../../types/objects'
-import { RecyclingMaterial } from '../../types/objects'
+import { RecyclingSpot, RecyclingMaterial } from '../../types/objects'
 
 type Props = {
   kierratysInfoService: KierratysInfoService,
@@ -17,11 +16,12 @@ type Props = {
 
 const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService, credentialService }) => {
   var defaultCoordinates: [number, number] = [60.150, 24.96]
-  const { setNotification, selectedMaterials } = useStore()
+  const { setNotification } = useStore()
   const [recyclingSpots, setRecyclingSpots] = useState<RecyclingSpot[]>([])
   const [filteredRecyclingSpots, setFilteredRecyclingSpots] = useState<RecyclingSpot[]>([])
   const [mapCenter, setMapCenter] = useState(defaultCoordinates)
   const [materials, setMaterials] = useState<RecyclingMaterial[]>([])
+  const [selectedMaterials, setSelectedMaterials] = useState<RecyclingMaterial[]>([])
   const input = useRef('')
 
   useEffect(() => {
@@ -135,9 +135,9 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService, credentia
               </Col>
             </Form.Group>
           </Form>
-          <MaterialsCheckboxGroup materials={materials} />
+          <MaterialsCheckboxGroup materials={materials} selectedMaterials={selectedMaterials} setSelectedMaterials={setSelectedMaterials} />
           <Row>
-            <Map mapCenter={mapCenter} recyclingSpots={filteredRecyclingSpots} />
+            <Map mapCenter={mapCenter} recyclingSpots={filteredRecyclingSpots} selectedMaterials={selectedMaterials} />
           </Row>
         </Container>
       </div>
