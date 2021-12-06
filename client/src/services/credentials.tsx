@@ -10,4 +10,8 @@ const getCredentialsFor = (service: string) => {
     .catch(error => Promise.reject(error.response.data))
 }
 
-export default { getCredentialsFor }
+export type CredentialService = {
+  getCredentialsFor: (service: string) => Promise<any>
+}
+
+export const credentialService: CredentialService = { getCredentialsFor }

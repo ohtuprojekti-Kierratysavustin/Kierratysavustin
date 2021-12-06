@@ -7,6 +7,7 @@ import productService from './services/products'
 import tokenService from './services/token'
 import { kierratysInfoService } from './services/kierratysInfo'
 import { statisticsService } from './services/statistics'
+import { credentialService } from './services/credentials'
 import NavigationBar from './components/NavigationBar'
 import ProductForm from './components/forms/ProductForm'
 import ProductView from './components/views/ProductView'
@@ -73,7 +74,7 @@ const App = () => {
           <RecycleStatisticsView />
         </Route>
         <Route path="/recycleLocations">
-          <RecycleLocationsView kierratysInfoService={kierratysInfoService} />
+          <RecycleLocationsView kierratysInfoService={kierratysInfoService} credentialService={credentialService} />
         </Route>
         <Route path="/">
           <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />

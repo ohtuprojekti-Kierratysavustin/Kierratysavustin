@@ -282,8 +282,24 @@ h2 {
 }
 
 .leaflet-container {
-    height: 100vh;
+    height: 50vh;
     width: 100vw;
+}
+
+.leaflet-tooltip {
+  border-radius: 6px;
+  bottom: -5px;
+}
+.leaflet-tooltip-right {
+  margin-left: 18px;
+}
+
+.leaflet-tooltip-left {
+  margin-left: -18px;
+}
+
+.selected-materials {
+  color: #137547;
 }
 
 input {
