@@ -71,5 +71,6 @@ export type RecyclingSpot = {
   description_se: string,
   description_en: string,
   occupied: boolean,
-  additional_details: string
+  additional_details: string,
+  goodness: number | undefined
 }

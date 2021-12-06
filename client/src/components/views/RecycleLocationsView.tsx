@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import InfoBar from '../InfoBar'
 import Map from '../Map'
-import CheckboxGroup from 'react-checkbox-group'
+import MaterialsCheckboxGroup from '../MaterialsCheckboxGroup'
 import { useStore } from '../../store'
 import { KierratysInfoService } from '../../services/kierratysInfo'
 import { Container, Button, Form, Row, Col } from 'react-bootstrap'
 import { ErrorResponse } from '../../types/requestResponses'
-import credentialService from '../../services/credentials'
+import { CredentialService } from '../../services/credentials'
+import { RecyclingSpot, RecyclingMaterial } from '../../types/objects'
 
 type Props = {
-  kierratysInfoService: KierratysInfoService
+  kierratysInfoService: KierratysInfoService,
+  credentialService: CredentialService
 }
 
-const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
+const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService, credentialService }) => {
   var defaultCoordinates: [number, number] = [60.150, 24.96]
   const { setNotification } = useStore()
-  const [recyclingSpots, setRecyclingSpots] = useState<any[]>([])
-  const [filteredRecyclingSpots, setFilteredRecyclingSpots] = useState<any[]>([])
+  const [recyclingSpots, setRecyclingSpots] = useState<RecyclingSpot[]>([])
+  const [filteredRecyclingSpots, setFilteredRecyclingSpots] = useState<RecyclingSpot[]>([])
   const [mapCenter, setMapCenter] = useState(defaultCoordinates)
-  const [materials, setMaterials] = useState<any[]>([])
-  const [selectedMaterials, setSelectedMaterials] = useState<any[]>([])
-  const [input, setInput] = useState('')
+  const [materials, setMaterials] = useState<RecyclingMaterial[]>([])
+  const [selectedMaterials, setSelectedMaterials] = useState<RecyclingMaterial[]>([])
+  const input = useRef('')
 
   useEffect(() => {
     const getCredentialsAndLoadMaterials = async () => {
@@ -28,7 +30,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
       kierratysInfoService.setKey(key)
       kierratysInfoService.getAllRecyclingMaterials()
         .then(res => {
-          setMaterials(res.results.sort((first: any, second: any) => {
+          setMaterials(res.results.sort((first: RecyclingMaterial, second: RecyclingMaterial) => {
             return ((first.name > second.name) ? 1 : -1)
           }))
         })
@@ -42,45 +44,54 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
     }
   }, [selectedMaterials])
 
-  const filterRecyclingSpotsByMaterials = (data: any[]) => {
-    let spots = data.filter((spot: { geometry: null }) => spot.geometry !== null)
+  const filterRecyclingSpotsByMaterials = (data: RecyclingSpot[]) => {
+    let spots = data.filter(spot => spot.geometry !== null)
+    let filteredSpots: RecyclingSpot[]
 
     if (selectedMaterials.length === 0) {
-      return (spots)
-    }
-
-    for (var i = 0; i < spots.length; i++) {
-      spots[i].goodness = 0
-      const spotMaterials: any[] = spots[i].materials
-      for (var j = 0; j < spotMaterials.length; j++) {
-        for (var k = 0; k < selectedMaterials.length; k++) {
-          if (selectedMaterials[k].code === spotMaterials[j].code) {
-            spots[i].goodness += 1
-            break
+      spots.map(spot => {
+        spot.goodness = undefined
+      })
+      filteredSpots = spots
+    } else {
+      for (var i = 0; i < spots.length; i++) {
+        spots[i].goodness = 0
+        const spotMaterials: RecyclingMaterial[] = spots[i].materials
+        for (var j = 0; j < spotMaterials.length; j++) {
+          for (var k = 0; k < selectedMaterials.length; k++) {
+            if (selectedMaterials[k].code === spotMaterials[j].code) {
+              spots[i].goodness = (spots[i].goodness || 0) + 1
+              break
+            }
           }
         }
       }
+      filteredSpots = spots
+        .filter(spot => (spot.goodness || 0) > 0)
+        .sort((first, second) => (second.goodness || 0) - (first.goodness || 0))
     }
 
-    let filteredSpots: any[] = spots
-      .filter(spot => spot.goodness > 0)
-      .sort((first, second) => second.goodness - first.goodness)
-
+    if (filteredSpots.length > 0) {
+      var coordinates: [number, number]
+      coordinates = [filteredSpots[0].geometry.coordinates[1], filteredSpots[0].geometry.coordinates[0]]
+      setMapCenter(coordinates)
+    } else {
+      setMapCenter(defaultCoordinates)
+    }
     return (filteredSpots)
   }
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
-    var coordinates: [number, number] = defaultCoordinates
+
     var isPostalCode = /[0-9]{5}/
 
-    if (isPostalCode.test(input)) {    // jos hakusanana postinumero
-      await kierratysInfoService.getCollectionSpotsByPostalCode(input)
+    if (isPostalCode.test(input.current)) {    // jos hakusanana postinumero
+      await kierratysInfoService.getCollectionSpotsByPostalCode(input.current)
         .then(result => {
           setRecyclingSpots(result.results)
-          const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
+          const filteredSpots: RecyclingSpot[] = filterRecyclingSpotsByMaterials(result.results)
           setFilteredRecyclingSpots(filteredSpots)
-          coordinates = [filteredSpots[0].geometry.coordinates[1], filteredSpots[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
           setNotification((`Postinumerolla ${input} haettaessa ei löytynyt hakutuloksia!`)
@@ -89,20 +100,18 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
         })
 
     } else {  // hakusanana paikkakunta tai joku muu
-      await kierratysInfoService.getCollectionSpotsByMunicipality(input)
+      await kierratysInfoService.getCollectionSpotsByMunicipality(input.current)
         .then(result => {
           setRecyclingSpots(result.results)
-          const filteredSpots: any[] = filterRecyclingSpotsByMaterials(result.results)
+          const filteredSpots: RecyclingSpot[] = filterRecyclingSpotsByMaterials(result.results)
           setFilteredRecyclingSpots(filteredSpots)
-          coordinates = [filteredSpots[0].geometry.coordinates[1], filteredSpots[0].geometry.coordinates[0]]
         })
         .catch((error: ErrorResponse) => {
-          setNotification((`Hakusanalla ${input} haettaessa ei löytynyt hakutuloksia!`)
+          setNotification((`Hakusanalla ${input.current} haettaessa ei löytynyt hakutuloksia!`)
             , 'error')
           console.log(error.message)
         })
     }
-    setMapCenter(coordinates)
   }
 
   return (
@@ -117,7 +126,7 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
                   type="text"
                   placeholder="Kirjoita paikkakunnan nimi tai postinumero..."
                   id="hakusanaInput"
-                  onChange={({ target }) => setInput(target.value)} />
+                  onChange={(event) => input.current = event.target.value} />
               </Col>
               <Col>
                 <Button id='hakusanaSubmit' type="submit">
@@ -126,21 +135,9 @@ const RecycleLocationsView: React.FC<Props> = ({ kierratysInfoService }) => {
               </Col>
             </Form.Group>
           </Form>
-          <CheckboxGroup name='materiaalit' value={selectedMaterials} onChange={setSelectedMaterials}>
-            {(Checkbox: any) => (
-              <>
-                {materials.map(material => {
-                  return (
-                    <label className='checkboxcontainer' key={material.code}>
-                      <Checkbox value={material} className='checkbox' /> {material.name}
-                    </label>
-                  )
-                })}
-              </>
-            )}
-          </CheckboxGroup>
+          <MaterialsCheckboxGroup materials={materials} selectedMaterials={selectedMaterials} setSelectedMaterials={setSelectedMaterials} />
           <Row>
-            <Map mapCenter={mapCenter} recyclingSpots={filteredRecyclingSpots} />
+            <Map mapCenter={mapCenter} recyclingSpots={filteredRecyclingSpots} selectedMaterials={selectedMaterials} />
           </Row>
         </Container>
       </div>

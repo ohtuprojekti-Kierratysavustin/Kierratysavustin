@@ -1,4 +1,25 @@
-export const recycleMaterials = { 'count': 20, 'next': null, 'previous': null, 'results': [{ 'code': 120, 'name': 'Poistotekstiili' }, { 'code': 119, 'name': 'Rakennus- ja purkujäte' }, { 'code': 118, 'name': 'Kyllästetty puu' }, { 'code': 117, 'name': 'Puu' }, { 'code': 116, 'name': 'Lamput' }, { 'code': 115, 'name': 'Ajoneuvoakut (lyijy)' }, { 'code': 114, 'name': 'Muu jäte' }, { 'code': 113, 'name': 'Tekstiili' }, { 'code': 111, 'name': 'Muovi' }, { 'code': 110, 'name': 'Kannettavat akut ja paristot' }, { 'code': 109, 'name': 'Sähkölaitteet (SER)' }, { 'code': 108, 'name': 'Vaarallinen jäte' }, { 'code': 107, 'name': 'Lasi' }, { 'code': 106, 'name': 'Metalli' }, { 'code': 105, 'name': 'Kartonki' }, { 'code': 104, 'name': 'Pahvi' }, { 'code': 103, 'name': 'Paperi' }, { 'code': 102, 'name': 'Energiajäte' }, { 'code': 101, 'name': 'Puutarhajäte' }, { 'code': 100, 'name': 'Sekajäte' }] }
+export const recycleMaterials = { results:[
+  { 'code': 120, 'name': 'Poistotekstiili' },
+  { 'code': 119, 'name': 'Rakennus- ja purkujäte' },
+  { 'code': 118, 'name': 'Kyllästetty puu' },
+  { 'code': 117, 'name': 'Puu' },
+  { 'code': 116, 'name': 'Lamput' },
+  { 'code': 115, 'name': 'Ajoneuvoakut (lyijy)' },
+  { 'code': 114, 'name': 'Muu jäte' },
+  { 'code': 113, 'name': 'Tekstiili' },
+  { 'code': 111, 'name': 'Muovi' },
+  { 'code': 110, 'name': 'Kannettavat akut ja paristot' },
+  { 'code': 109, 'name': 'Sähkölaitteet (SER)' },
+  { 'code': 108, 'name': 'Vaarallinen jäte' },
+  { 'code': 107, 'name': 'Lasi' },
+  { 'code': 106, 'name': 'Metalli' },
+  { 'code': 105, 'name': 'Kartonki' },
+  { 'code': 104, 'name': 'Pahvi' },
+  { 'code': 103, 'name': 'Paperi' },
+  { 'code': 102, 'name': 'Energiajäte' },
+  { 'code': 101, 'name': 'Puutarhajäte' },
+  { 'code': 100, 'name': 'Sekajäte' }
+] }
 
 export const validLocation1 = {
   'spot_id': 1218666057,
