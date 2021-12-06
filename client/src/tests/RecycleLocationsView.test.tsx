@@ -33,16 +33,18 @@ describe('When RecycleLocationsView is rendered', () => {
     jest.clearAllMocks()
   })
 
-  beforeEach(() => {
+  beforeEach( async () => {
 
     kierratysInfoServiceMock.getAllRecyclingMaterials.mockResolvedValue(recycleMaterials)
-    kierratysInfoServiceMock.getCollectionSpotsByPostalCode.mockResolvedValue(validLocation1)
-    kierratysInfoServiceMock.getCollectionSpotsByMunicipality.mockResolvedValue(validLocation2)
+    kierratysInfoServiceMock.getCollectionSpotsByPostalCode.mockResolvedValue({results: [validLocation1, validLocation2]})
+    kierratysInfoServiceMock.getCollectionSpotsByMunicipality.mockResolvedValue({results: [validLocation2]})
     credentialServiceMock.getCredentialsFor.mockResolvedValue('123abc')
 
-    component = render(
-      <RecycleLocationsView kierratysInfoService={kierratysInfoServiceMock} credentialService={credentialServiceMock} />
-    )
+    await act( async () => {
+      component = render(
+        <RecycleLocationsView kierratysInfoService={kierratysInfoServiceMock} credentialService={credentialServiceMock} />
+      )
+    })
 
     searchButton = component.container.querySelector('button[type="submit"]')
     searchField = component.container.querySelector('input[type="text"]')
