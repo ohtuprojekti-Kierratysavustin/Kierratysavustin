@@ -20,7 +20,7 @@ export const useStore = create<{
   dislikes: number[],
   filteredProducts: Product[],
   productStatistics: ProductStatistic[],
-  notification: { message: string | null, condition: string | null},
+  notification: { message: string | null, condition: string | null },
   timer: any
     }>(set => ({
       products: [],
@@ -45,7 +45,8 @@ export const useStore = create<{
         clearTimer: clearTimeout(state.timer),
         notification: { message, condition },
         timer: setTimeout(() => {
-          state.clearNotification() }, 5000)
+          state.clearNotification()
+        }, 5000)
       })),
 
       updateProduct: (param) => set(state => ({
@@ -63,11 +64,11 @@ export const useStore = create<{
     }))
 
 const addOrUpdateRecyclingStat = (stats :ProductStatistic[], newStat :ProductStatistic) :ProductStatistic[] => {
-  if (stats.some(stat => stat.productID.id === newStat.productID.id )) {
+  if (stats.some(stat => stat.product.id === newStat.product.id )) {
     const newStats :ProductStatistic[] = stats.map(stat => ({
       ...stat,
-      recycleCount: stat.productID.id === newStat.productID.id ? newStat.recycleCount : stat.recycleCount,
-      purchaseCount: stat.productID.id === newStat.productID.id ? newStat.purchaseCount : stat.purchaseCount
+      recycleCount: stat.product.id === newStat.product.id ? newStat.recycleCount : stat.recycleCount,
+      purchaseCount: stat.product.id === newStat.product.id ? newStat.purchaseCount : stat.purchaseCount
     }))
     return newStats
   }

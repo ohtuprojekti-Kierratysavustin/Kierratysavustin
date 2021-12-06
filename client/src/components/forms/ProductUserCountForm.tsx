@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ProductUserCountService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/productUserCount'
+import { CounterService, PRODUCT_USER_COUNT_REQUEST_TYPE } from '../../services/counters'
 import { Button, Container, Col, ButtonGroup } from 'react-bootstrap'
 import '../../styles.css'
 import { Product } from '../../types/objects'
@@ -9,6 +9,8 @@ import { isInteger } from '../../utils/validation'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import { ErrorResponse } from '../../types/requestResponses'
+import { StatisticsService } from '../../services/statistics'
+import { endOfDay } from 'date-fns'
 
 type Props = {
   product: Product,
@@ -18,10 +20,12 @@ type Props = {
   subtractUpdateText: string,
   tooltipAdd: string,
   tooltipDelete: string,
-  productUserCountService: ProductUserCountService
+  counterService: CounterService,
+  statisticsService: StatisticsService | null | undefined,
+  setChartData: React.Dispatch<React.SetStateAction<number[]>> | null | undefined
 }
 
-const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, subtractUpdateText, tooltipAdd, tooltipDelete, productUserCountService }) => {
+const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText, sendUpdateText, subtractUpdateText, tooltipAdd, tooltipDelete, counterService, statisticsService, setChartData }) => {
   const [count, setCount] = useState<number>(0)
   const amountToAdd = useInput<number>(1, 1)
   const [inputInvalid, setInputInvalid] = useState<boolean>(false)
@@ -39,19 +43,29 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
   }
 
   useEffect(() => {
-    const getCounts = async () => {
-      await productUserCountService.getProductUserCounts(product.id)
-        .then(counts => setCount(counts[countType]))
-        .catch((error: ErrorResponse) => {
-          setNotification(error.message, 'error')
-        })
-    }
-    getCounts()
+    counterService.getProductUserCounts(product.id)
+      .then(counts => setCount(counts[countType]))
+      .then(() => {
+        if (setChartData && statisticsService) {
+          let numberOfDays = 30
+          //TODO, ladataan liian monta kertaa
+          statisticsService.getUserCumulativeRecyclingRatesPerDay(endOfDay(new Date()).getTime(), numberOfDays, product.id).then((res) => {
+            setChartData(res)
+          })
+            .catch((error) => {
+              setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe haettaessa dataa kierrätysastekuvaajalle!'), 'error')
+            })
+        }
+      })
+      .catch((error: ErrorResponse) => {
+        setNotification(error.message, 'error')
+      })
+
   }, [count])
 
   const updateStatsInStore = (purchases: number, recycles: number) => {
     updateProductStatistics({
-      productID: product,
+      product: product,
       purchaseCount: purchases,
       recycleCount: recycles,
     })
@@ -60,7 +74,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
   const handleAddCount: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     clearNotification()
-    await productUserCountService.updateCount({ productID: product.id, amount: amountToAdd.value, type: countType })
+    await counterService.updateProductUserCount({ productID: product.id, amount: amountToAdd.value, type: countType })
       .then((result) => {
         setCount(count + Number(amountToAdd.value))
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)
@@ -73,7 +87,7 @@ const ProductUserCountForm: React.FC<Props> = ({ product, countType, amountText,
   const handleSubtractCount: React.MouseEventHandler<HTMLElement> = async (event) => {
     event.preventDefault()
     clearNotification()
-    await productUserCountService.updateCount({ productID: product.id, amount: -amountToAdd.value, type: countType })
+    await counterService.updateProductUserCount({ productID: product.id, amount: -amountToAdd.value, type: countType })
       .then((result) => {
         setCount(count - Number(amountToAdd.value))
         updateStatsInStore(result.resource.purchaseCount, result.resource.recycleCount)

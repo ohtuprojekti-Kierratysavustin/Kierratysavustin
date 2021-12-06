@@ -7,7 +7,7 @@ import logo from '../media/logo.png'
 import { Container, Media, ListGroup, Row, Col } from 'react-bootstrap'
 import { Product } from '../types/objects'
 import ProductUserCountForm from './forms/ProductUserCountForm'
-import { PRODUCT_USER_COUNT_REQUEST_TYPE, productUserCountService } from '../services/productUserCount'
+import { PRODUCT_USER_COUNT_REQUEST_TYPE, counterService } from '../services/counters'
 import DeleteProduct from './forms/DeleteProduct'
 import { useStore } from '../store'
 
@@ -87,7 +87,9 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
                                 subtractUpdateText={'Vähennä'}
                                 tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
                                 tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
-                                productUserCountService={productUserCountService}
+                                counterService={counterService}
+                                statisticsService={undefined}
+                                setChartData={undefined}
                               />
                             </Col>
                             <Col sm={2}>
@@ -99,7 +101,9 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
                                 subtractUpdateText={'Vähennä'}
                                 tooltipAdd={'Kasvata tuotteen kierrätystilastoa.'}
                                 tooltipDelete={'Vähennä tuotteen kierrätystilastoa.'}
-                                productUserCountService={productUserCountService}
+                                counterService={counterService}
+                                statisticsService={undefined}
+                                setChartData={undefined}
                               />
                             </Col>
                           </>
