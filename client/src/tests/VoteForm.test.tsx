@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent, RenderResult } from '@testing-library/react'
 import VoteForm from '../components/forms/VoteForm'
 import { Instruction, Product, User } from '../types/objects'
+import { USER_ROLES } from '../enums/roles'
 
 
 describe('When RegisterForm is rendered', () => {
@@ -24,7 +25,8 @@ describe('When RegisterForm is rendered', () => {
       token: 'GEDSFWAEGW',
       likes: [],
       dislikes: [],
-      favoriteProducts: []
+      favoriteProducts: [],
+      role: USER_ROLES['User'].name
     }
 
     product = {

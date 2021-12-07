@@ -2,28 +2,6 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@monsonjeremy/react-leaflet": "^3.2.2",
-    "@testing-library/user-event": "^12.8.3",
-    "axios": "^0.21.4",
-    "bootstrap": "^4.6.0",
-    "chart.js": "^3.5.1",
-    "date-fns": "^2.25.0",
-    "formik": "^2.2.9",
-    "http-status": "^1.5.0",
-    "leaflet": "^1.7.1",
-    "react": "^17.0.2",
-    "react-bootstrap": "^1.6.3",
-    "react-chartjs-2": "^3.3.0",
-    "react-checkbox-group": "^5.0.2",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^5.3.0",
-    "react-scripts": "4.0.2",
-    "typescript": "^4.4.3",
-    "web-vitals": "^1.1.2",
-    "yup": "^0.32.9",
-    "zustand": "^3.5.10"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -49,22 +27,44 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@types/jest": "^27.0.1",
-    "@types/leaflet": "^1.7.5",
-    "@types/node": "^16.9.3",
-    "@types/react": "^17.0.20",
-    "@types/react-dom": "^17.0.9",
-    "@types/react-router-dom": "^5.1.8",
-    "eslint": "^7.32.0",
-    "eslint-plugin-cypress": "^2.12.1",
-    "jest-canvas-mock": "^2.3.1"
-  },
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!react-checkbox-group|CheckboxGroup)"
     ]
+  },
+  "dependencies": {
+    "@monsonjeremy/react-leaflet": "^3.2.2",
+    "axios": "^0.24.0",
+    "bootstrap": "^5.1.3",
+    "chart.js": "^3.6.2",
+    "date-fns": "^2.27.0",
+    "formik": "^2.2.9",
+    "http-status": "^1.5.0",
+    "leaflet": "^1.7.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.0.3",
+    "react-chartjs-2": "^4.0.0",
+    "react-checkbox-group": "^5.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.0.2",
+    "react-scripts": "^5.0.0-next.47",
+    "typescript": "^4.5.2",
+    "web-vitals": "^2.1.2",
+    "yup": "^0.32.11",
+    "zustand": "^3.6.7"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.0.3",
+    "@types/leaflet": "^1.7.6",
+    "@types/node": "^16.11.12",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-router-dom": "^5.3.2",
+    "eslint": "^7.32.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "jest-canvas-mock": "^2.3.1"
   }
 }

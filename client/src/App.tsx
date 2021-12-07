@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {
-  Switch, Route, useRouteMatch
+  Routes, Route, useMatch
 } from 'react-router-dom'
 import { userService } from './services/user'
 import productService from './services/products'
@@ -42,7 +42,7 @@ const App = () => {
     }
   }, [])
 
-  const match = useRouteMatch<{ id: string }>('/products/:id')
+  const match = useMatch('/products/:id')
   const product = match
     ? products.find(p => p.id.toString() === match.params.id)
     : undefined
@@ -51,35 +51,26 @@ const App = () => {
     <div id='background'>
       <NavigationBar />
       <Notification />
-      <Switch >
-        <Route path="/products/:id">
-          <ProductView product={product} statisticsService={statisticsService}/>
+      <Routes >
+        <Route path="/products/:id" element={<ProductView product={product} statisticsService={statisticsService} />}>
         </Route>
-        <Route path="/register">
-          <RegisterForm userService={userService} />
+        <Route path="/register" element={<RegisterForm userService={userService} />}>
         </Route>
-        <Route path="/login">
-          <LoginForm />
+        <Route path="/login" element={<LoginForm />}>
         </Route>
-        <Route path="/new">
-          <ProductForm />
+        <Route path="products/new" element={<ProductForm />}>
         </Route>
-        <Route path="/products">
-          <ProductListView products={products} setFilteredProducts={setFilteredProducts} />
+        <Route path="/products" element={<ProductListView products={products} setFilteredProducts={setFilteredProducts} />}>
         </Route>
-        <Route path="/searchResults">
-          <ProductListView products={filteredProducts} setFilteredProducts={setFilteredProducts} />
+        <Route path="/searchResults" element={<ProductListView products={filteredProducts} setFilteredProducts={setFilteredProducts} />}>
         </Route>
-        <Route path="/statistics">
-          <RecycleStatisticsView />
+        <Route path="/statistics" element={<RecycleStatisticsView />}>
         </Route>
-        <Route path="/recycleLocations">
-          <RecycleLocationsView kierratysInfoService={kierratysInfoService} credentialService={credentialService} />
+        <Route path="/recycleLocations" element={<RecycleLocationsView kierratysInfoService={kierratysInfoService} credentialService={credentialService} />}>
         </Route>
-        <Route path="/">
-          <ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />
+        <Route path="/" element={<ProductFilterForm products={products} setFilteredProducts={setFilteredProducts} />}>
         </Route>
-      </Switch>
+      </Routes>
     </div>
   )
 }

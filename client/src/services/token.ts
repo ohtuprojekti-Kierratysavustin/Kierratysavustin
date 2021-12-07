@@ -1,5 +1,7 @@
-let token: string | null = null
-const getConfig = () => ({
+import { AxiosRequestConfig } from 'axios'
+
+let token: string = ''
+const getConfig = (): AxiosRequestConfig => ({
   headers: { Authorization: token },
 })
 
@@ -8,7 +10,11 @@ const setToken = (newToken: string) => {
 }
 
 const removeToken = () => {
-  token = null
+  token = ''
 }
 
-export default { getConfig, setToken, removeToken }
+const getToken = (): string => {
+  return token
+}
+
+export default { getConfig, setToken, removeToken, getToken }

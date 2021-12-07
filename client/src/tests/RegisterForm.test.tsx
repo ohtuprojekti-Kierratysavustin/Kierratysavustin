@@ -6,6 +6,10 @@ import RegisterForm from '../components/forms/RegisterForm'
 import { userService } from '../services/user'
 import { PostRequestResponse } from '../types/requestResponses'
 import { User } from '../types/objects'
+import { USER_ROLES } from '../enums/roles'
+import {
+  Routes, Route, BrowserRouter as Router
+} from 'react-router-dom'
 
 jest.mock('../services/user')
 const userServiceMock = userService as jest.Mocked<typeof userService>
@@ -17,7 +21,8 @@ const user: User = {
   passwordHash: 'SCIOJGSDKIEF',
   favoriteProducts: [],
   token: 'TOKEN',
-  username: 'test'
+  username: 'test',
+  role: USER_ROLES['User'].name
 }
 
 function mockValidRegister() {
@@ -45,7 +50,14 @@ describe('When RegisterForm is rendered', () => {
     mockValidRegister();
 
     component = render(
-      <RegisterForm userService={userServiceMock} />
+      <Router>
+      <Routes>
+        <Route path="/" element={<RegisterForm userService={userServiceMock} />}>
+        </Route>
+        <Route path="/login" element={<div></div>}>
+        </Route>
+      </Routes>
+    </Router>
     )
 
     usernameInput = component.container.querySelector('input[name="username"]')

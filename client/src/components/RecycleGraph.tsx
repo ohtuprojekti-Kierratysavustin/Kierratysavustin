@@ -1,6 +1,10 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
+import { Chart as ChartJS, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+ChartJS.register(LineElement, PointElement, LinearScale, Title, CategoryScale)
+
+
 type Props = {
   data: number[],
   graphTargetHeader: string

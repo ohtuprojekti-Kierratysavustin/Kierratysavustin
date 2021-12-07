@@ -3,7 +3,7 @@ import tokenService from './token'
 const baseUrl = `${process.env.PUBLIC_URL}/api/files`
 
 const addProductImage = (id: number, formData: any) => {
-  const token = tokenService.getConfig().headers.Authorization
+  const token = tokenService.getToken()
   const request = axios.post(`${baseUrl}/upload/product`,
     formData,
     { headers: {

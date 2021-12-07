@@ -2,7 +2,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import {
-  Switch, Route
+  Routes, Route
 } from 'react-router-dom'
 import { render, fireEvent } from '@testing-library/react'
 import FrontPage from '../components/views/FrontPage'
@@ -48,14 +48,12 @@ test('Search form renders and returns correct results', () => {
   const changeFoundProducts = jest.fn()
   const component = render(
     <Router>
-      <Switch>
-        <Route path="/searchResults">
-          <ProductListView products={[]} />
+      <Routes>
+        <Route path="/searchResults" element={<ProductListView products={[]} />}>
         </Route>
-        <Route path="/">
-          <FrontPage products={productsData} setFilteredProducts={changeFoundProducts} />
+        <Route path="/" element={<FrontPage products={productsData} setFilteredProducts={changeFoundProducts} />}>
         </Route>
-      </Switch>
+      </Routes>
     </Router>
   )
   expect(component.container).toHaveTextContent(

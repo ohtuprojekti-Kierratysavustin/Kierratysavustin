@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import productService from '../../services/products'
 import { useStore } from '../../store'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Product } from '../../types/objects'
 import { ErrorResponse } from '../../types/requestResponses'
 
@@ -13,7 +13,7 @@ type Props = {
 const DeleteProduct: React.FC<Props> = ({ product }) => {
   const productCreatorId = product.creator
   const { user, setNotification, products, setProducts } = useStore()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   if (!user || !productCreatorId) {
     return (null)
@@ -25,7 +25,7 @@ const DeleteProduct: React.FC<Props> = ({ product }) => {
       await productService.remove(product.id)
         .then((response) => {
           setProducts(products.filter(p => p.id !== product.id))
-          history.push('/products')
+          navigate('/products')
           setNotification(response.message, 'success')
         })
         .catch((error: ErrorResponse) => {

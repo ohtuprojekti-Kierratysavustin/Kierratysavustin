@@ -25,7 +25,7 @@ const NavigationBar = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className='mr-auto'>
           {user !== null
-            ? (<Nav.Link id='productForm' as={Link} to="/new">Lisää tuote</Nav.Link>)
+            ? (<Nav.Link id='productForm' as={Link} to="products/new">Lisää tuote</Nav.Link>)
             : ('')}
           <Nav.Link id='productList' as={Link} to="/products">Tuotteet</Nav.Link>
           <Nav.Link id='recyclingStats' as={Link} to="/statistics">Kierrätyslaskuri</Nav.Link>

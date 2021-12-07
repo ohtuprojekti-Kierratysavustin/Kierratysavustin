@@ -5,6 +5,7 @@ import { Product, ProductStatistic, User } from '../types/objects'
 import RecycleStatisticsView from '../components/views/RecycleStatisticsView'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useStore } from '../store'
+import { USER_ROLES } from '../enums/roles'
 
 const originalState = useStore.getState()
 
@@ -31,17 +32,18 @@ const user: User = {
   token: 'string',
   likes: [],
   dislikes: [],
-  favoriteProducts: []
+  favoriteProducts: [],
+  role: USER_ROLES['User'].name
 }
 
 const statistics: ProductStatistic[] = new Array(
   {
-    productID: juustopaketti,
+    product: juustopaketti,
     purchaseCount: 2,
     recycleCount: 1,
   },
   {
-    productID: sipsipussi,
+    product: sipsipussi,
     purchaseCount: 1,
     recycleCount: 0,
   },

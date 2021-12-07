@@ -8,8 +8,8 @@ import VoteForm from '../forms/VoteForm'
 import DeleteInstructionForm from '../forms/DeleteInstructionForm'
 import DeleteProduct from '../forms/DeleteProduct'
 import { useStore } from '../../store'
-import { useHistory } from 'react-router-dom'
-import { Container, Row, Col, Jumbotron, ListGroup, Button, Form } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { Container, Row, Col, ListGroup, Button, Form } from 'react-bootstrap'
 import '../../styles.css'
 import { Product } from '../../types/objects'
 import ProductUserCountForm from '../forms/ProductUserCountForm'
@@ -28,13 +28,13 @@ type Props = {
 
 /** Component for showing product name and recycling information. */
 const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { user, clearNotification } = useStore()
   const [chartData, setChartData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
   const [open, setOpen] = useState(false)
 
   const routeChange = () => {
-    history.goBack()
+    navigate(-1)
   }
   useEffect(() => {
     clearNotification()
@@ -44,79 +44,77 @@ const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
 
   return (
     <div>
-      <Jumbotron id='infobar'>
-        <Container>
-          <Row>
-            <Col>
-              <Button onClick={() => routeChange()} id='neutral-button' size='sm'>Takaisin</Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={8}>
-              <Row>
-                <h2>{product.name}</h2>
-              </Row>
-              <Row>
-                <Col>
-                  <img
-                    className="product-image"
-                    src={product.productImage ? `${process.env.PUBLIC_URL}/api/files/images/${product.productImage}` : logo}
-                    alt={product.name}
-                  />
-                </Col>
-                {user !== null ? (
-                  <>
-                    <Col>
-                      <UploadImage product={product} />
-                    </Col>
-                    <Col>
-                      <FavoritesForm product={product} />
-                      <br></br>
-                      <DeleteProduct product={product} />
-                    </Col>
-                  </>
-                ) : (
-                  ''
-                )}
-              </Row>
-            </Col>
-            {user !== null ? (
-              <>
-                <Col sm={2} className='product-user-count-form'>
-                  <ProductUserCountForm
-                    product={product}
-                    countType={PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE}
-                    amountText={'Hankittu'}
-                    sendUpdateText={'Hanki'}
-                    subtractUpdateText={'Vähennä'}
-                    tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
-                    tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
-                    counterService={counterService}
-                    statisticsService={statisticsService}
-                    setChartData={setChartData}
-                  />
-                </Col>
-                <Col sm={2} className='product-user-count-form'>
-                  <ProductUserCountForm
-                    product={product}
-                    countType={PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE}
-                    amountText={'Kierrätetty'}
-                    sendUpdateText={'Kierrätä'}
-                    subtractUpdateText={'Vähennä'}
-                    tooltipAdd={'Kasvata tuotteen kierrätystilastoa.'}
-                    tooltipDelete={'Vähennä tuotteen kierrätystilastoa.'}
-                    counterService={counterService}
-                    statisticsService={statisticsService}
-                    setChartData={setChartData}
-                  />
-                </Col>
-              </>
-            ) : (
-              ''
-            )}
-          </Row>
-        </Container>
-      </Jumbotron>
+      <Container>
+        <Row>
+          <Col>
+            <Button onClick={() => routeChange()} id='neutral-button' size='sm'>Takaisin</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={8}>
+            <Row>
+              <h2>{product.name}</h2>
+            </Row>
+            <Row>
+              <Col>
+                <img
+                  className="product-image"
+                  src={product.productImage ? `${process.env.PUBLIC_URL}/api/files/images/${product.productImage}` : logo}
+                  alt={product.name}
+                />
+              </Col>
+              {user !== null ? (
+                <>
+                  <Col>
+                    <UploadImage product={product} />
+                  </Col>
+                  <Col>
+                    <FavoritesForm product={product} />
+                    <br></br>
+                    <DeleteProduct product={product} />
+                  </Col>
+                </>
+              ) : (
+                ''
+              )}
+            </Row>
+          </Col>
+          {user !== null ? (
+            <>
+              <Col sm={2} className='product-user-count-form'>
+                <ProductUserCountForm
+                  product={product}
+                  countType={PRODUCT_USER_COUNT_REQUEST_TYPE.PURCHASE}
+                  amountText={'Hankittu'}
+                  sendUpdateText={'Hanki'}
+                  subtractUpdateText={'Vähennä'}
+                  tooltipAdd={'Kasvata tuotteen hankintatilastoa.'}
+                  tooltipDelete={'Vähennä tuotteen hankintatilastoa.'}
+                  counterService={counterService}
+                  statisticsService={statisticsService}
+                  setChartData={setChartData}
+                />
+              </Col>
+              <Col sm={2} className='product-user-count-form'>
+                <ProductUserCountForm
+                  product={product}
+                  countType={PRODUCT_USER_COUNT_REQUEST_TYPE.RECYCLE}
+                  amountText={'Kierrätetty'}
+                  sendUpdateText={'Kierrätä'}
+                  subtractUpdateText={'Vähennä'}
+                  tooltipAdd={'Kasvata tuotteen kierrätystilastoa.'}
+                  tooltipDelete={'Vähennä tuotteen kierrätystilastoa.'}
+                  counterService={counterService}
+                  statisticsService={statisticsService}
+                  setChartData={setChartData}
+                />
+              </Col>
+            </>
+          ) : (
+            ''
+          )}
+        </Row>
+      </Container>
       <Container>
         <Row>
           <Button

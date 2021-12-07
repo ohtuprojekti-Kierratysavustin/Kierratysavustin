@@ -7,7 +7,7 @@
     "start": "NODE_ENV=development nodemon index.js",
     "test": "jest --verbose --runInBand --detectOpenHandles --forceExit",
     "start:prod": "NODE_ENV=production node index.js",
-    "start:test": "NODE_ENV=test node index.js",
+    "start:test": "NODE_ENV=test nodemon index.js",
     "start:mongo": "cd .. && ./start-mongo-docker.sh",
     "lint": "eslint ."
   },
@@ -16,20 +16,20 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
-    "date-fns": "^2.25.0",
-    "dotenv": "^8.6.0",
+    "date-fns": "^2.27.0",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "http-status": "^1.5.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.9",
-    "mongoose-unique-validator": "^2.0.3",
-    "multer": "^1.4.3",
+    "mongoose": "^6.0.15",
+    "mongoose-unique-validator": "^3.0.0",
+    "multer": "^1.4.4",
     "multer-gridfs-storage": "^5.0.2"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "jest": "^26.6.3",
-    "nodemon": "^2.0.14",
+    "eslint": "^8.4.1",
+    "jest": "^27.4.3",
+    "nodemon": "^2.0.15",
     "supertest": "^6.1.6"
   }
 }

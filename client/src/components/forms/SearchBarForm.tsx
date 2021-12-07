@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Form, Button, InputGroup, Container, Col, Row } from 'react-bootstrap'
 import { Product } from '../../types/objects'
 
@@ -9,7 +9,7 @@ type Props = {
 }
 
 const SearchBarForm = ({ products, setFilteredProducts }: Props) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
   if (!products) {
     return null
@@ -18,18 +18,16 @@ const SearchBarForm = ({ products, setFilteredProducts }: Props) => {
     event.preventDefault()
     setFilteredProducts(products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())))
     setSearchTerm('')
-    history.push('/searchResults')
+    navigate('/searchResults')
   }
   return (
     <div>
       <Container>
         <Row>
           <Col>
-            <Form inline onSubmit={handleSubmit} id='searchForm'>
+            <Form onSubmit={handleSubmit} id='searchForm'>
               <InputGroup className="mb-1">
-                <InputGroup.Prepend>
-                  <Button id="searchBtn" type='submit' size='lg' variant='outline-dark'>Etsi</Button>
-                </InputGroup.Prepend>
+                <Button id="searchBtn" type='submit' size='lg' variant='outline-dark'>Etsi</Button>
                 <Form.Control
                   placeholder='Kirjoita hakusana...'
                   size='lg'

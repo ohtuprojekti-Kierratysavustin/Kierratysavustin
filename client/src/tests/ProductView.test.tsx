@@ -10,7 +10,6 @@ import { statisticsService } from '../services/statistics'
 import { } from 'react-chartjs-2'
 import { } from '../components/RecycleGraph'
 import 'jest-canvas-mock';
-import Collapse from 'react-bootstrap/Collapse'
 
 
 jest.mock('../services/statistics')

@@ -4,7 +4,7 @@ import fileService from '../../services/files'
 import { useStore } from '../../store'
 import InfoBar from '../InfoBar'
 import FileInput from '../FileInput'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Form as Formo, Button, Container } from 'react-bootstrap'
@@ -15,7 +15,7 @@ type ProductFormValues = {
 }
 
 const ProductForm = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { products, setProducts, setNotification, clearNotification } = useStore()
   const [selectedFile, setSelectedFile] = useState<File | undefined>()
 
@@ -42,7 +42,7 @@ const ProductForm = () => {
             fileService.addProductImage(newProduct.id, formData)
               .then((response) => {
                 productService.getAll().then(p => setProducts(p))
-                history.push(`products/${newProduct.id}`)
+                navigate(`/products/${newProduct.id}`)
                 setNotification(`Tuote ${productName} lisätty ja ${response.message}`, 'success')
               })
               .catch((error: ErrorResponse) => {
@@ -51,7 +51,7 @@ const ProductForm = () => {
               })
           }
           else {
-            history.push(`products/${newProduct.id}`)
+            navigate(`/products/${newProduct.id}`)
           }
           setNotification(`Tuote ${productName} lisätty!`, 'success')
         }).catch((error) => {

@@ -159,13 +159,12 @@ userRouter.post('/products/:id/', async (req, res, next) => {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
 
-    product.instructions.sort((a, b) => b.score - a.score)
-
     if (user.favoriteProducts.includes(user.id)) {
       throw new ResourceNotFoundException('Tuote löytyy jo suosikeista!')
     }
 
     user.favoriteProducts = user.favoriteProducts.concat(product.id)
+    user.isNew = false
     await user.save()
     res.status(STATUS_CODES.OK).json({ message: 'Tuote \'' + product.name + ' \' lisätty suosikkeihin!', resource: product })
   } catch (error) {
@@ -187,8 +186,6 @@ userRouter.put('/products/:id', async (req, res, next) => {
     if (!product) {
       throw new ResourceNotFoundException('Tuotetta ID:llä: ' + req.params.id + ' ei löytynyt!')
     }
-
-    product.instructions.sort((a, b) => b.score - a.score)
 
     if (!user.favoriteProducts.includes(product.id)) {
       throw new ResourceNotFoundException('Tuote ei löydy suosikeista!')

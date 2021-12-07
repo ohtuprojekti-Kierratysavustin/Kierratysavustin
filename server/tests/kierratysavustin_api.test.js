@@ -228,6 +228,8 @@ describe('One account already in database', () => {
       const product = allProducts.body[0]
 
       const response = await helper.addFavourite(product.id, loginData.token)
+      console.log(response)
+
       expect(response.status).toBe(STATUS_CODES.OK)
 
       expect(response.body.resource.id).toBe(product.id)

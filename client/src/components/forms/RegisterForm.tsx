@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
 import { Container, Button, Form as Formo } from 'react-bootstrap'
 import * as yup from 'yup'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useStore } from '../../store'
 import { UserService } from '../../services/user'
 import { ErrorResponse } from '../../types/requestResponses'
@@ -18,7 +18,7 @@ type Props = {
 
 const RegisterForm: React.FC<Props> = ({ userService }) => {
   const { setNotification, clearNotification } = useStore()
-  const history = useHistory()
+  const navigate = useNavigate()
   useEffect(() => {
     clearNotification()
   }, [])
@@ -39,7 +39,7 @@ const RegisterForm: React.FC<Props> = ({ userService }) => {
         submitProps.setSubmitting(false)
         submitProps.resetForm()
         setTimeout(() => {
-          history.push('/login')
+          navigate('/login')
         }, 3000)
       })
       .catch((error: ErrorResponse) => {

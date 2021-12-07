@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from '../media/logo.png'
-import { Jumbotron, Media, Image, Container, Row } from 'react-bootstrap'
+import { Image, Container, Row } from 'react-bootstrap'
 import '../styles.css'
 
 type Props = {
@@ -12,28 +12,24 @@ type Props = {
 const InfoBar: React.FC<Props> = ({ header, text }) => {
   return (
     <div>
-      <Jumbotron id='infobar'>
-        <Media>
-          <Container >
-            <Row className='justify-content-sm-center'>
+      <Container >
+        <Row className='justify-content-sm-center'>
 
-              <Image
-                width={128}
-                height={128}
-                className='mr-3'
-                src={logo}
-                alt='Logo'
-              />
-              <Media.Body>
-                <h3>{header}</h3>
-                <p>
-                  {text}
-                </p>
-              </Media.Body>
-            </Row>
-          </Container>
-        </Media>
-      </Jumbotron>
+          <Image
+            width={128}
+            height={128}
+            className='mr-3'
+            src={logo}
+            alt='Logo'
+          />
+          <div>
+            <h3>{header}</h3>
+            <p>
+              {text}
+            </p>
+          </div>
+        </Row>
+      </Container>
     </div>
   )
 }
