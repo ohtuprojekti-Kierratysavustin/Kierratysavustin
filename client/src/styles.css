@@ -145,6 +145,10 @@ h2 {
     color: black;
 }
 
+.FavoriteButton {
+    margin-bottom: 6px;
+}
+
 /* List item buttons */
 .ListItemButtons {
     display: grid;
@@ -312,6 +316,9 @@ input {
     .product-image-list-view {
         width: 130px;
         height: 130px;
+    }
+    .ListItemButtons {
+       grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 }
 
