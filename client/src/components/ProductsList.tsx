@@ -12,18 +12,21 @@ import DeleteProduct from './forms/DeleteProduct'
 import { useStore } from '../store'
 
 type Props = {
-  userProducts: Product[],
+  products: Product[] | undefined,
   header: String
 }
 
-const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
+const ProductsList: React.FC<Props> = ({ products, header }) => {
   const { user } = useStore()
+  if (!products) {
+    return null
+  }
   return (
     <div>
       <Container>
         <h2>{header}</h2>
         <ListGroup as='ul' id='list'>
-          {userProducts.map(product =>
+          {products.map(product =>
             <ListGroup.Item action as='li' key={product.id} id='list-item'>
               <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
 
