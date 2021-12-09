@@ -32,6 +32,19 @@ cd e2e_tests/
 npm install
 cd ..
 ```
+### Käynnistysohjeet
+Sovelluksen paikallista käynnistämistä varten on hyvä avata kolme erillistä komentorivi-ikkunaa (tietokantaa, frontendiä ja backendiä varten). 
+
+Tietokanta (mongodb) käynnistetään *server*-kansiossa komennolla `npm run start:mongo` (docker ja docker-compose tulee olla asennettuna)
+
+Backend käynnistetään *server*-kansiossa seuraavin komennoin:
+`npm start` kun devataan
+`npm run start:test` kun testataan
+Tuotantoversio käynnistetään komennolla `npm run start:prod`
+
+Frontend käynnistetään *client*-kansiossa komennolla `npm start`
+
+Tämän jälkeen sovelluksen tulisi pyöriä selaimen osoitteessa http://localhost:3000/
 
 ## Asennus paikallisesti dockeriin
 
