@@ -43,7 +43,7 @@ test('ProductsList list products', () => {
 
   const component = render(
     <Router>
-      <ProductsList userProducts={productsData} />
+      <ProductsList products={productsData} />
     </Router>
   )
 

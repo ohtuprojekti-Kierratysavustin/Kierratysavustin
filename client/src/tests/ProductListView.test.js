@@ -69,7 +69,7 @@ test('ProductListView shows message when list is empty', () => {
 
   const component = render(
     <Router>
-      <ProductListView products={productsData} />
+      <ProductListView filteredProducts={productsData} />
     </Router>
   )
 
