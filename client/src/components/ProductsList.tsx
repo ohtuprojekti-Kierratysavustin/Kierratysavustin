@@ -56,7 +56,7 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
                               </p>
                             ) : (
                               <p>
-                                Suositelluin ohje: {product.instructions[0].information.slice(0, 50)}
+                                Suositelluin ohje: {product.instructions[0].information}
                               </p>
                             )}
                           </Row>
