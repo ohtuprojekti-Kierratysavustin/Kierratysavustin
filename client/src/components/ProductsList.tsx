@@ -26,7 +26,6 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
           {userProducts.map(product =>
             <ListGroup.Item action as='li' key={product.id} id='list-item'>
               <Link style={{ textDecoration: 'none' }} to={`/products/${product.id}`}>
-
                 <Media>
                   <img
                     className="product-image-list-view"
@@ -113,7 +112,6 @@ const ProductsList: React.FC<Props> = ({ userProducts, header }) => {
                   </Media.Body>
                 </Media>
               </Link>
-
             </ListGroup.Item>
           )}
         </ListGroup>
