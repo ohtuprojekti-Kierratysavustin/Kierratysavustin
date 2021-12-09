@@ -100,7 +100,7 @@ describe("Recycling app", () => {
           it("can be removed by the user", () => {
             cy.get("#deleteItem").click()
             cy.contains("Tuote 'Muovipussi' poistettiin onnistuneesti!")
-            cy.contains("Haulla ei löytynyt yhtään tuotetta!")
+            cy.contains("Ei tuotteita!")
           })
 
           describe("and the product information is opened", () => {
@@ -175,7 +175,7 @@ describe("Recycling app", () => {
             it("can be removed by the user", () => {
               cy.get("#deleteItem").click()
               cy.contains("Tuote 'Muovipussi' poistettiin onnistuneesti!")
-              cy.contains("Haulla ei löytynyt yhtään tuotetta!")
+              cy.contains("Ei tuotteita!")
             })
 
             // Purchase/Recycling stats
