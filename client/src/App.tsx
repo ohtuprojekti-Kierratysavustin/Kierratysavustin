@@ -65,10 +65,10 @@ const App = () => {
           <ProductForm />
         </Route>
         <Route path="/products">
-          <ProductListView products={products} setFilteredProducts={setFilteredProducts} />
+          <ProductListView products={products} filteredProducts={undefined} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/searchResults">
-          <ProductListView products={filteredProducts} setFilteredProducts={setFilteredProducts} />
+          <ProductListView products={products} filteredProducts={filteredProducts} setFilteredProducts={setFilteredProducts} />
         </Route>
         <Route path="/statistics">
           <RecycleStatisticsView />

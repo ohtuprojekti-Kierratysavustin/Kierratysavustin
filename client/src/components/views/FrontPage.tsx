@@ -30,7 +30,7 @@ const FrontPage: React.FC<Props> = ({ products, setFilteredProducts }) => {
       <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
 
       {user !== null ? (
-        <ProductsList userProducts={favorites} header='Suosikkituotteet' />
+        <ProductsList products={favorites} header='Suosikkituotteet' />
       ) : (
         ''
       )}
