@@ -24,7 +24,8 @@ describe('When RegisterForm is rendered', () => {
       token: 'GEDSFWAEGW',
       likes: [],
       dislikes: [],
-      favoriteProducts: []
+      favoriteProducts: [],
+      role: 'test'
     }
 
     product = {
