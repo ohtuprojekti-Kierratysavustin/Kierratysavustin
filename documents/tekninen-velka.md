@@ -5,9 +5,9 @@ Tämän dokumentin tarkoituksena on informoida seuraavaa ryhmää projektin nyky
 
 ## Korjattavat asiat
 
-#### Tuotteiden haku
+#### Tuotelistaus puolikkaan sivun näkymässä
 
-Tällä hetkellä tuotteiden haku sovelluksessa toimii niin, että kun kerran haet jollakin hakusanalla ja saat hakutulokset, haetaan seuraava haku näistä tuloksista, ellei sivua päivitä tässä välissä. Haun kuuluisi aina hakea kaikista kannasta löytyvistä tuotteista.
+Kun tietokoneella selainikkunan asettaa puolikkaan näytön kokoiseksi (tai pienemmäksi), menevät "Hanki"- ja "Kierrätä"-napit päällekkäin.
 
 #### Pitkä kierrätysohje ei näy kokonaisuudessaan
 
@@ -20,3 +20,19 @@ Ilmoitus virheestä tai onnistumisesta esitetään sovelluksen yläpalkissa ja m
 
 
 ## Paranneltavat asiat
+
+#### Sovelluksen ulkoasu
+
+Sovelluksen ulkoasu ei tällä hetkellä skaalaudu kovin täydellisesti eri kokoisille näytöille. Muun muassa puhelimelta sovellusta käyttäessä yksittäisen tuotteen näkymässä on paljon parannettavaa. Lisäksi yksittäisen tuotteen näkymä alkaa olla hieman sekavan näköinen, sillä siellä on kohtuullisen paljon erilaisia elementtejä.
+
+#### Kirjautuminen ja rekisteröityminen
+
+Tällä hetkellä rekisteröityessä kysytään käyttäjän salasana kerran, virheiden välttämiseksi sen voisi kysyä kahdesti. Lisäksi kirjautumissessio ei ilmeisesti koskaan vanhene, sillä pitkänkään ajan jälkeen sovellus ei ole vaatinut uudelleenkirjautumista. Tietoturvasyistä olisi hyvä laittaa jonkinlainen aikaraja session vanhenemiselle.
+
+
+
+## Refaktoroitavat asiat
+
+#### Formit
+
+Tällä hetkellä koodissa on kahdenlaisia lomakkeita: on lomakkeita, jotka käyttävät kirjastoa Formik, sekä lomakkeita, jotka käyttävät Reaction omaa Formia. Näiden yhtenäistäminen on ollut backlogilla, mutta sitä ei olla ehditty tekemään.
