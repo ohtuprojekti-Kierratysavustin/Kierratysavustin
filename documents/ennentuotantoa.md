@@ -11,3 +11,5 @@ Lista asioista, jotka on hyvä toteuttaa, tai siihen liittyvä ongelma on hyvä 
 - Client validoinnin yhtenäistäminen
 - Validoinnin läpikäynti
 - Tietoturva-auditointi
+- Moderointijärjestelmä
+- Admin-työkaluja
