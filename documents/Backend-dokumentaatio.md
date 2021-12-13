@@ -33,7 +33,7 @@ Backend käynnistetään *server*-kansiossa seuraavin komennoin:
 
 `npm start` kun devataan
 
-`npm run start:test` kun testataan
+`npm run start:test` kun testataan (Kannan tyhjentävä api-resurssi)
 
 Tuotantoversio käynnistetään komennolla `npm run start:prod`
 
