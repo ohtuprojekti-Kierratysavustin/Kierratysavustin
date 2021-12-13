@@ -37,6 +37,8 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 
 - [Tekninen velka](documents/tekninen-velka.md)
 
+- [Tuotanto TODO](documents/ennentuotantoa.md)
+
 ## Projektin edistyminen
 
 - [Product Backlog](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/projects/1)
