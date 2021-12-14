@@ -57,9 +57,11 @@ Kierrätys-info-api vaatii toimiakseen api-avaimen. Paikallisessa asennuksessa a
 ## Käynnistysohjeet
 
 ### Paikallinen (Ei kontissa)
-Sovelluksen paikallista käynnistämistä varten on hyvä avata kolme erillistä komentorivi-ikkunaa (tietokantaa, frontendiä ja backendiä varten). 
+Sovelluksen paikallista käynnistämistä varten on hyvä avata kolme erillistä komentorivi-ikkunaa (tietokantaa, frontendiä ja backendiä varten).
 
 Kehitysaikainen tietokanta (mongodb) käynnistetään *server*-kansiossa komennolla `npm run start:mongo` (docker ja docker-compose tulee olla asennettuna. Komento tekee mongo kansiossa docker-compose up ja lopettaessa docker-compose down)
+
+- HUOM: jos tietokanta ei käynnisty yllä olevalla komennolla, kokeile `sudo npm run start:mongo` ja anna salasana.
 
 Backend käynnistetään *server*-kansiossa seuraavin komennoin:
 `npm start` kun devataan
@@ -75,12 +77,12 @@ Repon juuressa on myös [screenrc tiedosto](https://github.com/ohtuprojekti-Kier
 ### Paikallinen (Kontti)
 
 Stagingia imitoivan buildin saa ajettua juurikansiossa komennolla `./docker-setup.sh`
- 
-(komento luo uuden docker imagen, käynnistää sen ja mongo tietokannan. Server käynnistetään antamalla sille baseUrl=/kierratysavustin, jolloin sovelluksen osoitteeseen lisätään /kierrätysavustin, kuten staging serverillä. Serverille annetaan myös NODE_ENV=production, jolloin serverin config.js tiedostossa tiedetään käyttää oikeaa tietokantaosoitetta. 
- 
+
+(komento luo uuden docker imagen, käynnistää sen ja mongo tietokannan. Server käynnistetään antamalla sille baseUrl=/kierratysavustin, jolloin sovelluksen osoitteeseen lisätään /kierrätysavustin, kuten staging serverillä. Serverille annetaan myös NODE_ENV=production, jolloin serverin config.js tiedostossa tiedetään käyttää oikeaa tietokantaosoitetta.
+
 ### Staging ja Tuotanto
 
-Stagingiin ja tuotantoon julkaiseminen tapahtuu samalla tavalla. Github repositorioon on määritelty [Github-actions tiedostot](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/tree/main/.github/workflows). 
+Stagingiin ja tuotantoon julkaiseminen tapahtuu samalla tavalla. Github repositorioon on määritelty [Github-actions tiedostot](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/tree/main/.github/workflows).
 
 [staging_pull_request.yml](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/main/.github/workflows/staging_pull_request.yml): Kun luodaan pull request Staging haaraan niin Github ajaa haaralle kaikki testit. Pull requestissa ilmoitetaan, jos testit eivät mene läpi
 
