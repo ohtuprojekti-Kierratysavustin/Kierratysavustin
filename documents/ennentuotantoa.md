@@ -15,3 +15,5 @@ Lista asioista, jotka on hyvä toteuttaa, tai siihen liittyvä ongelma on hyvä 
 - Admin-työkaluja
 - Käyttäjän salasanan palauttaminen
   - Samassa yhteydessä sähköpostipalvelu
+- Kierrätys.info apiin kaikille oma avain
+  - Vaatii käyttäjään liitettävän sähköpostiosoitteen
