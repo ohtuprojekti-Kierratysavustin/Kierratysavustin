@@ -52,10 +52,10 @@ const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
             </Col>
           </Row>
           <Row>
+            <h2>{product.name}</h2>
+          </Row>
+          <Row>
             <Col sm={8}>
-              <Row>
-                <h2>{product.name}</h2>
-              </Row>
               <Row>
                 <Col>
                   <img
@@ -67,9 +67,12 @@ const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
                 {user !== null ? (
                   <>
                     <Col>
+                      <br></br>
                       <UploadImage product={product} />
+                      <br></br>
                     </Col>
                     <Col>
+                      <br></br>
                       <FavoritesForm product={product} />
                       <br></br>
                       <DeleteProduct product={product} />

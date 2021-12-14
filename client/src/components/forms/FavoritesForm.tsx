@@ -37,7 +37,7 @@ const FavoritesForm: React.FC<Props> = ({ product }) => {
   }
   return (
     <div>
-      <Button variant={buttonStyle} id="addToFavorites" onClick={handleClick}>
+      <Button className='FavoriteButton' variant={buttonStyle} id="addToFavorites" onClick={handleClick}>
         {label}
       </Button>
     </div>

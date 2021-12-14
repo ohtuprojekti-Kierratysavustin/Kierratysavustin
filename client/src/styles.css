@@ -66,10 +66,8 @@ input[type="checkbox"]:checked::before {
 }
 
 .product-image-list-view {
-    max-width: 200px;
-    max-height: 200px;
-    min-width: 200px;
-    min-height: 200px;
+    height: 200px;
+    width: 200px;
     object-fit: cover;
     padding-right: 10px;  
 }
@@ -145,6 +143,10 @@ h2 {
 }
 #list a {
     color: black;
+}
+
+.FavoriteButton {
+    margin-bottom: 6px;
 }
 
 /* List item buttons */
@@ -308,5 +310,22 @@ input {
 
 #collapse-container {
     padding-bottom: 30px;
+}
+
+@media (max-width: 767px) {
+    .product-image-list-view {
+        width: 130px;
+        height: 130px;
+    }
+    .ListItemButtons {
+       grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 300px) {
+    .product-image-list-view {
+        width: 100px;
+        height: 100px;
+    }
 }
 
