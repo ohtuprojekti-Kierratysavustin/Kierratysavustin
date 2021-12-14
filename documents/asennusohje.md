@@ -33,6 +33,7 @@ npm install
 cd ..
 ```
 
+
 ## Asennus paikallisesti dockeriin
 
 Projekti sisältää linux ja mac ympäristöissä toimivan skriptin docker asennukseen:
@@ -48,6 +49,10 @@ Docker imagen voi luoda myös manuaalisesti projektin kansiossa komennolla
 ```
 docker build --build-arg PUBLIC_URL=/kierratysavustin -t kierratysavustin-local .
 ```
+
+## Ympäristömuuttujat
+Kierrätys-info-api vaatii toimiakseen api-avaimen. Paikallisessa asennuksessa avain tulee sijoittaa .env -tiedostoon server-kansiossa. Staging- ja tuotantopalvelimilta .env tiedoston sijainti on määritetty sovelluksen käynnistävässä docker-compose.yml -tiedostossa.
+
 
 ## Käynnistysohjeet
 
