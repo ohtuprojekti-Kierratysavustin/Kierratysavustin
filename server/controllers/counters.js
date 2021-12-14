@@ -18,6 +18,7 @@ const URLS = {
 /*
 * Yksittäisen tuotteen kierrätys, tai ostotilaston päivitys.
 * Kumulatiivinen päivitys. Siis uudessa tapahtumassa on lisättynä uusi määrä vanhaan määrään.
+* Päivää kohden yksi tapahtuma
 */
 router.post(URLS.UPDATE_PRODUCT_USER_COUNT, async (req, res, next) => {
   try {

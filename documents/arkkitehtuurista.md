@@ -3,7 +3,7 @@
 ## Poikkeustenhallinta
 
 Tavoitteena poikkeustenhallinnassa on, että backend antaa frontendille selkeän virheviestin, jonka voi näyttää suoraan käyttäjälle.
-Pyritään myös siihen, että ei-toiminnalliset virheet pääsisivät läpi ja "kaataisivat" sovelluksen. Nämä virheet ovat ohjelmoijan virheitä ja niiden pitääkin kaataa ohjelma selkeällä virheviestillä. Näin virhe huomataan ajoissa ja ohjelma voidaan korjata mahdollisimman nopeasti. Nämä virheet tulevat läpi clientiin vain devi- ja testiympäristössä. Tuotannossa käyttäjä näkee aina vain tiiviin ja selkeän virheilmoituksen.
+Pyritään myös siihen, että ei-toiminnalliset virheet pääsisivät läpi ja "kaataisivat" sovelluksen. Nämä virheet ovat ohjelmoijan virheitä ja niiden pitääkin kaataa ohjelma selkeällä virheviestillä. Näin virhe huomataan ajoissa ja ohjelma voidaan korjata mahdollisimman nopeasti. Nämä virheet tulevat läpi clientiin vain devi- ja testiympäristössä. Tuotannossa käyttäjä näkee aina vain tiiviin ja selkeän virheilmoituksen. Dev- ja testiympäristössä virheen viestin näkee tällä hetkellä tarkastelemalla virheen aiheuttanutta kutsua. Stack trace ei siis todennäköisimmin räjähdä näytölle, vaan näkyy ilmoitus odottamattomasta virheestä. 
 
 ### Backend 
 
@@ -79,3 +79,18 @@ authUtils.authorizeOperationOnResource(instruction._doc, user, USER_ROLES.Modera
 ```
 
 Tässä tapauksessa ohjeen voi poistaa vain ohjeen luoja, tai vähintään Moderator-roolin omaava käyttäjä. 
+
+
+## Tilastointi
+
+### Laskurit
+
+Kierrätystilastointi pohjautuu hankinta- ja kierrätyslaskureihin. [Laskurin käsittelijä](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/main/server/controllers/counters.js). Käsittelijä päivittää päiväkohtaiseen tapahtumaan laskurin määrän. Siis jokaisella päivällä, jolloin on kierrätetty tai hankittu, on tapahtuma, jossa laskurin arvo on viimeisin sinä päivänä ollut laskurin arvo. Päiväkohtainen rakenne on luotu kierrätysastegraafin piirtämistä varten.
+
+### Graafi ja taulukot
+
+[Tilastokyselyt](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/main/server/controllers/statistics.js) muuntavat laskuridatan tarvittavaan muotoon. Kuten mainittu, laskuridata tallennetaan muodossa, jossa päivittäisen kierrätysastedatan muodostava kysely on mahdollisimman suoraviivainen.
+
+## Kierrätys.info integraatio
+
+Kierrätys.info rajapinta on integroitu kierrätyspisteiden näyttämistä varten. Tällä hetkellä kaikki käyttäjät käyttävät kutsuissa samaa avainta, joka on haettu kierratysavustin@gmail.com sähköpostille. Tulevaisuudessa on hyvä harkita pitäisikö jokaisella käyttäjällä olla oma avain, joka haetaan käyttäjän sähköpostilla.
