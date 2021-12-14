@@ -24,7 +24,7 @@
 |mongoose-unique-validator|Mahdollistaa validoinnin ennen tallennusta|
 |Eslint|Avulla noudatetaan tiettyä koodityylin standardeja|
 |jsonwebtoken|Pystytään säilyttämään käyttäjän tokeni, jolla voidaan varmistaa kirjautuneisuuden pysyvyys|
-|mulet|Backendin Express middleware tiedostojen lataamiseen ja käsittelyyn|
+|multer|Backendin Express middleware tiedostojen lataamiseen ja käsittelyyn|
 
 ## Tietokanta
 mongoDB dockerissa
@@ -44,3 +44,5 @@ mongoDB dockerissa
   - REST Client
 - Postman
   - Api collection, johon lisätty joitain apiresursseja
+- Screen
+  - Terminal multiplexer. Helpottaa kehitysympäristön käynnistämistä.
