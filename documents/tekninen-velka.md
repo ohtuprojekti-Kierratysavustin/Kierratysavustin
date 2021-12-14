@@ -2,6 +2,9 @@
 
 Tämän dokumentin tarkoituksena on informoida seuraavaa ryhmää projektin nykyisestä tilasta ja eritellä asioita, joiden koemme tarvitsevan parantelua/korjausta.
 
+# Yleistä asiaa
+
+Asiakkaalta kannattaa kysyä olemassaolevien käyttäjätarinoiden priorisointia. Tästä priorisoinnista saattaa riippua, mihin suuntaan sovelluksen arkkitehtuuria tai yksittäisiä paloja kannattaa jatkokehittää. Esimerkiksi asiakkaalla on toiveena, että tulevaisuudessa käyttäjä voisi kuulua ryhmään. Toimintoja voitaisiin tällöin suorittaa ryhmäkohtaisena. Ryhmän kierrättämisestä saisi tilastoja, ja lähimmät kierrätyspisteet voisi löytää ryhmän perusteella.
 
 ## Korjattavat asiat
 
