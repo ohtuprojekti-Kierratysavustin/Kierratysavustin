@@ -75,12 +75,11 @@ describe('When RecycleLocationsView is rendered', () => {
       await act(async () => {
         fireEvent.change(searchField, { target: { value: '12345' } })
       })
-
       await act(async () => {
         fireEvent.click(searchButton)
       })
-
       expect(kierratysInfoServiceMock.getCollectionSpotsByPostalCode).toBeCalledTimes(1)
     })
+    
   })
 })

@@ -17,7 +17,8 @@ const user: User = {
   passwordHash: 'SCIOJGSDKIEF',
   favoriteProducts: [],
   token: 'TOKEN',
-  username: 'test'
+  username: 'test',
+  role: 'test'
 }
 
 function mockValidRegister() {
