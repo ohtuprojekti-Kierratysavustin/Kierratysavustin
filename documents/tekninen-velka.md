@@ -17,6 +17,7 @@ Yksittäisen tuotteen näkymässä kierrätysohjeiden listauksessa pitkä kierr�
 
 Ilmoitus virheestä tai onnistumisesta esitetään sovelluksen yläpalkissa ja mikäli ilmoituksessa on paljon tekstiä, jää oikean ylänurkan kirjautumispainike ilmoituksen alle piiloon.
 
+Ilmoitus olisi hyvä saada näkyviin aina riippumatta, siitä onko scrollattu alas. Nyt ilmoitus näkyy aina sivun yläosassa.
 
 
 ## Paranneltavat asiat
