@@ -55,4 +55,4 @@ Tuotantoversio käynnistetään komennolla `npm run start:prod`
 
 ## Tietokantakaavio
 
-![Tietokantakaavio](./kuvat/db-20211108.png)
+![Tietokantakaavio](./kuvat/db-20211214.png)
