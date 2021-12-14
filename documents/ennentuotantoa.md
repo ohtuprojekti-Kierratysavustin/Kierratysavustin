@@ -13,3 +13,5 @@ Lista asioista, jotka on hyvä toteuttaa, tai siihen liittyvä ongelma on hyvä 
 - Tietoturva-auditointi
 - Moderointijärjestelmä
 - Admin-työkaluja
+- Käyttäjän salasanan palauttaminen
+  - Samassa yhteydessä sähköpostipalvelu
