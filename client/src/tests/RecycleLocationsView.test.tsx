@@ -78,7 +78,6 @@ describe('When RecycleLocationsView is rendered', () => {
       await act(async () => {
         fireEvent.click(searchButton)
       })
-      await new Promise((r) => setTimeout(r, 2000));
       expect(kierratysInfoServiceMock.getCollectionSpotsByPostalCode).toBeCalledTimes(1)
     })
     
