@@ -27,7 +27,7 @@ Sovelluksen ulkoasu ei tällä hetkellä skaalaudu kovin täydellisesti eri koko
 
 #### Kirjautuminen ja rekisteröityminen
 
-Tällä hetkellä rekisteröityessä kysytään käyttäjän salasana kerran, virheiden välttämiseksi sen voisi kysyä kahdesti.
+Tällä hetkellä rekisteröityessä kysytään käyttäjän salasana kerran, virheiden välttämiseksi sen voisi kysyä kahdesti. Salasanan vahvuudelle voisi asettaa myös paremmat kriteerit.
 
 #### Kuvan/tiedostojen lataaminen
 
@@ -40,6 +40,10 @@ Voi kartoittaa olisiko rakennettava yhteneväinen systeemi
 #### Frontend tyypityksen parantaminen/lisääminen
 
 ## Refaktoroitavat asiat
+
+#### Serverin osoitteiden ja parametrien antamisen yhtenäistäminen
+
+URL:t eivät välttämättä noudata kaikkialla samaa rakennetta. Parametreja saatetaan myös antaa vaihtelevasti joko urlissa tai bodyssa. Voi käydä läpi ja yhtenäistää jos haluaa.
 
 #### Formit
 
