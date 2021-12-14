@@ -24,6 +24,7 @@
 |mongoose-unique-validator|Mahdollistaa validoinnin ennen tallennusta|
 |Eslint|Avulla noudatetaan tiettyä koodityylin standardeja|
 |jsonwebtoken|Pystytään säilyttämään käyttäjän tokeni, jolla voidaan varmistaa kirjautuneisuuden pysyvyys|
+|mulet|Backendin Express middleware tiedostojen lataamiseen ja käsittelyyn|
 
 ## Tietokanta
 mongoDB dockerissa
@@ -32,3 +33,14 @@ mongoDB dockerissa
 **Jest** - Yksikkötestausta, jonka avulla voidaan testata toiminnallisuuksia, ilman että ne ovat riippuvaisia toisistaan
 
 **Cypress** - End 2 End testaus, jonka avulla voidaan simuloida oikean käyttäjän toimintaa sivustolla
+
+## Työkaluja 
+- Visual studio code
+  - #### lisäosia
+  - käytettyihin kieliin liittyvät lisäosat
+  - draw.io integration
+  - Live Share yhteiskoodailuita varten
+  - Eslint
+  - REST Client
+- Postman
+  - Api collection, johon lisätty joitain apiresursseja
