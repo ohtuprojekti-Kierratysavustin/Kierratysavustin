@@ -17,7 +17,7 @@ Yksittäisen tuotteen näkymässä kierrätysohjeiden listauksessa pitkä kierr�
 
 Ilmoitus virheestä tai onnistumisesta esitetään sovelluksen yläpalkissa ja mikäli ilmoituksessa on paljon tekstiä, jää oikean ylänurkan kirjautumispainike ilmoituksen alle piiloon.
 
-
+Ilmoitus olisi hyvä saada näkyviin aina riippumatta, siitä onko scrollattu alas. Nyt ilmoitus näkyy aina sivun yläosassa.
 
 ## Paranneltavat asiat
 
@@ -27,9 +27,11 @@ Sovelluksen ulkoasu ei tällä hetkellä skaalaudu kovin täydellisesti eri koko
 
 #### Kirjautuminen ja rekisteröityminen
 
-Tällä hetkellä rekisteröityessä kysytään käyttäjän salasana kerran, virheiden välttämiseksi sen voisi kysyä kahdesti. Lisäksi kirjautumissessio ei ilmeisesti koskaan vanhene, sillä pitkänkään ajan jälkeen sovellus ei ole vaatinut uudelleenkirjautumista. Tietoturvasyistä olisi hyvä laittaa jonkinlainen aikaraja session vanhenemiselle.
+Tällä hetkellä rekisteröityessä kysytään käyttäjän salasana kerran, virheiden välttämiseksi sen voisi kysyä kahdesti.
 
+#### Kuvan/tiedostojen lataaminen
 
+Tarkempi validointi?, sekä erityisesti kattavammat testit
 
 ## Refaktoroitavat asiat
 
