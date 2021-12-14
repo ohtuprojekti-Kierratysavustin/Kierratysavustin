@@ -1,5 +1,9 @@
 # Arkkitehtuurista ja koodeista
 
+## Yleistä
+
+Arkkitehtuuri on yksinkertainen ja tuttu fullstack-kurssilta. React frontend kutsuu serverin rajapintaa. Serverillä mongodb tietokanta.
+
 ## Poikkeustenhallinta
 
 Tavoitteena poikkeustenhallinnassa on, että backend antaa frontendille selkeän virheviestin, jonka voi näyttää suoraan käyttäjälle.
@@ -94,3 +98,7 @@ Kierrätystilastointi pohjautuu hankinta- ja kierrätyslaskureihin. [Laskurin k�
 ## Kierrätys.info integraatio
 
 Kierrätys.info rajapinta on integroitu kierrätyspisteiden näyttämistä varten. Tällä hetkellä kaikki käyttäjät käyttävät kutsuissa samaa avainta, joka on haettu kierratysavustin@gmail.com sähköpostille. Tulevaisuudessa on hyvä harkita pitäisikö jokaisella käyttäjällä olla oma avain, joka haetaan käyttäjän sähköpostilla.
+
+## Testeistä
+
+Kommunikointi rajapinnan kanssa piilotettu service objekteihin. Nämä on mahdollista mockata komponentteja testatessa. Esimerkkinä [ProductUserCountFormTest](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/main/client/src/tests/ProductUserCountForm.test.tsx) jossa service mockattu.

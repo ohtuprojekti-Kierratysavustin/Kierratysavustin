@@ -33,8 +33,26 @@ Tällä hetkellä rekisteröityessä kysytään käyttäjän salasana kerran, vi
 
 Tarkempi validointi?, sekä erityisesti kattavammat testit
 
+#### Frontend virheenhallinta
+
+Voi kartoittaa olisiko rakennettava yhteneväinen systeemi
+
+#### Frontend tyypityksen parantaminen/lisääminen
+
 ## Refaktoroitavat asiat
 
 #### Formit
 
 Tällä hetkellä koodissa on kahdenlaisia lomakkeita: on lomakkeita, jotka käyttävät kirjastoa Formik, sekä lomakkeita, jotka käyttävät Reactin omaa Formia. Näiden yhtenäistäminen on ollut backlogilla, mutta sitä ei olla ehditty tekemään.
+
+#### Testit
+
+Joissain testeissä toisteisuutta
+
+Api ja e2e testien erottamista
+
+Kaikkien frontend testien tyypittäminen
+
+#### Riippuvuuksien päivittäminen
+
+Monista riippuvuuksista on käytössä vanha versio ja päivitys olisi hyvä tehdä pikimmiten. Päivitystä yritettiin [tässä haarassa](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/tree/yarn-kayttoon), jossa yritettiin vaihtaa npm tilalle yarn. Moni päivityksistä ei kuitenkaan ole taaksepäin yhteensopiva ja kyseisen haaran sovellus onkin hajalla. Korjaamista ehdittiin edistämään hieman.

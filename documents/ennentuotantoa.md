@@ -17,3 +17,5 @@ Lista asioista, jotka on hyvä toteuttaa, tai siihen liittyvä ongelma on hyvä 
   - Samassa yhteydessä sähköpostipalvelu
 - Kierrätys.info apiin kaikille oma avain
   - Vaatii käyttäjään liitettävän sähköpostiosoitteen
+- Selaimen välimuistin käyttämisen tarkastelu
+- Yleinen suorituskykyoptimointi
