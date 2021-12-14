@@ -24,7 +24,7 @@
 |mongoose-unique-validator|Mahdollistaa validoinnin ennen tallennusta|
 |Eslint|Avulla noudatetaan tiettyä koodityylin standardeja|
 |jsonwebtoken|Pystytään säilyttämään käyttäjän tokeni, jolla voidaan varmistaa kirjautuneisuuden pysyvyys|
-|multer|Backendin Express middleware tiedostojen lataamiseen ja käsittelyyn|
+|multer|express middleware tiedostojen lataamiseen ja käsittelyyn|
 
 ## Tietokanta
 mongoDB dockerissa
