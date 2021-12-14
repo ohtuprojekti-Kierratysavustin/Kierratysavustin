@@ -21,10 +21,8 @@ jest.mock('react-chartjs-2', () => ({
 const statisticsServiceMock = statisticsService as jest.Mocked<typeof statisticsService>
 
 describe('Product view rendered', () => {
-
   beforeEach(() => {
     statisticsServiceMock.getUserCumulativeRecyclingRatesPerDay.mockResolvedValue([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50])
-
   })
 
   afterEach(() => {
@@ -32,7 +30,6 @@ describe('Product view rendered', () => {
   })
 
   test('Product information can be seen', () => {
-
     const productA: Product = {
       id: 123,
       name: 'Mustamakkarakastike pullo',
@@ -163,5 +160,4 @@ describe('Product view rendered', () => {
       'Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erill'
     )
   })
-
 })

@@ -17,14 +17,12 @@ import { recycleMaterials, validLocation1, validLocation2 } from './testdata/rec
   //   ]
   // }
 
-
 jest.mock('../services/kierratysInfo')
 const kierratysInfoServiceMock = kierratysInfoService as jest.Mocked<typeof kierratysInfoService>
 jest.mock('../services/credentials')
 const credentialServiceMock = credentialService as jest.Mocked<typeof credentialService>
 
 describe('When RecycleLocationsView is rendered', () => {
-
   let searchButton: any;
   let component: any;
   let searchField: any
@@ -34,7 +32,6 @@ describe('When RecycleLocationsView is rendered', () => {
   })
 
   beforeEach( async () => {
-
     kierratysInfoServiceMock.getAllRecyclingMaterials.mockResolvedValue(recycleMaterials)
     kierratysInfoServiceMock.getCollectionSpotsByPostalCode.mockResolvedValue({results: [validLocation1, validLocation2]})
     kierratysInfoServiceMock.getCollectionSpotsByMunicipality.mockResolvedValue({results: [validLocation2]})
@@ -58,7 +55,6 @@ describe('When RecycleLocationsView is rendered', () => {
   })
 
   describe('Using the search field', () => {
-
     it('it should use the municipality endpoint when searching with a name', async () => {
       await act(async () => {
         fireEvent.change(searchField, { target: { value: 'Helsinki' } })

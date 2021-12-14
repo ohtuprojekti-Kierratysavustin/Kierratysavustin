@@ -5,7 +5,6 @@ import InstructionForm from '../components/forms/InstructionForm'
 
 
 test('InstructionForm renders', () => {
-
   const component = render(
     <InstructionForm />
   )
@@ -15,7 +14,6 @@ test('InstructionForm renders', () => {
 })
 
 test('Popup window is shown after pushing the button', () => {
-
   const component = render(
     <InstructionForm />
   )
@@ -27,7 +25,6 @@ test('Popup window is shown after pushing the button', () => {
 })
 
 test('Popup window is closed after pushing x-button', async () => {
-
   const component = render(
     <InstructionForm />
   )

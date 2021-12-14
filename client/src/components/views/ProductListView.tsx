@@ -32,7 +32,6 @@ const ProductListView: React.FC<Props> = ({ products, setFilteredProducts, filte
           </Container>
           : <ProductsList products={filteredProducts} header='Hakusanalla löytyneet tuotteet'></ProductsList>
       }
-
     </div>
   )
 }

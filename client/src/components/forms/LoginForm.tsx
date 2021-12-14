@@ -53,10 +53,8 @@ const LoginForm = () => {
       .catch((error: ErrorResponse) => {
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe!'), 'error')
       })
-
   }
   return (
-
     <div>
       <Container>
         <Form onSubmit={onSubmit}>
@@ -78,7 +76,6 @@ const LoginForm = () => {
               id="passwordInput"
               onChange={({ target }) => setPassword(target.value)}
             />
-
           </Form.Group>
           <Button
             id='loginSubmit'

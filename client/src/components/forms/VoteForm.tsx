@@ -69,7 +69,6 @@ const VoteForm: React.FC<Props> = ({ instruction, user, product }) => {
       .catch((error) => {
         setNotification((error.message ? error.message : 'Tapahtui odottamaton virhe äänestettäessä!'), 'error')
       })
-
   }
   return (
     <div>

@@ -140,7 +140,6 @@ const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
               </div>
             </Collapse>
           </Col>
-
         </Row>
       </Container>
       <Container id='product-view-container'>
@@ -188,7 +187,6 @@ const ProductView: React.FC<Props> = ({ product, statisticsService }) => {
 
                   </Container>
                 </Link>
-
               </ListGroup.Item>
             )}
           </ListGroup>

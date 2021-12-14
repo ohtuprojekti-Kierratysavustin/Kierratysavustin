@@ -69,4 +69,5 @@ const RecycleStatisticsView = () => {
     </div>
   )
 }
+
 export default RecycleStatisticsView

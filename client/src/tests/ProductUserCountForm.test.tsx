@@ -12,7 +12,6 @@ import { waitFor } from '@testing-library/dom'
  * with mockResolvedValueOnce and mockResolvedValue.
  */
 
-
 jest.mock('../services/counters')
 const counterServiceMock = counterService as jest.Mocked<typeof counterService>
 
@@ -142,7 +141,6 @@ describe('When ProductUserCountForm is rendered', () => {
 
     describe('With user typed input', () => {
       it('should grow the count by user typed num', async () => {
-
         setCounterServiceReturnValues([0, 6])
 
         const component = render(<ProductUserCountForm
@@ -181,10 +179,8 @@ describe('When ProductUserCountForm is rendered', () => {
   })
 
   describe('When pressing subtract button', () => {
-
     describe('When counter is 0', () => {
       it('should not reduce the count', async () => {
-
         setCounterServiceReturnValues([0, -1])
 
         const component = render(<ProductUserCountForm
@@ -216,7 +212,6 @@ describe('When ProductUserCountForm is rendered', () => {
 
     describe('When counter is > 0', () => {
       it('should reduce the count', async () => {
-
         setCounterServiceReturnValues([0, 1, 2, 1])
 
         const component = render(<ProductUserCountForm
@@ -255,7 +250,6 @@ describe('When ProductUserCountForm is rendered', () => {
 
       describe('When trying to subtract more than counted', () => {
         it('should not change the count', async () => {
-
           setCounterServiceReturnValues([0, 1, 2, 3, -1])
 
           const component = render(<ProductUserCountForm
@@ -301,7 +295,5 @@ describe('When ProductUserCountForm is rendered', () => {
         })
       })
     })
-
   })
-
 })

@@ -71,7 +71,6 @@ const Map: React.FC<Props> = ({ mapCenter, recyclingSpots, selectedMaterials }) 
     useEffect(() => {
       map.setView(center)
     }, [center, map])
-
     return null
   }
 
