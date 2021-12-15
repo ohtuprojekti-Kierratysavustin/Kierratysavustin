@@ -69,5 +69,4 @@ test('Search form renders and returns correct results', () => {
   fireEvent.submit(form)
   expect(changeFoundProducts.mock.calls).toHaveLength(1)
   expect(changeFoundProducts.mock.calls[0][0][0]).toBe(productB)
-
 })

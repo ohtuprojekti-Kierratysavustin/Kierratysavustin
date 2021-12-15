@@ -17,13 +17,11 @@ const RecycleGraphForm: React.FC<Props> = ({ products, statisticsService }) => {
   const [date,] = useState(new Date())
   const numberOfDays = 30
 
-
   useEffect(() => {
     statisticsService.getUserCumulativeRecyclingRatesPerDay(endOfDay(date).getTime(), numberOfDays, productID).then(res => {
       setData(res)
     })
   }, [productID])
-
 
   const handleSelect = (event: any) => {
     setProductID(event)
@@ -45,7 +43,6 @@ const RecycleGraphForm: React.FC<Props> = ({ products, statisticsService }) => {
       <RecycleGraph data={data} graphTargetHeader={(productID ? 'Tuotteen \'' + selectedProduct + '\' kierrätysaste' : 'Kokonaiskierrätysaste')}></RecycleGraph>
     </div>
   )
-
 }
 
 export default RecycleGraphForm

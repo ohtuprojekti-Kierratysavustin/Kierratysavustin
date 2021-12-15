@@ -7,7 +7,6 @@ type Props = {
 }
 
 const RecycleGraph: React.FC<Props> = ({ data, graphTargetHeader }) => {
-
   // kuvaajan datan tyyppi
   type dataValues = {
     labels: string[],
@@ -77,4 +76,5 @@ const RecycleGraph: React.FC<Props> = ({ data, graphTargetHeader }) => {
     </div>
   )
 }
+
 export default RecycleGraph

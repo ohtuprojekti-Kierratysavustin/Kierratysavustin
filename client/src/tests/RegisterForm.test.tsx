@@ -17,7 +17,8 @@ const user: User = {
   passwordHash: 'SCIOJGSDKIEF',
   favoriteProducts: [],
   token: 'TOKEN',
-  username: 'test'
+  username: 'test',
+  role: 'test'
 }
 
 function mockValidRegister() {
@@ -31,7 +32,6 @@ function mockValidRegister() {
 }
 
 describe('When RegisterForm is rendered', () => {
-
   let usernameInput: any;
   let passwordInput: any;
   let submitButton: any;
@@ -64,9 +64,7 @@ describe('When RegisterForm is rendered', () => {
   })
 
   describe('When valid user input', () => {
-
     it('Username and password submitted', async () => {
-
       await act(async () => {
         fireEvent.change(usernameInput, { target: { value: 'Myname' } })
       })
@@ -82,10 +80,8 @@ describe('When RegisterForm is rendered', () => {
   })
 
   describe('When invalid user input', () => {
-
     describe('With too short username', () => {
       it('Does not submit', async () => {
-
         await act(async () => {
           fireEvent.change(usernameInput, { target: { value: 'mm' } })
         })
@@ -102,7 +98,6 @@ describe('When RegisterForm is rendered', () => {
 
     describe('With too short password', () => {
       it('Does not submit', async () => {
-
         await act(async () => {
           fireEvent.change(usernameInput, { target: { value: 'testuser' } })
         })

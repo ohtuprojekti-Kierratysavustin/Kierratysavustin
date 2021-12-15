@@ -16,7 +16,6 @@ const InfoBar: React.FC<Props> = ({ header, text }) => {
         <Media>
           <Container >
             <Row className='justify-content-sm-center'>
-
               <Image
                 width={128}
                 height={128}

@@ -1,5 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
+import { act } from 'react-dom/test-utils'
 import { fireEvent, render } from '@testing-library/react'
 import ProductView from '../components/views/ProductView'
 import {
@@ -20,10 +21,8 @@ jest.mock('react-chartjs-2', () => ({
 const statisticsServiceMock = statisticsService as jest.Mocked<typeof statisticsService>
 
 describe('Product view rendered', () => {
-
   beforeEach(() => {
     statisticsServiceMock.getUserCumulativeRecyclingRatesPerDay.mockResolvedValue([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50])
-
   })
 
   afterEach(() => {
@@ -31,7 +30,6 @@ describe('Product view rendered', () => {
   })
 
   test('Product information can be seen', () => {
-
     const productA: Product = {
       id: 123,
       name: 'Mustamakkarakastike pullo',
@@ -56,7 +54,7 @@ describe('Product view rendered', () => {
     )
   })
   
-  test('chart container can be seen', () => {
+  test('chart container is hidden at first', async () => {
     const productA: Product = {
       id: 123,
       name: 'Mustamakkarakastike pullo',
@@ -78,10 +76,64 @@ describe('Product view rendered', () => {
       </Router>
     )
     
-    const div = component.container.querySelector('.collapse')
+    const div = component.container.querySelector('#example-collapse-text')
     const button = component.getByText('Katso tuotteen tilastot')
+    
+    //expect(component.container).toHaveTextContent('Tuotteen \'' + 'Mustamakkarakastike pullo' + '\' kierrätysaste viimeisen 30 päivän aikana')
+    expect(div).toHaveClass('collapse')
+  })
+  test('chart container is visible after pushing the button', async () => {
+    const productA: Product = {
+      id: 123,
+      name: 'Mustamakkarakastike pullo',
+      instructions: [{
+        id: 321,
+        score: 0,
+        information: 'Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.',
+        product_id: 123,
+        creator: 1
+      }],
+      creator: 123,
+      productImage: ''
+    }
+
+    const component = render(
+      <Router>
+        <ProductView product={productA} statisticsService={statisticsServiceMock} >
+        </ProductView>
+      </Router>
+    )
+    
+    const div = component.container.querySelector('#example-collapse-text')
+    const button = component.getByText('Katso tuotteen tilastot')
+    
     fireEvent.click(button)
-    expect(component.container).toHaveTextContent('Tuotteen \'' + 'Mustamakkarakastike pullo' + '\' kierrätysaste viimeisen 30 päivän aikana')
+    await new Promise((r) => setTimeout(r, 2000));
+    expect(div).toHaveClass('collapse show')
+  })
+  test('chart container shows correct title', async () => {
+    const productA: Product = {
+      id: 123,
+      name: 'Mustamakkarakastike pullo',
+      instructions: [{
+        id: 321,
+        score: 0,
+        information: 'Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erillään toisistaan.',
+        product_id: 123,
+        creator: 1
+      }],
+      creator: 123,
+      productImage: ''
+    }
+
+    const component = render(
+      <Router>
+        <ProductView product={productA} statisticsService={statisticsServiceMock} >
+        </ProductView>
+      </Router>
+    )
+    
+    expect(component.container).toHaveTextContent('Tuotteen \'' + 'Mustamakkarakastike pullo' + '\' kierrätysaste viimeisen 30 päivän aikana') 
   })
 
   test('Instructions are listed', () => {
@@ -108,5 +160,4 @@ describe('Product view rendered', () => {
       'Irrota korkki, huuhtele pullo. Laita pullo ja korkki muovinkeräykseen erill'
     )
   })
-
 })

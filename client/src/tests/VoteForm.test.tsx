@@ -4,9 +4,7 @@ import { render, fireEvent, RenderResult } from '@testing-library/react'
 import VoteForm from '../components/forms/VoteForm'
 import { Instruction, Product, User } from '../types/objects'
 
-
 describe('When RegisterForm is rendered', () => {
-
   var user: User
   var product: Product
   var instruction: Instruction
@@ -16,7 +14,6 @@ describe('When RegisterForm is rendered', () => {
   var votes: Element
 
   beforeEach(() => {
-
     user = {
       id: 1,
       username: 'test',
@@ -24,7 +21,8 @@ describe('When RegisterForm is rendered', () => {
       token: 'GEDSFWAEGW',
       likes: [],
       dislikes: [],
-      favoriteProducts: []
+      favoriteProducts: [],
+      role: 'test'
     }
 
     product = {
