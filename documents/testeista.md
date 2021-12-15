@@ -1,12 +1,19 @@
-### Mongo/docker
- 
-Kehitysaikaisen tietokannan saa käynnistettyä server kansiossa komennolla npm run start:mongo (komento tekee mongo kansiossa docker-compose up ja lopettaessa docker-compose down) 
-Stagingia imitoivan buildin saa ajettua juurikansiossa komennolla ./docker-setup.sh  
-(komento luo uuden docker imagen, käynnistää sen ja mongo tietokannan. Server käynnistetään antamalla sille baseUrl=/kierratysavustin, jolloin sovelluksen osoitteeseen lisätään /kierrätysavustin, kuten staging serverillä. Serverille annetaan myös NODE_ENV=production, jolloin serverin config.js tiedostossa tiedetään käyttää oikeaa tietokantaosoitetta. 
- 
-### E2E-testaus
+# Paikallinen testaaminen
 
-Käynnistä frontend komennolla npm start jotta käyttöliittymä on käynnissä 
+Kaikkia testejä varten on hyvä käynnistää kaikki sovelluksen osat paikallisesti.
+[Screen tiedostolla](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/blob/main/.screenrc) määritelty screen avaa yhden ylimääräisen terminaalin testaamista varten.
+
+## Client
+
+Testit ajetaan *client* kansiossa komennolla `npm test`
+
+## Backend
+Käynnistettävä komennolla `npm run start:test`. Tällöin määriteltynä kannan tyhjentävä api-resurssi.
+
+Testit ajetaan *server* kansiossa komennolla `npm test`
+
+## E2E
+
 Testejä varten backend pitää käynnistää komennolla npm run start:test, jotta tiedetään käyttää testitietokantaa. 
 Cypress testit ajetaan e2e_tests kansiossa. 
 Komennolla npm run test:e2e käytetään cypress.json teidostossa valmiiksi määriteltyä CYPRESS_BASE_URL osoitetta eli http://localhost:3000. Tällöin cypress olettaa, että sovelluksen frontend pyörii osoitteessa localhost:3000. Tätä komentoa käytetään siis kun sovellusta ajetaan kehitysaikaisessa tilassa. 

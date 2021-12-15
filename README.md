@@ -5,7 +5,7 @@
 
 Helsingin yliopiston Ohjelmistotuotantoprojekti, syksy 2021.
 
-Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-sovellus, josta voi hakea kierrätettäviä tuotteita kierrätysohjeineen. Rekisteröityneet käyttäjät voivat kirjautuneina lisätä tietokantaan tuotteita sekä niille kierrätysohjeita. Kirjautuneena käyttäjät voivat myös pisteyttää tuotteille annettuja kierrätysohjeita. Pisteytykset näkyvät kaikille sovelluksen käyttäjille.
+Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-sovellus, jonka tarkoitus on auttaa käyttäjää kierrättämisessä ja kierrättämisen seuraamisessa.
 
 ## Ohjeita käyttäjälle
 
@@ -33,7 +33,11 @@ Projektissa toteutetaan Kotitalouden kierrätysavustin. Selaimessa toimiva web-s
 
 - [Arkkitehtuurista ja koodeista](documents/arkkitehtuurista.md)
 
-- [Npm-komennoista](documents/npm_komennoista.md)
+- [Testaaminen](documents/testeista.md)
+
+- [Tekninen velka](documents/tekninen-velka.md)
+
+- [Tuotanto TODO](documents/ennentuotantoa.md)
 
 ## Projektin edistyminen
 
