@@ -54,7 +54,6 @@ const NavigationBar = () => {
 
       </Navbar.Collapse>
     </Navbar>
-
   )
 }
 

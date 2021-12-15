@@ -77,7 +77,6 @@ const RegisterForm: React.FC<Props> = ({ userService }) => {
                     className="error"
                   />
                 </Formo.Group>
-
                 <Formo.Group>
                   <Formo.Label htmlFor="password">Salasana: </Formo.Label>
                   <Formo.Control as={Field}
@@ -108,11 +107,6 @@ const RegisterForm: React.FC<Props> = ({ userService }) => {
       }}
     </Formik>
   )
-
 }
-
-
-
-
 
 export default RegisterForm

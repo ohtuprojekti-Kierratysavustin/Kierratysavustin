@@ -22,7 +22,6 @@ const Notification = () => {
       </Alert>
     )
   }
-
 }
 
 export default Notification

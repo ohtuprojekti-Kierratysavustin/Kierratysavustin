@@ -26,9 +26,7 @@ const FrontPage: React.FC<Props> = ({ products, setFilteredProducts }) => {
           'Kotitalouden kierrätysavustimen tavoitteena on nostaa kotitalouksien lajitteluastetta. Tule mukaan hakemaan oikea kierrätysohje haluamallesi tuotteelle tai rekisteröidy ja kirjaudu palveluun lisätäksesi tuotteita tai kierrätysohjeita palveluun!'
         )}
       />
-
       <SearchBarForm products={products} setFilteredProducts={setFilteredProducts} />
-
       {user !== null ? (
         <ProductsList products={favorites} header='Suosikkituotteet' />
       ) : (
@@ -37,4 +35,5 @@ const FrontPage: React.FC<Props> = ({ products, setFilteredProducts }) => {
     </div>
   )
 }
+
 export default FrontPage

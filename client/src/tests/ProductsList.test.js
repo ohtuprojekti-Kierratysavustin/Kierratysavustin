@@ -58,5 +58,4 @@ test('ProductsList list products', () => {
   expect(component.container).toHaveTextContent(
     'Aikakauslehti'
   )
-
 })

@@ -14,7 +14,6 @@ const product = { id:'321',
   users:[ user2]
 }
 test('FavoritesForm button changes value', () => {
-
   const component = render(
     <FavoritesForm user = {user} product={product}/>
   )
