@@ -10,7 +10,10 @@ Lista asioista, jotka on hyvä toteuttaa, tai siihen liittyvä ongelma on hyvä 
 - [Tietosuojaseloste](https://github.com/ohtuprojekti-Kierratysavustin/Kierratysavustin/issues/138)
 - Client validoinnin yhtenäistäminen
 - Validoinnin läpikäynti
-- Tietoturva-auditointi
+- Tietoturva
+  - Riskianalyysi
+  - Uhka-analyysi
+  - Auditointi
 - Moderointijärjestelmä
 - Admin-työkaluja
 - Käyttäjän salasanan palauttaminen
