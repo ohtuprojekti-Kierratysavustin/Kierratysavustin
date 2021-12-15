@@ -43,7 +43,7 @@ test('ProductsList list products', () => {
 
   const component = render(
     <Router>
-      <ProductsList userProducts={productsData} />
+      <ProductsList products={productsData} />
     </Router>
   )
 
@@ -58,5 +58,4 @@ test('ProductsList list products', () => {
   expect(component.container).toHaveTextContent(
     'Aikakauslehti'
   )
-
 })

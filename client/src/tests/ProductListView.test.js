@@ -63,18 +63,15 @@ test('ProductListView list products', () => {
 })
 
 test('ProductListView shows message when list is empty', () => {
-
   const productsData = []
-
 
   const component = render(
     <Router>
-      <ProductListView products={productsData} />
+      <ProductListView filteredProducts={productsData} />
     </Router>
   )
 
   expect(component.container).toHaveTextContent(
     'Haulla ei löytynyt yhtään tuotetta!'
   )
-
 })

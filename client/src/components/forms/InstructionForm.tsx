@@ -114,7 +114,6 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik
         return (
-
           <Modal
             {...props}
             size="lg"
@@ -144,7 +143,6 @@ const InstructionPopup: React.FC<InstructionPopupProps> = ( props ) =>  {
                   type='submit'
                   className={!(dirty && isValid) ? 'disabled-btn' : ''}
                   disabled={!(dirty && isValid)}
-                //onClick={() => handleSubmit()}
                 >Lisää</Button>
               </Formo>
             </Modal.Body>

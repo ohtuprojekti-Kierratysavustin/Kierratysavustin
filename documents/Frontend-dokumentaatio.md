@@ -8,7 +8,7 @@ Lomakkeiden tekemiseen käytetään [Formik](https://formik.org/)-kirjastoa, ja 
 
 Frontendissa käytetään React kirjastoa. Reactin tilan (State) hallintaan käytössä on [Zustand](https://github.com/pmndrs/zustand)-kirjasto.
 
-## Frontendin käymmistäminen paikallisesti
+## Frontendin käynnistäminen paikallisesti
 
 Frontend käynnistetään kansiossa *client* komennolla
 
