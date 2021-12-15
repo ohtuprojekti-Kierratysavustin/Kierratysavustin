@@ -28,6 +28,8 @@ Ilmoitus olisi hyvä saada näkyviin aina riippumatta, siitä onko scrollattu al
 
 Sovelluksen ulkoasu ei tällä hetkellä skaalaudu kovin täydellisesti eri kokoisille näytöille. Muun muassa puhelimelta sovellusta käyttäessä yksittäisen tuotteen näkymässä on paljon parannettavaa. Lisäksi yksittäisen tuotteen näkymä alkaa olla hieman sekavan näköinen, sillä siellä on kohtuullisen paljon erilaisia elementtejä.
 
+Käyttöliittymää kehitettäessä on hyvä testata näkymää eri kokoisilla näytöillä, kuten myös eri selaimilla.
+
 #### Kirjautuminen ja rekisteröityminen
 
 Tällä hetkellä rekisteröityessä kysytään käyttäjän salasana kerran, virheiden välttämiseksi sen voisi kysyä kahdesti. Salasanan vahvuudelle voisi asettaa myös paremmat kriteerit.
